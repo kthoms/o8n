@@ -163,28 +163,20 @@ func (m *model) applyData(defs []ProcessDefinition, instances []ProcessInstance)
 	}
 	m.table.SetRows(rows)
 
-	if row := m.table.SelectedRow(); len(row) > 0 {
-		m.selectedInstanceID = row[0]
-	} else {
-		m.selectedInstanceID = ""
-	}
+	m.selectedInstanceID = rowInstanceID(m.table.SelectedRow())
 }
 
 func (m *model) removeInstance(id string) {
 	rows := m.table.Rows()
 	filtered := make([]table.Row, 0, len(rows))
 	for _, r := range rows {
-		if len(r) > 0 && r[0] == id {
+		if rowInstanceID(r) == id {
 			continue
 		}
 		filtered = append(filtered, r)
 	}
 	m.table.SetRows(filtered)
-	if row := m.table.SelectedRow(); len(row) > 0 {
-		m.selectedInstanceID = row[0]
-	} else {
-		m.selectedInstanceID = ""
-	}
+	m.selectedInstanceID = rowInstanceID(m.table.SelectedRow())
 }
 
 func (m model) fetchDataCmd() tea.Cmd {
@@ -291,17 +283,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	m.table, cmd = m.table.Update(msg)
 	cmds = append(cmds, cmd)
 
-	if row := m.table.SelectedRow(); len(row) > 0 {
-		m.selectedInstanceID = row[0]
-	} else {
-		m.selectedInstanceID = ""
-	}
+	m.selectedInstanceID = rowInstanceID(m.table.SelectedRow())
 
 	return m, tea.Batch(cmds...)
 }
 
 func (m model) View() string {
-	header := m.style.Render(fmt.Sprintf("Environment: %s | Auto-refresh: %t", m.currentEnv, m.autoRefresh))
+	refreshStatus := "OFF"
+	if m.autoRefresh {
+		refreshStatus = "ON"
+	}
+	header := m.style.Render(fmt.Sprintf("Environment: %s | Auto-refresh: %s", m.currentEnv, refreshStatus))
 	content := lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		m.style.Render(m.list.View()),
@@ -315,6 +307,13 @@ func (m model) View() string {
 		return lipgloss.JoinVertical(lipgloss.Left, header, content, modal)
 	}
 	return lipgloss.JoinVertical(lipgloss.Left, header, content)
+}
+
+func rowInstanceID(row table.Row) string {
+	if len(row) > 0 {
+		return row[0]
+	}
+	return ""
 }
 
 func main() {
