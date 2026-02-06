@@ -24,9 +24,6 @@ func NewClient(env Environment) *Client {
 }
 
 func (c *Client) http() *http.Client {
-	if c.httpClient == nil {
-		c.httpClient = &http.Client{Timeout: 10 * time.Second}
-	}
 	return c.httpClient
 }
 
@@ -46,7 +43,6 @@ func (c *Client) FetchProcessDefinitions() ([]ProcessDefinition, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(c.env.Username, c.env.Password)
 
 	resp, err := c.http().Do(req)
@@ -77,7 +73,6 @@ func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
 		return nil, err
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(c.env.Username, c.env.Password)
 
 	resp, err := c.http().Do(req)

@@ -32,9 +32,6 @@ func TestFetchProcessDefinitions(t *testing.T) {
 		if got := r.Header.Get("Accept"); got != "application/json" {
 			t.Fatalf("expected Accept header application/json, got %s", got)
 		}
-		if got := r.Header.Get("Content-Type"); got != "application/json" {
-			t.Fatalf("expected Content-Type header application/json, got %s", got)
-		}
 		if auth := r.Header.Get("Authorization"); auth != "Basic "+basic(username, password) {
 			t.Fatalf("missing or invalid basic auth header: %s", auth)
 		}
