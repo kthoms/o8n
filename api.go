@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-// Client represents an Operaton API client bound to a specific environment.
+// Client represents an API client bound to a specific environment.
 type Client struct {
 	env        Environment
 	httpClient *http.Client
@@ -105,7 +105,6 @@ func (c *Client) TerminateInstance(instanceID string) error {
 		return err
 	}
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Content-Type", "application/json")
 	req.SetBasicAuth(c.env.Username, c.env.Password)
 
 	resp, err := c.http().Do(req)
