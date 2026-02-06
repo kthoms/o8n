@@ -14,6 +14,7 @@ func TestLoadConfig(t *testing.T) {
 	defer os.Remove(tmpFile.Name())
 
 	// Write test config data
+	// Note: Using placeholder values for testing purposes only
 	configData := `environments:
   test:
     url: "http://localhost:8080/engine-rest"

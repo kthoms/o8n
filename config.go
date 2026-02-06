@@ -8,10 +8,12 @@ import (
 )
 
 // Environment represents a connection environment for Operaton
+// Note: For production use, consider storing sensitive credentials like passwords
+// in environment variables or a secure secrets manager rather than in config files
 type Environment struct {
 	URL      string `yaml:"url"`
 	Username string `yaml:"username"`
-	Password string `yaml:"password"`
+	Password string `yaml:"password"` // Consider using environment variables for sensitive data
 	UIColor  string `yaml:"ui_color"` // hex string like "#FF5733"
 }
 
