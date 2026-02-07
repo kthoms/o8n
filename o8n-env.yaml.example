@@ -1,0 +1,23 @@
+# Example environment configuration for o8n
+# WARNING: This is an example file. Do NOT use these passwords in production!
+
+environments:
+  local:
+    url: "http://localhost:8080/engine-rest"
+    username: "demo"
+    password: "demo"
+    ui_color: "#00A8E1"
+
+  dev:
+    url: "https://dev.operaton.example.com/engine-rest"
+    username: "developer"
+    password: "devpass123"
+    ui_color: "#FFA500"
+
+  prod:
+    url: "https://operaton.example.com/engine-rest"
+    username: "admin"
+    password: "securepass"
+    ui_color: "#FF5733"
+
+active: local

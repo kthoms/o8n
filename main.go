@@ -38,6 +38,17 @@ type errMsg struct{ err error }
 type flashOnMsg struct{}
 type flashOffMsg struct{}
 
+// message used to clear footer errors
+type clearErrorMsg struct{}
+
+// splash done message
+type splashDoneMsg struct{}
+
+// splash frame message for animation
+type splashFrameMsg struct{ frame int }
+
+const totalSplashFrames = 10
+
 type processDefinitionItem struct {
 	definition ProcessDefinition
 }
@@ -118,6 +129,26 @@ type model struct {
 
 	// footer error message
 	footerError string
+
+	// splash screen active
+	splashActive bool
+
+	// current splash frame
+	splashFrame int
+
+	// splash styles
+	splashLogoStyle lipgloss.Style
+	splashInfoStyle lipgloss.Style
+
+	// breadcrumb navigation
+	breadcrumb    []string
+	contentHeader string
+
+	// selected definition key when drilled into instances
+	selectedDefinitionKey string
+
+	// breadcrumb styles per level
+	breadcrumbStyles []lipgloss.Style
 }
 
 func newModel(cfg *Config) model {
@@ -157,20 +188,31 @@ func newModel(cfg *Config) model {
 	}
 
 	m := model{
-		config:     cfg,
-		envNames:   envNames,
-		currentEnv: current,
-		list:       l,
-		table:      t,
-		viewMode:   "definitions",
+		config:       cfg,
+		envNames:     envNames,
+		currentEnv:   current,
+		list:         l,
+		table:        t,
+		viewMode:     "definitions",
+		splashActive: true,
+		splashFrame:  1,
 	}
 	m.applyStyle()
 	// initialize lastListIndex
 	m.lastListIndex = m.list.Index()
 
+	// initialize breadcrumb: start with current root
+	m.breadcrumb = []string{"process-definitions"}
+	m.contentHeader = "process-definitions"
+
 	// sensible defaults so the header is visible immediately
 	m.lastWidth = 80
-	m.paneWidth = m.lastWidth - 4
+	// compute default paneWidth as remaining width after left column + margins
+	leftW := m.lastWidth / 4
+	m.paneWidth = m.lastWidth - leftW - 4
+	if m.paneWidth < 20 {
+		m.paneWidth = m.lastWidth - 4
+	}
 	m.paneHeight = 12
 
 	// set root contexts and currentRoot
@@ -211,8 +253,10 @@ func newModelEnvApp(envCfg *EnvConfig, appCfg *AppConfig) model {
 
 func (m *model) applyStyle() {
 	color := ""
-	if env, ok := m.config.Environments[m.currentEnv]; ok {
-		color = env.UIColor
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
 	}
 	m.style = lipgloss.NewStyle().BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).Bold(true)
 
@@ -220,16 +264,30 @@ func (m *model) applyStyle() {
 	listStyles.Title = listStyles.Title.BorderForeground(lipgloss.Color(color))
 	m.list.Styles = listStyles
 
-	// Table header color is white as requested
+	// Table header color is white as requested. Remove header bottom border to hide separator line.
 	tStyles := table.DefaultStyles()
-	tStyles.Header = tStyles.Header.BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).BorderBottom(true).Foreground(lipgloss.Color("white")).Bold(true)
+	tStyles.Header = tStyles.Header.BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).BorderBottom(false).Foreground(lipgloss.Color("white")).Bold(true)
 	tStyles.Selected = tStyles.Selected.Foreground(lipgloss.Color(color)).Bold(true)
 	m.table.SetStyles(tStyles)
+
+	// splash styles
+	m.splashLogoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Bold(true).Align(lipgloss.Center)
+	m.splashInfoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Align(lipgloss.Center)
+
+	// breadcrumb styles (up to 4 levels)
+	m.breadcrumbStyles = []lipgloss.Style{
+		lipgloss.NewStyle().Background(lipgloss.Color(color)).Foreground(lipgloss.Color("black")).Padding(0, 1),
+		lipgloss.NewStyle().Background(lipgloss.Color("#e6e6fa")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+		lipgloss.NewStyle().Background(lipgloss.Color("#f0fff0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+		lipgloss.NewStyle().Background(lipgloss.Color("#fffaf0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+	}
 }
 
 func (m model) Init() tea.Cmd {
-	// fetch definitions at start and flash
-	return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
+	// fetch definitions at start and flash, and start splash animation (150ms per frame, total 1.5s)
+	// we start with frame 1 already set; schedule frame 2 after 150ms
+	firstTick := tea.Tick(150*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: 2} })
+	return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), firstTick)
 }
 
 func (m *model) nextEnvironment() {
@@ -294,6 +352,11 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		return []table.Column{{Title: "EMPTY", Width: 20}}
 	}
 
+	contentWidth := totalWidth
+	if contentWidth < n*3 {
+		contentWidth = n * 3
+	}
+
 	// parse percentages
 	percentTotal := 0
 	percentCols := make([]int, n)
@@ -336,28 +399,19 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		}
 	}
 
-	// if totalWidth known, compute column widths
+	// if totalWidth known, compute column widths using contentWidth
 	cols := make([]table.Column, 0, n)
-	if totalWidth <= 0 {
-		// fallback widths
-		for _, c := range visible {
-			cols = append(cols, table.Column{Title: strings.ToUpper(c.Name), Width: 20})
-		}
-		return cols
-	}
-
 	used := 0
-	for i, c := range visible {
-		w := totalWidth * percentCols[i] / 100
+	for i := range visible {
+		w := contentWidth * percentCols[i] / 100
 		if w < 3 {
 			w = 3
 		}
 		used += w
-		cols = append(cols, table.Column{Title: strings.ToUpper(c.Name), Width: w})
+		cols = append(cols, table.Column{Title: strings.ToUpper(visible[i].Name), Width: w})
 	}
-	// adjust for rounding differences
-	if used < totalWidth {
-		cols[len(cols)-1].Width += totalWidth - used
+	if used < contentWidth {
+		cols[len(cols)-1].Width += contentWidth - used
 	}
 	return cols
 }
@@ -378,13 +432,18 @@ func (m *model) applyDefinitions(defs []ProcessDefinition) {
 		rows = append(rows, table.Row{d.Key, d.Name, fmt.Sprintf("%d", d.Version), d.Resource})
 	}
 	m.list.SetItems(items)
-	cols := m.buildColumnsFor("process-definitions", m.paneWidth-4)
+	// determine available table width
+	tableWidth := m.table.Width()
+	if tableWidth <= 0 {
+		tableWidth = m.paneWidth - 4
+	}
+	cols := m.buildColumnsFor("process-definitions", tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
 	colsCount := len(cols)
 	if colsCount == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
@@ -404,13 +463,17 @@ func (m *model) applyInstances(instances []ProcessInstance) {
 	for _, inst := range instances {
 		rows = append(rows, table.Row{inst.ID, inst.DefinitionID, inst.BusinessKey, inst.StartTime})
 	}
-	cols := m.buildColumnsFor("process-instances", m.paneWidth-4)
+	tableWidth := m.table.Width()
+	if tableWidth <= 0 {
+		tableWidth = m.paneWidth - 4
+	}
+	cols := m.buildColumnsFor("process-instances", tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
 	colsCount := len(cols)
 	if colsCount == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
@@ -432,13 +495,17 @@ func (m *model) applyVariables(vars []Variable) {
 	for _, v := range vars {
 		rows = append(rows, table.Row{v.Name, v.Value})
 	}
-	cols := m.buildColumnsFor("process-variables", m.paneWidth-4)
+	tableWidth := m.table.Width()
+	if tableWidth <= 0 {
+		tableWidth = m.paneWidth - 4
+	}
+	cols := m.buildColumnsFor("process-variables", tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
 	colsCount := len(cols)
 	if colsCount == 0 && len(rows) > 0 {
-		cols = defaultColumns(len(rows[0]), m.paneWidth-4)
+		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
@@ -555,8 +622,38 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
+	case splashDoneMsg:
+		m.splashActive = false
+
+	case splashFrameMsg:
+		// update frame and schedule next frame or end splash
+		if msg.frame <= 0 {
+			msg.frame = 1
+		}
+		if msg.frame >= totalSplashFrames {
+			m.splashFrame = totalSplashFrames
+			m.splashActive = false
+		} else {
+			m.splashFrame = msg.frame
+			// schedule next frame
+			next := msg.frame + 1
+			return m, tea.Tick(150*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: next} })
+		}
+
 	case tea.KeyMsg:
-		switch msg.String() {
+		s := msg.String()
+		// handle colon typed as a key string so it works across terminals
+		if s == ":" {
+			if !m.showRootPopup {
+				m.showRootPopup = true
+				m.rootInput = ""
+				m.footerError = ""
+			} else {
+				m.showRootPopup = false
+			}
+			return m, nil
+		}
+		switch s {
 		case "q":
 			return m, tea.Quit
 		case "e":
@@ -584,11 +681,25 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.viewMode == "variables" {
 				// back to instances
 				m.viewMode = "instances"
+				// pop breadcrumb
+				if len(m.breadcrumb) > 1 {
+					m.breadcrumb = m.breadcrumb[:len(m.breadcrumb)-1]
+				}
+				// restore header to process-definitions(selectedDefinitionKey)
+				if m.selectedDefinitionKey != "" {
+					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, m.selectedDefinitionKey)
+				} else {
+					m.contentHeader = m.currentRoot
+				}
 				return m, nil
 			}
 			if m.viewMode == "instances" {
 				// go back to definitions view and flash
 				m.viewMode = "definitions"
+				// reset breadcrumb
+				m.breadcrumb = []string{m.currentRoot}
+				m.contentHeader = m.currentRoot
+				m.selectedDefinitionKey = ""
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
 			}
 			m.showKillModal = false
@@ -609,6 +720,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.rootInput = ""
 						// clear any footer error
 						m.footerError = ""
+						// reset breadcrumb and header
+						m.breadcrumb = []string{rc}
+						m.contentHeader = rc
 						return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
 					}
 				}
@@ -620,7 +734,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				row := m.table.SelectedRow()
 				if len(row) > 0 {
 					key := fmt.Sprintf("%v", row[0])
+					m.selectedDefinitionKey = key
 					m.viewMode = "instances"
+					// update breadcrumb and content header
+					m.breadcrumb = []string{m.currentRoot, "process-instances"}
+					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
 					return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
 				}
 			} else if m.viewMode == "instances" {
@@ -630,19 +748,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					id := fmt.Sprintf("%v", row[0])
 					m.selectedInstanceID = id
 					m.viewMode = "variables"
+					// append breadcrumb and set header to show instance id for instances context
+					m.breadcrumb = append(m.breadcrumb, "variables")
+					m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
 					return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
 				}
 			} else if m.viewMode == "variables" {
 				// no deeper drilldown
-			}
-			return m, nil
-		case ":":
-			if !m.showRootPopup {
-				m.showRootPopup = true
-				m.rootInput = ""
-				m.footerError = ""
-			} else {
-				m.showRootPopup = false
 			}
 			return m, nil
 		case "tab":
@@ -668,14 +780,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		default:
 			// typing into the root input when popup active
 			if m.showRootPopup {
-				r := msg.String()
-				// append single rune only
-				if len(r) == 1 {
-					m.rootInput += r
+				if len(s) == 1 {
+					m.rootInput += s
 				}
 				return m, nil
 			}
-			return m, nil
+			// otherwise don't intercept the key: let the list/table components handle navigation
+			// fall through to component updates below
 		}
 
 	case tea.WindowSizeMsg:
@@ -693,12 +804,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if contentHeight < 3 {
 			contentHeight = 3
 		}
-		// pane widths: full width minus some margins
-		m.paneWidth = width - 4
-		// reduce to avoid table overflow
+		// compute left column width and content pane width
+		leftW := width / 4
+		if leftW < 12 {
+			leftW = 12
+		}
+		m.paneWidth = width - leftW - 4
+		if m.paneWidth < 10 {
+			m.paneWidth = 10
+		}
 		m.paneHeight = contentHeight
-		m.list.SetSize((width/4)-2, contentHeight-1)
-		m.table.SetWidth(width - (width / 4) - 4)
+		m.list.SetSize(leftW-2, contentHeight-1)
+		// table inner width should be pane inner width minus border(2) and padding(2)
+		tableInner := m.paneWidth - 4
+		if tableInner < 10 {
+			tableInner = 10
+		}
+		m.table.SetWidth(tableInner)
 		m.table.SetHeight(contentHeight - 1)
 		return m, nil
 	case refreshMsg:
@@ -778,6 +900,48 @@ func (m model) asciiArt() string {
 }
 
 func (m model) View() string {
+	// If splash active, render animated splash centered
+	if m.splashActive {
+		logo := m.asciiArt()
+		lines := strings.Split(logo, "\n")
+		totalLines := len(lines)
+		if totalLines == 0 {
+			totalLines = 1
+		}
+		// determine how many lines to reveal based on current frame
+		show := (m.splashFrame * totalLines) / totalSplashFrames
+		if show < 1 {
+			show = 1
+		}
+		if show > totalLines {
+			show = totalLines
+		}
+		displayed := strings.Join(lines[:show], "\n")
+		logoRendered := m.splashLogoStyle.Render(displayed)
+
+		// animate info: fade in during last half of frames by showing once frame > half
+		info := "v0.1.0"
+		infoRendered := ""
+		if m.splashFrame >= totalSplashFrames/2 {
+			infoRendered = m.splashInfoStyle.Render(info)
+		} else {
+			// slight spacer to keep vertical centering stable
+			infoRendered = ""
+		}
+
+		content := lipgloss.JoinVertical(lipgloss.Center, logoRendered, infoRendered)
+		// ensure we use full terminal size
+		w := m.lastWidth
+		h := m.lastHeight
+		if w <= 0 {
+			w = 80
+		}
+		if h <= 0 {
+			h = 24
+		}
+		return lipgloss.Place(w, h, lipgloss.Center, lipgloss.Center, content)
+	}
+
 	// top unboxed area with 3 columns: context, keybindings, ascii art (8 rows)
 	envInfo := "Environment: " + m.currentEnv
 	apiURL := ""
@@ -872,51 +1036,44 @@ func (m model) View() string {
 	if pw < 10 {
 		pw = 10
 	}
+
+	// render content header as a centered small box above the table
+	headerStyle := lipgloss.NewStyle().Width(pw).Align(lipgloss.Center).Bold(true).Foreground(lipgloss.Color(color))
+	headerBox := headerStyle.Render(m.contentHeader)
+
 	mainBox := mainBoxStyle.Width(pw).Height(m.paneHeight).Render(m.table.View())
 
-	// Footer: three columns: context | message | remote (1 char)
-	// compute column widths
-	sep := " | "
+	// Footer: breadcrumb on the left, remote indicator right
+	// build breadcrumb render
+	crumbs := make([]string, 0, len(m.breadcrumb))
+	for i, c := range m.breadcrumb {
+		style := lipgloss.NewStyle()
+		if i < len(m.breadcrumbStyles) {
+			style = m.breadcrumbStyles[i]
+		}
+		crumbs = append(crumbs, style.Render(fmt.Sprintf("<%s>", c)))
+	}
+	breadcrumbRendered := strings.Join(crumbs, " ")
+
 	remote := " "
 	if m.flashActive {
 		remote = "⚡"
 	}
 
-	// message from footerError otherwise empty
-	message := m.footerError
+	// place breadcrumb left and remote right within lastWidth
+	totalW = m.lastWidth
+	leftPart := breadcrumbRendered
+	rightPart := remote
+	// compute padding
+	padW := totalW - lipgloss.Width(leftPart) - lipgloss.Width(rightPart)
+	if padW < 1 {
+		padW = 1
+	}
+	spacer := strings.Repeat(" ", padW)
+	footerLine := leftPart + spacer + rightPart
 
-	// reserve remote column + separators
-	remWidth := m.lastWidth - 3 - 1 // two separators (" | ") occupy 6? but separators length total 6 characters; we will compute precisely
-	// simpler: compute contextCol as 60% of width
-	ctxColW := int(float64(m.lastWidth) * 0.6)
-	if ctxColW < len(m.currentRoot)+2 {
-		ctxColW = len(m.currentRoot) + 2
-	}
-	// ensure we have at least space for message and remote
-	if ctxColW > m.lastWidth-10 {
-		ctxColW = m.lastWidth - 10
-	}
-	// remaining for message and remote and separators
-	remaining := m.lastWidth - ctxColW - len(sep) - 1 - len(sep)
-	if remaining < 10 {
-		remaining = 10
-	}
-	msgColW := remaining
-
-	// truncate context and message
-	ctxDisplay := fmt.Sprintf("<%s>", m.currentRoot)
-	if lipgloss.Width(ctxDisplay) > ctxColW {
-		// truncate
-		ctxDisplay = ctxDisplay[:ctxColW-1]
-	}
-	if len(message) > msgColW {
-		message = message[:msgColW-1]
-	}
-
-	footerLine := ctxDisplay + sep + message + sep + remote
-
-	// Compose final vertical layout: topBox (8 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row)
-	return lipgloss.JoinVertical(lipgloss.Left, topBox, contextSelectionBox, mainBox, footerLine)
+	// Compose final vertical layout: topBox (8 rows), contextSelectionBox (1 row), headerBox, mainBox, footerLine (1 row)
+	return lipgloss.JoinVertical(lipgloss.Left, topBox, contextSelectionBox, headerBox, mainBox, footerLine)
 }
 
 func rowInstanceID(row table.Row) string {
@@ -938,6 +1095,9 @@ func defaultColumns(n int, totalWidth int) []table.Column {
 			cols = append(cols, table.Column{Title: fmt.Sprintf("COL%d", i+1), Width: 20})
 		}
 		return cols
+	}
+	if totalWidth < n*3 {
+		totalWidth = n * 3
 	}
 	cols := make([]table.Column, 0, n)
 	per := totalWidth / n
@@ -1026,15 +1186,16 @@ func loadRootContexts(specPath string) []string {
 }
 
 func main() {
-	cfg, err := LoadConfig("config.yaml")
+	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
+	cfg, err := LoadSplitConfig()
 	if err != nil {
-		log.Printf("Note: Could not load config.yaml: %v", err)
-		log.Printf("You can create a config.yaml based on config.yaml.example")
+		log.Printf("Configuration error: %v", err)
+		log.Printf("Please create 'o8n-env.yaml' (see o8n-env.yaml.example) and 'o8n-cfg.yaml' (table definitions).")
 		return
 	}
 
 	if len(cfg.Environments) == 0 {
-		log.Println("No environments configured in config.yaml")
+		log.Println("No environments configured. Please create 'o8n-env.yaml' and define at least one environment.")
 		return
 	}
 
