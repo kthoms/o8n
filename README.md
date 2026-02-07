@@ -3,31 +3,28 @@ A terminal UI for Operaton
 
 ## Configuration
 
-Create a `config.yaml` file based on `config.yaml.example`:
+There are two config files now:
+
+- `o8n-env.yaml` (environment credentials and ui colors) — keep this file secret
+- `o8n-cfg.yaml` (UI table definitions and app-level settings)
+
+Create the example env file and edit it:
 
 ```bash
-cp config.yaml.example config.yaml
+cp o8n-env.yaml.example o8n-env.yaml
+# edit o8n-env.yaml to add your environments
 ```
 
-Edit the file to add your Operaton environment(s):
-
-```yaml
-environments:
-  local:
-    url: "http://localhost:8080/engine-rest"
-    username: "your-username"
-    password: "your-password"
-    ui_color: "#00A8E1"
-```
+Create or edit `o8n-cfg.yaml` for table definitions (an example is included).
 
 ### Security Note
 
-⚠️ **Important**: The configuration file contains sensitive credentials. 
+⚠️ **Important**: The environment file contains sensitive credentials.
 
-- Add `config.yaml` to `.gitignore` (already configured)
-- Never commit your actual `config.yaml` to version control
+- Add `o8n-env.yaml` to `.gitignore` (already configured)
+- Never commit your actual `o8n-env.yaml` to version control
 - Consider using environment variables for sensitive data in production
-- Use appropriate file permissions (e.g., `chmod 600 config.yaml`)
+- Use appropriate file permissions (e.g., `chmod 600 o8n-env.yaml`)
 
 ## Building
 
