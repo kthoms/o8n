@@ -1,0 +1,97 @@
+tables:
+    - name: process-definitions
+      columns:
+        - name: key
+          visible: true
+          width: 20%
+          align: left
+        - name: name
+          visible: true
+          width: 40%
+          align: left
+        - name: version
+          visible: true
+          width: 15%
+          align: center
+        - name: resource
+          visible: true
+          width: 25%
+          align: left
+    - name: process-instances
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: definitionId
+          visible: true
+          width: 30%
+          align: left
+        - name: businessKey
+          visible: true
+          width: 20%
+          align: left
+        - name: startTime
+          visible: true
+          width: 20%
+          align: left
+    - name: process-variables
+      columns:
+        - name: name
+          visible: true
+          width: 30%
+          align: left
+        - name: value
+          visible: true
+          width: 70%
+          align: left
+    - name: task
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: name
+          visible: true
+          width: 50%
+          align: left
+        - name: assignee
+          visible: true
+          width: 25%
+          align: left
+    - name: job
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: dueDate
+          visible: true
+          width: 30%
+          align: left
+        - name: retries
+          visible: true
+          width: 20%
+          align: center
+        - name: exceptionMessage
+          visible: true
+          width: 20%
+          align: left
+    - name: external-task
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: topicName
+          visible: true
+          width: 25%
+          align: left
+        - name: workerId
+          visible: true
+          width: 25%
+          align: left
+        - name: lockExpirationTime
+          visible: true
+          width: 25%
+          align: left

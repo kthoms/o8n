@@ -1,23 +1,23 @@
-# Example configuration for o8n Terminal UI
+# Example environment configuration for o8n
 # WARNING: This is an example file. Do NOT use these passwords in production!
-# Replace all credentials with your actual values and consider using environment
-# variables or a secrets manager for sensitive data.
 
 environments:
   local:
     url: "http://localhost:8080/engine-rest"
     username: "demo"
-    password: "demo"  # EXAMPLE ONLY - Replace with actual password
+    password: "demo"
     ui_color: "#00A8E1"
-  
+
   dev:
     url: "https://dev.operaton.example.com/engine-rest"
     username: "developer"
-    password: "devpass123"  # EXAMPLE ONLY - Replace with actual password
+    password: "devpass123"
     ui_color: "#FFA500"
-  
+
   prod:
     url: "https://operaton.example.com/engine-rest"
     username: "admin"
-    password: "securepass"  # EXAMPLE ONLY - Replace with actual password
+    password: "securepass"
     ui_color: "#FF5733"
+
+active: local

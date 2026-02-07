@@ -17,9 +17,29 @@ type Environment struct {
 	UIColor  string `yaml:"ui_color"` // hex string like "#FF5733"
 }
 
-// Config represents the application configuration
-type Config struct {
+// ColumnDef defines a table column in the UI config
+type ColumnDef struct {
+	Name    string `yaml:"name"`
+	Visible bool   `yaml:"visible"`
+	Width   string `yaml:"width"` // percentage like "25%" or empty for auto
+	Align   string `yaml:"align"` // left/right/center (currently informational)
+}
+
+// TableDef defines a named table and its columns
+type TableDef struct {
+	Name    string      `yaml:"name"`
+	Columns []ColumnDef `yaml:"columns"`
+}
+
+// EnvConfig holds environment-specific configuration (moved to o8n-env.yaml)
+type EnvConfig struct {
 	Environments map[string]Environment `yaml:"environments"`
+	Active       string                 `yaml:"active,omitempty"`
+}
+
+// AppConfig holds application-level configuration (moved to o8n-cfg.yaml)
+type AppConfig struct {
+	Tables []TableDef `yaml:"tables,omitempty"`
 }
 
 // ProcessDefinition represents a BPMN process definition from the Operaton REST API
@@ -50,17 +70,109 @@ type ProcessInstance struct {
 	EndTime        string `json:"endTime"`
 }
 
-// LoadConfig loads and parses a YAML configuration file
-func LoadConfig(path string) (*Config, error) {
+// Variable represents a process instance variable
+type Variable struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+	Type  string `json:"type"`
+}
+
+// LoadEnvConfig loads the environment YAML file (o8n-env.yaml)
+func LoadEnvConfig(path string) (*EnvConfig, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("failed to read config file: %w", err)
+		return nil, fmt.Errorf("failed to read env config file %s: %w", path, err)
 	}
-
-	var config Config
-	if err := yaml.Unmarshal(data, &config); err != nil {
-		return nil, fmt.Errorf("failed to parse config file: %w", err)
+	var cfg EnvConfig
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		return nil, fmt.Errorf("failed to parse env config file %s: %w", path, err)
 	}
+	return &cfg, nil
+}
 
-	return &config, nil
+// SaveEnvConfig writes env config to the given path with 0600 permissions
+func SaveEnvConfig(path string, cfg *EnvConfig) error {
+	data, err := yaml.Marshal(cfg)
+	if err != nil {
+		return fmt.Errorf("failed to marshal env config: %w", err)
+	}
+	if err := os.WriteFile(path, data, 0600); err != nil {
+		return fmt.Errorf("failed to write env config file %s: %w", path, err)
+	}
+	return nil
+}
+
+// LoadAppConfig loads application config (o8n-cfg.yaml)
+func LoadAppConfig(path string) (*AppConfig, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read app config file %s: %w", path, err)
+	}
+	var cfg AppConfig
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		return nil, fmt.Errorf("failed to parse app config file %s: %w", path, err)
+	}
+	return &cfg, nil
+}
+
+// SaveAppConfig writes the app config to the given path with 0600 permissions
+func SaveAppConfig(path string, cfg *AppConfig) error {
+	data, err := yaml.Marshal(cfg)
+	if err != nil {
+		return fmt.Errorf("failed to marshal app config: %w", err)
+	}
+	if err := os.WriteFile(path, data, 0600); err != nil {
+		return fmt.Errorf("failed to write app config file %s: %w", path, err)
+	}
+	return nil
+}
+
+// Compatibility Config used by the rest of the app
+type Config struct {
+	Environments map[string]Environment `yaml:"environments"`
+	Active       string                 `yaml:"active,omitempty"`
+	Tables       []TableDef             `yaml:"tables,omitempty"`
+}
+
+// LoadSplitConfig loads configuration from the split files o8n-env.yaml and o8n-cfg.yaml
+func LoadSplitConfig() (*Config, error) {
+	envCfg, envErr := LoadEnvConfig("o8n-env.yaml")
+	appCfg, appErr := LoadAppConfig("o8n-cfg.yaml")
+	if envErr != nil || appErr != nil {
+		return nil, fmt.Errorf("failed to load split configs (env: %v, app: %v)", envErr, appErr)
+	}
+	cfg := &Config{}
+	cfg.Environments = envCfg.Environments
+	cfg.Active = envCfg.Active
+	cfg.Tables = appCfg.Tables
+	return cfg, nil
+}
+
+// LoadConfig attempts to load legacy config file at _path; it returns an error if the file is missing or invalid.
+func LoadConfig(_path string) (*Config, error) {
+	data, err := os.ReadFile(_path)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read legacy config %s: %w", _path, err)
+	}
+	var cfg Config
+	if err := yaml.Unmarshal(data, &cfg); err != nil {
+		return nil, fmt.Errorf("failed to parse legacy config %s: %w", _path, err)
+	}
+	return &cfg, nil
+}
+
+// SaveConfig persists the env.Active field back to o8n-env.yaml (best-effort)
+func SaveConfig(_path string, cfg *Config) error {
+	// Write out env file if possible
+	envCfg := &EnvConfig{Environments: cfg.Environments, Active: cfg.Active}
+	if err := SaveEnvConfig("o8n-env.yaml", envCfg); err != nil {
+		return err
+	}
+	// Also persist app config tables if provided
+	appCfg := &AppConfig{Tables: cfg.Tables}
+	if err := SaveAppConfig("o8n-cfg.yaml", appCfg); err != nil {
+		// non-fatal
+		return err
+	}
+	return nil
 }
