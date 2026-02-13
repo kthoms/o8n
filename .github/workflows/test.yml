@@ -1,0 +1,33 @@
+name: o8n Test
+
+on:
+  workflow_dispatch:
+    push:
+    branches:
+      - main
+    tags:
+      - rc*
+      - v*
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v6.0.2
+
+      - name: Install Go
+        uses: actions/setup-go@v6.2.0
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Setup GO env
+        run: go env -w CGO_ENABLED=0
+
+      - name: Run Tests
+        run: make test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
