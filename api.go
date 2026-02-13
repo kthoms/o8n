@@ -1,174 +1,176 @@
 package main
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"net/http"
-	"net/url"
-	"strings"
 	"time"
+
+	"github.com/kthoms/o8n/internal/operaton"
 )
 
 // Client represents an API client bound to a specific environment.
 type Client struct {
-	env        Environment
-	httpClient *http.Client
+	env           Environment
+	httpClient    *http.Client
+	operatonAPI   *operaton.APIClient
+	authContext   context.Context
 }
 
 // NewClient creates a Client with a default timeout.
 func NewClient(env Environment) *Client {
+	httpClient := &http.Client{Timeout: 10 * time.Second}
+	
+	// Create OpenAPI configuration
+	cfg := operaton.NewConfiguration()
+	cfg.HTTPClient = httpClient
+	cfg.Servers = operaton.ServerConfigurations{
+		{
+			URL: "{url}",
+			Description: "Custom Operaton server",
+			Variables: map[string]operaton.ServerVariable{
+				"url": {
+					Description: "Server URL",
+					DefaultValue: env.URL,
+				},
+			},
+		},
+	}
+	
+	// Create the generated API client
+	apiClient := operaton.NewAPIClient(cfg)
+	
+	// Create context with basic auth
+	auth := operaton.BasicAuth{
+		UserName: env.Username,
+		Password: env.Password,
+	}
+	authContext := context.WithValue(context.Background(), operaton.ContextBasicAuth, auth)
+	
 	return &Client{
-		env:        env,
-		httpClient: &http.Client{Timeout: 10 * time.Second},
+		env:         env,
+		httpClient:  httpClient,
+		operatonAPI: apiClient,
+		authContext: authContext,
 	}
 }
 
-func (c *Client) http() *http.Client {
-	return c.httpClient
-}
 
-func (c *Client) buildURL(path string, query url.Values) string {
-	base := strings.TrimRight(c.env.URL, "/")
-	u := base + path
-	if query != nil {
-		return u + "?" + query.Encode()
-	}
-	return u
-}
-
-// FetchProcessDefinitions retrieves all process definitions using Basic Auth.
+// FetchProcessDefinitions retrieves all process definitions using the generated client.
 func (c *Client) FetchProcessDefinitions() ([]ProcessDefinition, error) {
-	req, err := http.NewRequest(http.MethodGet, c.buildURL("/process-definition", nil), nil)
+	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
 	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.SetBasicAuth(c.env.Username, c.env.Password)
-
-	resp, err := c.http().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch process definitions: status %d", resp.StatusCode)
+		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
 	}
 
-	var defs []ProcessDefinition
-	if err := json.NewDecoder(resp.Body).Decode(&defs); err != nil {
-		return nil, err
-	}
-
-	return defs, nil
-}
-
-// FetchInstances retrieves process instances filtered by process key using Basic Auth.
-func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
-	query := url.Values{}
-	query.Set("processDefinitionKey", processKey)
-
-	req, err := http.NewRequest(http.MethodGet, c.buildURL("/process-instance", query), nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.SetBasicAuth(c.env.Username, c.env.Password)
-
-	resp, err := c.http().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch instances: status %d", resp.StatusCode)
-	}
-
-	var instances []ProcessInstance
-	if err := json.NewDecoder(resp.Body).Decode(&instances); err != nil {
-		return nil, err
-	}
-
-	return instances, nil
-}
-
-// FetchVariables retrieves variables for a process instance. The Operaton API may
-// return either a JSON object map or an array; we handle both formats and return
-// a slice of Variable.
-func (c *Client) FetchVariables(instanceID string) ([]Variable, error) {
-	req, err := http.NewRequest(http.MethodGet, c.buildURL("/process-instance/"+url.PathEscape(instanceID)+"/variables", nil), nil)
-	if err != nil {
-		return nil, err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.SetBasicAuth(c.env.Username, c.env.Password)
-
-	resp, err := c.http().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("failed to fetch variables: status %d", resp.StatusCode)
-	}
-
-	// Try to decode into a map[string]{value,type}
-	var asMap map[string]struct {
-		Value interface{} `json:"value"`
-		Type  string      `json:"type"`
-	}
-	dec := json.NewDecoder(resp.Body)
-	if err := dec.Decode(&asMap); err == nil {
-		vars := make([]Variable, 0, len(asMap))
-		for k, v := range asMap {
-			vars = append(vars, Variable{Name: k, Value: fmt.Sprintf("%v", v.Value), Type: v.Type})
+	// Convert from generated DTOs to our model
+	result := make([]ProcessDefinition, len(defs))
+	for i, def := range defs {
+		result[i] = ProcessDefinition{
+			ID:           getStringValue(def.Id),
+			Key:          getStringValue(def.Key),
+			Category:     getStringValue(def.Category),
+			Description:  getStringValue(def.Description),
+			Name:         getStringValue(def.Name),
+			Version:      int(getInt32Value(def.Version)),
+			Resource:     getStringValue(def.Resource),
+			DeploymentID: getStringValue(def.DeploymentId),
+			Diagram:      getStringValue(def.Diagram),
+			Suspended:    getBoolValue(def.Suspended),
+			TenantID:     getStringValue(def.TenantId),
 		}
-		return vars, nil
 	}
 
-	// If not a map, try array form
-	// Need to reset body - but cannot; instead, re-request
-	resp.Body.Close()
-	req2, err := http.NewRequest(http.MethodGet, c.buildURL("/process-instance/"+url.PathEscape(instanceID)+"/variables", nil), nil)
+	return result, nil
+}
+
+// Helper functions to safely handle Nullable types from the generated client
+func getStringValue(nullable operaton.NullableString) string {
+	ptr := nullable.Get()
+	if ptr == nil {
+		return ""
+	}
+	return *ptr
+}
+
+func getInt32Value(nullable operaton.NullableInt32) int32 {
+	ptr := nullable.Get()
+	if ptr == nil {
+		return 0
+	}
+	return *ptr
+}
+
+func getBoolValue(nullable operaton.NullableBool) bool {
+	ptr := nullable.Get()
+	if ptr == nil {
+		return false
+	}
+	return *ptr
+}
+
+
+// FetchInstances retrieves process instances filtered by process key using the generated client.
+func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
+	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
+	if processKey != "" {
+		req = req.ProcessDefinitionKey(processKey)
+	}
+	
+	instances, _, err := req.Execute()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to fetch instances: %w", err)
 	}
-	req2.Header.Set("Accept", "application/json")
-	req2.SetBasicAuth(c.env.Username, c.env.Password)
 
-	resp2, err := c.http().Do(req2)
+	// Convert from generated DTOs to our model
+	result := make([]ProcessInstance, len(instances))
+	for i, inst := range instances {
+		result[i] = ProcessInstance{
+			ID:             getStringValue(inst.Id),
+			DefinitionID:   getStringValue(inst.DefinitionId),
+			BusinessKey:    getStringValue(inst.BusinessKey),
+			CaseInstanceID: getStringValue(inst.CaseInstanceId),
+			Ended:          getBoolValue(inst.Ended),
+			Suspended:      getBoolValue(inst.Suspended),
+			TenantID:       getStringValue(inst.TenantId),
+		}
+	}
+
+	return result, nil
+}
+
+
+// FetchVariables retrieves variables for a process instance using the generated client.
+// The Operaton API returns a map of variable names to variable values.
+func (c *Client) FetchVariables(instanceID string) ([]Variable, error) {
+	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to fetch variables: %w", err)
 	}
-	defer resp2.Body.Close()
 
-	var vars []Variable
-	if err := json.NewDecoder(resp2.Body).Decode(&vars); err != nil {
-		return nil, err
+	// Convert from map to slice
+	vars := make([]Variable, 0, len(*varsMap))
+	for name, varValue := range *varsMap {
+		value := ""
+		if varValue.Value != nil {
+			value = fmt.Sprintf("%v", varValue.Value)
+		}
+		vars = append(vars, Variable{
+			Name:  name,
+			Value: value,
+			Type:  getStringValue(varValue.Type),
+		})
 	}
 
 	return vars, nil
 }
 
-// TerminateInstance terminates a process instance using a DELETE request with Basic Auth.
+
+// TerminateInstance terminates a process instance using the generated client.
 func (c *Client) TerminateInstance(instanceID string) error {
-	req, err := http.NewRequest(http.MethodDelete, c.buildURL("/process-instance/"+url.PathEscape(instanceID), nil), nil)
+	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()
 	if err != nil {
-		return err
-	}
-	req.Header.Set("Accept", "application/json")
-	req.SetBasicAuth(c.env.Username, c.env.Password)
-
-	resp, err := c.http().Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusNoContent {
-		return fmt.Errorf("failed to terminate instance %s: status %d", instanceID, resp.StatusCode)
+		return fmt.Errorf("failed to terminate instance %s: %w", instanceID, err)
 	}
 
 	return nil
