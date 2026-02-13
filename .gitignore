@@ -36,3 +36,13 @@ config.yaml
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# Generated OpenAPI client files
+internal/operaton/.openapi-generator/
+internal/operaton/.openapi-generator-ignore
+internal/operaton/.gitignore
+internal/operaton/.travis.yml
+internal/operaton/git_push.sh
+internal/operaton/README.md
+internal/operaton/docs/
+internal/operaton/test/
