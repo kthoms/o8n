@@ -34,8 +34,8 @@ o8n
 config.yaml
 
 # Editor/IDE
-# .idea/
-# .vscode/
+.idea/
+.vscode/
 
 # Generated OpenAPI client files
 internal/operaton/.openapi-generator/

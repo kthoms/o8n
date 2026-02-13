@@ -1,5 +1,82 @@
 tables:
-    - name: process-definitions
+    - name: external-task
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: topicName
+          visible: true
+          width: 25%
+          align: left
+        - name: workerId
+          visible: true
+          width: 25%
+          align: left
+        - name: lockExpirationTime
+          visible: true
+          width: 25%
+          align: left
+    - name: job
+      display-name: "Job"
+      columns:
+        - name: id
+          hideable: false
+        - name: jobDefinitionId
+        - name: dueDate
+          type: date-time
+        - name: processInstanceId
+        - name: processDefinitionKey
+        - name: executionId
+        - name: retries
+          visible: true
+          align: center
+        - name: exceptionMessage
+          visible: false
+          width: 20%
+          align: left
+        - name: failedActivityId
+          visible: false
+        - name: suspended
+          type: boolean
+        - name: priority
+          type: integer
+        - name: tenantId
+        - name: createTime
+          type: date-time
+        - name: batchId
+      actions:
+        - name: Delete
+          command: <ctrl>+d
+          confirmation: true
+          api:
+            method: DELETE
+        - name: Suspend/Activate
+          command: <ctrl+s>
+    - name: job-definition
+      columns:
+        - name: id
+          hideable: false
+        - name: processInstanceId
+        - name: processDefinitionKey
+        - name: activityId
+        - name: jobType
+        - name: jobConfiguration
+        - name: suspended
+          type: boolean
+        - name: overridingJobPriority
+          type: integer
+        - name: tenantId
+        - name: deploymentId
+      actions:
+        - name: Jobs
+          command: <enter>
+          drilldown:
+            table: job
+            key: jobDefinitionId
+
+
+    - name: process-definition
       columns:
         - name: key
           visible: true
@@ -17,7 +94,13 @@ tables:
           visible: true
           width: 25%
           align: left
-    - name: process-instances
+      drilldown:
+        - table: process-instance
+          key: processDefinitionId
+          command: <enter>
+      actions:
+
+    - name: process-instance
       columns:
         - name: id
           visible: true
@@ -59,39 +142,5 @@ tables:
           visible: true
           width: 25%
           align: left
-    - name: job
-      columns:
-        - name: id
-          visible: true
-          width: 30%
-          align: left
-        - name: dueDate
-          visible: true
-          width: 30%
-          align: left
-        - name: retries
-          visible: true
-          width: 20%
-          align: center
-        - name: exceptionMessage
-          visible: true
-          width: 20%
-          align: left
-    - name: external-task
-      columns:
-        - name: id
-          visible: true
-          width: 25%
-          align: left
-        - name: topicName
-          visible: true
-          width: 25%
-          align: left
-        - name: workerId
-          visible: true
-          width: 25%
-          align: left
-        - name: lockExpirationTime
-          visible: true
-          width: 25%
-          align: left
+format:
+  date-time: "yyyy-MM-dd hh:mm:ss"
