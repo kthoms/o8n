@@ -253,8 +253,7 @@ This document specifies the o8n terminal UI application (written in Go). It full
 
 
 
-Appendix
----------------------------------
+# Appendix
 
 ## Important API endpoints (Operaton engine-rest example)
 - GET /process-definition
@@ -262,8 +261,8 @@ Appendix
 - GET /process-instance/{id}/variables
 - DELETE /process-instance/{id}
 
-OpenAPI Client Generation
--------------------------
+## OpenAPI Client Generation
+
 The application uses a generated Go client from the OpenAPI specification at resources/operaton-rest-api.json.
 
 Generation Process:
@@ -285,6 +284,18 @@ Regenerating the Client:
 - Run .devenv/scripts/generate-api-client.sh whenever the OpenAPI specification is updated.
 - The script requires Docker to be available.
 - After generation, run `go mod tidy` to update dependencies (the script does this automatically).
+
+## o8n logo
+
+```
+         ____      
+  ____  ( __ )____ 
+ / __ \/ __  / __ \
+/ /_/ / /_/ / / / /
+\____/\____/_/ /_/ 
+
+```
+
 
 Contact
 -------

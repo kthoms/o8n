@@ -14,4 +14,4 @@ environments:
         username: admin
         password: securepass
         ui_color: '#FF5733'
-active: prod
+active: dev
