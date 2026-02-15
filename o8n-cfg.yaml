@@ -18,18 +18,34 @@ tables:
           width: 25%
           align: left
     - name: job
-      display-name: "Job"
       columns:
         - name: id
-          hideable: false
+          visible: false
+          width: ""
+          align: ""
         - name: jobDefinitionId
+          visible: false
+          width: ""
+          align: ""
         - name: dueDate
-          type: date-time
+          visible: false
+          width: ""
+          align: ""
         - name: processInstanceId
+          visible: false
+          width: ""
+          align: ""
         - name: processDefinitionKey
+          visible: false
+          width: ""
+          align: ""
         - name: executionId
+          visible: false
+          width: ""
+          align: ""
         - name: retries
           visible: true
+          width: ""
           align: center
         - name: exceptionMessage
           visible: false
@@ -37,45 +53,70 @@ tables:
           align: left
         - name: failedActivityId
           visible: false
+          width: ""
+          align: ""
         - name: suspended
-          type: boolean
+          visible: false
+          width: ""
+          align: ""
         - name: priority
-          type: integer
+          visible: false
+          width: ""
+          align: ""
         - name: tenantId
+          visible: false
+          width: ""
+          align: ""
         - name: createTime
-          type: date-time
+          visible: false
+          width: ""
+          align: ""
         - name: batchId
-      actions:
-        - name: Delete
-          command: <ctrl>+d
-          confirmation: true
-          api:
-            method: DELETE
-        - name: Suspend/Activate
-          command: <ctrl+s>
+          visible: false
+          width: ""
+          align: ""
     - name: job-definition
       columns:
         - name: id
-          hideable: false
+          visible: false
+          width: ""
+          align: ""
         - name: processInstanceId
+          visible: false
+          width: ""
+          align: ""
         - name: processDefinitionKey
+          visible: false
+          width: ""
+          align: ""
         - name: activityId
+          visible: false
+          width: ""
+          align: ""
         - name: jobType
+          visible: false
+          width: ""
+          align: ""
         - name: jobConfiguration
+          visible: false
+          width: ""
+          align: ""
         - name: suspended
-          type: boolean
+          visible: false
+          width: ""
+          align: ""
         - name: overridingJobPriority
-          type: integer
+          visible: false
+          width: ""
+          align: ""
         - name: tenantId
+          visible: false
+          width: ""
+          align: ""
         - name: deploymentId
-      actions:
-        - name: Jobs
-          command: <enter>
-          drilldown:
-            table: job
-            key: jobDefinitionId
-
-
+          visible: false
+          width: ""
+          align: ""
     - name: process-definition
       columns:
         - name: key
@@ -94,12 +135,6 @@ tables:
           visible: true
           width: 25%
           align: left
-      drilldown:
-        - table: process-instance
-          key: processDefinitionId
-          command: <enter>
-      actions:
-
     - name: process-instance
       columns:
         - name: id
@@ -142,5 +177,3 @@ tables:
           visible: true
           width: 25%
           align: left
-format:
-  date-time: "yyyy-MM-dd hh:mm:ss"
