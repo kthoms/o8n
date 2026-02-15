@@ -28,7 +28,6 @@ This document specifies the o8n terminal UI application (written in Go). It full
   - Vertical layout: Header (8 rows) -> Context selection (1 row boxed, dynamic) -> Main content (boxed table filling remaining height minus footer) -> Footer (1 row).
   - Default environment: "local" (if present) or first configured environment.
   - Default root context at start: process-definitions.
-  - A flash indicator (⚡) appears on the bottom-right for 0.2s whenever a remote REST call is issued.
   - Context selection opened with `:`; offers inline completion (only after first char); Tab completes; Enter switches only on exact match; Esc cancels.
   - Drill-down interaction: definitions -> instances -> variables (name, value, type). Arrow keys move selection; Enter drills in; Esc goes back.
 - Tables:
@@ -39,6 +38,13 @@ This document specifies the o8n terminal UI application (written in Go). It full
   - The Main Content section shrinks by 3 lines while the Context switch is open
   - Keyboard focus is on the Context Switch line
   - Content assist:
+- Footer
+  - Breadbrump
+    - At the left a breadcrumb-like context tag is shown, e.g. "<process-definition>" or "<process-instance>" to indicate the current root context.
+    - The breadcrump can have at most 3 sections
+    - Each section has a different background color
+  - Remote access indicator:
+    - A flash indicator (⚡) appears on the bottom-right for 0.2s whenever a remote REST call is issued.
 - Responsive design:
   - The layout reacts on resizing of terminal
   - Sections
@@ -52,6 +58,10 @@ This document specifies the o8n terminal UI application (written in Go). It full
   - `:`: Opens the Context Switch dialog
   - `<ctrl>+c`: Exit
   - `?`: Display help
+- Styling:
+  - Colors:
+    - Files in the folder /skins define color schemes for the UI. 
+    - The active skin is defined in the environment configuration (o8n-env.yaml) and can be switched at runtime 
 
 - Modal confirmation:
   - Actions that require confirmation are triggering a modal confirmation dialog
@@ -240,8 +250,6 @@ This document specifies the o8n terminal UI application (written in Go). It full
 ## Example flows
     - Start app -> default env selected -> fetch process definitions -> show table -> user navigates with arrows -> press Enter on definition -> fetch instances -> show instances -> press Enter on instance -> fetch variables -> show variables table (name, value, type)
     - User presses `:` -> types `proc` -> inline completion suggests `ess-definitions` remainder -> Tab completes to `process-definitions` -> Enter switches context (if exact) and reloads table.
-
-17. Table definitions
 
 
 
