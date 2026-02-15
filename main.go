@@ -13,6 +13,10 @@ import (
 	"github.com/charmbracelet/bubbles/table"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+
+	"github.com/kthoms/o8n/internal/client"
+	"github.com/kthoms/o8n/internal/config"
+	"github.com/kthoms/o8n/internal/dao"
 )
 
 const refreshInterval = 5 * time.Second
@@ -20,15 +24,15 @@ const refreshInterval = 5 * time.Second
 type refreshMsg struct{}
 
 type dataLoadedMsg struct {
-	definitions []ProcessDefinition
-	instances   []ProcessInstance
+	definitions []config.ProcessDefinition
+	instances   []config.ProcessInstance
 }
 
-type definitionsLoadedMsg struct{ definitions []ProcessDefinition }
-type instancesLoadedMsg struct{ instances []ProcessInstance }
+type definitionsLoadedMsg struct{ definitions []config.ProcessDefinition }
+type instancesLoadedMsg struct{ instances []config.ProcessInstance }
 
 // New: fetch variables for a given instance
-type variablesLoadedMsg struct{ variables []Variable }
+type variablesLoadedMsg struct{ variables []config.Variable }
 
 type terminatedMsg struct{ id string }
 
@@ -50,7 +54,7 @@ type splashFrameMsg struct{ frame int }
 const totalSplashFrames = 10
 
 type processDefinitionItem struct {
-	definition ProcessDefinition
+	definition config.ProcessDefinition
 }
 
 func (i processDefinitionItem) Title() string {
@@ -72,7 +76,7 @@ func (i processDefinitionItem) FilterValue() string {
 }
 
 type model struct {
-	config *Config
+	config *config.Config
 
 	envNames []string
 
@@ -89,7 +93,7 @@ type model struct {
 	table table.Model
 
 	// cached definitions for drilldown/back
-	cachedDefinitions []ProcessDefinition
+	cachedDefinitions []config.ProcessDefinition
 
 	// view mode: "definitions" or "instances"
 	viewMode string
@@ -112,8 +116,8 @@ type model struct {
 	style lipgloss.Style
 
 	// EnvConfig and AppConfig for dynamic loading
-	envConfig *EnvConfig
-	appConfig *AppConfig
+	envConfig *config.EnvConfig
+	appConfig *config.AppConfig
 
 	// colon popup
 	showRootPopup bool
@@ -151,7 +155,7 @@ type model struct {
 	breadcrumbStyles []lipgloss.Style
 }
 
-func newModel(cfg *Config) model {
+func newModel(cfg *config.Config) model {
 	envNames := make([]string, 0, len(cfg.Environments))
 	for name := range cfg.Environments {
 		envNames = append(envNames, name)
@@ -202,8 +206,8 @@ func newModel(cfg *Config) model {
 	m.lastListIndex = m.list.Index()
 
 	// initialize breadcrumb: start with current root
-	m.breadcrumb = []string{"process-definitions"}
-	m.contentHeader = "process-definitions"
+	m.breadcrumb = []string{dao.ResourceProcessDefinitions}
+	m.contentHeader = dao.ResourceProcessDefinitions
 
 	// sensible defaults so the header is visible immediately
 	m.lastWidth = 80
@@ -218,23 +222,23 @@ func newModel(cfg *Config) model {
 	// set root contexts and currentRoot
 	m.rootContexts = loadRootContexts("resources/operaton-rest-api.json")
 	if len(m.rootContexts) > 0 {
-		m.currentRoot = "process-definitions"
+		m.currentRoot = dao.ResourceProcessDefinitions
 	} else {
-		m.currentRoot = "process-definitions"
+		m.currentRoot = dao.ResourceProcessDefinitions
 	}
 
 	return m
 }
 
-func newModelEnvApp(envCfg *EnvConfig, appCfg *AppConfig) model {
+func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig) model {
 	// Build compatibility Config from split configs
-	cfg := &Config{
-		Environments: make(map[string]Environment),
+	cfg := &config.Config{
+		Environments: make(map[string]config.Environment),
 		Active:       "",
 		Tables:       appCfg.Tables,
 	}
 	for k, v := range envCfg.Environments {
-		cfg.Environments[k] = Environment{
+		cfg.Environments[k] = config.Environment{
 			URL:      v.URL,
 			Username: v.Username,
 			Password: v.Password,
@@ -307,7 +311,7 @@ func (m *model) nextEnvironment() {
 	// persist active environment in the config file; best-effort
 	if m.config != nil {
 		m.config.Active = m.currentEnv
-		if err := SaveConfig("config.yaml", m.config); err != nil {
+		if err := config.SaveConfig("config.yaml", m.config); err != nil {
 			log.Printf("warning: failed to save config active environment: %v", err)
 		}
 	}
@@ -319,7 +323,7 @@ func (m *model) resetViews() {
 	m.selectedInstanceID = ""
 }
 
-func (m *model) findTableDef(name string) *TableDef {
+func (m *model) findTableDef(name string) *config.TableDef {
 	if m.config == nil {
 		return nil
 	}
@@ -417,7 +421,7 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 }
 
 // Update applyDefinitions and applyInstances to recover from panics and show footer error
-func (m *model) applyDefinitions(defs []ProcessDefinition) {
+func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error rendering definitions: %v", r)
@@ -437,7 +441,7 @@ func (m *model) applyDefinitions(defs []ProcessDefinition) {
 	if tableWidth <= 0 {
 		tableWidth = m.paneWidth - 4
 	}
-	cols := m.buildColumnsFor("process-definitions", tableWidth)
+	cols := m.buildColumnsFor(dao.ResourceProcessDefinitions, tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
@@ -452,7 +456,7 @@ func (m *model) applyDefinitions(defs []ProcessDefinition) {
 	m.viewMode = "definitions"
 }
 
-func (m *model) applyInstances(instances []ProcessInstance) {
+func (m *model) applyInstances(instances []config.ProcessInstance) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error rendering instances: %v", r)
@@ -467,7 +471,7 @@ func (m *model) applyInstances(instances []ProcessInstance) {
 	if tableWidth <= 0 {
 		tableWidth = m.paneWidth - 4
 	}
-	cols := m.buildColumnsFor("process-instances", tableWidth)
+	cols := m.buildColumnsFor(dao.ResourceProcessInstances, tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
@@ -483,7 +487,7 @@ func (m *model) applyInstances(instances []ProcessInstance) {
 }
 
 // New: variables table
-func (m *model) applyVariables(vars []Variable) {
+func (m *model) applyVariables(vars []config.Variable) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error loading variables: %v", r)
@@ -499,7 +503,7 @@ func (m *model) applyVariables(vars []Variable) {
 	if tableWidth <= 0 {
 		tableWidth = m.paneWidth - 4
 	}
-	cols := m.buildColumnsFor("process-variables", tableWidth)
+	cols := m.buildColumnsFor(dao.ResourceProcessVariables, tableWidth)
 	if len(cols) == 0 && len(rows) > 0 {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 	}
@@ -519,9 +523,9 @@ func (m model) fetchDefinitionsCmd() tea.Cmd {
 	if !ok {
 		return nil
 	}
-	client := NewClient(env)
+	c := client.NewClient(env)
 	return func() tea.Msg {
-		defs, err := client.FetchProcessDefinitions()
+		defs, err := c.FetchProcessDefinitions()
 		if err != nil {
 			return errMsg{err}
 		}
@@ -534,9 +538,9 @@ func (m model) fetchInstancesCmd(processKey string) tea.Cmd {
 	if !ok {
 		return nil
 	}
-	client := NewClient(env)
+	c := client.NewClient(env)
 	return func() tea.Msg {
-		instances, err := client.FetchInstances(processKey)
+		instances, err := c.FetchInstances(processKey)
 		if err != nil {
 			return errMsg{err}
 		}
@@ -550,9 +554,9 @@ func (m model) fetchVariablesCmd(instanceID string) tea.Cmd {
 	if !ok {
 		return nil
 	}
-	client := NewClient(env)
+	c := client.NewClient(env)
 	return func() tea.Msg {
-		vars, err := client.FetchVariables(instanceID)
+		vars, err := c.FetchVariables(instanceID)
 		if err != nil {
 			return errMsg{err}
 		}
@@ -578,17 +582,17 @@ func (m model) fetchDataCmd() tea.Cmd {
 		}
 	}
 
-	client := NewClient(env)
+	c := client.NewClient(env)
 
 	return func() tea.Msg {
-		defs, err := client.FetchProcessDefinitions()
+		defs, err := c.FetchProcessDefinitions()
 		if err != nil {
 			return errMsg{err}
 		}
 
-		var instances []ProcessInstance
+		var instances []config.ProcessInstance
 		if selectedKey != "" {
-			instances, err = client.FetchInstances(selectedKey)
+			instances, err = c.FetchInstances(selectedKey)
 			if err != nil {
 				return errMsg{err}
 			}
@@ -603,10 +607,10 @@ func (m model) terminateInstanceCmd(id string) tea.Cmd {
 	if !ok {
 		return nil
 	}
-	client := NewClient(env)
+	c := client.NewClient(env)
 
 	return func() tea.Msg {
-		if err := client.TerminateInstance(id); err != nil {
+		if err := c.TerminateInstance(id); err != nil {
 			return errMsg{err}
 		}
 		return terminatedMsg{id: id}
@@ -1202,19 +1206,19 @@ func normalizeRows(rows []table.Row, colsCount int) []table.Row {
 func loadRootContexts(specPath string) []string {
 	data, err := os.ReadFile(specPath)
 	if err != nil {
-		return []string{"process-definitions", "process-instances", "process-variables", "task", "job", "external-task"}
+		return []string{dao.ResourceProcessDefinitions, dao.ResourceProcessInstances, dao.ResourceProcessVariables, dao.ResourceTasks, dao.ResourceJobs, dao.ResourceExternalTasks}
 	}
 	var doc map[string]interface{}
 	if err := json.Unmarshal(data, &doc); err != nil {
-		return []string{"process-definitions", "process-instances", "process-variables", "task", "job", "external-task"}
+		return []string{dao.ResourceProcessDefinitions, dao.ResourceProcessInstances, dao.ResourceProcessVariables, dao.ResourceTasks, dao.ResourceJobs, dao.ResourceExternalTasks}
 	}
 	pathsI, ok := doc["paths"]
 	if !ok {
-		return []string{"process-definitions", "process-instances", "process-variables", "task", "job", "external-task"}
+		return []string{dao.ResourceProcessDefinitions, dao.ResourceProcessInstances, dao.ResourceProcessVariables, dao.ResourceTasks, dao.ResourceJobs, dao.ResourceExternalTasks}
 	}
 	pathsMap, ok := pathsI.(map[string]interface{})
 	if !ok {
-		return []string{"process-definitions", "process-instances", "process-variables", "task", "job", "external-task"}
+		return []string{dao.ResourceProcessDefinitions, dao.ResourceProcessInstances, dao.ResourceProcessVariables, dao.ResourceTasks, dao.ResourceJobs, dao.ResourceExternalTasks}
 	}
 	set := map[string]struct{}{}
 	for p := range pathsMap {
@@ -1241,7 +1245,7 @@ func loadRootContexts(specPath string) []string {
 
 func main() {
 	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
-	cfg, err := LoadSplitConfig()
+	cfg, err := config.LoadSplitConfig()
 	if err != nil {
 		log.Printf("Configuration error: %v", err)
 		log.Printf("Please create 'o8n-env.yaml' (see o8n-env.yaml.example) and 'o8n-cfg.yaml' (table definitions).")

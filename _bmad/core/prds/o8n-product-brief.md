@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-**o8n** is a modern, terminal-based user interface (TUI) for interacting with the Operaton BPM (Business Process Management) engine. Built in Go using the Charmbracelet ecosystem, o8n provides developers and operators with a fast, keyboard-driven experience for managing process definitions, instances, tasks, and other workflow resources—directly from the command line.
+**o8n** is a modern, terminal-based user interface (TUI) for interacting with the Operaton BPM (Business Process Management) engine. Built in Go using the Charmbracelet ecosystem, o8n provides developers and operators with a fast, keyboard-driven experience for managing process definitions, instances, tasks, and other workflow resources directly from the command line.
 
 The application follows design principles inspired by popular terminal tools like **k9s** (Kubernetes CLI), offering intuitive navigation, real-time monitoring, responsive layouts, and a focus on efficiency without requiring a graphical desktop environment.
 
@@ -23,7 +23,7 @@ Modern BPM engines like Operaton expose comprehensive REST APIs for process orch
 2. **Manual API calls** using curl or Postman, which are verbose and error-prone
 3. **Custom scripts** that must be maintained for each environment and use case
 
-**There is no efficient, keyboard-driven terminal interface** that allows operators to:
+No efficient, keyboard-driven terminal interface allows operators to:
 - Browse and inspect process definitions and instances
 - Monitor running workflows in real-time
 - Drill down into process variables and task states
@@ -141,7 +141,7 @@ Modern BPM engines like Operaton expose comprehensive REST APIs for process orch
 4. Press Tab → completes to "task", press Enter → switches to tasks view
 5. Sorts by create date, identifies stuck tasks
 6. Press `:`, type "proc", Tab/Enter → switches to process-instances
-7. Filters to running instances (future feature: inline filtering)
+7. Filters to running instances (future feature: inline filtering capability)
 8. Arrow to stuck instance, press `x` → confirmation prompt
 9. Press `y` → instance terminated, API call indicator flashes
 10. Auto-refresh shows updated state
@@ -160,7 +160,7 @@ Modern BPM engines like Operaton expose comprehensive REST APIs for process orch
 3. Press `e` → cycles to next configured environment (staging)
 4. Header updates to show staging URL and credentials
 5. Same instance ID exists, variables differ
-6. Press `e` again → cycles back to local
+6. Press `e` again → cycle back to local
 7. Active environment persisted to `o8n-env.yaml`
 
 **Outcome:** Cross-environment comparison completed in seconds
@@ -189,8 +189,8 @@ Modern BPM engines like Operaton expose comprehensive REST APIs for process orch
    - **o8n-cfg.yaml:** Application settings and table definitions (committed)
 
 3. **Graceful Degradation**
-   - Sensible defaults when config files are missing
-   - Recover from API errors without crashing
+   - Provide sensible defaults when config files are missing
+   - Recovers from API errors without crashing
    - Column hiding when terminal width insufficient
 
 4. **Responsive Design**
@@ -287,7 +287,7 @@ tables:
 ### Security
 
 - Credentials stored in plain YAML (user's responsibility to protect)
-- File recommended to use `chmod 600 o8n-env.yaml`
+- Recommended file permissions: `chmod 600 o8n-env.yaml`
 - No credentials logged or transmitted insecurely
 - HTTPS support for remote environments
 
@@ -302,7 +302,7 @@ tables:
 
 - Cross-platform: macOS, Linux, Windows (via WSL or native Go builds)
 - Terminal requirements: ANSI color support, UTF-8, minimum 80x24 size
-- Operaton API compatibility: Operaton 7.x and Camunda 7.x
+- Operaton API compatibility: Operaton 7.x and Camunda Platform 7.x
 
 ---
 
@@ -310,15 +310,15 @@ tables:
 
 ### Adoption Metrics
 
-- **Downloads:** 1,000+ within first 3 months of public release
+- **Downloads:** 300+ in the first 3 months after public release
 - **GitHub Stars:** 100+ within 6 months
-- **Active Users:** 50+ weekly active users by month 6
+- **Active Users:** 50+ weekly active users by the sixth month
 
 ### Engagement Metrics
 
 - **Session Duration:** Average 5+ minutes per session
 - **Environment Switches:** 3+ switches per session (power user indicator)
-- **Drill-Down Depth:** 80%+ of sessions navigate at least 2 levels deep
+- **Drill-Down Depth:** 80%+ of sessions navigate at least two levels deep
 
 ### Quality Metrics
 
@@ -334,17 +334,17 @@ tables:
 | Risk | Impact | Likelihood | Mitigation |
 |------|--------|------------|------------|
 | **API changes in Operaton** | High | Medium | Use generated client, version compatibility checks |
-| **Terminal compatibility issues** | Medium | Low | Test across major terminal emulators, document requirements |
+| **Terminal compatibility issues** | Medium | Low | Test across major terminal emulators and document requirements |
 | **Credential security concerns** | High | Medium | Clear documentation, consider integration with OS keychain (future) |
 | **Performance with large datasets** | Medium | Medium | Implement pagination, lazy loading, configurable limits |
-| **Adoption by non-terminal users** | Low | High | This is acceptable; target audience is CLI-native users |
+| **Adoption by non-terminal users** | Low | High | This is acceptable because the target audience is CLI-native users |
 
 ---
 
 ## Open Questions
 
 1. **Should we support Windows Command Prompt natively?**
-   - Current decision: WSL and PowerShell only (revisit if demand exists)
+   - Current decision: Support WSL and PowerShell only (revisit if demand exists)
 
 2. **How should filtering be implemented?**
    - Options: Inline fuzzy search, SQL-like query language, or predefined filters
