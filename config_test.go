@@ -3,6 +3,8 @@ package main
 import (
 	"os"
 	"testing"
+
+	"github.com/kthoms/o8n/internal/config"
 )
 
 func TestLoadConfig(t *testing.T) {
@@ -28,17 +30,17 @@ func TestLoadConfig(t *testing.T) {
 	tmpFile.Close()
 
 	// Test loading the config
-	config, err := LoadConfig(tmpFile.Name())
+	cfg, err := config.LoadConfig(tmpFile.Name())
 	if err != nil {
 		t.Fatalf("LoadConfig failed: %v", err)
 	}
 
 	// Verify the loaded config
-	if config.Environments == nil {
+	if cfg.Environments == nil {
 		t.Fatal("Environments map is nil")
 	}
 
-	testEnv, ok := config.Environments["test"]
+	testEnv, ok := cfg.Environments["test"]
 	if !ok {
 		t.Fatal("Test environment not found")
 	}
