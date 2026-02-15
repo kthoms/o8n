@@ -5,13 +5,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/kthoms/o8n/internal/config"
 )
 
 func TestApplyDataPopulatesTable(t *testing.T) {
-	cfg := &Config{Environments: map[string]Environment{"local": {URL: "http://example"}}}
+	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: "http://example"}}}
 	m := newModel(cfg)
-	defs := []ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}}
-	insts := []ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}}
+	defs := []config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}}
+	insts := []config.ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}}
 	m.applyData(defs, insts)
 
 	rows := m.table.Rows()
@@ -31,10 +33,10 @@ func TestSelectionChangeTriggersManualRefreshFlag(t *testing.T) {
 	}))
 	defer server.Close()
 
-	cfg := &Config{Environments: map[string]Environment{"local": {URL: server.URL}}}
+	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: server.URL}}}
 	m := newModel(cfg)
 	// populate list with two definitions so moving down changes selection
-	defs := []ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}, {ID: "d2", Key: "k2", Name: "Two"}}
+	defs := []config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}, {ID: "d2", Key: "k2", Name: "Two"}}
 	m.applyData(defs, nil)
 
 	// ensure autoRefresh is off
@@ -60,22 +62,22 @@ func TestFetchCmdExecutesAndLoadsData(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/process-definition" {
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode([]ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}})
+			json.NewEncoder(w).Encode([]config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}})
 			return
 		}
 		if r.URL.Path == "/process-instance" {
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode([]ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}})
+			json.NewEncoder(w).Encode([]config.ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}})
 			return
 		}
 		w.WriteHeader(http.StatusNotFound)
 	}))
 	defer server.Close()
 
-	cfg := &Config{Environments: map[string]Environment{"local": {URL: server.URL}}}
+	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: server.URL}}}
 	m := newModel(cfg)
 	// pre-populate list so selectedKey will be k1 after selection
-	m.applyData([]ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}}, nil)
+	m.applyData([]config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}}, nil)
 	m.autoRefresh = false
 
 	// Simulate selection change (no-op if only one item, so force index change by setting index then sending a no-op)
@@ -100,7 +102,7 @@ func TestFetchCmdExecutesAndLoadsData(t *testing.T) {
 }
 
 func TestFlashOnOff(t *testing.T) {
-	cfg := &Config{Environments: map[string]Environment{"local": {URL: "http://example"}}}
+	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: "http://example"}}}
 	m := newModel(cfg)
 
 	// Send flashOnMsg as if a remote signal was issued
