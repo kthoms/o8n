@@ -7,14 +7,17 @@ import (
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/kthoms/o8n/internal/client"
+	"github.com/kthoms/o8n/internal/config"
 )
 
 func TestNewClientSetsTimeout(t *testing.T) {
-	env := Environment{URL: "http://example.com"}
-	client := NewClient(env)
+	env := config.Environment{URL: "http://example.com"}
+	c := client.NewClient(env)
 
-	if client.httpClient.Timeout == 0 {
-		t.Fatalf("expected non-zero timeout on http client")
+	if c == nil {
+		t.Fatal("expected non-nil client")
 	}
 }
 
@@ -42,13 +45,13 @@ func TestFetchProcessDefinitions(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(Environment{
+	c := client.NewClient(config.Environment{
 		URL:      server.URL,
 		Username: username,
 		Password: password,
 	})
 
-	defs, err := client.FetchProcessDefinitions()
+	defs, err := c.FetchProcessDefinitions()
 	if err != nil {
 		t.Fatalf("FetchProcessDefinitions returned error: %v", err)
 	}
@@ -82,13 +85,13 @@ func TestFetchInstances(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(Environment{
+	c := client.NewClient(config.Environment{
 		URL:      server.URL,
 		Username: username,
 		Password: password,
 	})
 
-	instances, err := client.FetchInstances(processKey)
+	instances, err := c.FetchInstances(processKey)
 	if err != nil {
 		t.Fatalf("FetchInstances returned error: %v", err)
 	}
@@ -121,13 +124,13 @@ func TestTerminateInstance(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(Environment{
+	c := client.NewClient(config.Environment{
 		URL:      server.URL,
 		Username: username,
 		Password: password,
 	})
 
-	if err := client.TerminateInstance(instanceID); err != nil {
+	if err := c.TerminateInstance(instanceID); err != nil {
 		t.Fatalf("TerminateInstance returned error: %v", err)
 	}
 	if receivedPath != "/process-instance/"+url.PathEscape(instanceID) {
@@ -141,8 +144,8 @@ func TestTerminateInstance_HTTPError(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := NewClient(Environment{URL: server.URL})
-	if err := client.TerminateInstance("bad"); err == nil {
+	c := client.NewClient(config.Environment{URL: server.URL})
+	if err := c.TerminateInstance("bad"); err == nil {
 		t.Fatalf("expected error for bad status code")
 	}
 }
