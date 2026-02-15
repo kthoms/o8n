@@ -345,7 +345,7 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 	}
 
 	// collect visible columns
-	visible := make([]ColumnDef, 0, len(def.Columns))
+	visible := make([]config.ColumnDef, 0, len(def.Columns))
 	for _, c := range def.Columns {
 		if c.Visible {
 			visible = append(visible, c)
@@ -889,7 +889,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 // Backwards-compatible wrapper used by tests: applies both definitions and instances
-func (m *model) applyData(defs []ProcessDefinition, instances []ProcessInstance) {
+func (m *model) applyData(defs []config.ProcessDefinition, instances []config.ProcessInstance) {
 	m.applyDefinitions(defs)
 	m.applyInstances(instances)
 }
