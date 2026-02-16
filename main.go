@@ -536,15 +536,85 @@ func (m *model) resetViews() {
 }
 
 func (m *model) findTableDef(name string) *config.TableDef {
+	// Flexible lookup: accept exact names and common singular/plural variants so
+	// config table names can be either `process-definition` or `process-definitions`.
 	if m.config == nil {
 		return nil
 	}
-	for _, t := range m.config.Tables {
-		if t.Name == name {
-			return &t
+	// exact match first
+	for i := range m.config.Tables {
+		if m.config.Tables[i].Name == name {
+			return &m.config.Tables[i]
 		}
 	}
+
+	// try simple singular/plural variants and common suffix swaps
+	variants := []string{}
+	if strings.HasSuffix(name, "s") {
+		variants = append(variants, strings.TrimSuffix(name, "s"))
+	} else {
+		variants = append(variants, name+"s")
+	}
+	if strings.HasSuffix(name, "-definitions") {
+		variants = append(variants, strings.TrimSuffix(name, "s"))
+	} else if strings.HasSuffix(name, "-definition") {
+		variants = append(variants, name+"s")
+	}
+	if strings.HasSuffix(name, "-instances") {
+		variants = append(variants, strings.TrimSuffix(name, "s"))
+	} else if strings.HasSuffix(name, "-instance") {
+		variants = append(variants, name+"s")
+	}
+
+	for _, v := range variants {
+		for i := range m.config.Tables {
+			if m.config.Tables[i].Name == v {
+				return &m.config.Tables[i]
+			}
+		}
+	}
+
+	// last resort: match by prefix (useful for small naming differences)
+	base := strings.TrimSuffix(name, "s")
+	for i := range m.config.Tables {
+		if strings.HasPrefix(m.config.Tables[i].Name, base) {
+			return &m.config.Tables[i]
+		}
+	}
+
 	return nil
+}
+
+// visibleColumnIndex returns the 0-based index of a visible column (by name) in the
+// TableDef. Returns -1 if not found.
+func (m *model) visibleColumnIndex(def *config.TableDef, column string) int {
+	if def == nil || column == "" {
+		return -1
+	}
+	idx := 0
+	for _, c := range def.Columns {
+		if !c.Visible {
+			continue
+		}
+		if c.Name == column || strings.EqualFold(c.Name, column) {
+			return idx
+		}
+		idx++
+	}
+	// fallback: if looking for `id`, try to find any column named id
+	if strings.EqualFold(column, "id") {
+		idx = 0
+		for _, c := range def.Columns {
+			if !c.Visible {
+				continue
+			}
+			if strings.EqualFold(c.Name, "id") {
+				return idx
+			}
+			idx++
+		}
+	}
+	return -1
 }
 
 // buildColumnsFor builds table.Column slice for a named table using the config definitions
@@ -977,33 +1047,92 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// no exact match: ignore
 				return m, nil
 			}
-			if m.viewMode == "definitions" {
-				// get selected definition key from table
-				row := m.table.SelectedRow()
-				if len(row) > 0 {
-					key := fmt.Sprintf("%v", row[0])
-					m.selectedDefinitionKey = key
-					m.viewMode = "instances"
-					// update breadcrumb and content header
-					m.breadcrumb = []string{m.currentRoot, "process-instances"}
-					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
-					return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
-				}
-			} else if m.viewMode == "instances" {
-				// drill down into variables for the selected instance
-				row := m.table.SelectedRow()
-				if len(row) > 0 {
-					id := fmt.Sprintf("%v", row[0])
-					m.selectedInstanceID = id
-					m.viewMode = "variables"
-					// append breadcrumb and set header to show instance id for instances context
-					m.breadcrumb = append(m.breadcrumb, "variables")
-					m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
-					return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
-				}
-			} else if m.viewMode == "variables" {
-				// no deeper drilldown
+
+			// identify the current table (use last breadcrumb entry when available)
+			currentTableKey := m.currentRoot
+			if len(m.breadcrumb) > 0 {
+				currentTableKey = m.breadcrumb[len(m.breadcrumb)-1]
 			}
+
+			row := m.table.SelectedRow()
+			if len(row) == 0 {
+				return m, nil
+			}
+
+			// Config-driven drilldown: consult TableDef.Drilldown (if present)
+			if def := m.findTableDef(currentTableKey); def != nil && len(def.Drilldown) > 0 {
+				// choose the drill that best matches visible columns (fallback to first)
+				var chosen *config.DrillDownDef
+				for i := range def.Drilldown {
+					d := &def.Drilldown[i]
+					col := d.Column
+					if col == "" {
+						col = "id"
+					}
+					if idx := m.visibleColumnIndex(def, col); idx >= 0 && idx < len(row) {
+						chosen = d
+						break
+					}
+				}
+				if chosen == nil {
+					chosen = &def.Drilldown[0]
+				}
+
+				// resolve value from selected row (fall back to first cell)
+				colName := chosen.Column
+				if colName == "" {
+					colName = "id"
+				}
+				idx := m.visibleColumnIndex(def, colName)
+				val := ""
+				if idx >= 0 && idx < len(row) {
+					val = fmt.Sprintf("%v", row[idx])
+				} else {
+					val = fmt.Sprintf("%v", row[0])
+				}
+
+				// supported runtime targets -> dispatch
+				switch chosen.Target {
+				case "process-instance", "process-instances":
+					// definitions -> instances (expects a process key)
+					m.selectedDefinitionKey = val
+					m.viewMode = "instances"
+					m.breadcrumb = []string{m.currentRoot, "process-instances"}
+					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, val)
+					return m, tea.Batch(m.fetchInstancesCmd(val), flashOnCmd())
+
+				case "process-variables", "variables", "variable-instance", "variable-instances":
+					// instances -> variables (expects an instance id)
+					m.selectedInstanceID = val
+					m.viewMode = "variables"
+					m.breadcrumb = append(m.breadcrumb, "variables")
+					m.contentHeader = fmt.Sprintf("process-instances(%s)", val)
+					return m, tea.Batch(m.fetchVariablesCmd(val), flashOnCmd())
+
+				default:
+					// config declares a drill target but UI/client not implemented yet
+					m.footerError = fmt.Sprintf("Drill target '%s' not supported in UI yet", chosen.Target)
+					return m, tea.Tick(3*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+				}
+			}
+
+			// fallback: preserve previous hard-coded drill behaviour
+			if m.viewMode == "definitions" {
+				key := fmt.Sprintf("%v", row[0])
+				m.selectedDefinitionKey = key
+				m.viewMode = "instances"
+				m.breadcrumb = []string{m.currentRoot, "process-instances"}
+				m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
+				return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
+			} else if m.viewMode == "instances" {
+				id := fmt.Sprintf("%v", row[0])
+				m.selectedInstanceID = id
+				m.viewMode = "variables"
+				m.breadcrumb = append(m.breadcrumb, "variables")
+				m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
+				return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
+			}
+
 			return m, nil
 		case "tab":
 			if m.showRootPopup && len(m.rootInput) > 0 {
