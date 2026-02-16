@@ -92,6 +92,18 @@ const (
 	ModalHelp
 )
 
+// viewState captures the complete state of a view for navigation history
+type viewState struct {
+	viewMode              string
+	breadcrumb            []string
+	contentHeader         string
+	selectedDefinitionKey string
+	selectedInstanceID    string
+	tableRows             []table.Row
+	tableCursor           int
+	cachedDefinitions     []config.ProcessDefinition
+}
+
 type model struct {
 	config *config.Config
 
@@ -111,6 +123,9 @@ type model struct {
 
 	// cached definitions for drilldown/back
 	cachedDefinitions []config.ProcessDefinition
+
+	// navigation history stack for back/forward
+	navigationStack []viewState
 
 	// view mode: "definitions" or "instances"
 	viewMode string
@@ -1003,29 +1018,25 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.rootInput = ""
 				return m, nil
 			}
-			if m.viewMode == "variables" {
-				// back to instances
-				m.viewMode = "instances"
-				// pop breadcrumb
-				if len(m.breadcrumb) > 1 {
-					m.breadcrumb = m.breadcrumb[:len(m.breadcrumb)-1]
-				}
-				// restore header to process-definitions(selectedDefinitionKey)
-				if m.selectedDefinitionKey != "" {
-					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, m.selectedDefinitionKey)
-				} else {
-					m.contentHeader = m.currentRoot
-				}
-				return m, nil
-			}
-			if m.viewMode == "instances" {
-				// go back to definitions view and flash
-				m.viewMode = "definitions"
-				// reset breadcrumb
-				m.breadcrumb = []string{m.currentRoot}
-				m.contentHeader = m.currentRoot
-				m.selectedDefinitionKey = ""
-				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
+			// Pop from navigation stack and restore previous view state
+			if len(m.navigationStack) > 0 {
+				// pop last state
+				prevState := m.navigationStack[len(m.navigationStack)-1]
+				m.navigationStack = m.navigationStack[:len(m.navigationStack)-1]
+
+				// restore complete state
+				m.viewMode = prevState.viewMode
+				m.breadcrumb = append([]string{}, prevState.breadcrumb...)
+				m.contentHeader = prevState.contentHeader
+				m.selectedDefinitionKey = prevState.selectedDefinitionKey
+				m.selectedInstanceID = prevState.selectedInstanceID
+				m.cachedDefinitions = prevState.cachedDefinitions
+
+				// restore table rows and cursor position
+				m.table.SetRows(prevState.tableRows)
+				m.table.SetCursor(prevState.tableCursor)
+
+				return m, flashOnCmd()
 			}
 			return m, nil
 		case "enter":
@@ -1058,6 +1069,19 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if len(row) == 0 {
 				return m, nil
 			}
+
+			// Save current state before drilling down
+			currentState := viewState{
+				viewMode:              m.viewMode,
+				breadcrumb:            append([]string{}, m.breadcrumb...),
+				contentHeader:         m.contentHeader,
+				selectedDefinitionKey: m.selectedDefinitionKey,
+				selectedInstanceID:    m.selectedInstanceID,
+				tableRows:             append([]table.Row{}, m.table.Rows()...),
+				tableCursor:           m.table.Cursor(),
+				cachedDefinitions:     m.cachedDefinitions,
+			}
+			m.navigationStack = append(m.navigationStack, currentState)
 
 			// Config-driven drilldown: consult TableDef.Drilldown (if present)
 			if def := m.findTableDef(currentTableKey); def != nil && len(def.Drilldown) > 0 {
@@ -1099,6 +1123,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.viewMode = "instances"
 					m.breadcrumb = []string{m.currentRoot, "process-instances"}
 					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, val)
+					// reset cursor to row 0
+					m.table.SetCursor(0)
 					return m, tea.Batch(m.fetchInstancesCmd(val), flashOnCmd())
 
 				case "process-variables", "variables", "variable-instance", "variable-instances":
@@ -1107,6 +1133,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.viewMode = "variables"
 					m.breadcrumb = append(m.breadcrumb, "variables")
 					m.contentHeader = fmt.Sprintf("process-instances(%s)", val)
+					// reset cursor to row 0
+					m.table.SetCursor(0)
 					return m, tea.Batch(m.fetchVariablesCmd(val), flashOnCmd())
 
 				default:
@@ -1123,6 +1151,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.viewMode = "instances"
 				m.breadcrumb = []string{m.currentRoot, "process-instances"}
 				m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
+				// reset cursor to row 0
+				m.table.SetCursor(0)
 				return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
 			} else if m.viewMode == "instances" {
 				id := fmt.Sprintf("%v", row[0])
@@ -1130,6 +1160,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.viewMode = "variables"
 				m.breadcrumb = append(m.breadcrumb, "variables")
 				m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
+				// reset cursor to row 0
+				m.table.SetCursor(0)
 				return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
 			}
 
