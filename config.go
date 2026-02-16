@@ -25,11 +25,19 @@ type ColumnDef struct {
 	Align   string `yaml:"align"` // left/right/center (currently informational)
 }
 
+// DrillDownDef describes a drill-down target for a table (target collection and query parameter)
+type DrillDownDef struct {
+	Target string `yaml:"target"`        // target table name (e.g. process-instance)
+	Param  string `yaml:"param"`         // query parameter to set on target (e.g. processInstanceId)
+	Column string `yaml:"column,omitempty"` // source column to read the value from (defaults to id)
+}
+
 // TableDef defines a named table and its columns
 type TableDef struct {
-	Name    string      `yaml:"name"`
-	Columns []ColumnDef `yaml:"columns"`
-}
+	Name     string         `yaml:"name"`
+	Columns  []ColumnDef    `yaml:"columns"`
+	Drilldown []DrillDownDef `yaml:"drilldown,omitempty"`
+} 
 
 // EnvConfig holds environment-specific configuration (moved to o8n-env.yaml)
 type EnvConfig struct {

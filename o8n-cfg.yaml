@@ -17,6 +17,10 @@ tables:
           visible: true
           width: 25%
           align: left
+      drilldown:
+        - target: history-external-task-log
+          param: externalTaskId
+          column: id
     - name: job
       columns:
         - name: id
@@ -75,6 +79,10 @@ tables:
           visible: false
           width: ""
           align: ""
+      drilldown:
+        - target: history-job-log
+          param: jobId
+          column: id
     - name: job-definition
       columns:
         - name: id
@@ -117,6 +125,10 @@ tables:
           visible: false
           width: ""
           align: ""
+      drilldown:
+        - target: job
+          param: jobDefinitionId
+          column: id
     - name: process-definition
       columns:
         - name: key
@@ -135,6 +147,13 @@ tables:
           visible: true
           width: 25%
           align: left
+      drilldown:
+        - target: process-instance
+          param: processDefinitionKey
+          column: key
+        - target: history-process-instance
+          param: processDefinitionId
+          column: id
     - name: process-instance
       columns:
         - name: id
@@ -153,6 +172,19 @@ tables:
           visible: true
           width: 20%
           align: left
+      drilldown:
+        - target: process-variables
+          param: processInstanceId
+          column: id
+        - target: task
+          param: processInstanceId
+          column: id
+        - target: incident
+          param: processInstanceId
+          column: id
+        - target: variable-instance
+          param: processInstanceId
+          column: id
     - name: process-variables
       columns:
         - name: name
@@ -177,6 +209,13 @@ tables:
           visible: true
           width: 25%
           align: left
+      drilldown:
+        - target: variable-instance
+          param: taskIdIn
+          column: id
+        - target: history-detail
+          param: taskId
+          column: id
     - name: authorization
       columns:
         - name: id
@@ -213,6 +252,10 @@ tables:
           visible: true
           width: 20%
           align: left
+      drilldown:
+        - target: history-batch
+          param: batchId
+          column: id
     - name: batch-statistics
       columns:
         - name: id
@@ -285,6 +328,10 @@ tables:
           visible: true
           width: 20%
           align: left
+      drilldown:
+        - target: process-definition
+          param: deploymentId
+          column: id
     - name: event-subscription
       columns:
         - name: id
@@ -353,6 +400,10 @@ tables:
           visible: true
           width: 20%
           align: left
+      drilldown:
+        - target: history-identity-link-log
+          param: groupId
+          column: id
     - name: history-activity-instance
       columns:
         - name: id
@@ -659,6 +710,16 @@ tables:
           visible: true
           width: 50%
           align: left
+      drilldown:
+        - target: process-definition
+          param: tenantIdIn
+          column: id
+        - target: process-instance
+          param: tenantIdIn
+          column: id
+        - target: deployment
+          param: tenantIdIn
+          column: id
     - name: user
       columns:
         - name: id
@@ -677,6 +738,10 @@ tables:
           visible: true
           width: 25%
           align: left
+      drilldown:
+        - target: history-user-operation
+          param: userId
+          column: id
     - name: variable-instance
       columns:
         - name: name
