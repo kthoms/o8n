@@ -177,3 +177,517 @@ tables:
           visible: true
           width: 25%
           align: left
+    - name: authorization
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: userId
+          visible: true
+          width: 25%
+          align: left
+        - name: groupId
+          visible: true
+          width: 25%
+          align: left
+        - name: resourceId
+          visible: true
+          width: 25%
+          align: left
+    - name: batch
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: type
+          visible: true
+          width: 30%
+          align: left
+        - name: totalJobs
+          visible: true
+          width: 20%
+          align: center
+        - name: tenantId
+          visible: true
+          width: 20%
+          align: left
+    - name: batch-statistics
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: type
+          visible: true
+          width: 30%
+          align: left
+        - name: remainingJobs
+          visible: true
+          width: 20%
+          align: center
+        - name: failedJobs
+          visible: true
+          width: 20%
+          align: center
+    - name: decision-definition
+      columns:
+        - name: key
+          visible: true
+          width: 20%
+          align: left
+        - name: name
+          visible: true
+          width: 40%
+          align: left
+        - name: version
+          visible: true
+          width: 15%
+          align: center
+        - name: resource
+          visible: true
+          width: 25%
+          align: left
+    - name: decision-requirements-definition
+      columns:
+        - name: key
+          visible: true
+          width: 20%
+          align: left
+        - name: name
+          visible: true
+          width: 40%
+          align: left
+        - name: version
+          visible: true
+          width: 15%
+          align: center
+        - name: resource
+          visible: true
+          width: 25%
+          align: left
+    - name: deployment
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: name
+          visible: true
+          width: 35%
+          align: left
+        - name: deploymentTime
+          visible: true
+          width: 20%
+          align: left
+        - name: tenantId
+          visible: true
+          width: 20%
+          align: left
+    - name: event-subscription
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: eventType
+          visible: true
+          width: 20%
+          align: left
+        - name: eventName
+          visible: true
+          width: 30%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 25%
+          align: left
+    - name: execution
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 30%
+          align: left
+        - name: ended
+          visible: true
+          width: 15%
+          align: center
+        - name: tenantId
+          visible: true
+          width: 25%
+          align: left
+    - name: filter
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: resourceType
+          visible: true
+          width: 20%
+          align: left
+        - name: name
+          visible: true
+          width: 40%
+          align: left
+        - name: owner
+          visible: true
+          width: 20%
+          align: left
+    - name: group
+      columns:
+        - name: id
+          visible: true
+          width: 30%
+          align: left
+        - name: name
+          visible: true
+          width: 50%
+          align: left
+        - name: type
+          visible: true
+          width: 20%
+          align: left
+    - name: history-activity-instance
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: activityName
+          visible: true
+          width: 30%
+          align: left
+        - name: activityType
+          visible: true
+          width: 15%
+          align: center
+        - name: assignee
+          visible: true
+          width: 15%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 20%
+          align: left
+    - name: history-batch-cleanable-batch-report
+      columns:
+        - name: batchType
+          visible: true
+          width: 30%
+          align: left
+        - name: historyTimeToLive
+          visible: true
+          width: 20%
+          align: center
+        - name: finishedBatchCount
+          visible: true
+          width: 25%
+          align: center
+        - name: cleanableBatchCount
+          visible: true
+          width: 25%
+          align: center
+    - name: history-batch
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: type
+          visible: true
+          width: 25%
+          align: left
+        - name: totalJobs
+          visible: true
+          width: 20%
+          align: center
+        - name: tenantId
+          visible: true
+          width: 30%
+          align: left
+    - name: history-decision-definition-cleanable-decision-instance-report
+      columns:
+        - name: decisionDefinitionKey
+          visible: true
+          width: 25%
+          align: left
+        - name: decisionDefinitionName
+          visible: true
+          width: 35%
+          align: left
+        - name: finishedDecisionInstanceCount
+          visible: true
+          width: 20%
+          align: center
+        - name: cleanableDecisionInstanceCount
+          visible: true
+          width: 20%
+          align: center
+    - name: history-decision-instance
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: decisionDefinitionKey
+          visible: true
+          width: 25%
+          align: left
+        - name: evaluationTime
+          visible: true
+          width: 25%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 30%
+          align: left
+    - name: history-detail
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: type
+          visible: true
+          width: 20%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 30%
+          align: left
+        - name: time
+          visible: true
+          width: 30%
+          align: left
+    - name: history-external-task-log
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: externalTaskId
+          visible: true
+          width: 25%
+          align: left
+        - name: topicName
+          visible: true
+          width: 25%
+          align: left
+        - name: timestamp
+          visible: true
+          width: 30%
+          align: left
+    - name: history-identity-link-log
+      columns:
+        - name: time
+          visible: true
+          width: 25%
+          align: left
+        - name: type
+          visible: true
+          width: 20%
+          align: left
+        - name: userId
+          visible: true
+          width: 25%
+          align: left
+        - name: taskId
+          visible: true
+          width: 30%
+          align: left
+    - name: history-incident
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: incidentType
+          visible: true
+          width: 20%
+          align: left
+        - name: activityId
+          visible: true
+          width: 20%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 20%
+          align: left
+        - name: incidentMessage
+          visible: true
+          width: 20%
+          align: left
+    - name: history-job-log
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: timestamp
+          visible: true
+          width: 20%
+          align: left
+        - name: jobId
+          visible: true
+          width: 20%
+          align: left
+        - name: jobExceptionMessage
+          visible: true
+          width: 40%
+          align: left
+    - name: history-process-definition-cleanable-process-instance-report
+      columns:
+        - name: processDefinitionKey
+          visible: true
+          width: 30%
+          align: left
+        - name: processDefinitionName
+          visible: true
+          width: 40%
+          align: left
+        - name: finishedProcessInstanceCount
+          visible: true
+          width: 15%
+          align: center
+        - name: cleanableProcessInstanceCount
+          visible: true
+          width: 15%
+          align: center
+    - name: history-process-instance
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: processDefinitionKey
+          visible: true
+          width: 25%
+          align: left
+        - name: businessKey
+          visible: true
+          width: 20%
+          align: left
+        - name: startTime
+          visible: true
+          width: 30%
+          align: left
+    - name: history-task
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: name
+          visible: true
+          width: 40%
+          align: left
+        - name: assignee
+          visible: true
+          width: 20%
+          align: left
+        - name: startTime
+          visible: true
+          width: 20%
+          align: left
+    - name: history-user-operation
+      columns:
+        - name: timestamp
+          visible: true
+          width: 25%
+          align: left
+        - name: userId
+          visible: true
+          width: 25%
+          align: left
+        - name: operationType
+          visible: true
+          width: 25%
+          align: left
+        - name: entityType
+          visible: true
+          width: 25%
+          align: left
+    - name: history-variable-instance
+      columns:
+        - name: name
+          visible: true
+          width: 30%
+          align: left
+        - name: value
+          visible: true
+          width: 40%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 30%
+          align: left
+    - name: incident
+      columns:
+        - name: id
+          visible: true
+          width: 20%
+          align: left
+        - name: incidentType
+          visible: true
+          width: 20%
+          align: left
+        - name: activityId
+          visible: true
+          width: 20%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 20%
+          align: left
+        - name: incidentMessage
+          visible: true
+          width: 20%
+          align: left
+    - name: tenant
+      columns:
+        - name: id
+          visible: true
+          width: 50%
+          align: left
+        - name: name
+          visible: true
+          width: 50%
+          align: left
+    - name: user
+      columns:
+        - name: id
+          visible: true
+          width: 25%
+          align: left
+        - name: firstName
+          visible: true
+          width: 25%
+          align: left
+        - name: lastName
+          visible: true
+          width: 25%
+          align: left
+        - name: email
+          visible: true
+          width: 25%
+          align: left
+    - name: variable-instance
+      columns:
+        - name: name
+          visible: true
+          width: 30%
+          align: left
+        - name: value
+          visible: true
+          width: 40%
+          align: left
+        - name: processInstanceId
+          visible: true
+          width: 30%
+          align: left
