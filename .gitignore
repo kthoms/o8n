@@ -30,8 +30,8 @@ go.work.sum
 # Application binary
 o8n
 
-# User config file (use config.yaml.example as template)
-config.yaml
+# User config file (use o8n-env.yaml.example as template)
+o8n-env.yaml
 
 # Editor/IDE
 .idea/
