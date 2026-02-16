@@ -24,47 +24,74 @@ This document specifies the o8n terminal UI application (written in Go). It full
 - tests (go test unit tests) — exercises config load and API client behaviours.
 
 # UX
-- Important UX rules:
-  - Vertical layout: Header (8 rows) -> Context selection (1 row boxed, dynamic) -> Main content (boxed table filling remaining height minus footer) -> Footer (1 row).
-  - Default environment: "local" (if present) or first configured environment.
-  - Default root context at start: process-definitions.
-  - Context selection opened with `:`; offers inline completion (only after first char); Tab completes; Enter switches only on exact match; Esc cancels.
-  - Drill-down interaction: definitions -> instances -> variables (name, value, type). Arrow keys move selection; Enter drills in; Esc goes back.
-- Tables:
-  - Selected rows are inverted in their colours, i.e. the font color becomes the background color and vice versa
-- Context switch
-  - By key ':' a context section is opened between Header and Main Content section
-  - The section is 1 line boxed, i.e. 3 lines with the border
-  - The Main Content section shrinks by 3 lines while the Context switch is open
-  - Keyboard focus is on the Context Switch line
-  - Content assist:
-- Footer
-  - Breadbrump
-    - At the left a breadcrumb-like context tag is shown, e.g. "<process-definition>" or "<process-instance>" to indicate the current root context.
-    - The breadcrump can have at most 3 sections
-    - Each section has a different background color
-  - Remote access indicator:
-    - A flash indicator (⚡) appears on the bottom-right for 0.2s whenever a remote REST call is issued.
-- Responsive design:
-  - The layout reacts on resizing of terminal
-  - Sections
-    - All vertical sections have fixed height except for the Main Content
-  - Tables:
-    - Columns can shrink to the size of their title plus 1 space
-    - Column content gets abbreviated by "..." when the content is larger than the available space
-    - Columns can be hidden when the remaining width does not allow all columns to be displayed
-    - Columns that cannot be hidden are marked their configuration
-- Global actions:
-  - `:`: Opens the Context Switch dialog
-  - `<ctrl>+c`: Exit
-  - `?`: Display help
-- Styling:
-  - Colors:
-    - Files in the folder /skins define color schemes for the UI. 
-    - The active skin is defined in the environment configuration (o8n-env.yaml) and can be switched at runtime 
 
-- Modal confirmation:
-  - Actions that require confirmation are triggering a modal confirmation dialog
+## Overview
+
+The o8n terminal UI follows professional UX patterns inspired by k9s, with optimized layouts, intuitive keyboard navigation, and polished interactions.
+
+**Detailed Design Documents:**
+- [Splash Screen Design](_bmad/core/prds/splash-screen-design.md) — 1.2s branded splash with logo animation
+- [Compact Header Design](_bmad/core/prds/compact-header-design.md) — Priority-based 3-row header with adaptive key hints
+- [Layout Design](_bmad/core/prds/layout-design-optimized.md) — Responsive layout system for 80-160+ char terminals
+- [Modal Confirmation Design](_bmad/core/prds/modal-confirmation-design.md) — Simple confirmation pattern for destructive actions
+- [Help Screen Design](_bmad/core/prds/help-screen-design.md) — Comprehensive keyboard shortcuts reference
+
+## Key Interaction Patterns
+
+### Keymap Convention
+- **Destructive/Quit actions**: `<ctrl>+` (e.g., `<ctrl>+d` delete, `<ctrl>+c` quit)
+- **Safe actions**: `<ctrl>-` (e.g., `<ctrl>-r` refresh, `<ctrl>-h` help)
+- **Global actions**: `:` context switch, `<ctrl>+e` environment switch, `?` help
+
+### Layout Structure
+- **Splash Screen** (startup): 1.2s logo animation with version display
+- **Header** (3-8 rows depending on design): Environment info, key hints (priority-based visibility), logo
+- **Context Selection** (1 row boxed, dynamic): Opens with `:`, inline completion, Tab to complete, Enter to switch
+- **Main Content** (fills remaining space): Boxed table with responsive columns
+- **Footer** (1 row): Breadcrumb context tag | Status message | Remote activity indicator (⚡)
+
+### Navigation & Drill-Down
+- **Arrow keys**: Navigate rows in current view
+- **Enter**: Drill down (definitions → instances → variables)
+- **Esc**: Go back one level
+- **Page Up/Down**: Jump through table rows
+
+### Tables
+- **Selected rows**: Inverted colors (font ↔ background)
+- **Responsive columns**: Shrink to title width + 1 space, hide low-priority columns at narrow widths
+- **Content abbreviation**: Truncate with "..." when space limited
+- **Column configuration**: Visible, width (%), align, hide-able flag
+
+### Modal Confirmations
+- **Trigger**: Destructive actions (delete, terminate)
+- **Pattern**: Press action key (e.g., `<ctrl>+d`) twice to confirm
+- **Visual**: Centered modal dialog with color-coded prompt
+- **Cancellation**: Any other key or Esc cancels
+
+### Responsive Design
+- **Terminal resize**: All sections adapt dynamically
+- **Width breakpoints**: 80, 100, 120, 140+ characters
+- **Priority system**: Key hints show/hide based on priority (1=always visible, 9=only at 140+ width)
+- **Fixed sections**: Header, footer, context switch (when open)
+- **Flexible section**: Main content table grows/shrinks
+
+### Styling & Theming
+- **Skins**: Color schemes in `/skins` folder (dracula, nord, gruvbox, etc.)
+- **Active skin**: Defined in `o8n-env.yaml`, switchable at runtime
+- **Footer breadcrumb**: Environment-specific background color, up to 3 sections
+- **Remote indicator**: Flash (⚡) for 0.2s on REST API calls
+
+### Context Switching
+- **Trigger**: `:` key opens context selection
+- **Input**: 1-line boxed section (3 rows with border)
+- **Completion**: Inline gray suffix after first character typed
+- **Actions**: Tab completes, Enter switches (exact match only), Esc cancels
+- **Focus**: Keyboard focus moves to context input line
+
+### Default Behavior
+- **Environment**: "local" (if configured) or first available environment
+- **Root context**: process-definitions
+- **Auto-refresh**: Toggle with `r` (5s interval when enabled)
 
 # Architecture and major components
 
