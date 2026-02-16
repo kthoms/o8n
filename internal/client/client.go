@@ -139,6 +139,21 @@ func (c *Client) FetchVariables(instanceID string) ([]config.Variable, error) {
 	return vars, nil
 }
 
+// SetProcessInstanceVariable updates a single variable on a process instance.
+func (c *Client) SetProcessInstanceVariable(instanceID, varName string, value interface{}, valueType string) error {
+	dto := operaton.VariableValueDto{Value: value}
+	if valueType != "" {
+		dto.SetType(valueType)
+	}
+	_, err := c.operatonAPI.ProcessInstanceAPI.SetProcessInstanceVariable(c.authContext, instanceID, varName).
+		VariableValueDto(dto).
+		Execute()
+	if err != nil {
+		return fmt.Errorf("failed to set variable %s on instance %s: %w", varName, instanceID, err)
+	}
+	return nil
+}
+
 // TerminateInstance terminates a process instance using the generated client.
 func (c *Client) TerminateInstance(instanceID string) error {
 	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()

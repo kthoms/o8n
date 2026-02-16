@@ -80,6 +80,9 @@ go build -o o8n .
 - `<ctrl>+d` — Delete selected instance (press twice to confirm)
 - `<ctrl>+t` — Terminate instance
 
+**Variable Actions:**
+- `e` — Edit selected value (when column is editable)
+
 ### Features
 
 **🎨 Theming & Skins**
@@ -91,6 +94,7 @@ go build -o o8n .
 - Responsive column sizing based on terminal width
 - Auto-hide low-priority columns on narrow terminals
 - Customizable column visibility and widths in `o8n-cfg.yaml`
+- Editable columns with type-aware input (opt-in)
 
 **🔍 Context Switching**
 - Fast context switching with `:` key
@@ -146,6 +150,18 @@ tables:
         visible: true
         width: 25%
         align: left
+  - name: process-variables
+    columns:
+      - name: name
+        visible: true
+        width: 30%
+        align: left
+      - name: value
+        visible: true
+        width: 70%
+        align: left
+        editable: true
+        input_type: auto
 ```
 
 ### Security Note

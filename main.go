@@ -6,11 +6,13 @@ import (
 	"log"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/table"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 
@@ -90,7 +92,19 @@ const (
 	ModalConfirmDelete
 	ModalConfirmQuit
 	ModalHelp
+	ModalEdit
 )
+
+type editSavedMsg struct {
+	rowIndex int
+	colIndex int
+	value    string
+}
+
+type editableColumn struct {
+	index int
+	def   config.ColumnDef
+}
 
 // viewState captures the complete state of a view for navigation history
 type viewState struct {
@@ -134,6 +148,14 @@ type model struct {
 	activeModal     ModalType
 	modalConfirmKey string // The key to press to confirm (e.g., "ctrl+d")
 	pendingDeleteID string // ID pending deletion confirmation
+
+	// Edit modal state
+	editInput     textinput.Model
+	editColumns   []editableColumn
+	editColumnPos int
+	editRowIndex  int
+	editTableKey  string
+	editError     string
 
 	// lastListIndex stores the last-known list index so we can detect
 	// selection changes even when list.Update doesn't change the index in tests.
@@ -191,6 +213,9 @@ type model struct {
 	// breadcrumb styles per level
 	breadcrumbStyles []lipgloss.Style
 
+	// variables cache for type-aware editing
+	variablesByName map[string]config.Variable
+
 	// Version number
 	version string
 }
@@ -221,6 +246,9 @@ func (m *model) getKeyHints(width int) []KeyHint {
 			KeyHint{"Esc", "back", 5},
 			KeyHint{"↑↓", "nav", 3},
 		)
+		if m.hasEditableColumns() {
+			hints = append(hints, KeyHint{"e", "edit", 4})
+		}
 	}
 
 	// Add other hints based on width thresholds
@@ -329,17 +357,26 @@ func newModel(cfg *config.Config) model {
 	}
 
 	m := model{
-		config:       cfg,
-		envNames:     envNames,
-		currentEnv:   current,
-		list:         l,
-		table:        t,
-		viewMode:     "definitions",
-		splashActive: true,
-		splashFrame:  1,
-		activeModal:  ModalNone,
-		version:      "0.1.0",
+		config:          cfg,
+		envNames:        envNames,
+		currentEnv:      current,
+		list:            l,
+		table:           t,
+		viewMode:        "definitions",
+		splashActive:    true,
+		splashFrame:     1,
+		activeModal:     ModalNone,
+		version:         "0.1.0",
+		variablesByName: map[string]config.Variable{},
 	}
+
+	// edit input defaults
+	editInput := textinput.New()
+	editInput.Placeholder = "value"
+	editInput.Prompt = "> "
+	editInput.CharLimit = 0
+	editInput.Width = 40
+	m.editInput = editInput
 	m.applyStyle()
 	// initialize lastListIndex
 	m.lastListIndex = m.list.Index()
@@ -456,6 +493,8 @@ SEARCH (Coming Soon)    │                         │  Enter    Confirm
 n        Next match     │  <ctrl>+d Kill instance │
 N        Prev match     │  s  Suspend instance    │
                         │  r  Resume instance     │
+					   │  In Variables:          │
+					   │  e  Edit value          │
 
 Current View: ` + m.viewMode + `
 Environment: ` + m.currentEnv + `
@@ -479,6 +518,66 @@ Press any key to close`
 	modal := modalStyle.Render(helpContent)
 
 	// Center the modal
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+}
+
+func (m *model) renderEditModal(width, height int) string {
+	row := m.currentEditRow()
+	col := m.currentEditColumn()
+	if row == nil || col == nil {
+		return ""
+	}
+	inputType, _ := m.resolveEditTypes(col.def, m.editTableKey, row)
+
+	columnsLine := ""
+	if len(m.editColumns) > 1 {
+		parts := make([]string, 0, len(m.editColumns))
+		for i, c := range m.editColumns {
+			label := fmt.Sprintf("%d:%s", i+1, c.def.Name)
+			if i == m.editColumnPos {
+				label = "[" + label + "]"
+			}
+			parts = append(parts, label)
+		}
+		columnsLine = "Columns: " + strings.Join(parts, " ") + "\n\n"
+	}
+
+	errorLine := ""
+	if m.editError != "" {
+		errorLine = "Error: " + m.editError + "\n\n"
+	}
+
+	modalContent := fmt.Sprintf(
+		"EDIT VALUE\n\n"+
+			"Table: %s\n"+
+			"Column: %s\n"+
+			"Type: %s\n\n"+
+			"%s"+
+			"%s"+
+			"%s\n\n"+
+			"Enter Save    Esc Cancel    Tab Next Column",
+		m.editTableKey,
+		col.def.Name,
+		inputType,
+		columnsLine,
+		m.editInput.View(),
+		errorLine,
+	)
+
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(1, 2).
+		Width(60)
+
+	modal := modalStyle.Render(modalContent)
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
 }
 
@@ -632,6 +731,199 @@ func (m *model) visibleColumnIndex(def *config.TableDef, column string) int {
 	return -1
 }
 
+func (m *model) currentTableKey() string {
+	if len(m.breadcrumb) > 0 {
+		last := m.breadcrumb[len(m.breadcrumb)-1]
+		if last == "variables" {
+			return dao.ResourceProcessVariables
+		}
+		return last
+	}
+	return m.currentRoot
+}
+
+func (m *model) editableColumnsFor(tableKey string) []editableColumn {
+	def := m.findTableDef(tableKey)
+	if def == nil {
+		return nil
+	}
+	cols := []editableColumn{}
+	idx := 0
+	for _, c := range def.Columns {
+		if !c.Visible {
+			continue
+		}
+		if c.Editable {
+			cols = append(cols, editableColumn{index: idx, def: c})
+		}
+		idx++
+	}
+	return cols
+}
+
+func (m *model) hasEditableColumns() bool {
+	return len(m.editableColumnsFor(m.currentTableKey())) > 0
+}
+
+func inputTypeFromVariableType(variableType string) string {
+	lower := strings.ToLower(variableType)
+	if strings.Contains(lower, "bool") {
+		return "bool"
+	}
+	if strings.Contains(lower, "int") || strings.Contains(lower, "long") {
+		return "int"
+	}
+	if strings.Contains(lower, "double") || strings.Contains(lower, "float") || strings.Contains(lower, "number") {
+		return "number"
+	}
+	return "text"
+}
+
+func typeNameForInputType(inputType string, variableType string) string {
+	if variableType != "" && inputType == inputTypeFromVariableType(variableType) {
+		return variableType
+	}
+	switch inputType {
+	case "bool":
+		return "Boolean"
+	case "int":
+		return "Integer"
+	case "number":
+		return "Double"
+	default:
+		return "String"
+	}
+}
+
+func (m *model) variableTypeForRow(tableKey string, row table.Row) string {
+	if tableKey != "process-variables" && tableKey != "variables" && tableKey != "variable-instance" && tableKey != "variable-instances" {
+		return ""
+	}
+	def := m.findTableDef(tableKey)
+	if def == nil {
+		return ""
+	}
+	nameIdx := m.visibleColumnIndex(def, "name")
+	if nameIdx < 0 || nameIdx >= len(row) {
+		return ""
+	}
+	name := fmt.Sprintf("%v", row[nameIdx])
+	if v, ok := m.variablesByName[name]; ok {
+		return v.Type
+	}
+	return ""
+}
+
+func (m *model) resolveEditTypes(col config.ColumnDef, tableKey string, row table.Row) (string, string) {
+	inputType := strings.TrimSpace(strings.ToLower(col.InputType))
+	variableType := m.variableTypeForRow(tableKey, row)
+	if inputType == "" {
+		inputType = "text"
+	}
+	if inputType == "auto" {
+		inputType = inputTypeFromVariableType(variableType)
+	}
+	return inputType, typeNameForInputType(inputType, variableType)
+}
+
+func parseInputValue(input string, inputType string) (interface{}, error) {
+	trimmed := strings.TrimSpace(input)
+	switch inputType {
+	case "bool":
+		if strings.EqualFold(trimmed, "true") || trimmed == "1" {
+			return true, nil
+		}
+		if strings.EqualFold(trimmed, "false") || trimmed == "0" {
+			return false, nil
+		}
+		return nil, fmt.Errorf("enter true or false")
+	case "int":
+		v, err := strconv.ParseInt(trimmed, 10, 64)
+		if err != nil {
+			return nil, fmt.Errorf("enter an integer")
+		}
+		return v, nil
+	case "number":
+		v, err := strconv.ParseFloat(trimmed, 64)
+		if err != nil {
+			return nil, fmt.Errorf("enter a number")
+		}
+		return v, nil
+	default:
+		return input, nil
+	}
+}
+
+func (m *model) currentEditRow() table.Row {
+	rows := m.table.Rows()
+	if m.editRowIndex < 0 || m.editRowIndex >= len(rows) {
+		return nil
+	}
+	return rows[m.editRowIndex]
+}
+
+func (m *model) currentEditColumn() *editableColumn {
+	if m.editColumnPos < 0 || m.editColumnPos >= len(m.editColumns) {
+		return nil
+	}
+	return &m.editColumns[m.editColumnPos]
+}
+
+func (m *model) setEditColumn(pos int) {
+	if len(m.editColumns) == 0 {
+		return
+	}
+	if pos < 0 {
+		pos = len(m.editColumns) - 1
+	}
+	if pos >= len(m.editColumns) {
+		pos = 0
+	}
+	m.editColumnPos = pos
+	m.editError = ""
+
+	row := m.currentEditRow()
+	col := m.currentEditColumn()
+	value := ""
+	if row != nil && col != nil && col.index < len(row) {
+		value = fmt.Sprintf("%v", row[col.index])
+	}
+	m.editInput.SetValue(value)
+	m.editInput.CursorEnd()
+}
+
+func (m *model) variableNameForRow(tableKey string, row table.Row) string {
+	def := m.findTableDef(tableKey)
+	if def == nil {
+		return ""
+	}
+	nameIdx := m.visibleColumnIndex(def, "name")
+	if nameIdx < 0 || nameIdx >= len(row) {
+		return ""
+	}
+	return fmt.Sprintf("%v", row[nameIdx])
+}
+
+func (m *model) startEdit(tableKey string) {
+	cols := m.editableColumnsFor(tableKey)
+	if len(cols) == 0 {
+		m.footerError = "No editable columns"
+		return
+	}
+	if len(m.table.Rows()) == 0 {
+		m.footerError = "No row selected"
+		return
+	}
+	m.editColumns = cols
+	m.editTableKey = tableKey
+	m.editRowIndex = m.table.Cursor()
+	m.editColumnPos = 0
+	m.editError = ""
+	m.editInput.Focus()
+	m.setEditColumn(0)
+	m.activeModal = ModalEdit
+}
+
 // buildColumnsFor builds table.Column slice for a named table using the config definitions
 // totalWidth is the available characters for the table content; if zero, returns reasonable defaults
 func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column {
@@ -709,7 +1001,11 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 			w = 3
 		}
 		used += w
-		cols = append(cols, table.Column{Title: strings.ToUpper(visible[i].Name), Width: w})
+		title := strings.ToUpper(visible[i].Name)
+		if visible[i].Editable {
+			title = title + "*"
+		}
+		cols = append(cols, table.Column{Title: title, Width: w})
 	}
 	if used < contentWidth {
 		cols[len(cols)-1].Width += contentWidth - used
@@ -793,8 +1089,10 @@ func (m *model) applyVariables(vars []config.Variable) {
 	}()
 
 	rows := make([]table.Row, 0, len(vars))
+	m.variablesByName = make(map[string]config.Variable, len(vars))
 	for _, v := range vars {
 		rows = append(rows, table.Row{v.Name, v.Value})
+		m.variablesByName[v.Name] = v
 	}
 	tableWidth := m.table.Width()
 	if tableWidth <= 0 {
@@ -914,6 +1212,23 @@ func (m model) terminateInstanceCmd(id string) tea.Cmd {
 	}
 }
 
+func (m model) setVariableCmd(instanceID, varName string, value interface{}, valueType string, rowIndex, colIndex int, displayValue string) tea.Cmd {
+	if instanceID == "" || varName == "" {
+		return func() tea.Msg { return errMsg{fmt.Errorf("missing instance or variable name")} }
+	}
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return nil
+	}
+	c := client.NewClient(env)
+	return func() tea.Msg {
+		if err := c.SetProcessInstanceVariable(instanceID, varName, value, valueType); err != nil {
+			return errMsg{err}
+		}
+		return editSavedMsg{rowIndex: rowIndex, colIndex: colIndex, value: displayValue}
+	}
+}
+
 // helper to create a command that triggers the flash indicator
 func flashOnCmd() tea.Cmd {
 	return func() tea.Msg { return flashOnMsg{} }
@@ -949,6 +1264,69 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Any key closes help screen
 			m.activeModal = ModalNone
 			return m, nil
+		}
+
+		if m.activeModal == ModalEdit {
+			row := m.currentEditRow()
+			col := m.currentEditColumn()
+			inputType, typeName := "text", "String"
+			if row != nil && col != nil {
+				inputType, typeName = m.resolveEditTypes(col.def, m.editTableKey, row)
+			}
+			switch s {
+			case "esc":
+				m.activeModal = ModalNone
+				m.editError = ""
+				m.editInput.Blur()
+				return m, nil
+			case "tab":
+				m.setEditColumn(m.editColumnPos + 1)
+				return m, nil
+			case "shift+tab", "backtab":
+				m.setEditColumn(m.editColumnPos - 1)
+				return m, nil
+			case " ", "space":
+				if inputType == "bool" {
+					current := strings.TrimSpace(strings.ToLower(m.editInput.Value()))
+					if current == "true" {
+						m.editInput.SetValue("false")
+					} else {
+						m.editInput.SetValue("true")
+					}
+					m.editInput.CursorEnd()
+					return m, nil
+				}
+			case "enter":
+				if row == nil || col == nil {
+					m.editError = "No selection"
+					return m, nil
+				}
+				if m.editTableKey == "process-variables" || m.editTableKey == "variables" || m.editTableKey == "variable-instance" || m.editTableKey == "variable-instances" {
+					varName := m.variableNameForRow(m.editTableKey, row)
+					if varName == "" {
+						m.editError = "Variable name not found"
+						return m, nil
+					}
+					parsedValue, err := parseInputValue(m.editInput.Value(), inputType)
+					if err != nil {
+						m.editError = err.Error()
+						return m, nil
+					}
+					rowIndex := m.editRowIndex
+					colIndex := col.index
+					displayValue := m.editInput.Value()
+					m.activeModal = ModalNone
+					m.editError = ""
+					m.editInput.Blur()
+					return m, tea.Batch(m.setVariableCmd(m.selectedInstanceID, varName, parsedValue, typeName, rowIndex, colIndex, displayValue), flashOnCmd())
+				}
+				m.editError = "Editing not supported for this table"
+				return m, nil
+			default:
+				var cmd tea.Cmd
+				m.editInput, cmd = m.editInput.Update(msg)
+				return m, cmd
+			}
 		}
 
 		if m.activeModal == ModalConfirmDelete {
@@ -1012,6 +1390,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 			return m, nil
+		case "e":
+			if m.showRootPopup {
+				m.rootInput += s
+				return m, nil
+			}
+			tableKey := m.currentTableKey()
+			if len(m.editableColumnsFor(tableKey)) > 0 {
+				m.startEdit(tableKey)
+				return m, nil
+			}
+			m.footerError = "No editable columns"
+			return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
 		case "esc":
 			if m.showRootPopup {
 				m.showRootPopup = false
@@ -1258,6 +1648,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case variablesLoadedMsg:
 		// show variables table
 		m.applyVariables(msg.variables)
+	case editSavedMsg:
+		rows := m.table.Rows()
+		if msg.rowIndex >= 0 && msg.rowIndex < len(rows) {
+			row := rows[msg.rowIndex]
+			if msg.colIndex >= 0 && msg.colIndex < len(row) {
+				row[msg.colIndex] = msg.value
+				rows[msg.rowIndex] = row
+				m.table.SetRows(rows)
+			}
+		}
+		m.footerError = "Saved"
+		return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
 	case dataLoadedMsg:
 		// keep backward compatibility: only apply definitions to avoid auto-drilldown
 		m.applyDefinitions(msg.definitions)
@@ -1457,6 +1859,8 @@ func (m model) View() string {
 	if m.activeModal == ModalConfirmDelete {
 		modalOverlay := m.renderConfirmDeleteModal(m.lastWidth, m.lastHeight)
 		return modalOverlay
+	} else if m.activeModal == ModalEdit {
+		return m.renderEditModal(m.lastWidth, m.lastHeight)
 	} else if m.activeModal == ModalHelp {
 		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
 	}
