@@ -75,6 +75,23 @@ func (i processDefinitionItem) FilterValue() string {
 	return i.definition.Key
 }
 
+// KeyHint represents a keyboard shortcut with priority
+type KeyHint struct {
+	Key         string
+	Description string
+	Priority    int // 1=always visible, 9=only on wide terminals
+}
+
+// Modal types
+type ModalType int
+
+const (
+	ModalNone ModalType = iota
+	ModalConfirmDelete
+	ModalConfirmQuit
+	ModalHelp
+)
+
 type model struct {
 	config *config.Config
 
@@ -97,6 +114,11 @@ type model struct {
 
 	// view mode: "definitions" or "instances"
 	viewMode string
+
+	// Modal state
+	activeModal     ModalType
+	modalConfirmKey string // The key to press to confirm (e.g., "ctrl+d")
+	pendingDeleteID string // ID pending deletion confirmation
 
 	// lastListIndex stores the last-known list index so we can detect
 	// selection changes even when list.Update doesn't change the index in tests.
@@ -153,6 +175,102 @@ type model struct {
 
 	// breadcrumb styles per level
 	breadcrumbStyles []lipgloss.Style
+
+	// Version number
+	version string
+}
+
+// getKeyHints returns keyboard hints based on current view and terminal width
+func (m *model) getKeyHints(width int) []KeyHint {
+	hints := []KeyHint{}
+
+	// Global hints (always relevant)
+	hints = append(hints,
+		KeyHint{"?", "help", 1},
+		KeyHint{":", "switch", 2},
+	)
+
+	if m.viewMode == "definitions" {
+		hints = append(hints,
+			KeyHint{"↑↓", "nav", 3},
+			KeyHint{"Enter", "drill", 4},
+		)
+	} else if m.viewMode == "instances" {
+		hints = append(hints,
+			KeyHint{"Esc", "back", 5},
+			KeyHint{"↑↓", "nav", 3},
+			KeyHint{"Enter", "vars", 4},
+		)
+	} else if m.viewMode == "variables" {
+		hints = append(hints,
+			KeyHint{"Esc", "back", 5},
+			KeyHint{"↑↓", "nav", 3},
+		)
+	}
+
+	// Add other hints based on width thresholds
+	if width >= 90 {
+		hints = append(hints, KeyHint{"<ctrl>-r", "refresh", 6})
+	}
+	if width >= 100 && m.viewMode == "instances" {
+		hints = append(hints, KeyHint{"<ctrl>+d", "delete", 7})
+	}
+	if width >= 110 {
+		hints = append(hints, KeyHint{"<ctrl>+c", "quit", 8})
+	}
+	if width >= 130 {
+		hints = append(hints, KeyHint{"<ctrl>+e", "env", 9})
+	}
+
+	return hints
+}
+
+// renderCompactHeader renders a 3-row header
+func (m *model) renderCompactHeader(width int) string {
+	// Row 1: Status line (environment, URL, user, connection status)
+	envInfo := fmt.Sprintf("%s @ %s", m.currentEnv, "localhost:8080")
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			envInfo = fmt.Sprintf("%s @ %s │ %s", m.currentEnv, env.URL, env.Username)
+		}
+	}
+
+	row1 := fmt.Sprintf("o8n %s │ %s", m.version, envInfo)
+	if len(row1) > width-4 {
+		row1 = row1[:width-7] + "..."
+	}
+
+	// Row 2: Key hints (priority-based)
+	hints := m.getKeyHints(width)
+	row2Parts := []string{}
+	for _, hint := range hints {
+		part := fmt.Sprintf("%s %s", hint.Key, hint.Description)
+		row2Parts = append(row2Parts, part)
+	}
+	row2 := strings.Join(row2Parts, "  ")
+	if len(row2) > width-4 {
+		row2 = row2[:width-7] + "..."
+	}
+
+	// Row 3: Empty spacer
+	row3 := ""
+
+	// Join rows
+	header := fmt.Sprintf("%s\n%s\n%s", row1, row2, row3)
+
+	// Style with color
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+	headerStyle := lipgloss.NewStyle().
+		Width(width).
+		Padding(0, 1).
+		Foreground(lipgloss.Color(color))
+
+	return headerStyle.Render(header)
 }
 
 func newModel(cfg *config.Config) model {
@@ -200,6 +318,8 @@ func newModel(cfg *config.Config) model {
 		viewMode:     "definitions",
 		splashActive: true,
 		splashFrame:  1,
+		activeModal:  ModalNone,
+		version:      "0.1.0",
 	}
 	m.applyStyle()
 	// initialize lastListIndex
@@ -253,6 +373,94 @@ func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig) model {
 	// copy tables into m.config for backward compatibility
 	m.config = cfg
 	return m
+}
+
+// renderConfirmDeleteModal renders a modal for confirming delete action
+func (m *model) renderConfirmDeleteModal(width, height int) string {
+	selected := m.table.SelectedRow()
+	if len(selected) == 0 {
+		return ""
+	}
+
+	instanceID := fmt.Sprintf("%v", selected[0])
+	defName := "Unknown"
+	if len(selected) > 1 {
+		defName = fmt.Sprintf("%v", selected[1])
+	}
+
+	modalContent := fmt.Sprintf(
+		"⚠️  DELETE PROCESS INSTANCE\n\n"+
+			"You are about to DELETE this instance:\n\n"+
+			"Instance ID:   %s\n"+
+			"Definition:    %s\n\n"+
+			"⚠️  WARNING: This action CANNOT be undone!\n"+
+			"The instance will be terminated.\n\n"+
+			"<ctrl>+d  Confirm Delete    Esc  Cancel",
+		instanceID, defName)
+
+	// Get color for styling
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.DoubleBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(1, 2).
+		Width(54)
+
+	modal := modalStyle.Render(modalContent)
+
+	// Center the modal
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+}
+
+// renderHelpScreen renders the help screen modal
+func (m *model) renderHelpScreen(width, height int) string {
+	helpContent := `o8n Help
+
+NAVIGATION              │  ACTIONS                │  GLOBAL
+─────────────────────   │  ────────────────────   │  ──────────────────
+↑/↓      Navigate list  │  <ctrl>+e  Switch env   │  ?     This help
+PgUp/Dn  Page up/down   │  <ctrl>-r  Auto-refresh │  :     Switch view
+Home     First item     │  <ctrl>+d  Delete item  │  <ctrl>+c Quit
+End      Last item      │  <ctrl>-R  Force refresh│
+Enter    Drill down     │                         │  CONTEXT
+Esc      Go back        │  VIEW SPECIFIC          │  ───────────────────
+                        │  (varies by view)       │  Tab      Complete
+SEARCH (Coming Soon)    │                         │  Enter    Confirm
+─────────────────────   │  In Process Instances:  │  Esc      Cancel
+/        Search/filter  │  v  View variables      │
+n        Next match     │  <ctrl>+d Kill instance │
+N        Prev match     │  s  Suspend instance    │
+                        │  r  Resume instance     │
+
+Current View: ` + m.viewMode + `
+Environment: ` + m.currentEnv + `
+
+Press any key to close`
+
+	// Get color for styling
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(1, 2).
+		Width(76)
+
+	modal := modalStyle.Render(helpContent)
+
+	// Center the modal
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
 }
 
 func (m *model) applyStyle() {
@@ -646,6 +854,32 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		s := msg.String()
+
+		// Handle modal-specific keys first
+		if m.activeModal == ModalHelp {
+			// Any key closes help screen
+			m.activeModal = ModalNone
+			return m, nil
+		}
+
+		if m.activeModal == ModalConfirmDelete {
+			// Only <ctrl>+d confirms delete, any other key cancels
+			if s == "ctrl+d" {
+				// Confirm delete
+				m.activeModal = ModalNone
+				if m.pendingDeleteID != "" {
+					return m, tea.Batch(m.terminateInstanceCmd(m.pendingDeleteID), flashOnCmd())
+				}
+			} else {
+				// Cancel
+				m.activeModal = ModalNone
+				m.pendingDeleteID = ""
+				m.footerError = "Cancelled"
+				return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+			}
+			return m, nil
+		}
+
 		// handle colon typed as a key string so it works across terminals
 		if s == ":" {
 			if !m.showRootPopup {
@@ -657,23 +891,36 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, nil
 		}
+
 		switch s {
-		case "q":
+		case "?":
+			// Show help screen
+			m.activeModal = ModalHelp
+			return m, nil
+		case "ctrl+c", "q":
+			// Quit (ctrl+c is standard, q for convenience)
 			return m, tea.Quit
-		case "e":
+		case "ctrl+e":
+			// Switch environment
 			m.nextEnvironment()
 			m.resetViews()
 			// refetch definitions for new env and flash
 			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
-		case "r":
+		case "ctrl+r", "r":
+			// Toggle auto-refresh
 			m.autoRefresh = !m.autoRefresh
 			if m.autoRefresh {
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), tea.Tick(refreshInterval, func(time.Time) tea.Msg { return refreshMsg{} }))
 			}
 			return m, nil
-		case "x":
-			if m.selectedInstanceID != "" {
-				m.showKillModal = true
+		case "ctrl+d":
+			// Delete/kill instance - show confirmation modal
+			if m.viewMode == "instances" {
+				row := m.table.SelectedRow()
+				if len(row) > 0 {
+					m.pendingDeleteID = fmt.Sprintf("%v", row[0])
+					m.activeModal = ModalConfirmDelete
+				}
 			}
 			return m, nil
 		case "esc":
@@ -705,13 +952,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.contentHeader = m.currentRoot
 				m.selectedDefinitionKey = ""
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
-			}
-			m.showKillModal = false
-			return m, nil
-		case "y":
-			if m.showKillModal && m.selectedInstanceID != "" {
-				m.showKillModal = false
-				return m, tea.Batch(m.terminateInstanceCmd(m.selectedInstanceID), flashOnCmd())
 			}
 			return m, nil
 		case "enter":
@@ -809,8 +1049,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// store terminal size for View footer alignment
 		m.lastWidth = width
 		m.lastHeight = height
-		// Reserve lines: header area (3 columns) 8 rows + footer 1 line + context selection 1 line
-		headerLines := 8
+		// Reserve lines: compact header 3 rows + context selection 1 line + footer 1 line
+		headerLines := 3 // Reduced from 8 to 3 for compact header
 		contextSelectionLines := 1
 		footerLines := 1
 		contentHeight := height - headerLines - contextSelectionLines - footerLines
@@ -955,50 +1195,8 @@ func (m model) View() string {
 		return lipgloss.Place(w, h, lipgloss.Center, lipgloss.Center, content)
 	}
 
-	// top unboxed area with 3 columns: context, keybindings, ascii art (8 rows)
-	envInfo := "Environment: " + m.currentEnv
-	apiURL := ""
-	username := ""
-	if m.config != nil {
-		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			apiURL = env.URL
-			username = env.Username
-		}
-	}
-	ctxCol := fmt.Sprintf("%s\nURL: %s\nUser: %s", envInfo, apiURL, username)
-
-	helpCol := "KEYS:\nq - quit\ne - switch env\nr - toggle auto-refresh\nenter - drill into instances\nesc - back\nx - kill instance\n"
-
-	artCol := m.asciiArt()
-
-	// compute logo and column widths with clamping
-	totalW := m.lastWidth
-	if totalW < 40 {
-		totalW = 40
-	}
-	logoW := 25
-	if totalW < 80 {
-		logoW = totalW / 4
-		if logoW < 12 {
-			logoW = 12
-		}
-	}
-	rem := totalW - logoW
-	if rem < 20 {
-		rem = 20
-	}
-	colW := rem / 2
-	if colW < 12 {
-		colW = 12
-	}
-
-	left := lipgloss.Place(colW, 8, lipgloss.Left, lipgloss.Top, ctxCol)
-	middle := lipgloss.Place(colW, 8, lipgloss.Left, lipgloss.Top, helpCol)
-	right := lipgloss.Place(logoW, 8, lipgloss.Right, lipgloss.Top, artCol)
-
-	top := lipgloss.JoinHorizontal(lipgloss.Top, left, middle, right)
-	// ensure top is visible as 8 rows even if no WindowSizeMsg yet
-	topBox := lipgloss.NewStyle().Width(m.lastWidth).Height(8).Render(top)
+	// Main UI - use compact 3-row header
+	compactHeader := m.renderCompactHeader(m.lastWidth)
 
 	// get border color
 	color := ""
@@ -1076,7 +1274,7 @@ func (m model) View() string {
 	}
 
 	// place breadcrumb left and remote right within lastWidth
-	totalW = m.lastWidth
+	totalW := m.lastWidth
 	leftPart := breadcrumbRendered
 	rightPart := remote
 	// compute padding
@@ -1087,8 +1285,18 @@ func (m model) View() string {
 	spacer := strings.Repeat(" ", padW)
 	footerLine := leftPart + spacer + rightPart
 
-	// Compose final vertical layout: topBox (8 rows), contextSelectionBox (1 row), headerBox, mainBox, footerLine (1 row)
-	return lipgloss.JoinVertical(lipgloss.Left, topBox, contextSelectionBox, headerBox, mainBox, footerLine)
+	// Compose final vertical layout: compactHeader (3 rows), contextSelectionBox (1 row), headerBox, mainBox, footerLine (1 row)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, compactHeader, contextSelectionBox, headerBox, mainBox, footerLine)
+
+	// If modal is active, overlay it
+	if m.activeModal == ModalConfirmDelete {
+		modalOverlay := m.renderConfirmDeleteModal(m.lastWidth, m.lastHeight)
+		return modalOverlay
+	} else if m.activeModal == ModalHelp {
+		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
+	}
+
+	return baseView
 }
 
 func rowInstanceID(row table.Row) string {
