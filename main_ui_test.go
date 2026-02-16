@@ -244,3 +244,102 @@ func TestConfigDrivenDrilldownFromInstancesToVariables(t *testing.T) {
 		t.Fatalf("expected variable 'var1' after drill, got %+v", rows)
 	}
 }
+
+func TestNavigationStackPreservesRowSelection(t *testing.T) {
+	// Server: respond to both definitions and instances
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/process-definition" {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]config.ProcessDefinition{
+				{ID: "d1", Key: "k1", Name: "One", Version: 1},
+				{ID: "d2", Key: "k2", Name: "Two", Version: 1},
+				{ID: "d3", Key: "k3", Name: "Three", Version: 1},
+			})
+			return
+		}
+		if r.URL.Path == "/process-instance" {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]config.ProcessInstance{
+				{ID: "i1", DefinitionID: "d2", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"},
+			})
+			return
+		}
+		w.WriteHeader(http.StatusNotFound)
+	}))
+	defer server.Close()
+
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: server.URL}},
+		Tables: []config.TableDef{
+			{
+				Name:      "process-definition",
+				Columns:   []config.ColumnDef{{Name: "key", Visible: true}, {Name: "name", Visible: true}},
+				Drilldown: []config.DrillDownDef{{Target: "process-instance", Param: "processDefinitionKey", Column: "key"}},
+			},
+		},
+	}
+
+	m := newModel(cfg)
+	// populate definitions table
+	m.applyDefinitions([]config.ProcessDefinition{
+		{ID: "d1", Key: "k1", Name: "One", Version: 1},
+		{ID: "d2", Key: "k2", Name: "Two", Version: 1},
+		{ID: "d3", Key: "k3", Name: "Three", Version: 1},
+	})
+
+	// move cursor to row 2 (3rd definition)
+	m.table.SetCursor(2)
+	initialCursor := m.table.Cursor()
+	if initialCursor != 2 {
+		t.Fatalf("expected cursor at row 2, got %d", initialCursor)
+	}
+
+	// press Enter to drill down (should save state and reset cursor to 0)
+	res, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	m2 := res.(model)
+
+	// verify we drilled down
+	if m2.viewMode != "instances" {
+		t.Fatalf("expected instances view, got %s", m2.viewMode)
+	}
+
+	// simulate the fetch
+	fetchMsg := m2.fetchInstancesCmd("k3")()
+	res2, _ := m2.Update(fetchMsg)
+	m3 := res2.(model)
+
+	// verify cursor was reset to 0
+	if m3.table.Cursor() != 0 {
+		t.Fatalf("expected cursor reset to 0 after drill, got %d", m3.table.Cursor())
+	}
+
+	// verify navigation stack has saved state
+	if len(m3.navigationStack) != 1 {
+		t.Fatalf("expected 1 item in navigation stack, got %d", len(m3.navigationStack))
+	}
+
+	// press Esc to go back
+	res3, _ := m3.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	m4 := res3.(model)
+
+	// verify we're back to definitions view
+	if m4.viewMode != "definitions" {
+		t.Fatalf("expected definitions view after Esc, got %s", m4.viewMode)
+	}
+
+	// verify cursor was restored to row 2
+	if m4.table.Cursor() != 2 {
+		t.Fatalf("expected cursor restored to row 2 after Esc, got %d", m4.table.Cursor())
+	}
+
+	// verify navigation stack is now empty
+	if len(m4.navigationStack) != 0 {
+		t.Fatalf("expected empty navigation stack after Esc, got %d items", len(m4.navigationStack))
+	}
+
+	// verify table rows were restored
+	rows := m4.table.Rows()
+	if len(rows) != 3 {
+		t.Fatalf("expected 3 rows restored after Esc, got %d", len(rows))
+	}
+}
