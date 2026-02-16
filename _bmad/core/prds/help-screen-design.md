@@ -45,13 +45,13 @@ Returns to previous view (state preserved)
 
 ```
 ┌─ o8n Help ─────────────────────────────────────────────────────────────────┐
-│                                                                             │
+│                                                                            │
 │  NAVIGATION              │  ACTIONS                │  GLOBAL               │
 │  ─────────────────────   │  ────────────────────   │  ──────────────────   │
-│  ↑/↓      Move up/down   │  e        Switch env    │  ?        This help   │
-│  PgUp/Dn  Page up/down   │  r        Auto-refresh  │  :        Switch view │
-│  Home     First item     │  d        Delete item   │  q        Quit        │
-│  End      Last item      │  Ctrl+R   Force refresh │  Ctrl+C   Quit        │
+│  ↑/↓      Move up/down   │  <ctrl>+e switch env    │  ?        This help   │
+│  PgUp/Dn  Page up/down   │  <ctrl>-r Auto-refresh  │  :        Switch view │
+│  Home     First item     │  <ctrl>+d Delete item   │  <ctrl>+c   Quit      │
+│  End      Last item      │  <ctrl>-R Force refresh │  <ctrl>+c   Quit      │
 │  Enter    Drill down     │                         │                       │
 │  Esc      Go back        │  VIEW SPECIFIC          │  CONTEXT              │
 │                          │  (varies by view)       │  ───────────────────  │
@@ -61,12 +61,12 @@ Returns to previous view (state preserved)
 │  n        Next match     │  l  View logs           │                       │
 │  N        Prev match     │  s  Suspend instance    │                       │
 │                          │  r  Resume instance     │                       │
-│                                                                             │
+│                                                                            │
 │  Current View: process-definitions                                         │
 │  Environment: local (http://localhost:8080)                                │
-│                                                                             │
+│                                                                            │
 │                     Press any key to close                                 │
-└─────────────────────────────────────────────────────────────────────────────┘
+└────────────────────────────────────────────────────────────────────────────┘
 ```
 
 **Dimensions:**
@@ -93,7 +93,7 @@ Returns to previous view (state preserved)
 │  ─────────────────────   │  ────────────────────   │  ──────────────────   │
 │  ↑/↓      Navigate list  │  Enter    View instances│  ?        Help        │
 │  PgUp/Dn  Page up/down   │  e        Switch env    │  :        Switch view │
-│  Home     First def      │  r        Toggle refresh│  q/Ctrl+C Quit        │
+│  Home     First def      │  r        Toggle refresh│  q/<ctrl>+c Quit      │
 │  End      Last def       │  /        Search        │                       │
 │                          │                         │  DRILL DOWN           │
 │  ABOUT PROCESS DEFS      │  TIP: Press Enter       │  ───────────────────  │
@@ -128,7 +128,7 @@ Returns to previous view (state preserved)
 │  ─────────────────────   │  ────────────────────   │  ──────────────────   │
 │  ↑/↓      Navigate list  │  Enter    View variables│  ?        Help        │
 │  PgUp/Dn  Page up/down   │  d        Delete/Kill   │  :        Switch view │
-│  Home     First instance │  v        View variables│  q/Ctrl+C Quit        │
+│  Home     First instance │  v        View variables│  q/<ctrl>+c Quit      │
 │  End      Last instance  │  s        Suspend       │  Esc      Go back     │
 │  Esc      Back to defs   │  r        Resume        │                       │
 │                          │  l        View logs     │  BREADCRUMB           │
@@ -167,7 +167,7 @@ Returns to previous view (state preserved)
 │  ─────────────────────   │  ────────────────────   │  ──────────────────   │
 │  ↑/↓      Navigate list  │  Esc       Back to inst │  ?        Help        │
 │  PgUp/Dn  Page up/down   │  /         Search       │  :        Switch view │
-│  Home     First variable │  e         Edit (future)│  q/Ctrl+C Quit        │
+│  Home     First variable │  e         Edit (future)│  q/<ctrl>+c Quit      │
 │  End      Last variable  │                         │                       │
 │                          │                         │  BREADCRUMB           │
 │  ABOUT VARIABLES         │  TIP: Variables are     │  ───────────────────  │
@@ -251,7 +251,8 @@ var (
     globalHelp = []HelpItem{
         {Key: "?", Description: "Toggle help"},
         {Key: "q", Description: "Quit"},
-        {Key: "Ctrl+C", Description: "Quit"},
+        {Key: "<ctrl>+c", Description: "Quit"},
+        {Key: "<ctrl>+e", Description: "Switch environment"},
         {Key: ":", Description: "Switch view"},
     }
     
@@ -266,10 +267,10 @@ var (
     }
     
     // View-specific help
-    definitionsHelp = []HelpItem{
+        definitionsHelp = []HelpItem{
         {Key: "Enter", Description: "View instances"},
         {Key: "r", Description: "Toggle auto-refresh"},
-        {Key: "e", Description: "Switch environment"},
+        {Key: "<ctrl>+e", Description: "Switch environment"},
     }
     
     instancesHelp = []HelpItem{
@@ -505,10 +506,10 @@ func (h *HelpScreen) buildDefaultHelp() []HelpSection {
         {
             Title: "ACTIONS",
             Items: []HelpItem{
-                {Key: "e", Description: "Switch environment"},
+                {Key: "<ctrl>+e", Description: "Switch environment"},
                 {Key: "r", Description: "Toggle auto-refresh"},
                 {Key: "d", Description: "Delete item"},
-                {Key: "Ctrl+R", Description: "Force refresh"},
+                {Key: "<ctrl>-R", Description: "Force refresh"},
             },
         },
         {
@@ -517,7 +518,8 @@ func (h *HelpScreen) buildDefaultHelp() []HelpSection {
                 {Key: "?", Description: "This help"},
                 {Key: ":", Description: "Switch view"},
                 {Key: "q", Description: "Quit"},
-                {Key: "Ctrl+C", Description: "Quit"},
+                {Key: "<ctrl>+e", Description: "Switch environment"},
+                {Key: "<ctrl>+c", Description: "Quit"},
             },
         },
     }
