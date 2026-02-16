@@ -227,6 +227,10 @@ func (m *model) getKeyHints(width int) []KeyHint {
 
 // renderCompactHeader renders a 3-row header
 func (m *model) renderCompactHeader(width int) string {
+	if width <= 0 {
+		width = 80
+	}
+
 	// Row 1: Status line (environment, URL, user, connection status)
 	envInfo := fmt.Sprintf("%s @ %s", m.currentEnv, "localhost:8080")
 	if m.config != nil {
@@ -265,10 +269,10 @@ func (m *model) renderCompactHeader(width int) string {
 			color = env.UIColor
 		}
 	}
-	headerStyle := lipgloss.NewStyle().
-		Width(width).
-		Padding(0, 1).
-		Foreground(lipgloss.Color(color))
+	headerStyle := lipgloss.NewStyle().Width(width).Padding(0, 1)
+	if color != "" {
+		headerStyle = headerStyle.Foreground(lipgloss.Color(color))
+	}
 
 	return headerStyle.Render(header)
 }
@@ -1149,7 +1153,7 @@ func (m *model) removeInstance(id string) {
 }
 
 func (m model) asciiArt() string {
-	return `  ____   ___  _  _\n / __ \ / _ \| \| |\n| |  | | | | |  \|\n| |  | | | | | . ` + "`" + ` |\n| |__| | |_| | |\  |\n \____/ \___/|_| \_|\n` + "o8n"
+	return "  ____   ___  _  _\n / __ \\ / _ \\| \\| |\n| |  | | | | |  \\|\n| |  | | | | | . ` |\n| |__| | |_| | |\\  |\n \\____/ \\___/|_| \\_|\n" + "o8n"
 }
 
 func (m model) View() string {
