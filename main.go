@@ -926,6 +926,42 @@ func (m *model) startEdit(tableKey string) {
 
 // buildColumnsFor builds table.Column slice for a named table using the config definitions
 // totalWidth is the available characters for the table content; if zero, returns reasonable defaults
+// addEditableMarkers adds [E] suffix to editable columns in table rows
+func (m *model) addEditableMarkers(rows []table.Row, tableName string) []table.Row {
+	def := m.findTableDef(tableName)
+	if def == nil {
+		return rows
+	}
+	// find which visible column indices are editable
+	editableIndices := make(map[int]bool)
+	visIdx := 0
+	for _, c := range def.Columns {
+		if !c.Visible {
+			continue
+		}
+		if c.Editable {
+			editableIndices[visIdx] = true
+		}
+		visIdx++
+	}
+	if len(editableIndices) == 0 {
+		return rows
+	}
+	// clone and mark editable cells
+	marked := make([]table.Row, len(rows))
+	for i, row := range rows {
+		marked[i] = make(table.Row, len(row))
+		for j, cell := range row {
+			if editableIndices[j] {
+				marked[i][j] = fmt.Sprintf("%v [E]", cell)
+			} else {
+				marked[i][j] = cell
+			}
+		}
+	}
+	return marked
+}
+
 func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column {
 	def := m.findTableDef(tableName)
 	if def == nil {
@@ -1044,6 +1080,7 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
+	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessDefinitions)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "definitions"
@@ -1074,6 +1111,7 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
+	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessInstances)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "instances"
@@ -1108,6 +1146,7 @@ func (m *model) applyVariables(vars []config.Variable) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
+	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessVariables)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "variables"

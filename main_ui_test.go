@@ -343,3 +343,82 @@ func TestNavigationStackPreservesRowSelection(t *testing.T) {
 		t.Fatalf("expected 3 rows restored after Esc, got %d", len(rows))
 	}
 }
+
+func TestEditableColumnsMarkedWithIndicator(t *testing.T) {
+	// Setup config with editable column
+	appCfg := &config.AppConfig{
+		Tables: []config.TableDef{
+			{
+				Name: "process-variables",
+				Columns: []config.ColumnDef{
+					{Name: "name", Visible: true, Width: "30%", Editable: false},
+					{Name: "value", Visible: true, Width: "70%", Editable: true, InputType: "text"},
+				},
+			},
+		},
+	}
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: "http://example"}},
+		Tables:       appCfg.Tables,
+	}
+	m := newModel(cfg)
+	
+	// Apply variables
+	vars := []config.Variable{
+		{Name: "myVar", Value: "test123", Type: "String"},
+		{Name: "count", Value: "42", Type: "Integer"},
+	}
+	m.applyVariables(vars)
+	
+	rows := m.table.Rows()
+	if len(rows) != 2 {
+		t.Fatalf("expected 2 rows, got %d", len(rows))
+	}
+	
+	// First column (name) should NOT have [E] marker
+	if strings.Contains(rows[0][0], "[E]") {
+		t.Errorf("name column should not be marked as editable, got: %s", rows[0][0])
+	}
+	
+	// Second column (value) SHOULD have [E] marker
+	if !strings.Contains(rows[0][1], "[E]") {
+		t.Errorf("value column should be marked as editable with [E], got: %s", rows[0][1])
+	}
+	if !strings.HasSuffix(rows[0][1], "[E]") {
+		t.Errorf("value column should end with [E], got: %s", rows[0][1])
+	}
+}
+
+func TestEditableColumnsFor(t *testing.T) {
+	appCfg := &config.AppConfig{
+		Tables: []config.TableDef{
+			{
+				Name: "process-variables",
+				Columns: []config.ColumnDef{
+					{Name: "name", Visible: true, Editable: false},
+					{Name: "value", Visible: true, Editable: true},
+					{Name: "type", Visible: true, Editable: false},
+				},
+			},
+		},
+	}
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: "http://example"}},
+		Tables:       appCfg.Tables,
+	}
+	m := newModel(cfg)
+	
+	editableCols := m.editableColumnsFor("process-variables")
+	if len(editableCols) != 1 {
+		t.Fatalf("expected 1 editable column, got %d", len(editableCols))
+	}
+	
+	if editableCols[0].index != 1 {
+		t.Errorf("expected editable column at index 1, got %d", editableCols[0].index)
+	}
+	
+	if editableCols[0].def.Name != "value" {
+		t.Errorf("expected editable column name 'value', got '%s'", editableCols[0].def.Name)
+	}
+}
+
