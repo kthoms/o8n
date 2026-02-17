@@ -59,7 +59,7 @@ type Config struct {
 	Environments map[string]Environment `yaml:"environments"`
 	Active       string                 `yaml:"active,omitempty"`
 	Tables       []TableDef             `yaml:"tables,omitempty"`
-	UI           *UIConfig             `yaml:"ui,omitempty"`
+	UI           *UIConfig              `yaml:"ui,omitempty"`
 }
 
 // UIConfig holds UI-related configuration, e.g., edit modal styling
@@ -68,11 +68,11 @@ type UIConfig struct {
 }
 
 type EditModalConfig struct {
-	Width        int    `yaml:"width,omitempty"`
-	Border       string `yaml:"border,omitempty"`
-	BorderColor  string `yaml:"border_color,omitempty"`
-	OverlayOpacity float64 `yaml:"overlay_opacity,omitempty"`
-	Buttons      *EditModalButtons `yaml:"buttons,omitempty"`
+	Width          int               `yaml:"width,omitempty"`
+	Border         string            `yaml:"border,omitempty"`
+	BorderColor    string            `yaml:"border_color,omitempty"`
+	OverlayOpacity float64           `yaml:"overlay_opacity,omitempty"`
+	Buttons        *EditModalButtons `yaml:"buttons,omitempty"`
 }
 
 type EditModalButtons struct {

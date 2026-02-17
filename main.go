@@ -20,6 +20,7 @@ import (
 
 	"github.com/kthoms/o8n/internal/client"
 	"github.com/kthoms/o8n/internal/config"
+	"github.com/kthoms/o8n/internal/contentassist"
 	"github.com/kthoms/o8n/internal/dao"
 	"github.com/kthoms/o8n/internal/validation"
 	"golang.org/x/term"
@@ -612,6 +613,7 @@ func (m *model) renderEditModal(width, height int) string {
 
 	saveStyle := lipgloss.NewStyle().Background(lipgloss.Color(saveBg)).Foreground(lipgloss.Color(saveFg)).Padding(0, 1).Bold(true)
 	cancelStyle := lipgloss.NewStyle().Background(lipgloss.Color(cancelBg)).Foreground(lipgloss.Color(cancelFg)).Padding(0, 1)
+	disabledSaveStyle := lipgloss.NewStyle().Background(lipgloss.Color("#777777")).Foreground(lipgloss.Color("#DDDDDD")).Padding(0, 1)
 
 	saveLabel := " Save "
 	cancelLabel := " Cancel "
@@ -624,7 +626,35 @@ func (m *model) renderEditModal(width, height int) string {
 		}
 	}
 
-	buttons := saveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
+	// Proactive validation: validate current input to determine if Save should be enabled
+	saveDisabled := false
+	if inputType != "" {
+		if _, err := validation.ValidateAndParse(m.editInput.Value(), inputType); err != nil {
+			saveDisabled = true
+			// if no explicit editError set, show the validation error inline
+			if m.editError == "" {
+				errorLine = "Error: " + err.Error() + "\n\n"
+			}
+		}
+	}
+
+	// Rebuild body to include any validation errorLine that may have been set above
+	// If input type is `user` include content-assist suggestions from the static cache.
+	suggestionLine := ""
+	if inputType == "user" {
+		sugg := contentassist.SuggestUsers(m.editInput.Value())
+		if len(sugg) > 0 {
+			suggestionLine = "Suggestions: " + strings.Join(sugg, ", ") + "\n\n"
+		}
+	}
+	body = columnsLine + m.editInput.View() + "\n\n" + errorLine + suggestionLine
+
+	var buttons string
+	if saveDisabled {
+		buttons = disabledSaveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
+	} else {
+		buttons = saveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
+	}
 
 	modalBody := header + body + "\n" + buttons
 
