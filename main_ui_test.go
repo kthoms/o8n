@@ -391,7 +391,7 @@ func TestEditableColumnsMarkedWithIndicator(t *testing.T) {
 	}
 	// Second column header SHOULD contain the write emoji
 	if !strings.Contains(cols[1].Title, "🖍️") {
-		t.Errorf("value column header should be marked editable with ✍️, got: %s", cols[1].Title)
+		t.Errorf("value column header should be marked editable with 🖍️, got: %s", cols[1].Title)
 	}
 }
 

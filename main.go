@@ -1064,6 +1064,7 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 	}
 
 	// if totalWidth known, compute column widths using contentWidth
+	// Hide columns whose headers don't fit in their allocated width
 	cols := make([]table.Column, 0, n)
 	used := 0
 	for i := range visible {
@@ -1071,15 +1072,19 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		if w < 3 {
 			w = 3
 		}
-		used += w
 		title := strings.ToUpper(visible[i].Name)
 		// mark editable columns with a write emoji in the header
 		if visible[i].Editable {
 			title = title + " 🖍️"
 		}
-		cols = append(cols, table.Column{Title: title, Width: w})
+		// Only include column if the title fits in the allocated width
+		// Use lipgloss.Width to account for emoji characters
+		if lipgloss.Width(title) <= w {
+			used += w
+			cols = append(cols, table.Column{Title: title, Width: w})
+		}
 	}
-	if used < contentWidth {
+	if len(cols) > 0 && used < contentWidth {
 		cols[len(cols)-1].Width += contentWidth - used
 	}
 	return cols
@@ -1860,13 +1865,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// store terminal size for View footer alignment
 		m.lastWidth = width
 		m.lastHeight = height
-		// Reserve lines: compact header 3 rows + content header 1 row + context selection 1 line + footer 1 line
-		headerLines := 2 // compactHeader (3) + content header (1)
+		// Reserve lines: compact header is 4 rows (with top spacer), context selection 1 line (when active), footer 1 line
+		headerLines := 4 // compactHeader placed at 4 rows
 		contextSelectionLines := 1
 		footerLines := 1
-		// reserve an extra safe line to avoid off-by-one overflow
-		// reduce content height by one more line so the content section is
-		// one line less high than before
+		// content height = terminal height minus header, context box, and footer
 		contentHeight := height - headerLines - contextSelectionLines - footerLines
 		if contentHeight < 3 {
 			contentHeight = 3
@@ -2136,27 +2139,12 @@ func (m model) View() string {
 		contextSelectionBox = ""
 	}
 
-	// main content boxed (table)
-	pw := m.paneWidth
-	if pw > m.lastWidth {
-		pw = m.lastWidth
-	}
-	if pw < 10 {
-		pw = 10
-	}
-
 	// combine compact header only; the content header will be rendered
 	// embedded into the content border by the custom box renderer below.
 	headerStack := compactHeader
 
-	// recompute pane width from current terminal width to ensure the content
-	// box matches the intended pane area (accounts for left column)
-	leftW := m.lastWidth / 4
-	if leftW < 12 {
-		leftW = 12
-	}
-	// reserve margins (4) like in sizing logic
-	pw = m.lastWidth - leftW - 4
+	// Content box should use full terminal width
+	pw := m.lastWidth
 	if pw < 10 {
 		pw = 10
 	}
