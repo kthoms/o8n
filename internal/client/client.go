@@ -21,6 +21,29 @@ import (
 	operaton "github.com/kthoms/o8n/internal/operaton"
 )
 
+var (
+	dbgOnce   sync.Once
+	dbgWriter io.Writer
+	dbgErr    error
+)
+
+func getDebugWriter() io.Writer {
+	dbgOnce.Do(func() {
+		if os.Getenv("O8N_DEBUG") == "1" {
+			_ = os.MkdirAll("./debug", 0o755)
+			fpath := filepath.Join(".", "debug", "access.log")
+			f, err := os.OpenFile(fpath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+			if err != nil {
+				dbgErr = err
+				dbgWriter = nil
+				return
+			}
+			dbgWriter = f
+		}
+	})
+	return dbgWriter
+}
+
 type Client struct {
 	api    *operaton.APIClient
 	base   string
@@ -288,6 +311,14 @@ type CompatClient struct {
 	authContext context.Context
 }
 
+func (c *CompatClient) logf(format string, args ...interface{}) {
+	w := getDebugWriter()
+	if w == nil {
+		return
+	}
+	fmt.Fprintf(w, format+"\n", args...)
+}
+
 // NewClient creates a CompatClient from the environment config (keeps previous API).
 func NewClient(env cfgpkg.Environment) *CompatClient {
 	httpClient := &http.Client{Timeout: 10 * time.Second}
@@ -349,6 +380,8 @@ func getBoolValue(nullable operaton.NullableBool) bool {
 
 // FetchProcessDefinitions retrieves process definitions.
 func (c *CompatClient) FetchProcessDefinitions() ([]cfgpkg.ProcessDefinition, error) {
+	c.logf("API: FetchProcessDefinitions()")
+	c.logf("API: GET /process-definition")
 	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
@@ -374,6 +407,18 @@ func (c *CompatClient) FetchProcessDefinitions() ([]cfgpkg.ProcessDefinition, er
 
 // FetchInstances retrieves process instances; if processKey is non-empty it uses that as processDefinitionKey.
 func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.ProcessInstance, error) {
+	c.logf("API: FetchInstances(%s=%s)", paramName, paramValue)
+	// Log concrete GET path the compat wrapper will use
+	q := url.Values{}
+	if paramName != "" && paramValue != "" {
+		q.Set(paramName, paramValue)
+	}
+	raw := "/process-instance"
+	if enc := q.Encode(); enc != "" {
+		raw = raw + "?" + enc
+	}
+	c.logf("API: GET %s", raw)
+
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
 	if paramName != "" && paramValue != "" {
 		// Only support processDefinitionKey directly here; other params are unsupported in this legacy wrapper
@@ -402,6 +447,8 @@ func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.Pr
 
 // FetchVariables retrieves variables (legacy wrapper) for a process instance.
 func (c *CompatClient) FetchVariables(instanceID string) ([]cfgpkg.Variable, error) {
+	c.logf("API: FetchVariables(instanceId=%s)", instanceID)
+	c.logf("API: GET /process-instance/%s/variables", instanceID)
 	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch variables: %w", err)
@@ -423,6 +470,8 @@ func (c *CompatClient) FetchVariables(instanceID string) ([]cfgpkg.Variable, err
 
 // TerminateInstance terminates a process instance.
 func (c *CompatClient) TerminateInstance(instanceID string) error {
+	c.logf("API: TerminateInstance(%s)", instanceID)
+	c.logf("API: DELETE /process-instance/%s", instanceID)
 	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()
 	if err != nil {
 		return fmt.Errorf("failed to terminate instance %s: %w", instanceID, err)
@@ -437,6 +486,8 @@ func (c *CompatClient) SetProcessInstanceVariable(instanceID, varName string, va
 	if valueType != "" {
 		v.SetType(valueType)
 	}
+	c.logf("API: SetProcessInstanceVariable(%s, %s)", instanceID, varName)
+	c.logf("API: PUT /process-instance/%s/variables/%s", instanceID, url.PathEscape(varName))
 	_, err := c.operatonAPI.ProcessInstanceAPI.SetProcessInstanceVariable(c.authContext, instanceID, varName).VariableValueDto(*v).Execute()
 	if err != nil {
 		return fmt.Errorf("failed to set variable: %w", err)

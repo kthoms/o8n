@@ -1919,7 +1919,7 @@ func (m *model) removeInstance(id string) {
 }
 
 func (m model) asciiArt() string {
-	return "  ____   ___  _  _\n / __ \\ / _ \\| \\| |\n| |  | | | | |  \\|\n| |  | | | | | . ` |\n| |__| | |_| | |\\  |\n \\____/ \\___/|_| \\_|\n" + "o8n"
+	return "   ____\n____  ( __ )\n / __ \\/ __  / __ \\\n/ /_/ / /_/ / / / /\n\\____/\\____/_/ /_/\n" + "o8n"
 }
 
 func (m model) View() string {
