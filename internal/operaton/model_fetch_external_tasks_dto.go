@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -138,6 +138,7 @@ func (o *FetchExternalTasksDto) HasUsePriority() bool {
 func (o *FetchExternalTasksDto) SetUsePriority(v bool) {
 	o.UsePriority.Set(&v)
 }
+
 // SetUsePriorityNil sets the value for UsePriority to be an explicit nil
 func (o *FetchExternalTasksDto) SetUsePriorityNil() {
 	o.UsePriority.Set(nil)
@@ -180,6 +181,7 @@ func (o *FetchExternalTasksDto) HasAsyncResponseTimeout() bool {
 func (o *FetchExternalTasksDto) SetAsyncResponseTimeout(v int64) {
 	o.AsyncResponseTimeout.Set(&v)
 }
+
 // SetAsyncResponseTimeoutNil sets the value for AsyncResponseTimeout to be an explicit nil
 func (o *FetchExternalTasksDto) SetAsyncResponseTimeoutNil() {
 	o.AsyncResponseTimeout.Set(nil)
@@ -257,7 +259,7 @@ func (o *FetchExternalTasksDto) SetSorting(v []FetchExternalTasksDtoSortingInner
 }
 
 func (o FetchExternalTasksDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -297,10 +299,10 @@ func (o *FetchExternalTasksDto) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -356,5 +358,3 @@ func (v *NullableFetchExternalTasksDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

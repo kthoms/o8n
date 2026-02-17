@@ -78,6 +78,7 @@ func (o *ExecutionDto) HasId() bool {
 func (o *ExecutionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ExecutionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -120,6 +121,7 @@ func (o *ExecutionDto) HasProcessInstanceId() bool {
 func (o *ExecutionDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *ExecutionDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -162,6 +164,7 @@ func (o *ExecutionDto) HasEnded() bool {
 func (o *ExecutionDto) SetEnded(v bool) {
 	o.Ended.Set(&v)
 }
+
 // SetEndedNil sets the value for Ended to be an explicit nil
 func (o *ExecutionDto) SetEndedNil() {
 	o.Ended.Set(nil)
@@ -204,6 +207,7 @@ func (o *ExecutionDto) HasTenantId() bool {
 func (o *ExecutionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *ExecutionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -215,7 +219,7 @@ func (o *ExecutionDto) UnsetTenantId() {
 }
 
 func (o ExecutionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -274,5 +278,3 @@ func (v *NullableExecutionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -21,7 +21,7 @@ var _ MappedNullable = &SignalDto{}
 type SignalDto struct {
 	// The name of the signal to deliver.  **Note**: This property is mandatory.
 	Name *string `json:"name,omitempty"`
-	// Optionally specifies a single execution which is notified by the signal.  **Note**: If no execution id is defined the signal is broadcasted to all subscribed handlers. 
+	// Optionally specifies a single execution which is notified by the signal.  **Note**: If no execution id is defined the signal is broadcasted to all subscribed handlers.
 	ExecutionId NullableString `json:"executionId,omitempty"`
 	// A JSON object containing variable key-value pairs. Each key is a variable name and each value a JSON variable value object.
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
@@ -112,6 +112,7 @@ func (o *SignalDto) HasExecutionId() bool {
 func (o *SignalDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *SignalDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -187,6 +188,7 @@ func (o *SignalDto) HasTenantId() bool {
 func (o *SignalDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *SignalDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -229,6 +231,7 @@ func (o *SignalDto) HasWithoutTenantId() bool {
 func (o *SignalDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *SignalDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -240,7 +243,7 @@ func (o *SignalDto) UnsetWithoutTenantId() {
 }
 
 func (o SignalDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -302,5 +305,3 @@ func (v *NullableSignalDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -111,6 +111,7 @@ func (o *CompleteTaskDto) HasWithVariablesInReturn() bool {
 func (o *CompleteTaskDto) SetWithVariablesInReturn(v bool) {
 	o.WithVariablesInReturn.Set(&v)
 }
+
 // SetWithVariablesInReturnNil sets the value for WithVariablesInReturn to be an explicit nil
 func (o *CompleteTaskDto) SetWithVariablesInReturnNil() {
 	o.WithVariablesInReturn.Set(nil)
@@ -122,7 +123,7 @@ func (o *CompleteTaskDto) UnsetWithVariablesInReturn() {
 }
 
 func (o CompleteTaskDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -175,5 +176,3 @@ func (v *NullableCompleteTaskDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

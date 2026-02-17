@@ -74,6 +74,7 @@ func (o *DecisionDefinitionDiagramDto) HasId() bool {
 func (o *DecisionDefinitionDiagramDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DecisionDefinitionDiagramDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -116,6 +117,7 @@ func (o *DecisionDefinitionDiagramDto) HasDmnXml() bool {
 func (o *DecisionDefinitionDiagramDto) SetDmnXml(v string) {
 	o.DmnXml.Set(&v)
 }
+
 // SetDmnXmlNil sets the value for DmnXml to be an explicit nil
 func (o *DecisionDefinitionDiagramDto) SetDmnXmlNil() {
 	o.DmnXml.Set(nil)
@@ -127,7 +129,7 @@ func (o *DecisionDefinitionDiagramDto) UnsetDmnXml() {
 }
 
 func (o DecisionDefinitionDiagramDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableDecisionDefinitionDiagramDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

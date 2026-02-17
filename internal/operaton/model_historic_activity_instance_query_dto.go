@@ -109,6 +109,7 @@ func (o *HistoricActivityInstanceQueryDto) HasActivityInstanceId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -151,6 +152,7 @@ func (o *HistoricActivityInstanceQueryDto) HasProcessInstanceId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -193,6 +195,7 @@ func (o *HistoricActivityInstanceQueryDto) HasProcessDefinitionId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -235,6 +238,7 @@ func (o *HistoricActivityInstanceQueryDto) HasExecutionId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -277,6 +281,7 @@ func (o *HistoricActivityInstanceQueryDto) HasActivityId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -319,6 +324,7 @@ func (o *HistoricActivityInstanceQueryDto) HasActivityName() bool {
 func (o *HistoricActivityInstanceQueryDto) SetActivityName(v string) {
 	o.ActivityName.Set(&v)
 }
+
 // SetActivityNameNil sets the value for ActivityName to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetActivityNameNil() {
 	o.ActivityName.Set(nil)
@@ -361,6 +367,7 @@ func (o *HistoricActivityInstanceQueryDto) HasActivityType() bool {
 func (o *HistoricActivityInstanceQueryDto) SetActivityType(v string) {
 	o.ActivityType.Set(&v)
 }
+
 // SetActivityTypeNil sets the value for ActivityType to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetActivityTypeNil() {
 	o.ActivityType.Set(nil)
@@ -403,6 +410,7 @@ func (o *HistoricActivityInstanceQueryDto) HasTaskAssignee() bool {
 func (o *HistoricActivityInstanceQueryDto) SetTaskAssignee(v string) {
 	o.TaskAssignee.Set(&v)
 }
+
 // SetTaskAssigneeNil sets the value for TaskAssignee to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetTaskAssigneeNil() {
 	o.TaskAssignee.Set(nil)
@@ -445,6 +453,7 @@ func (o *HistoricActivityInstanceQueryDto) HasFinished() bool {
 func (o *HistoricActivityInstanceQueryDto) SetFinished(v bool) {
 	o.Finished.Set(&v)
 }
+
 // SetFinishedNil sets the value for Finished to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetFinishedNil() {
 	o.Finished.Set(nil)
@@ -487,6 +496,7 @@ func (o *HistoricActivityInstanceQueryDto) HasUnfinished() bool {
 func (o *HistoricActivityInstanceQueryDto) SetUnfinished(v bool) {
 	o.Unfinished.Set(&v)
 }
+
 // SetUnfinishedNil sets the value for Unfinished to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetUnfinishedNil() {
 	o.Unfinished.Set(nil)
@@ -529,6 +539,7 @@ func (o *HistoricActivityInstanceQueryDto) HasCanceled() bool {
 func (o *HistoricActivityInstanceQueryDto) SetCanceled(v bool) {
 	o.Canceled.Set(&v)
 }
+
 // SetCanceledNil sets the value for Canceled to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetCanceledNil() {
 	o.Canceled.Set(nil)
@@ -571,6 +582,7 @@ func (o *HistoricActivityInstanceQueryDto) HasCompleteScope() bool {
 func (o *HistoricActivityInstanceQueryDto) SetCompleteScope(v bool) {
 	o.CompleteScope.Set(&v)
 }
+
 // SetCompleteScopeNil sets the value for CompleteScope to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetCompleteScopeNil() {
 	o.CompleteScope.Set(nil)
@@ -613,6 +625,7 @@ func (o *HistoricActivityInstanceQueryDto) HasStartedBefore() bool {
 func (o *HistoricActivityInstanceQueryDto) SetStartedBefore(v time.Time) {
 	o.StartedBefore.Set(&v)
 }
+
 // SetStartedBeforeNil sets the value for StartedBefore to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetStartedBeforeNil() {
 	o.StartedBefore.Set(nil)
@@ -655,6 +668,7 @@ func (o *HistoricActivityInstanceQueryDto) HasStartedAfter() bool {
 func (o *HistoricActivityInstanceQueryDto) SetStartedAfter(v time.Time) {
 	o.StartedAfter.Set(&v)
 }
+
 // SetStartedAfterNil sets the value for StartedAfter to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetStartedAfterNil() {
 	o.StartedAfter.Set(nil)
@@ -697,6 +711,7 @@ func (o *HistoricActivityInstanceQueryDto) HasFinishedBefore() bool {
 func (o *HistoricActivityInstanceQueryDto) SetFinishedBefore(v time.Time) {
 	o.FinishedBefore.Set(&v)
 }
+
 // SetFinishedBeforeNil sets the value for FinishedBefore to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetFinishedBeforeNil() {
 	o.FinishedBefore.Set(nil)
@@ -739,6 +754,7 @@ func (o *HistoricActivityInstanceQueryDto) HasFinishedAfter() bool {
 func (o *HistoricActivityInstanceQueryDto) SetFinishedAfter(v time.Time) {
 	o.FinishedAfter.Set(&v)
 }
+
 // SetFinishedAfterNil sets the value for FinishedAfter to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetFinishedAfterNil() {
 	o.FinishedAfter.Set(nil)
@@ -814,6 +830,7 @@ func (o *HistoricActivityInstanceQueryDto) HasWithoutTenantId() bool {
 func (o *HistoricActivityInstanceQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *HistoricActivityInstanceQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -858,7 +875,7 @@ func (o *HistoricActivityInstanceQueryDto) SetSorting(v []HistoricActivityInstan
 }
 
 func (o HistoricActivityInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -962,5 +979,3 @@ func (v *NullableHistoricActivityInstanceQueryDto) UnmarshalJSON(src []byte) err
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

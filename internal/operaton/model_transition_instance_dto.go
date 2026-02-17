@@ -90,6 +90,7 @@ func (o *TransitionInstanceDto) HasId() bool {
 func (o *TransitionInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *TransitionInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -132,6 +133,7 @@ func (o *TransitionInstanceDto) HasParentActivityInstanceId() bool {
 func (o *TransitionInstanceDto) SetParentActivityInstanceId(v string) {
 	o.ParentActivityInstanceId.Set(&v)
 }
+
 // SetParentActivityInstanceIdNil sets the value for ParentActivityInstanceId to be an explicit nil
 func (o *TransitionInstanceDto) SetParentActivityInstanceIdNil() {
 	o.ParentActivityInstanceId.Set(nil)
@@ -174,6 +176,7 @@ func (o *TransitionInstanceDto) HasActivityId() bool {
 func (o *TransitionInstanceDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *TransitionInstanceDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -216,6 +219,7 @@ func (o *TransitionInstanceDto) HasActivityName() bool {
 func (o *TransitionInstanceDto) SetActivityName(v string) {
 	o.ActivityName.Set(&v)
 }
+
 // SetActivityNameNil sets the value for ActivityName to be an explicit nil
 func (o *TransitionInstanceDto) SetActivityNameNil() {
 	o.ActivityName.Set(nil)
@@ -258,6 +262,7 @@ func (o *TransitionInstanceDto) HasActivityType() bool {
 func (o *TransitionInstanceDto) SetActivityType(v string) {
 	o.ActivityType.Set(&v)
 }
+
 // SetActivityTypeNil sets the value for ActivityType to be an explicit nil
 func (o *TransitionInstanceDto) SetActivityTypeNil() {
 	o.ActivityType.Set(nil)
@@ -300,6 +305,7 @@ func (o *TransitionInstanceDto) HasProcessInstanceId() bool {
 func (o *TransitionInstanceDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *TransitionInstanceDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -342,6 +348,7 @@ func (o *TransitionInstanceDto) HasProcessDefinitionId() bool {
 func (o *TransitionInstanceDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *TransitionInstanceDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -384,6 +391,7 @@ func (o *TransitionInstanceDto) HasExecutionId() bool {
 func (o *TransitionInstanceDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *TransitionInstanceDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -461,7 +469,7 @@ func (o *TransitionInstanceDto) SetIncidents(v []ActivityInstanceIncidentDto) {
 }
 
 func (o TransitionInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -538,5 +546,3 @@ func (v *NullableTransitionInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -22,8 +22,8 @@ type ProcessInstanceSuspensionStateAsyncDto struct {
 	// A Boolean value which indicates whether to activate or suspend a given instance  (e.g. process instance, job, job definition, or batch). When the value is set to true,  the given instance will be suspended and when the value is set to false,  the given instance will be activated.
 	Suspended NullableBool `json:"suspended,omitempty"`
 	// A list of process instance ids which defines a group of process instances which will be activated or suspended by the operation.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 }
 
@@ -76,6 +76,7 @@ func (o *ProcessInstanceSuspensionStateAsyncDto) HasSuspended() bool {
 func (o *ProcessInstanceSuspensionStateAsyncDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ProcessInstanceSuspensionStateAsyncDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -184,7 +185,7 @@ func (o *ProcessInstanceSuspensionStateAsyncDto) SetHistoricProcessInstanceQuery
 }
 
 func (o ProcessInstanceSuspensionStateAsyncDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -243,5 +244,3 @@ func (v *NullableProcessInstanceSuspensionStateAsyncDto) UnmarshalJSON(src []byt
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

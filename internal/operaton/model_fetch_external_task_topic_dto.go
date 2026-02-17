@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -205,6 +205,7 @@ func (o *FetchExternalTaskTopicDto) HasLocalVariables() bool {
 func (o *FetchExternalTaskTopicDto) SetLocalVariables(v bool) {
 	o.LocalVariables.Set(&v)
 }
+
 // SetLocalVariablesNil sets the value for LocalVariables to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetLocalVariablesNil() {
 	o.LocalVariables.Set(nil)
@@ -247,6 +248,7 @@ func (o *FetchExternalTaskTopicDto) HasBusinessKey() bool {
 func (o *FetchExternalTaskTopicDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -289,6 +291,7 @@ func (o *FetchExternalTaskTopicDto) HasProcessDefinitionId() bool {
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -364,6 +367,7 @@ func (o *FetchExternalTaskTopicDto) HasProcessDefinitionKey() bool {
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -439,6 +443,7 @@ func (o *FetchExternalTaskTopicDto) HasProcessDefinitionVersionTag() bool {
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionVersionTag(v string) {
 	o.ProcessDefinitionVersionTag.Set(&v)
 }
+
 // SetProcessDefinitionVersionTagNil sets the value for ProcessDefinitionVersionTag to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetProcessDefinitionVersionTagNil() {
 	o.ProcessDefinitionVersionTag.Set(nil)
@@ -481,6 +486,7 @@ func (o *FetchExternalTaskTopicDto) HasWithoutTenantId() bool {
 func (o *FetchExternalTaskTopicDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -588,6 +594,7 @@ func (o *FetchExternalTaskTopicDto) HasDeserializeValues() bool {
 func (o *FetchExternalTaskTopicDto) SetDeserializeValues(v bool) {
 	o.DeserializeValues.Set(&v)
 }
+
 // SetDeserializeValuesNil sets the value for DeserializeValues to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetDeserializeValuesNil() {
 	o.DeserializeValues.Set(nil)
@@ -630,6 +637,7 @@ func (o *FetchExternalTaskTopicDto) HasIncludeExtensionProperties() bool {
 func (o *FetchExternalTaskTopicDto) SetIncludeExtensionProperties(v bool) {
 	o.IncludeExtensionProperties.Set(&v)
 }
+
 // SetIncludeExtensionPropertiesNil sets the value for IncludeExtensionProperties to be an explicit nil
 func (o *FetchExternalTaskTopicDto) SetIncludeExtensionPropertiesNil() {
 	o.IncludeExtensionProperties.Set(nil)
@@ -641,7 +649,7 @@ func (o *FetchExternalTaskTopicDto) UnsetIncludeExtensionProperties() {
 }
 
 func (o FetchExternalTaskTopicDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -708,10 +716,10 @@ func (o *FetchExternalTaskTopicDto) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -767,5 +775,3 @@ func (v *NullableFetchExternalTaskTopicDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

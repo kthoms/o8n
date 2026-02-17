@@ -20,7 +20,7 @@ var _ MappedNullable = &FormDto{}
 // FormDto struct for FormDto
 type FormDto struct {
 	// The form key.
-	Key NullableString `json:"key,omitempty"`
+	Key             NullableString   `json:"key,omitempty"`
 	OperatonFormRef *OperatonFormRef `json:"operatonFormRef,omitempty"`
 	// The context path of the process application. If the task (or the process definition) does not belong to a process application deployment or a process definition at all, this property is not set.
 	ContextPath NullableString `json:"contextPath,omitempty"`
@@ -75,6 +75,7 @@ func (o *FormDto) HasKey() bool {
 func (o *FormDto) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *FormDto) SetKeyNil() {
 	o.Key.Set(nil)
@@ -149,6 +150,7 @@ func (o *FormDto) HasContextPath() bool {
 func (o *FormDto) SetContextPath(v string) {
 	o.ContextPath.Set(&v)
 }
+
 // SetContextPathNil sets the value for ContextPath to be an explicit nil
 func (o *FormDto) SetContextPathNil() {
 	o.ContextPath.Set(nil)
@@ -160,7 +162,7 @@ func (o *FormDto) UnsetContextPath() {
 }
 
 func (o FormDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -216,5 +218,3 @@ func (v *NullableFormDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

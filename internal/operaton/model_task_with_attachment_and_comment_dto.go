@@ -63,7 +63,7 @@ type TaskWithAttachmentAndCommentDto struct {
 	// Whether the task belongs to a process instance that is suspended.
 	Suspended NullableBool `json:"suspended,omitempty"`
 	// If not `null`, the form key for the task.
-	FormKey NullableString `json:"formKey,omitempty"`
+	FormKey         NullableString   `json:"formKey,omitempty"`
 	OperatonFormRef *OperatonFormRef `json:"operatonFormRef,omitempty"`
 	// If not `null`, the tenant id of the task.
 	TenantId NullableString `json:"tenantId,omitempty"`
@@ -157,6 +157,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -199,6 +200,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasName() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -241,6 +243,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasAssignee() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetAssignee(v string) {
 	o.Assignee.Set(&v)
 }
+
 // SetAssigneeNil sets the value for Assignee to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetAssigneeNil() {
 	o.Assignee.Set(nil)
@@ -283,6 +286,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasOwner() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetOwner(v string) {
 	o.Owner.Set(&v)
 }
+
 // SetOwnerNil sets the value for Owner to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetOwnerNil() {
 	o.Owner.Set(nil)
@@ -325,6 +329,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasCreated() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetCreated(v time.Time) {
 	o.Created.Set(&v)
 }
+
 // SetCreatedNil sets the value for Created to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetCreatedNil() {
 	o.Created.Set(nil)
@@ -367,6 +372,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasLastUpdated() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetLastUpdated(v time.Time) {
 	o.LastUpdated.Set(&v)
 }
+
 // SetLastUpdatedNil sets the value for LastUpdated to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetLastUpdatedNil() {
 	o.LastUpdated.Set(nil)
@@ -409,6 +415,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasDue() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetDue(v time.Time) {
 	o.Due.Set(&v)
 }
+
 // SetDueNil sets the value for Due to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetDueNil() {
 	o.Due.Set(nil)
@@ -451,6 +458,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasFollowUp() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetFollowUp(v time.Time) {
 	o.FollowUp.Set(&v)
 }
+
 // SetFollowUpNil sets the value for FollowUp to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetFollowUpNil() {
 	o.FollowUp.Set(nil)
@@ -493,6 +501,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasDelegationState() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetDelegationState(v string) {
 	o.DelegationState.Set(&v)
 }
+
 // SetDelegationStateNil sets the value for DelegationState to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetDelegationStateNil() {
 	o.DelegationState.Set(nil)
@@ -535,6 +544,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasDescription() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -577,6 +587,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasExecutionId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -619,6 +630,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasParentTaskId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetParentTaskId(v string) {
 	o.ParentTaskId.Set(&v)
 }
+
 // SetParentTaskIdNil sets the value for ParentTaskId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetParentTaskIdNil() {
 	o.ParentTaskId.Set(nil)
@@ -661,6 +673,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasPriority() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetPriority(v int32) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -703,6 +716,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasProcessDefinitionId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -745,6 +759,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasProcessInstanceId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -787,6 +802,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasCaseExecutionId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -829,6 +845,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasCaseDefinitionId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -871,6 +888,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasCaseInstanceId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -913,6 +931,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasTaskDefinitionKey() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetTaskDefinitionKey(v string) {
 	o.TaskDefinitionKey.Set(&v)
 }
+
 // SetTaskDefinitionKeyNil sets the value for TaskDefinitionKey to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetTaskDefinitionKeyNil() {
 	o.TaskDefinitionKey.Set(nil)
@@ -955,6 +974,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasSuspended() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -997,6 +1017,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasFormKey() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetFormKey(v string) {
 	o.FormKey.Set(&v)
 }
+
 // SetFormKeyNil sets the value for FormKey to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetFormKeyNil() {
 	o.FormKey.Set(nil)
@@ -1071,6 +1092,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasTenantId() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -1113,6 +1135,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasTaskState() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetTaskState(v string) {
 	o.TaskState.Set(&v)
 }
+
 // SetTaskStateNil sets the value for TaskState to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetTaskStateNil() {
 	o.TaskState.Set(nil)
@@ -1155,6 +1178,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasAttachment() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetAttachment(v bool) {
 	o.Attachment.Set(&v)
 }
+
 // SetAttachmentNil sets the value for Attachment to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetAttachmentNil() {
 	o.Attachment.Set(nil)
@@ -1197,6 +1221,7 @@ func (o *TaskWithAttachmentAndCommentDto) HasComment() bool {
 func (o *TaskWithAttachmentAndCommentDto) SetComment(v bool) {
 	o.Comment.Set(&v)
 }
+
 // SetCommentNil sets the value for Comment to be an explicit nil
 func (o *TaskWithAttachmentAndCommentDto) SetCommentNil() {
 	o.Comment.Set(nil)
@@ -1208,7 +1233,7 @@ func (o *TaskWithAttachmentAndCommentDto) UnsetComment() {
 }
 
 func (o TaskWithAttachmentAndCommentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1336,5 +1361,3 @@ func (v *NullableTaskWithAttachmentAndCommentDto) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

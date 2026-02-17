@@ -112,6 +112,7 @@ func (o *HistoricVariableInstanceQueryDto) HasVariableName() bool {
 func (o *HistoricVariableInstanceQueryDto) SetVariableName(v string) {
 	o.VariableName.Set(&v)
 }
+
 // SetVariableNameNil sets the value for VariableName to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetVariableNameNil() {
 	o.VariableName.Set(nil)
@@ -154,6 +155,7 @@ func (o *HistoricVariableInstanceQueryDto) HasVariableNameLike() bool {
 func (o *HistoricVariableInstanceQueryDto) SetVariableNameLike(v string) {
 	o.VariableNameLike.Set(&v)
 }
+
 // SetVariableNameLikeNil sets the value for VariableNameLike to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetVariableNameLikeNil() {
 	o.VariableNameLike.Set(nil)
@@ -228,6 +230,7 @@ func (o *HistoricVariableInstanceQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *HistoricVariableInstanceQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -270,6 +273,7 @@ func (o *HistoricVariableInstanceQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *HistoricVariableInstanceQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -345,6 +349,7 @@ func (o *HistoricVariableInstanceQueryDto) HasIncludeDeleted() bool {
 func (o *HistoricVariableInstanceQueryDto) SetIncludeDeleted(v bool) {
 	o.IncludeDeleted.Set(&v)
 }
+
 // SetIncludeDeletedNil sets the value for IncludeDeleted to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetIncludeDeletedNil() {
 	o.IncludeDeleted.Set(nil)
@@ -387,6 +392,7 @@ func (o *HistoricVariableInstanceQueryDto) HasProcessInstanceId() bool {
 func (o *HistoricVariableInstanceQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -462,6 +468,7 @@ func (o *HistoricVariableInstanceQueryDto) HasProcessDefinitionId() bool {
 func (o *HistoricVariableInstanceQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -504,6 +511,7 @@ func (o *HistoricVariableInstanceQueryDto) HasProcessDefinitionKey() bool {
 func (o *HistoricVariableInstanceQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -579,6 +587,7 @@ func (o *HistoricVariableInstanceQueryDto) HasCaseInstanceId() bool {
 func (o *HistoricVariableInstanceQueryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -786,6 +795,7 @@ func (o *HistoricVariableInstanceQueryDto) HasWithoutTenantId() bool {
 func (o *HistoricVariableInstanceQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *HistoricVariableInstanceQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -863,7 +873,7 @@ func (o *HistoricVariableInstanceQueryDto) SetSorting(v []HistoricVariableInstan
 }
 
 func (o HistoricVariableInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -973,5 +983,3 @@ func (v *NullableHistoricVariableInstanceQueryDto) UnmarshalJSON(src []byte) err
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

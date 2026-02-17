@@ -24,9 +24,9 @@ type SetRetriesForExternalTasksDto struct {
 	// The ids of the external tasks to set the number of retries for.
 	ExternalTaskIds []string `json:"externalTaskIds,omitempty"`
 	// The ids of process instances containing the tasks to set the number of retries for.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ExternalTaskQuery *ExternalTaskQueryDto `json:"externalTaskQuery,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ExternalTaskQuery            *ExternalTaskQueryDto            `json:"externalTaskQuery,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 }
 
@@ -79,6 +79,7 @@ func (o *SetRetriesForExternalTasksDto) HasRetries() bool {
 func (o *SetRetriesForExternalTasksDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *SetRetriesForExternalTasksDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -252,7 +253,7 @@ func (o *SetRetriesForExternalTasksDto) SetHistoricProcessInstanceQuery(v Histor
 }
 
 func (o SetRetriesForExternalTasksDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -317,5 +318,3 @@ func (v *NullableSetRetriesForExternalTasksDto) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -123,6 +123,7 @@ func (o *HistoricJobLogDto) HasId() bool {
 func (o *HistoricJobLogDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricJobLogDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -165,6 +166,7 @@ func (o *HistoricJobLogDto) HasTimestamp() bool {
 func (o *HistoricJobLogDto) SetTimestamp(v time.Time) {
 	o.Timestamp.Set(&v)
 }
+
 // SetTimestampNil sets the value for Timestamp to be an explicit nil
 func (o *HistoricJobLogDto) SetTimestampNil() {
 	o.Timestamp.Set(nil)
@@ -207,6 +209,7 @@ func (o *HistoricJobLogDto) HasRemovalTime() bool {
 func (o *HistoricJobLogDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricJobLogDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -249,6 +252,7 @@ func (o *HistoricJobLogDto) HasJobId() bool {
 func (o *HistoricJobLogDto) SetJobId(v string) {
 	o.JobId.Set(&v)
 }
+
 // SetJobIdNil sets the value for JobId to be an explicit nil
 func (o *HistoricJobLogDto) SetJobIdNil() {
 	o.JobId.Set(nil)
@@ -291,6 +295,7 @@ func (o *HistoricJobLogDto) HasJobDueDate() bool {
 func (o *HistoricJobLogDto) SetJobDueDate(v time.Time) {
 	o.JobDueDate.Set(&v)
 }
+
 // SetJobDueDateNil sets the value for JobDueDate to be an explicit nil
 func (o *HistoricJobLogDto) SetJobDueDateNil() {
 	o.JobDueDate.Set(nil)
@@ -333,6 +338,7 @@ func (o *HistoricJobLogDto) HasJobRetries() bool {
 func (o *HistoricJobLogDto) SetJobRetries(v int32) {
 	o.JobRetries.Set(&v)
 }
+
 // SetJobRetriesNil sets the value for JobRetries to be an explicit nil
 func (o *HistoricJobLogDto) SetJobRetriesNil() {
 	o.JobRetries.Set(nil)
@@ -375,6 +381,7 @@ func (o *HistoricJobLogDto) HasJobPriority() bool {
 func (o *HistoricJobLogDto) SetJobPriority(v int64) {
 	o.JobPriority.Set(&v)
 }
+
 // SetJobPriorityNil sets the value for JobPriority to be an explicit nil
 func (o *HistoricJobLogDto) SetJobPriorityNil() {
 	o.JobPriority.Set(nil)
@@ -417,6 +424,7 @@ func (o *HistoricJobLogDto) HasJobExceptionMessage() bool {
 func (o *HistoricJobLogDto) SetJobExceptionMessage(v string) {
 	o.JobExceptionMessage.Set(&v)
 }
+
 // SetJobExceptionMessageNil sets the value for JobExceptionMessage to be an explicit nil
 func (o *HistoricJobLogDto) SetJobExceptionMessageNil() {
 	o.JobExceptionMessage.Set(nil)
@@ -459,6 +467,7 @@ func (o *HistoricJobLogDto) HasFailedActivityId() bool {
 func (o *HistoricJobLogDto) SetFailedActivityId(v string) {
 	o.FailedActivityId.Set(&v)
 }
+
 // SetFailedActivityIdNil sets the value for FailedActivityId to be an explicit nil
 func (o *HistoricJobLogDto) SetFailedActivityIdNil() {
 	o.FailedActivityId.Set(nil)
@@ -501,6 +510,7 @@ func (o *HistoricJobLogDto) HasJobDefinitionId() bool {
 func (o *HistoricJobLogDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *HistoricJobLogDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -543,6 +553,7 @@ func (o *HistoricJobLogDto) HasJobDefinitionType() bool {
 func (o *HistoricJobLogDto) SetJobDefinitionType(v string) {
 	o.JobDefinitionType.Set(&v)
 }
+
 // SetJobDefinitionTypeNil sets the value for JobDefinitionType to be an explicit nil
 func (o *HistoricJobLogDto) SetJobDefinitionTypeNil() {
 	o.JobDefinitionType.Set(nil)
@@ -585,6 +596,7 @@ func (o *HistoricJobLogDto) HasJobDefinitionConfiguration() bool {
 func (o *HistoricJobLogDto) SetJobDefinitionConfiguration(v string) {
 	o.JobDefinitionConfiguration.Set(&v)
 }
+
 // SetJobDefinitionConfigurationNil sets the value for JobDefinitionConfiguration to be an explicit nil
 func (o *HistoricJobLogDto) SetJobDefinitionConfigurationNil() {
 	o.JobDefinitionConfiguration.Set(nil)
@@ -627,6 +639,7 @@ func (o *HistoricJobLogDto) HasActivityId() bool {
 func (o *HistoricJobLogDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *HistoricJobLogDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -669,6 +682,7 @@ func (o *HistoricJobLogDto) HasExecutionId() bool {
 func (o *HistoricJobLogDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *HistoricJobLogDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -711,6 +725,7 @@ func (o *HistoricJobLogDto) HasProcessInstanceId() bool {
 func (o *HistoricJobLogDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricJobLogDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -753,6 +768,7 @@ func (o *HistoricJobLogDto) HasProcessDefinitionId() bool {
 func (o *HistoricJobLogDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricJobLogDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -795,6 +811,7 @@ func (o *HistoricJobLogDto) HasProcessDefinitionKey() bool {
 func (o *HistoricJobLogDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricJobLogDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -837,6 +854,7 @@ func (o *HistoricJobLogDto) HasDeploymentId() bool {
 func (o *HistoricJobLogDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *HistoricJobLogDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -879,6 +897,7 @@ func (o *HistoricJobLogDto) HasRootProcessInstanceId() bool {
 func (o *HistoricJobLogDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricJobLogDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -921,6 +940,7 @@ func (o *HistoricJobLogDto) HasTenantId() bool {
 func (o *HistoricJobLogDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricJobLogDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -963,6 +983,7 @@ func (o *HistoricJobLogDto) HasHostname() bool {
 func (o *HistoricJobLogDto) SetHostname(v string) {
 	o.Hostname.Set(&v)
 }
+
 // SetHostnameNil sets the value for Hostname to be an explicit nil
 func (o *HistoricJobLogDto) SetHostnameNil() {
 	o.Hostname.Set(nil)
@@ -1005,6 +1026,7 @@ func (o *HistoricJobLogDto) HasBatchId() bool {
 func (o *HistoricJobLogDto) SetBatchId(v string) {
 	o.BatchId.Set(&v)
 }
+
 // SetBatchIdNil sets the value for BatchId to be an explicit nil
 func (o *HistoricJobLogDto) SetBatchIdNil() {
 	o.BatchId.Set(nil)
@@ -1047,6 +1069,7 @@ func (o *HistoricJobLogDto) HasCreationLog() bool {
 func (o *HistoricJobLogDto) SetCreationLog(v bool) {
 	o.CreationLog.Set(&v)
 }
+
 // SetCreationLogNil sets the value for CreationLog to be an explicit nil
 func (o *HistoricJobLogDto) SetCreationLogNil() {
 	o.CreationLog.Set(nil)
@@ -1089,6 +1112,7 @@ func (o *HistoricJobLogDto) HasFailureLog() bool {
 func (o *HistoricJobLogDto) SetFailureLog(v bool) {
 	o.FailureLog.Set(&v)
 }
+
 // SetFailureLogNil sets the value for FailureLog to be an explicit nil
 func (o *HistoricJobLogDto) SetFailureLogNil() {
 	o.FailureLog.Set(nil)
@@ -1131,6 +1155,7 @@ func (o *HistoricJobLogDto) HasSuccessLog() bool {
 func (o *HistoricJobLogDto) SetSuccessLog(v bool) {
 	o.SuccessLog.Set(&v)
 }
+
 // SetSuccessLogNil sets the value for SuccessLog to be an explicit nil
 func (o *HistoricJobLogDto) SetSuccessLogNil() {
 	o.SuccessLog.Set(nil)
@@ -1173,6 +1198,7 @@ func (o *HistoricJobLogDto) HasDeletionLog() bool {
 func (o *HistoricJobLogDto) SetDeletionLog(v bool) {
 	o.DeletionLog.Set(&v)
 }
+
 // SetDeletionLogNil sets the value for DeletionLog to be an explicit nil
 func (o *HistoricJobLogDto) SetDeletionLogNil() {
 	o.DeletionLog.Set(nil)
@@ -1184,7 +1210,7 @@ func (o *HistoricJobLogDto) UnsetDeletionLog() {
 }
 
 func (o HistoricJobLogDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1309,5 +1335,3 @@ func (v *NullableHistoricJobLogDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

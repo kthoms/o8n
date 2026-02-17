@@ -112,6 +112,7 @@ func (o *CorrelationMessageDto) HasMessageName() bool {
 func (o *CorrelationMessageDto) SetMessageName(v string) {
 	o.MessageName.Set(&v)
 }
+
 // SetMessageNameNil sets the value for MessageName to be an explicit nil
 func (o *CorrelationMessageDto) SetMessageNameNil() {
 	o.MessageName.Set(nil)
@@ -154,6 +155,7 @@ func (o *CorrelationMessageDto) HasBusinessKey() bool {
 func (o *CorrelationMessageDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *CorrelationMessageDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -196,6 +198,7 @@ func (o *CorrelationMessageDto) HasTenantId() bool {
 func (o *CorrelationMessageDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *CorrelationMessageDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -238,6 +241,7 @@ func (o *CorrelationMessageDto) HasWithoutTenantId() bool {
 func (o *CorrelationMessageDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *CorrelationMessageDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -280,6 +284,7 @@ func (o *CorrelationMessageDto) HasProcessInstanceId() bool {
 func (o *CorrelationMessageDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *CorrelationMessageDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -487,6 +492,7 @@ func (o *CorrelationMessageDto) HasAll() bool {
 func (o *CorrelationMessageDto) SetAll(v bool) {
 	o.All.Set(&v)
 }
+
 // SetAllNil sets the value for All to be an explicit nil
 func (o *CorrelationMessageDto) SetAllNil() {
 	o.All.Set(nil)
@@ -529,6 +535,7 @@ func (o *CorrelationMessageDto) HasResultEnabled() bool {
 func (o *CorrelationMessageDto) SetResultEnabled(v bool) {
 	o.ResultEnabled.Set(&v)
 }
+
 // SetResultEnabledNil sets the value for ResultEnabled to be an explicit nil
 func (o *CorrelationMessageDto) SetResultEnabledNil() {
 	o.ResultEnabled.Set(nil)
@@ -571,6 +578,7 @@ func (o *CorrelationMessageDto) HasVariablesInResultEnabled() bool {
 func (o *CorrelationMessageDto) SetVariablesInResultEnabled(v bool) {
 	o.VariablesInResultEnabled.Set(&v)
 }
+
 // SetVariablesInResultEnabledNil sets the value for VariablesInResultEnabled to be an explicit nil
 func (o *CorrelationMessageDto) SetVariablesInResultEnabledNil() {
 	o.VariablesInResultEnabled.Set(nil)
@@ -582,7 +590,7 @@ func (o *CorrelationMessageDto) UnsetVariablesInResultEnabled() {
 }
 
 func (o CorrelationMessageDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -668,5 +676,3 @@ func (v *NullableCorrelationMessageDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

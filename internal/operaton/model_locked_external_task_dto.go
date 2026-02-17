@@ -113,6 +113,7 @@ func (o *LockedExternalTaskDto) HasActivityId() bool {
 func (o *LockedExternalTaskDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *LockedExternalTaskDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -155,6 +156,7 @@ func (o *LockedExternalTaskDto) HasActivityInstanceId() bool {
 func (o *LockedExternalTaskDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *LockedExternalTaskDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -197,6 +199,7 @@ func (o *LockedExternalTaskDto) HasErrorMessage() bool {
 func (o *LockedExternalTaskDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *LockedExternalTaskDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -239,6 +242,7 @@ func (o *LockedExternalTaskDto) HasErrorDetails() bool {
 func (o *LockedExternalTaskDto) SetErrorDetails(v string) {
 	o.ErrorDetails.Set(&v)
 }
+
 // SetErrorDetailsNil sets the value for ErrorDetails to be an explicit nil
 func (o *LockedExternalTaskDto) SetErrorDetailsNil() {
 	o.ErrorDetails.Set(nil)
@@ -281,6 +285,7 @@ func (o *LockedExternalTaskDto) HasExecutionId() bool {
 func (o *LockedExternalTaskDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *LockedExternalTaskDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -323,6 +328,7 @@ func (o *LockedExternalTaskDto) HasId() bool {
 func (o *LockedExternalTaskDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *LockedExternalTaskDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -365,6 +371,7 @@ func (o *LockedExternalTaskDto) HasLockExpirationTime() bool {
 func (o *LockedExternalTaskDto) SetLockExpirationTime(v time.Time) {
 	o.LockExpirationTime.Set(&v)
 }
+
 // SetLockExpirationTimeNil sets the value for LockExpirationTime to be an explicit nil
 func (o *LockedExternalTaskDto) SetLockExpirationTimeNil() {
 	o.LockExpirationTime.Set(nil)
@@ -407,6 +414,7 @@ func (o *LockedExternalTaskDto) HasProcessDefinitionId() bool {
 func (o *LockedExternalTaskDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *LockedExternalTaskDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -449,6 +457,7 @@ func (o *LockedExternalTaskDto) HasProcessDefinitionKey() bool {
 func (o *LockedExternalTaskDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *LockedExternalTaskDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -491,6 +500,7 @@ func (o *LockedExternalTaskDto) HasProcessDefinitionVersionTag() bool {
 func (o *LockedExternalTaskDto) SetProcessDefinitionVersionTag(v string) {
 	o.ProcessDefinitionVersionTag.Set(&v)
 }
+
 // SetProcessDefinitionVersionTagNil sets the value for ProcessDefinitionVersionTag to be an explicit nil
 func (o *LockedExternalTaskDto) SetProcessDefinitionVersionTagNil() {
 	o.ProcessDefinitionVersionTag.Set(nil)
@@ -533,6 +543,7 @@ func (o *LockedExternalTaskDto) HasProcessInstanceId() bool {
 func (o *LockedExternalTaskDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *LockedExternalTaskDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -575,6 +586,7 @@ func (o *LockedExternalTaskDto) HasTenantId() bool {
 func (o *LockedExternalTaskDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *LockedExternalTaskDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -617,6 +629,7 @@ func (o *LockedExternalTaskDto) HasRetries() bool {
 func (o *LockedExternalTaskDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *LockedExternalTaskDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -659,6 +672,7 @@ func (o *LockedExternalTaskDto) HasSuspended() bool {
 func (o *LockedExternalTaskDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *LockedExternalTaskDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -701,6 +715,7 @@ func (o *LockedExternalTaskDto) HasWorkerId() bool {
 func (o *LockedExternalTaskDto) SetWorkerId(v string) {
 	o.WorkerId.Set(&v)
 }
+
 // SetWorkerIdNil sets the value for WorkerId to be an explicit nil
 func (o *LockedExternalTaskDto) SetWorkerIdNil() {
 	o.WorkerId.Set(nil)
@@ -743,6 +758,7 @@ func (o *LockedExternalTaskDto) HasPriority() bool {
 func (o *LockedExternalTaskDto) SetPriority(v int64) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *LockedExternalTaskDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -785,6 +801,7 @@ func (o *LockedExternalTaskDto) HasTopicName() bool {
 func (o *LockedExternalTaskDto) SetTopicName(v string) {
 	o.TopicName.Set(&v)
 }
+
 // SetTopicNameNil sets the value for TopicName to be an explicit nil
 func (o *LockedExternalTaskDto) SetTopicNameNil() {
 	o.TopicName.Set(nil)
@@ -827,6 +844,7 @@ func (o *LockedExternalTaskDto) HasBusinessKey() bool {
 func (o *LockedExternalTaskDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *LockedExternalTaskDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -934,6 +952,7 @@ func (o *LockedExternalTaskDto) HasCreateTime() bool {
 func (o *LockedExternalTaskDto) SetCreateTime(v time.Time) {
 	o.CreateTime.Set(&v)
 }
+
 // SetCreateTimeNil sets the value for CreateTime to be an explicit nil
 func (o *LockedExternalTaskDto) SetCreateTimeNil() {
 	o.CreateTime.Set(nil)
@@ -945,7 +964,7 @@ func (o *LockedExternalTaskDto) UnsetCreateTime() {
 }
 
 func (o LockedExternalTaskDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1055,5 +1074,3 @@ func (v *NullableLockedExternalTaskDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

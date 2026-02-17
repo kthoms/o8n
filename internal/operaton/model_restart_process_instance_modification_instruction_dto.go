@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -105,6 +105,7 @@ func (o *RestartProcessInstanceModificationInstructionDto) HasActivityId() bool 
 func (o *RestartProcessInstanceModificationInstructionDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *RestartProcessInstanceModificationInstructionDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -147,6 +148,7 @@ func (o *RestartProcessInstanceModificationInstructionDto) HasTransitionId() boo
 func (o *RestartProcessInstanceModificationInstructionDto) SetTransitionId(v string) {
 	o.TransitionId.Set(&v)
 }
+
 // SetTransitionIdNil sets the value for TransitionId to be an explicit nil
 func (o *RestartProcessInstanceModificationInstructionDto) SetTransitionIdNil() {
 	o.TransitionId.Set(nil)
@@ -158,7 +160,7 @@ func (o *RestartProcessInstanceModificationInstructionDto) UnsetTransitionId() {
 }
 
 func (o RestartProcessInstanceModificationInstructionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -190,10 +192,10 @@ func (o *RestartProcessInstanceModificationInstructionDto) UnmarshalJSON(data []
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -249,5 +251,3 @@ func (v *NullableRestartProcessInstanceModificationInstructionDto) UnmarshalJSON
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

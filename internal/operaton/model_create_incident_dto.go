@@ -76,6 +76,7 @@ func (o *CreateIncidentDto) HasIncidentType() bool {
 func (o *CreateIncidentDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *CreateIncidentDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -118,6 +119,7 @@ func (o *CreateIncidentDto) HasConfiguration() bool {
 func (o *CreateIncidentDto) SetConfiguration(v string) {
 	o.Configuration.Set(&v)
 }
+
 // SetConfigurationNil sets the value for Configuration to be an explicit nil
 func (o *CreateIncidentDto) SetConfigurationNil() {
 	o.Configuration.Set(nil)
@@ -160,6 +162,7 @@ func (o *CreateIncidentDto) HasMessage() bool {
 func (o *CreateIncidentDto) SetMessage(v string) {
 	o.Message.Set(&v)
 }
+
 // SetMessageNil sets the value for Message to be an explicit nil
 func (o *CreateIncidentDto) SetMessageNil() {
 	o.Message.Set(nil)
@@ -171,7 +174,7 @@ func (o *CreateIncidentDto) UnsetMessage() {
 }
 
 func (o CreateIncidentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableCreateIncidentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

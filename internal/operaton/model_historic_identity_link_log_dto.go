@@ -97,6 +97,7 @@ func (o *HistoricIdentityLinkLogDto) HasId() bool {
 func (o *HistoricIdentityLinkLogDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -139,6 +140,7 @@ func (o *HistoricIdentityLinkLogDto) HasTime() bool {
 func (o *HistoricIdentityLinkLogDto) SetTime(v time.Time) {
 	o.Time.Set(&v)
 }
+
 // SetTimeNil sets the value for Time to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetTimeNil() {
 	o.Time.Set(nil)
@@ -181,6 +183,7 @@ func (o *HistoricIdentityLinkLogDto) HasType() bool {
 func (o *HistoricIdentityLinkLogDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -223,6 +226,7 @@ func (o *HistoricIdentityLinkLogDto) HasUserId() bool {
 func (o *HistoricIdentityLinkLogDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -265,6 +269,7 @@ func (o *HistoricIdentityLinkLogDto) HasGroupId() bool {
 func (o *HistoricIdentityLinkLogDto) SetGroupId(v string) {
 	o.GroupId.Set(&v)
 }
+
 // SetGroupIdNil sets the value for GroupId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetGroupIdNil() {
 	o.GroupId.Set(nil)
@@ -307,6 +312,7 @@ func (o *HistoricIdentityLinkLogDto) HasTaskId() bool {
 func (o *HistoricIdentityLinkLogDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -349,6 +355,7 @@ func (o *HistoricIdentityLinkLogDto) HasProcessDefinitionId() bool {
 func (o *HistoricIdentityLinkLogDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -391,6 +398,7 @@ func (o *HistoricIdentityLinkLogDto) HasProcessDefinitionKey() bool {
 func (o *HistoricIdentityLinkLogDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -433,6 +441,7 @@ func (o *HistoricIdentityLinkLogDto) HasOperationType() bool {
 func (o *HistoricIdentityLinkLogDto) SetOperationType(v string) {
 	o.OperationType.Set(&v)
 }
+
 // SetOperationTypeNil sets the value for OperationType to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetOperationTypeNil() {
 	o.OperationType.Set(nil)
@@ -475,6 +484,7 @@ func (o *HistoricIdentityLinkLogDto) HasAssignerId() bool {
 func (o *HistoricIdentityLinkLogDto) SetAssignerId(v string) {
 	o.AssignerId.Set(&v)
 }
+
 // SetAssignerIdNil sets the value for AssignerId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetAssignerIdNil() {
 	o.AssignerId.Set(nil)
@@ -517,6 +527,7 @@ func (o *HistoricIdentityLinkLogDto) HasTenantId() bool {
 func (o *HistoricIdentityLinkLogDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -559,6 +570,7 @@ func (o *HistoricIdentityLinkLogDto) HasRemovalTime() bool {
 func (o *HistoricIdentityLinkLogDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -601,6 +613,7 @@ func (o *HistoricIdentityLinkLogDto) HasRootProcessInstanceId() bool {
 func (o *HistoricIdentityLinkLogDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricIdentityLinkLogDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -612,7 +625,7 @@ func (o *HistoricIdentityLinkLogDto) UnsetRootProcessInstanceId() {
 }
 
 func (o HistoricIdentityLinkLogDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -698,5 +711,3 @@ func (v *NullableHistoricIdentityLinkLogDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

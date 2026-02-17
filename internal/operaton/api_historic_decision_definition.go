@@ -18,22 +18,21 @@ import (
 	"net/url"
 )
 
-
 // HistoricDecisionDefinitionAPIService HistoricDecisionDefinitionAPI service
 type HistoricDecisionDefinitionAPIService service
 
 type ApiGetCleanableHistoricDecisionInstanceReportRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionDefinitionAPIService
-	decisionDefinitionIdIn *string
+	ctx                     context.Context
+	ApiService              *HistoricDecisionDefinitionAPIService
+	decisionDefinitionIdIn  *string
 	decisionDefinitionKeyIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	compact *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	tenantIdIn              *string
+	withoutTenantId         *bool
+	compact                 *bool
+	sortBy                  *string
+	sortOrder               *string
+	firstResult             *int32
+	maxResults              *int32
 }
 
 // Filter by decision definition ids. Must be a comma-separated list of decision definition ids.
@@ -99,32 +98,33 @@ GetCleanableHistoricDecisionInstanceReport Get Cleanable Decision Instance Repor
 
 Retrieves a report about a decision definition and finished decision instances
 relevant to history cleanup (see
-[History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)), 
+[History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)),
 so that you can tune the history time to live.
 These reports include the count of the finished historic decision
 instances, cleanable decision instances and basic decision definition
 data - id, key, name and version.
-The size of the result set can be retrieved by using the 
+The size of the result set can be retrieved by using the
 [Get Cleanable Decision Instance Report Count](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-definition/get-cleanable-decision-instance-report-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricDecisionInstanceReportRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricDecisionInstanceReportRequest
 */
 func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInstanceReport(ctx context.Context) ApiGetCleanableHistoricDecisionInstanceReportRequest {
 	return ApiGetCleanableHistoricDecisionInstanceReportRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []CleanableHistoricDecisionInstanceReportResultDto
+//
+//	@return []CleanableHistoricDecisionInstanceReportResultDto
 func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInstanceReportExecute(r ApiGetCleanableHistoricDecisionInstanceReportRequest) ([]CleanableHistoricDecisionInstanceReportResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CleanableHistoricDecisionInstanceReportResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CleanableHistoricDecisionInstanceReportResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionDefinitionAPIService.GetCleanableHistoricDecisionInstanceReport")
@@ -211,8 +211,8 @@ func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInsta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -230,13 +230,13 @@ func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInsta
 }
 
 type ApiGetCleanableHistoricDecisionInstanceReportCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionDefinitionAPIService
-	decisionDefinitionIdIn *string
+	ctx                     context.Context
+	ApiService              *HistoricDecisionDefinitionAPIService
+	decisionDefinitionIdIn  *string
 	decisionDefinitionKeyIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	compact *bool
+	tenantIdIn              *string
+	withoutTenantId         *bool
+	compact                 *bool
 }
 
 // Filter by decision definition ids. Must be a comma-separated list of decision definition ids.
@@ -279,27 +279,28 @@ GetCleanableHistoricDecisionInstanceReportCount Get Cleanable Decision Instance 
 Queries for the number of report results about a decision definition and finished
 decision instances relevant to history cleanup (see
 [History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)).
-Takes the same parameters as the [Get Cleanable Decision Instance Report](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-definition/get-cleanable-decision-instance-report/) 
+Takes the same parameters as the [Get Cleanable Decision Instance Report](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-definition/get-cleanable-decision-instance-report/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricDecisionInstanceReportCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricDecisionInstanceReportCountRequest
 */
 func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInstanceReportCount(ctx context.Context) ApiGetCleanableHistoricDecisionInstanceReportCountRequest {
 	return ApiGetCleanableHistoricDecisionInstanceReportCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInstanceReportCountExecute(r ApiGetCleanableHistoricDecisionInstanceReportCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionDefinitionAPIService.GetCleanableHistoricDecisionInstanceReportCount")
@@ -374,8 +375,8 @@ func (a *HistoricDecisionDefinitionAPIService) GetCleanableHistoricDecisionInsta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

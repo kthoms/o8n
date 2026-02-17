@@ -16,18 +16,17 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // DecisionRequirementsDefinitionAPIService DecisionRequirementsDefinitionAPI service
 type DecisionRequirementsDefinitionAPIService service
 
 type ApiGetDecisionRequirementsDefinitionByIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionByIdRequest) Execute() (*DecisionRequirementsDefinitionDto, *http.Response, error) {
@@ -40,26 +39,27 @@ GetDecisionRequirementsDefinitionById Get Decision Requirements Definition by ID
 Retrieves a decision requirements definition according to the
 `DecisionRequirementsDefinition` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the decision requirements definition to be retrieved.
- @return ApiGetDecisionRequirementsDefinitionByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the decision requirements definition to be retrieved.
+	@return ApiGetDecisionRequirementsDefinitionByIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionById(ctx context.Context, id string) ApiGetDecisionRequirementsDefinitionByIdRequest {
 	return ApiGetDecisionRequirementsDefinitionByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionDto
+//
+//	@return DecisionRequirementsDefinitionDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionByIdExecute(r ApiGetDecisionRequirementsDefinitionByIdRequest) (*DecisionRequirementsDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionById")
@@ -120,8 +120,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -139,9 +139,9 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionByKeyRequest) Execute() (*DecisionRequirementsDefinitionDto, *http.Response, error) {
@@ -152,30 +152,31 @@ func (r ApiGetDecisionRequirementsDefinitionByKeyRequest) Execute() (*DecisionRe
 GetDecisionRequirementsDefinitionByKey Get Decision Requirements Definition by Key
 
 Retrieves a decision requirements definition according to the
-`DecisionRequirementsDefinition` interface in the engine. 
-Returns the latest version of the decision requirements definition 
+`DecisionRequirementsDefinition` interface in the engine.
+Returns the latest version of the decision requirements definition
 which belongs to no tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @return ApiGetDecisionRequirementsDefinitionByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@return ApiGetDecisionRequirementsDefinitionByKeyRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionByKey(ctx context.Context, key string) ApiGetDecisionRequirementsDefinitionByKeyRequest {
 	return ApiGetDecisionRequirementsDefinitionByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionDto
+//
+//	@return DecisionRequirementsDefinitionDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionByKeyExecute(r ApiGetDecisionRequirementsDefinitionByKeyRequest) (*DecisionRequirementsDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionByKey")
@@ -236,8 +237,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -255,10 +256,10 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest) Execute() (*DecisionRequirementsDefinitionDto, *http.Response, error) {
@@ -270,31 +271,32 @@ GetDecisionRequirementsDefinitionByKeyAndTenantId Get Decision Requirements Defi
 
 Retrieves a decision requirements definition according to the
 `DecisionRequirementsDefinition` interface in the engine.
-Returns the latest version of the decision requirements definition 
+Returns the latest version of the decision requirements definition
 for a tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant to which the decision requirements definition belongs to.
- @return ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant to which the decision requirements definition belongs to.
+	@return ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest {
 	return ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionDto
+//
+//	@return DecisionRequirementsDefinitionDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionByKeyAndTenantIdExecute(r ApiGetDecisionRequirementsDefinitionByKeyAndTenantIdRequest) (*DecisionRequirementsDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionByKeyAndTenantId")
@@ -356,8 +358,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -375,9 +377,9 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDiagramByIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDiagramByIdRequest) Execute() (*os.File, *http.Response, error) {
@@ -389,26 +391,27 @@ GetDecisionRequirementsDefinitionDiagramById Get Decision Requirements Diagram b
 
 Retrieves the diagram of a decision requirements definition.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the decision requirements definition.
- @return ApiGetDecisionRequirementsDefinitionDiagramByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the decision requirements definition.
+	@return ApiGetDecisionRequirementsDefinitionDiagramByIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramById(ctx context.Context, id string) ApiGetDecisionRequirementsDefinitionDiagramByIdRequest {
 	return ApiGetDecisionRequirementsDefinitionDiagramByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramByIdExecute(r ApiGetDecisionRequirementsDefinitionDiagramByIdRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDiagramById")
@@ -469,8 +472,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -488,9 +491,9 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest) Execute() (*os.File, *http.Response, error) {
@@ -501,29 +504,30 @@ func (r ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest) Execute() (*os.
 GetDecisionRequirementsDefinitionDiagramByKey Get Decision Requirements Diagram by Key
 
 Retrieves the diagram of a decision requirements definition.
-Returns the diagram for the latest version of the decision requirements 
+Returns the diagram for the latest version of the decision requirements
 definition which belongs to no tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @return ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@return ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramByKey(ctx context.Context, key string) ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest {
 	return ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramByKeyExecute(r ApiGetDecisionRequirementsDefinitionDiagramByKeyRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDiagramByKey")
@@ -584,8 +588,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -603,10 +607,10 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest) Execute() (*os.File, *http.Response, error) {
@@ -617,31 +621,32 @@ func (r ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest) Exec
 GetDecisionRequirementsDefinitionDiagramByKeyAndTenantId Get Decision Requirements Diagram by Key and Tenant ID
 
 Retrieves the diagram of a decision requirements definition.
-Returns the diagram of the latest version of the decision requirements 
+Returns the diagram of the latest version of the decision requirements
 definition for a tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant to which the decision requirements definition belongs to.
- @return ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant to which the decision requirements definition belongs to.
+	@return ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest {
 	return ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdExecute(r ApiGetDecisionRequirementsDefinitionDiagramByKeyAndTenantIdRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDiagramByKeyAndTenantId")
@@ -703,8 +708,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -722,9 +727,9 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest) Execute() (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
@@ -736,26 +741,27 @@ GetDecisionRequirementsDefinitionDmnXmlById Get DMN XML by ID
 
 Retrieves the DMN XML of a decision requirements definition.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the decision requirements definition.
- @return ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the decision requirements definition.
+	@return ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlById(ctx context.Context, id string) ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest {
 	return ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionXmlDto
+//
+//	@return DecisionRequirementsDefinitionXmlDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlByIdExecute(r ApiGetDecisionRequirementsDefinitionDmnXmlByIdRequest) (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionXmlDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionXmlDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDmnXmlById")
@@ -816,8 +822,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -835,9 +841,9 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest) Execute() (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
@@ -848,29 +854,30 @@ func (r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest) Execute() (*Deci
 GetDecisionRequirementsDefinitionDmnXmlByKey Get DMN XML by Key
 
 Retrieves the DMN XML of a decision requirements definition.
-Returns the XML for the latest version of the decision requirements 
+Returns the XML for the latest version of the decision requirements
 definition which belongs to no tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlByKey(ctx context.Context, key string) ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest {
 	return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionXmlDto
+//
+//	@return DecisionRequirementsDefinitionXmlDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlByKeyExecute(r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyRequest) (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionXmlDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionXmlDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDmnXmlByKey")
@@ -931,8 +938,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -950,10 +957,10 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DecisionRequirementsDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest) Execute() (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
@@ -964,31 +971,32 @@ func (r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest) Execu
 GetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantId Get DMN XML by Key and Tenant ID
 
 Retrieves the DMN XML of a decision requirements definition.
-Returns the XML of the latest version of the decision requirements 
+Returns the XML of the latest version of the decision requirements
 definition for a tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant to which the decision requirements definition belongs to.
- @return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the decision requirements definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant to which the decision requirements definition belongs to.
+	@return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest {
 	return ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return DecisionRequirementsDefinitionXmlDto
+//
+//	@return DecisionRequirementsDefinitionXmlDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdExecute(r ApiGetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantIdRequest) (*DecisionRequirementsDefinitionXmlDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DecisionRequirementsDefinitionXmlDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DecisionRequirementsDefinitionXmlDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionDmnXmlByKeyAndTenantId")
@@ -1050,8 +1058,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1069,28 +1077,28 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionsRequest struct {
-	ctx context.Context
-	ApiService *DecisionRequirementsDefinitionAPIService
-	decisionRequirementsDefinitionId *string
-	decisionRequirementsDefinitionIdIn *string
-	name *string
-	nameLike *string
-	deploymentId *string
-	key *string
-	keyLike *string
-	category *string
-	categoryLike *string
-	version *int32
-	latestVersion *bool
-	resourceName *string
-	resourceNameLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                                   context.Context
+	ApiService                                            *DecisionRequirementsDefinitionAPIService
+	decisionRequirementsDefinitionId                      *string
+	decisionRequirementsDefinitionIdIn                    *string
+	name                                                  *string
+	nameLike                                              *string
+	deploymentId                                          *string
+	key                                                   *string
+	keyLike                                               *string
+	category                                              *string
+	categoryLike                                          *string
+	version                                               *int32
+	latestVersion                                         *bool
+	resourceName                                          *string
+	resourceNameLike                                      *string
+	tenantIdIn                                            *string
+	withoutTenantId                                       *bool
 	includeDecisionRequirementsDefinitionsWithoutTenantId *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy                                                *string
+	sortOrder                                             *string
+	firstResult                                           *int32
+	maxResults                                            *int32
 }
 
 // Filter by decision requirements definition id.
@@ -1226,24 +1234,25 @@ key or version.  The size of the result set can be retrieved by using the
 [Get Decision Requirements Definition Count](https://docs.operaton.org/manual/1.0/reference/rest/decision-requirements-definition/get-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetDecisionRequirementsDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetDecisionRequirementsDefinitionsRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitions(ctx context.Context) ApiGetDecisionRequirementsDefinitionsRequest {
 	return ApiGetDecisionRequirementsDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []DecisionRequirementsDefinitionDto
+//
+//	@return []DecisionRequirementsDefinitionDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionsExecute(r ApiGetDecisionRequirementsDefinitionsRequest) ([]DecisionRequirementsDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []DecisionRequirementsDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []DecisionRequirementsDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitions")
@@ -1363,8 +1372,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1382,23 +1391,23 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 }
 
 type ApiGetDecisionRequirementsDefinitionsCountRequest struct {
-	ctx context.Context
-	ApiService *DecisionRequirementsDefinitionAPIService
-	decisionRequirementsDefinitionId *string
-	decisionRequirementsDefinitionIdIn *string
-	name *string
-	nameLike *string
-	deploymentId *string
-	key *string
-	keyLike *string
-	category *string
-	categoryLike *string
-	version *int32
-	latestVersion *bool
-	resourceName *string
-	resourceNameLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                                   context.Context
+	ApiService                                            *DecisionRequirementsDefinitionAPIService
+	decisionRequirementsDefinitionId                      *string
+	decisionRequirementsDefinitionIdIn                    *string
+	name                                                  *string
+	nameLike                                              *string
+	deploymentId                                          *string
+	key                                                   *string
+	keyLike                                               *string
+	category                                              *string
+	categoryLike                                          *string
+	version                                               *int32
+	latestVersion                                         *bool
+	resourceName                                          *string
+	resourceNameLike                                      *string
+	tenantIdIn                                            *string
+	withoutTenantId                                       *bool
 	includeDecisionRequirementsDefinitionsWithoutTenantId *bool
 }
 
@@ -1511,24 +1520,25 @@ Takes the same filtering parameters as the
 [Get Decision Requirements Definitions](https://docs.operaton.org/manual/1.0/reference/rest/decision-requirements-definition/get-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetDecisionRequirementsDefinitionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetDecisionRequirementsDefinitionsCountRequest
 */
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionsCount(ctx context.Context) ApiGetDecisionRequirementsDefinitionsCountRequest {
 	return ApiGetDecisionRequirementsDefinitionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefinitionsCountExecute(r ApiGetDecisionRequirementsDefinitionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DecisionRequirementsDefinitionAPIService.GetDecisionRequirementsDefinitionsCount")
@@ -1636,8 +1646,8 @@ func (a *DecisionRequirementsDefinitionAPIService) GetDecisionRequirementsDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

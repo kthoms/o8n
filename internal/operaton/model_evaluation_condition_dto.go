@@ -113,6 +113,7 @@ func (o *EvaluationConditionDto) HasBusinessKey() bool {
 func (o *EvaluationConditionDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *EvaluationConditionDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -155,6 +156,7 @@ func (o *EvaluationConditionDto) HasTenantId() bool {
 func (o *EvaluationConditionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *EvaluationConditionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -197,6 +199,7 @@ func (o *EvaluationConditionDto) HasWithoutTenantId() bool {
 func (o *EvaluationConditionDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *EvaluationConditionDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -239,6 +242,7 @@ func (o *EvaluationConditionDto) HasProcessDefinitionId() bool {
 func (o *EvaluationConditionDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *EvaluationConditionDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -250,7 +254,7 @@ func (o *EvaluationConditionDto) UnsetProcessDefinitionId() {
 }
 
 func (o EvaluationConditionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -312,5 +316,3 @@ func (v *NullableEvaluationConditionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

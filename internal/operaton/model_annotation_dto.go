@@ -72,6 +72,7 @@ func (o *AnnotationDto) HasAnnotation() bool {
 func (o *AnnotationDto) SetAnnotation(v string) {
 	o.Annotation.Set(&v)
 }
+
 // SetAnnotationNil sets the value for Annotation to be an explicit nil
 func (o *AnnotationDto) SetAnnotationNil() {
 	o.Annotation.Set(nil)
@@ -83,7 +84,7 @@ func (o *AnnotationDto) UnsetAnnotation() {
 }
 
 func (o AnnotationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableAnnotationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

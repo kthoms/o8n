@@ -132,6 +132,7 @@ func (o *ProcessInstanceQueryDto) HasDeploymentId() bool {
 func (o *ProcessInstanceQueryDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -174,6 +175,7 @@ func (o *ProcessInstanceQueryDto) HasProcessDefinitionId() bool {
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -216,6 +218,7 @@ func (o *ProcessInstanceQueryDto) HasProcessDefinitionKey() bool {
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -324,6 +327,7 @@ func (o *ProcessInstanceQueryDto) HasBusinessKey() bool {
 func (o *ProcessInstanceQueryDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -366,6 +370,7 @@ func (o *ProcessInstanceQueryDto) HasBusinessKeyLike() bool {
 func (o *ProcessInstanceQueryDto) SetBusinessKeyLike(v string) {
 	o.BusinessKeyLike.Set(&v)
 }
+
 // SetBusinessKeyLikeNil sets the value for BusinessKeyLike to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetBusinessKeyLikeNil() {
 	o.BusinessKeyLike.Set(nil)
@@ -408,6 +413,7 @@ func (o *ProcessInstanceQueryDto) HasCaseInstanceId() bool {
 func (o *ProcessInstanceQueryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -450,6 +456,7 @@ func (o *ProcessInstanceQueryDto) HasSuperProcessInstance() bool {
 func (o *ProcessInstanceQueryDto) SetSuperProcessInstance(v string) {
 	o.SuperProcessInstance.Set(&v)
 }
+
 // SetSuperProcessInstanceNil sets the value for SuperProcessInstance to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetSuperProcessInstanceNil() {
 	o.SuperProcessInstance.Set(nil)
@@ -492,6 +499,7 @@ func (o *ProcessInstanceQueryDto) HasSubProcessInstance() bool {
 func (o *ProcessInstanceQueryDto) SetSubProcessInstance(v string) {
 	o.SubProcessInstance.Set(&v)
 }
+
 // SetSubProcessInstanceNil sets the value for SubProcessInstance to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetSubProcessInstanceNil() {
 	o.SubProcessInstance.Set(nil)
@@ -534,6 +542,7 @@ func (o *ProcessInstanceQueryDto) HasSuperCaseInstance() bool {
 func (o *ProcessInstanceQueryDto) SetSuperCaseInstance(v string) {
 	o.SuperCaseInstance.Set(&v)
 }
+
 // SetSuperCaseInstanceNil sets the value for SuperCaseInstance to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetSuperCaseInstanceNil() {
 	o.SuperCaseInstance.Set(nil)
@@ -576,6 +585,7 @@ func (o *ProcessInstanceQueryDto) HasSubCaseInstance() bool {
 func (o *ProcessInstanceQueryDto) SetSubCaseInstance(v string) {
 	o.SubCaseInstance.Set(&v)
 }
+
 // SetSubCaseInstanceNil sets the value for SubCaseInstance to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetSubCaseInstanceNil() {
 	o.SubCaseInstance.Set(nil)
@@ -618,6 +628,7 @@ func (o *ProcessInstanceQueryDto) HasActive() bool {
 func (o *ProcessInstanceQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -660,6 +671,7 @@ func (o *ProcessInstanceQueryDto) HasSuspended() bool {
 func (o *ProcessInstanceQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -735,6 +747,7 @@ func (o *ProcessInstanceQueryDto) HasWithIncident() bool {
 func (o *ProcessInstanceQueryDto) SetWithIncident(v bool) {
 	o.WithIncident.Set(&v)
 }
+
 // SetWithIncidentNil sets the value for WithIncident to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetWithIncidentNil() {
 	o.WithIncident.Set(nil)
@@ -777,6 +790,7 @@ func (o *ProcessInstanceQueryDto) HasIncidentId() bool {
 func (o *ProcessInstanceQueryDto) SetIncidentId(v string) {
 	o.IncidentId.Set(&v)
 }
+
 // SetIncidentIdNil sets the value for IncidentId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetIncidentIdNil() {
 	o.IncidentId.Set(nil)
@@ -819,6 +833,7 @@ func (o *ProcessInstanceQueryDto) HasIncidentType() bool {
 func (o *ProcessInstanceQueryDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -861,6 +876,7 @@ func (o *ProcessInstanceQueryDto) HasIncidentMessage() bool {
 func (o *ProcessInstanceQueryDto) SetIncidentMessage(v string) {
 	o.IncidentMessage.Set(&v)
 }
+
 // SetIncidentMessageNil sets the value for IncidentMessage to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetIncidentMessageNil() {
 	o.IncidentMessage.Set(nil)
@@ -903,6 +919,7 @@ func (o *ProcessInstanceQueryDto) HasIncidentMessageLike() bool {
 func (o *ProcessInstanceQueryDto) SetIncidentMessageLike(v string) {
 	o.IncidentMessageLike.Set(&v)
 }
+
 // SetIncidentMessageLikeNil sets the value for IncidentMessageLike to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetIncidentMessageLikeNil() {
 	o.IncidentMessageLike.Set(nil)
@@ -978,6 +995,7 @@ func (o *ProcessInstanceQueryDto) HasWithoutTenantId() bool {
 func (o *ProcessInstanceQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -1020,6 +1038,7 @@ func (o *ProcessInstanceQueryDto) HasProcessDefinitionWithoutTenantId() bool {
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionWithoutTenantId(v bool) {
 	o.ProcessDefinitionWithoutTenantId.Set(&v)
 }
+
 // SetProcessDefinitionWithoutTenantIdNil sets the value for ProcessDefinitionWithoutTenantId to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetProcessDefinitionWithoutTenantIdNil() {
 	o.ProcessDefinitionWithoutTenantId.Set(nil)
@@ -1095,6 +1114,7 @@ func (o *ProcessInstanceQueryDto) HasRootProcessInstances() bool {
 func (o *ProcessInstanceQueryDto) SetRootProcessInstances(v bool) {
 	o.RootProcessInstances.Set(&v)
 }
+
 // SetRootProcessInstancesNil sets the value for RootProcessInstances to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetRootProcessInstancesNil() {
 	o.RootProcessInstances.Set(nil)
@@ -1137,6 +1157,7 @@ func (o *ProcessInstanceQueryDto) HasLeafProcessInstances() bool {
 func (o *ProcessInstanceQueryDto) SetLeafProcessInstances(v bool) {
 	o.LeafProcessInstances.Set(&v)
 }
+
 // SetLeafProcessInstancesNil sets the value for LeafProcessInstances to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetLeafProcessInstancesNil() {
 	o.LeafProcessInstances.Set(nil)
@@ -1212,6 +1233,7 @@ func (o *ProcessInstanceQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *ProcessInstanceQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -1254,6 +1276,7 @@ func (o *ProcessInstanceQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *ProcessInstanceQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *ProcessInstanceQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -1331,7 +1354,7 @@ func (o *ProcessInstanceQueryDto) SetSorting(v []ProcessInstanceQueryDtoSortingI
 }
 
 func (o ProcessInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1471,5 +1494,3 @@ func (v *NullableProcessInstanceQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

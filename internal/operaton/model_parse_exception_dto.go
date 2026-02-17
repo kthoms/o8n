@@ -78,6 +78,7 @@ func (o *ParseExceptionDto) HasType() bool {
 func (o *ParseExceptionDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *ParseExceptionDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -120,6 +121,7 @@ func (o *ParseExceptionDto) HasMessage() bool {
 func (o *ParseExceptionDto) SetMessage(v string) {
 	o.Message.Set(&v)
 }
+
 // SetMessageNil sets the value for Message to be an explicit nil
 func (o *ParseExceptionDto) SetMessageNil() {
 	o.Message.Set(nil)
@@ -196,7 +198,7 @@ func (o *ParseExceptionDto) SetDetails(v map[string]ResourceReportDto) {
 }
 
 func (o ParseExceptionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -255,5 +257,3 @@ func (v *NullableParseExceptionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

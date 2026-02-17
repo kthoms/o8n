@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // HistoryCleanupAPIService HistoryCleanupAPI service
 type HistoryCleanupAPIService service
 
 type ApiCleanupAsyncRequest struct {
-	ctx context.Context
-	ApiService *HistoryCleanupAPIService
+	ctx            context.Context
+	ApiService     *HistoryCleanupAPIService
 	immediatelyDue *bool
 }
 
@@ -50,24 +49,25 @@ Since version `7.9.0` it is possible to configure multiple
 [`GET /history/cleanup/jobs`](https://docs.operaton.org/manual/1.0/reference/rest/history/history-cleanup/get-history-cleanup-jobs)
 to find all the available history cleanup jobs.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCleanupAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCleanupAsyncRequest
 */
 func (a *HistoryCleanupAPIService) CleanupAsync(ctx context.Context) ApiCleanupAsyncRequest {
 	return ApiCleanupAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return JobDto
+//
+//	@return JobDto
 func (a *HistoryCleanupAPIService) CleanupAsyncExecute(r ApiCleanupAsyncRequest) (*JobDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *JobDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *JobDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoryCleanupAPIService.CleanupAsync")
@@ -130,8 +130,8 @@ func (a *HistoryCleanupAPIService) CleanupAsyncExecute(r ApiCleanupAsyncRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -149,7 +149,7 @@ func (a *HistoryCleanupAPIService) CleanupAsyncExecute(r ApiCleanupAsyncRequest)
 }
 
 type ApiFindCleanupJobRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoryCleanupAPIService
 }
 
@@ -165,27 +165,29 @@ FindCleanupJob Find clean up history job (GET)
 Finds history cleanup job (See
 [History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiFindCleanupJobRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiFindCleanupJobRequest
 
 Deprecated
 */
 func (a *HistoryCleanupAPIService) FindCleanupJob(ctx context.Context) ApiFindCleanupJobRequest {
 	return ApiFindCleanupJobRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return JobDto
+//
+//	@return JobDto
+//
 // Deprecated
 func (a *HistoryCleanupAPIService) FindCleanupJobExecute(r ApiFindCleanupJobRequest) (*JobDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *JobDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *JobDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoryCleanupAPIService.FindCleanupJob")
@@ -245,8 +247,8 @@ func (a *HistoryCleanupAPIService) FindCleanupJobExecute(r ApiFindCleanupJobRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -264,7 +266,7 @@ func (a *HistoryCleanupAPIService) FindCleanupJobExecute(r ApiFindCleanupJobRequ
 }
 
 type ApiFindCleanupJobsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoryCleanupAPIService
 }
 
@@ -278,24 +280,25 @@ FindCleanupJobs Find clean up history jobs (GET)
 Finds history cleanup jobs (See
 [History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiFindCleanupJobsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiFindCleanupJobsRequest
 */
 func (a *HistoryCleanupAPIService) FindCleanupJobs(ctx context.Context) ApiFindCleanupJobsRequest {
 	return ApiFindCleanupJobsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []JobDto
+//
+//	@return []JobDto
 func (a *HistoryCleanupAPIService) FindCleanupJobsExecute(r ApiFindCleanupJobsRequest) ([]JobDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []JobDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []JobDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoryCleanupAPIService.FindCleanupJobs")
@@ -355,8 +358,8 @@ func (a *HistoryCleanupAPIService) FindCleanupJobsExecute(r ApiFindCleanupJobsRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -374,7 +377,7 @@ func (a *HistoryCleanupAPIService) FindCleanupJobsExecute(r ApiFindCleanupJobsRe
 }
 
 type ApiGetHistoryCleanupConfigurationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoryCleanupAPIService
 }
 
@@ -388,24 +391,25 @@ GetHistoryCleanupConfiguration Get History Cleanup Configuration
 Retrieves history cleanup batch window configuration (See
 [History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoryCleanupConfigurationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoryCleanupConfigurationRequest
 */
 func (a *HistoryCleanupAPIService) GetHistoryCleanupConfiguration(ctx context.Context) ApiGetHistoryCleanupConfigurationRequest {
 	return ApiGetHistoryCleanupConfigurationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return HistoryCleanupConfigurationDto
+//
+//	@return HistoryCleanupConfigurationDto
 func (a *HistoryCleanupAPIService) GetHistoryCleanupConfigurationExecute(r ApiGetHistoryCleanupConfigurationRequest) (*HistoryCleanupConfigurationDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoryCleanupConfigurationDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoryCleanupConfigurationDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoryCleanupAPIService.GetHistoryCleanupConfiguration")

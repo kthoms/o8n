@@ -78,6 +78,7 @@ func (o *MigrationPlanGenerationDto) HasSourceProcessDefinitionId() bool {
 func (o *MigrationPlanGenerationDto) SetSourceProcessDefinitionId(v string) {
 	o.SourceProcessDefinitionId.Set(&v)
 }
+
 // SetSourceProcessDefinitionIdNil sets the value for SourceProcessDefinitionId to be an explicit nil
 func (o *MigrationPlanGenerationDto) SetSourceProcessDefinitionIdNil() {
 	o.SourceProcessDefinitionId.Set(nil)
@@ -120,6 +121,7 @@ func (o *MigrationPlanGenerationDto) HasTargetProcessDefinitionId() bool {
 func (o *MigrationPlanGenerationDto) SetTargetProcessDefinitionId(v string) {
 	o.TargetProcessDefinitionId.Set(&v)
 }
+
 // SetTargetProcessDefinitionIdNil sets the value for TargetProcessDefinitionId to be an explicit nil
 func (o *MigrationPlanGenerationDto) SetTargetProcessDefinitionIdNil() {
 	o.TargetProcessDefinitionId.Set(nil)
@@ -162,6 +164,7 @@ func (o *MigrationPlanGenerationDto) HasUpdateEventTriggers() bool {
 func (o *MigrationPlanGenerationDto) SetUpdateEventTriggers(v bool) {
 	o.UpdateEventTriggers.Set(&v)
 }
+
 // SetUpdateEventTriggersNil sets the value for UpdateEventTriggers to be an explicit nil
 func (o *MigrationPlanGenerationDto) SetUpdateEventTriggersNil() {
 	o.UpdateEventTriggers.Set(nil)
@@ -206,7 +209,7 @@ func (o *MigrationPlanGenerationDto) SetVariables(v map[string]VariableValueDto)
 }
 
 func (o MigrationPlanGenerationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -265,5 +268,3 @@ func (v *NullableMigrationPlanGenerationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

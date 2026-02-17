@@ -72,6 +72,7 @@ func (o *TelemetryCountDto) HasCount() bool {
 func (o *TelemetryCountDto) SetCount(v int64) {
 	o.Count.Set(&v)
 }
+
 // SetCountNil sets the value for Count to be an explicit nil
 func (o *TelemetryCountDto) SetCountNil() {
 	o.Count.Set(nil)
@@ -83,7 +84,7 @@ func (o *TelemetryCountDto) UnsetCount() {
 }
 
 func (o TelemetryCountDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableTelemetryCountDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

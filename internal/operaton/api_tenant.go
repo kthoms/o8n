@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // TenantAPIService TenantAPI service
 type TenantAPIService service
 
 type ApiAvailableTenantGroupMembersOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableTenantGroupMembersOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -42,26 +41,27 @@ can perform an operation or not may depend on various things,
 including the users authorizations to interact with this resource and
 the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant
- @return ApiAvailableTenantGroupMembersOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant
+	@return ApiAvailableTenantGroupMembersOperationsRequest
 */
 func (a *TenantAPIService) AvailableTenantGroupMembersOperations(ctx context.Context, id string) ApiAvailableTenantGroupMembersOperationsRequest {
 	return ApiAvailableTenantGroupMembersOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *TenantAPIService) AvailableTenantGroupMembersOperationsExecute(r ApiAvailableTenantGroupMembersOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.AvailableTenantGroupMembersOperations")
@@ -131,9 +131,9 @@ func (a *TenantAPIService) AvailableTenantGroupMembersOperationsExecute(r ApiAva
 }
 
 type ApiAvailableTenantInstanceOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableTenantInstanceOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -149,26 +149,27 @@ the currently authenticated user can perform on the `/tenant/{id}` resource. If 
 operation or not may depend on various things, including the users authorizations to interact with this
 resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant
- @return ApiAvailableTenantInstanceOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant
+	@return ApiAvailableTenantInstanceOperationsRequest
 */
 func (a *TenantAPIService) AvailableTenantInstanceOperations(ctx context.Context, id string) ApiAvailableTenantInstanceOperationsRequest {
 	return ApiAvailableTenantInstanceOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *TenantAPIService) AvailableTenantInstanceOperationsExecute(r ApiAvailableTenantInstanceOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.AvailableTenantInstanceOperations")
@@ -238,7 +239,7 @@ func (a *TenantAPIService) AvailableTenantInstanceOperationsExecute(r ApiAvailab
 }
 
 type ApiAvailableTenantResourceOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
 }
 
@@ -257,24 +258,25 @@ can perform an operation or not may depend on various things,
 including the users authorizations to interact with this resource and
 the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAvailableTenantResourceOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiAvailableTenantResourceOperationsRequest
 */
 func (a *TenantAPIService) AvailableTenantResourceOperations(ctx context.Context) ApiAvailableTenantResourceOperationsRequest {
 	return ApiAvailableTenantResourceOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *TenantAPIService) AvailableTenantResourceOperationsExecute(r ApiAvailableTenantResourceOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.AvailableTenantResourceOperations")
@@ -343,9 +345,9 @@ func (a *TenantAPIService) AvailableTenantResourceOperationsExecute(r ApiAvailab
 }
 
 type ApiAvailableTenantUserMembersOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableTenantUserMembersOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -361,26 +363,27 @@ can perform an operation or not may depend on various things,
 including the users authorizations to interact with this resource and
 the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant
- @return ApiAvailableTenantUserMembersOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant
+	@return ApiAvailableTenantUserMembersOperationsRequest
 */
 func (a *TenantAPIService) AvailableTenantUserMembersOperations(ctx context.Context, id string) ApiAvailableTenantUserMembersOperationsRequest {
 	return ApiAvailableTenantUserMembersOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *TenantAPIService) AvailableTenantUserMembersOperationsExecute(r ApiAvailableTenantUserMembersOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.AvailableTenantUserMembersOperations")
@@ -450,10 +453,10 @@ func (a *TenantAPIService) AvailableTenantUserMembersOperationsExecute(r ApiAvai
 }
 
 type ApiCreateGroupMembershipRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
-	groupId string
+	id         string
+	groupId    string
 }
 
 func (r ApiCreateGroupMembershipRequest) Execute() (*http.Response, error) {
@@ -465,26 +468,26 @@ CreateGroupMembership Create Tenant Group Membership
 
 Creates a membership between a tenant and a group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant.
- @param groupId The id of the group.
- @return ApiCreateGroupMembershipRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant.
+	@param groupId The id of the group.
+	@return ApiCreateGroupMembershipRequest
 */
 func (a *TenantAPIService) CreateGroupMembership(ctx context.Context, id string, groupId string) ApiCreateGroupMembershipRequest {
 	return ApiCreateGroupMembershipRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		groupId: groupId,
+		ctx:        ctx,
+		id:         id,
+		groupId:    groupId,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) CreateGroupMembershipExecute(r ApiCreateGroupMembershipRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.CreateGroupMembership")
@@ -546,8 +549,8 @@ func (a *TenantAPIService) CreateGroupMembershipExecute(r ApiCreateGroupMembersh
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -557,8 +560,8 @@ func (a *TenantAPIService) CreateGroupMembershipExecute(r ApiCreateGroupMembersh
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -567,9 +570,9 @@ func (a *TenantAPIService) CreateGroupMembershipExecute(r ApiCreateGroupMembersh
 }
 
 type ApiCreateTenantRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	tenantDto *TenantDto
+	tenantDto  *TenantDto
 }
 
 func (r ApiCreateTenantRequest) TenantDto(tenantDto TenantDto) ApiCreateTenantRequest {
@@ -586,22 +589,22 @@ CreateTenant Create Tenant
 
 Create a new tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateTenantRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateTenantRequest
 */
 func (a *TenantAPIService) CreateTenant(ctx context.Context) ApiCreateTenantRequest {
 	return ApiCreateTenantRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) CreateTenantExecute(r ApiCreateTenantRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.CreateTenant")
@@ -663,8 +666,8 @@ func (a *TenantAPIService) CreateTenantExecute(r ApiCreateTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -674,8 +677,8 @@ func (a *TenantAPIService) CreateTenantExecute(r ApiCreateTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -684,10 +687,10 @@ func (a *TenantAPIService) CreateTenantExecute(r ApiCreateTenantRequest) (*http.
 }
 
 type ApiCreateUserMembershipRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
-	userId string
+	id         string
+	userId     string
 }
 
 func (r ApiCreateUserMembershipRequest) Execute() (*http.Response, error) {
@@ -699,26 +702,26 @@ CreateUserMembership Create Tenant User Membership
 
 Creates a membership between a tenant and an user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant.
- @param userId The id of the user.
- @return ApiCreateUserMembershipRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant.
+	@param userId The id of the user.
+	@return ApiCreateUserMembershipRequest
 */
 func (a *TenantAPIService) CreateUserMembership(ctx context.Context, id string, userId string) ApiCreateUserMembershipRequest {
 	return ApiCreateUserMembershipRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		userId: userId,
+		ctx:        ctx,
+		id:         id,
+		userId:     userId,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) CreateUserMembershipExecute(r ApiCreateUserMembershipRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.CreateUserMembership")
@@ -780,8 +783,8 @@ func (a *TenantAPIService) CreateUserMembershipExecute(r ApiCreateUserMembership
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -791,8 +794,8 @@ func (a *TenantAPIService) CreateUserMembershipExecute(r ApiCreateUserMembership
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -801,10 +804,10 @@ func (a *TenantAPIService) CreateUserMembershipExecute(r ApiCreateUserMembership
 }
 
 type ApiDeleteGroupMembershipRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
-	groupId string
+	id         string
+	groupId    string
 }
 
 func (r ApiDeleteGroupMembershipRequest) Execute() (*http.Response, error) {
@@ -816,26 +819,26 @@ DeleteGroupMembership Create Tenant Group Membership
 
 Creates a membership between a tenant and a group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant.
- @param groupId The id of the group.
- @return ApiDeleteGroupMembershipRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant.
+	@param groupId The id of the group.
+	@return ApiDeleteGroupMembershipRequest
 */
 func (a *TenantAPIService) DeleteGroupMembership(ctx context.Context, id string, groupId string) ApiDeleteGroupMembershipRequest {
 	return ApiDeleteGroupMembershipRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		groupId: groupId,
+		ctx:        ctx,
+		id:         id,
+		groupId:    groupId,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) DeleteGroupMembershipExecute(r ApiDeleteGroupMembershipRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.DeleteGroupMembership")
@@ -897,8 +900,8 @@ func (a *TenantAPIService) DeleteGroupMembershipExecute(r ApiDeleteGroupMembersh
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -908,8 +911,8 @@ func (a *TenantAPIService) DeleteGroupMembershipExecute(r ApiDeleteGroupMembersh
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -918,9 +921,9 @@ func (a *TenantAPIService) DeleteGroupMembershipExecute(r ApiDeleteGroupMembersh
 }
 
 type ApiDeleteTenantRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteTenantRequest) Execute() (*http.Response, error) {
@@ -932,24 +935,24 @@ DeleteTenant Delete Tenant
 
 Deletes a tenant by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant to be deleted.
- @return ApiDeleteTenantRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant to be deleted.
+	@return ApiDeleteTenantRequest
 */
 func (a *TenantAPIService) DeleteTenant(ctx context.Context, id string) ApiDeleteTenantRequest {
 	return ApiDeleteTenantRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) DeleteTenantExecute(r ApiDeleteTenantRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.DeleteTenant")
@@ -1010,8 +1013,8 @@ func (a *TenantAPIService) DeleteTenantExecute(r ApiDeleteTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1021,8 +1024,8 @@ func (a *TenantAPIService) DeleteTenantExecute(r ApiDeleteTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1031,10 +1034,10 @@ func (a *TenantAPIService) DeleteTenantExecute(r ApiDeleteTenantRequest) (*http.
 }
 
 type ApiDeleteUserMembershipRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
-	userId string
+	id         string
+	userId     string
 }
 
 func (r ApiDeleteUserMembershipRequest) Execute() (*http.Response, error) {
@@ -1046,26 +1049,26 @@ DeleteUserMembership Delete a Tenant User Membership
 
 Deletes a membership between a tenant and an user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant.
- @param userId The id of the user.
- @return ApiDeleteUserMembershipRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant.
+	@param userId The id of the user.
+	@return ApiDeleteUserMembershipRequest
 */
 func (a *TenantAPIService) DeleteUserMembership(ctx context.Context, id string, userId string) ApiDeleteUserMembershipRequest {
 	return ApiDeleteUserMembershipRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		userId: userId,
+		ctx:        ctx,
+		id:         id,
+		userId:     userId,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) DeleteUserMembershipExecute(r ApiDeleteUserMembershipRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.DeleteUserMembership")
@@ -1127,8 +1130,8 @@ func (a *TenantAPIService) DeleteUserMembershipExecute(r ApiDeleteUserMembership
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1138,8 +1141,8 @@ func (a *TenantAPIService) DeleteUserMembershipExecute(r ApiDeleteUserMembership
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1148,9 +1151,9 @@ func (a *TenantAPIService) DeleteUserMembershipExecute(r ApiDeleteUserMembership
 }
 
 type ApiGetTenantRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetTenantRequest) Execute() (*TenantDto, *http.Response, error) {
@@ -1162,26 +1165,27 @@ GetTenant Get Tenant
 
 Retrieves a tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant to be retrieved.
- @return ApiGetTenantRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant to be retrieved.
+	@return ApiGetTenantRequest
 */
 func (a *TenantAPIService) GetTenant(ctx context.Context, id string) ApiGetTenantRequest {
 	return ApiGetTenantRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return TenantDto
+//
+//	@return TenantDto
 func (a *TenantAPIService) GetTenantExecute(r ApiGetTenantRequest) (*TenantDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *TenantDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TenantDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.GetTenant")
@@ -1242,8 +1246,8 @@ func (a *TenantAPIService) GetTenantExecute(r ApiGetTenantRequest) (*TenantDto, 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1261,13 +1265,13 @@ func (a *TenantAPIService) GetTenantExecute(r ApiGetTenantRequest) (*TenantDto, 
 }
 
 type ApiGetTenantCountRequest struct {
-	ctx context.Context
-	ApiService *TenantAPIService
-	id *string
-	name *string
-	nameLike *string
-	userMember *string
-	groupMember *string
+	ctx                   context.Context
+	ApiService            *TenantAPIService
+	id                    *string
+	name                  *string
+	nameLike              *string
+	userMember            *string
+	groupMember           *string
 	includingGroupsOfUser *bool
 }
 
@@ -1316,24 +1320,25 @@ GetTenantCount Get Tenant Count
 
 Query for tenants using a list of parameters and retrieves the count.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTenantCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTenantCountRequest
 */
 func (a *TenantAPIService) GetTenantCount(ctx context.Context) ApiGetTenantCountRequest {
 	return ApiGetTenantCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *TenantAPIService) GetTenantCountExecute(r ApiGetTenantCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.GetTenantCount")
@@ -1411,8 +1416,8 @@ func (a *TenantAPIService) GetTenantCountExecute(r ApiGetTenantCountRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1430,17 +1435,17 @@ func (a *TenantAPIService) GetTenantCountExecute(r ApiGetTenantCountRequest) (*C
 }
 
 type ApiQueryTenantsRequest struct {
-	ctx context.Context
-	ApiService *TenantAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	id *string
-	name *string
-	nameLike *string
-	userMember *string
-	groupMember *string
+	ctx                   context.Context
+	ApiService            *TenantAPIService
+	sortBy                *string
+	sortOrder             *string
+	firstResult           *int32
+	maxResults            *int32
+	id                    *string
+	name                  *string
+	nameLike              *string
+	userMember            *string
+	groupMember           *string
 	includingGroupsOfUser *bool
 }
 
@@ -1515,24 +1520,25 @@ Query for a list of tenants using a list of parameters. The size of the result s
 can be retrieved by using the [Get Tenant
 Count](https://docs.operaton.org/manual/1.0/reference/rest/tenant/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryTenantsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryTenantsRequest
 */
 func (a *TenantAPIService) QueryTenants(ctx context.Context) ApiQueryTenantsRequest {
 	return ApiQueryTenantsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []TenantDto
+//
+//	@return []TenantDto
 func (a *TenantAPIService) QueryTenantsExecute(r ApiQueryTenantsRequest) ([]TenantDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []TenantDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []TenantDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.QueryTenants")
@@ -1622,8 +1628,8 @@ func (a *TenantAPIService) QueryTenantsExecute(r ApiQueryTenantsRequest) ([]Tena
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1641,10 +1647,10 @@ func (a *TenantAPIService) QueryTenantsExecute(r ApiQueryTenantsRequest) ([]Tena
 }
 
 type ApiUpdateTenantRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TenantAPIService
-	id string
-	tenantDto *TenantDto
+	id         string
+	tenantDto  *TenantDto
 }
 
 func (r ApiUpdateTenantRequest) TenantDto(tenantDto TenantDto) ApiUpdateTenantRequest {
@@ -1661,24 +1667,24 @@ UpdateTenant Update Tenant
 
 Updates a given tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the tenant.
- @return ApiUpdateTenantRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the tenant.
+	@return ApiUpdateTenantRequest
 */
 func (a *TenantAPIService) UpdateTenant(ctx context.Context, id string) ApiUpdateTenantRequest {
 	return ApiUpdateTenantRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TenantAPIService) UpdateTenantExecute(r ApiUpdateTenantRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TenantAPIService.UpdateTenant")
@@ -1741,8 +1747,8 @@ func (a *TenantAPIService) UpdateTenantExecute(r ApiUpdateTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1752,8 +1758,8 @@ func (a *TenantAPIService) UpdateTenantExecute(r ApiUpdateTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1763,8 +1769,8 @@ func (a *TenantAPIService) UpdateTenantExecute(r ApiUpdateTenantRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

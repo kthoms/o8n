@@ -133,6 +133,7 @@ func (o *VariableInstanceDto) HasType() bool {
 func (o *VariableInstanceDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *VariableInstanceDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -207,6 +208,7 @@ func (o *VariableInstanceDto) HasId() bool {
 func (o *VariableInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *VariableInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -249,6 +251,7 @@ func (o *VariableInstanceDto) HasName() bool {
 func (o *VariableInstanceDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *VariableInstanceDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -291,6 +294,7 @@ func (o *VariableInstanceDto) HasProcessDefinitionId() bool {
 func (o *VariableInstanceDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *VariableInstanceDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -333,6 +337,7 @@ func (o *VariableInstanceDto) HasProcessInstanceId() bool {
 func (o *VariableInstanceDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *VariableInstanceDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -375,6 +380,7 @@ func (o *VariableInstanceDto) HasExecutionId() bool {
 func (o *VariableInstanceDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *VariableInstanceDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -417,6 +423,7 @@ func (o *VariableInstanceDto) HasCaseInstanceId() bool {
 func (o *VariableInstanceDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *VariableInstanceDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -459,6 +466,7 @@ func (o *VariableInstanceDto) HasCaseExecutionId() bool {
 func (o *VariableInstanceDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *VariableInstanceDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -501,6 +509,7 @@ func (o *VariableInstanceDto) HasTaskId() bool {
 func (o *VariableInstanceDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *VariableInstanceDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -543,6 +552,7 @@ func (o *VariableInstanceDto) HasBatchId() bool {
 func (o *VariableInstanceDto) SetBatchId(v string) {
 	o.BatchId.Set(&v)
 }
+
 // SetBatchIdNil sets the value for BatchId to be an explicit nil
 func (o *VariableInstanceDto) SetBatchIdNil() {
 	o.BatchId.Set(nil)
@@ -585,6 +595,7 @@ func (o *VariableInstanceDto) HasActivityInstanceId() bool {
 func (o *VariableInstanceDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *VariableInstanceDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -627,6 +638,7 @@ func (o *VariableInstanceDto) HasTenantId() bool {
 func (o *VariableInstanceDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *VariableInstanceDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -669,6 +681,7 @@ func (o *VariableInstanceDto) HasErrorMessage() bool {
 func (o *VariableInstanceDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *VariableInstanceDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -680,7 +693,7 @@ func (o *VariableInstanceDto) UnsetErrorMessage() {
 }
 
 func (o VariableInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -772,5 +785,3 @@ func (v *NullableVariableInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

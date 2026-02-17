@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -22,7 +22,7 @@ var _ MappedNullable = &ProcessInstanceModificationInstructionDto{}
 // ProcessInstanceModificationInstructionDto struct for ProcessInstanceModificationInstructionDto
 type ProcessInstanceModificationInstructionDto struct {
 	// **Mandatory**. One of the following values: `cancel`, `startBeforeActivity`, `startAfterActivity`, `startTransition`.  * A cancel instruction requests cancellation of a single activity instance or all instances of one activity. * A startBeforeActivity instruction requests to enter a given activity. * A startAfterActivity instruction requests to execute the single outgoing sequence flow of a given activity. * A startTransition instruction requests to execute a specific sequence flow.
-	Type string `json:"type"`
+	Type      string                   `json:"type"`
 	Variables *TriggerVariableValueDto `json:"variables,omitempty"`
 	// Can be used with instructions of types `startTransition`. Specifies the sequence flow to start.
 	ActivityId NullableString `json:"activityId,omitempty"`
@@ -146,6 +146,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasActivityId() bool {
 func (o *ProcessInstanceModificationInstructionDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -188,6 +189,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasTransitionId() bool {
 func (o *ProcessInstanceModificationInstructionDto) SetTransitionId(v string) {
 	o.TransitionId.Set(&v)
 }
+
 // SetTransitionIdNil sets the value for TransitionId to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetTransitionIdNil() {
 	o.TransitionId.Set(nil)
@@ -230,6 +232,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasActivityInstanceId() bool
 func (o *ProcessInstanceModificationInstructionDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -272,6 +275,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasTransitionInstanceId() bo
 func (o *ProcessInstanceModificationInstructionDto) SetTransitionInstanceId(v string) {
 	o.TransitionInstanceId.Set(&v)
 }
+
 // SetTransitionInstanceIdNil sets the value for TransitionInstanceId to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetTransitionInstanceIdNil() {
 	o.TransitionInstanceId.Set(nil)
@@ -314,6 +318,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasAncestorActivityInstanceI
 func (o *ProcessInstanceModificationInstructionDto) SetAncestorActivityInstanceId(v string) {
 	o.AncestorActivityInstanceId.Set(&v)
 }
+
 // SetAncestorActivityInstanceIdNil sets the value for AncestorActivityInstanceId to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetAncestorActivityInstanceIdNil() {
 	o.AncestorActivityInstanceId.Set(nil)
@@ -356,6 +361,7 @@ func (o *ProcessInstanceModificationInstructionDto) HasCancelCurrentActiveActivi
 func (o *ProcessInstanceModificationInstructionDto) SetCancelCurrentActiveActivityInstances(v bool) {
 	o.CancelCurrentActiveActivityInstances.Set(&v)
 }
+
 // SetCancelCurrentActiveActivityInstancesNil sets the value for CancelCurrentActiveActivityInstances to be an explicit nil
 func (o *ProcessInstanceModificationInstructionDto) SetCancelCurrentActiveActivityInstancesNil() {
 	o.CancelCurrentActiveActivityInstances.Set(nil)
@@ -367,7 +373,7 @@ func (o *ProcessInstanceModificationInstructionDto) UnsetCancelCurrentActiveActi
 }
 
 func (o ProcessInstanceModificationInstructionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -414,10 +420,10 @@ func (o *ProcessInstanceModificationInstructionDto) UnmarshalJSON(data []byte) (
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -473,5 +479,3 @@ func (v *NullableProcessInstanceModificationInstructionDto) UnmarshalJSON(src []
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

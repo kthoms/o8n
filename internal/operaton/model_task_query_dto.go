@@ -317,6 +317,7 @@ func (o *TaskQueryDto) HasTaskId() bool {
 func (o *TaskQueryDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *TaskQueryDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -392,6 +393,7 @@ func (o *TaskQueryDto) HasProcessInstanceId() bool {
 func (o *TaskQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *TaskQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -467,6 +469,7 @@ func (o *TaskQueryDto) HasProcessInstanceBusinessKey() bool {
 func (o *TaskQueryDto) SetProcessInstanceBusinessKey(v string) {
 	o.ProcessInstanceBusinessKey.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyNil sets the value for ProcessInstanceBusinessKey to be an explicit nil
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyNil() {
 	o.ProcessInstanceBusinessKey.Set(nil)
@@ -509,6 +512,7 @@ func (o *TaskQueryDto) HasProcessInstanceBusinessKeyExpression() bool {
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyExpression(v string) {
 	o.ProcessInstanceBusinessKeyExpression.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyExpressionNil sets the value for ProcessInstanceBusinessKeyExpression to be an explicit nil
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyExpressionNil() {
 	o.ProcessInstanceBusinessKeyExpression.Set(nil)
@@ -584,6 +588,7 @@ func (o *TaskQueryDto) HasProcessInstanceBusinessKeyLike() bool {
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyLike(v string) {
 	o.ProcessInstanceBusinessKeyLike.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyLikeNil sets the value for ProcessInstanceBusinessKeyLike to be an explicit nil
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyLikeNil() {
 	o.ProcessInstanceBusinessKeyLike.Set(nil)
@@ -626,6 +631,7 @@ func (o *TaskQueryDto) HasProcessInstanceBusinessKeyLikeExpression() bool {
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyLikeExpression(v string) {
 	o.ProcessInstanceBusinessKeyLikeExpression.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyLikeExpressionNil sets the value for ProcessInstanceBusinessKeyLikeExpression to be an explicit nil
 func (o *TaskQueryDto) SetProcessInstanceBusinessKeyLikeExpressionNil() {
 	o.ProcessInstanceBusinessKeyLikeExpression.Set(nil)
@@ -668,6 +674,7 @@ func (o *TaskQueryDto) HasProcessDefinitionId() bool {
 func (o *TaskQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *TaskQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -710,6 +717,7 @@ func (o *TaskQueryDto) HasProcessDefinitionKey() bool {
 func (o *TaskQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *TaskQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -785,6 +793,7 @@ func (o *TaskQueryDto) HasProcessDefinitionName() bool {
 func (o *TaskQueryDto) SetProcessDefinitionName(v string) {
 	o.ProcessDefinitionName.Set(&v)
 }
+
 // SetProcessDefinitionNameNil sets the value for ProcessDefinitionName to be an explicit nil
 func (o *TaskQueryDto) SetProcessDefinitionNameNil() {
 	o.ProcessDefinitionName.Set(nil)
@@ -827,6 +836,7 @@ func (o *TaskQueryDto) HasProcessDefinitionNameLike() bool {
 func (o *TaskQueryDto) SetProcessDefinitionNameLike(v string) {
 	o.ProcessDefinitionNameLike.Set(&v)
 }
+
 // SetProcessDefinitionNameLikeNil sets the value for ProcessDefinitionNameLike to be an explicit nil
 func (o *TaskQueryDto) SetProcessDefinitionNameLikeNil() {
 	o.ProcessDefinitionNameLike.Set(nil)
@@ -869,6 +879,7 @@ func (o *TaskQueryDto) HasExecutionId() bool {
 func (o *TaskQueryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *TaskQueryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -911,6 +922,7 @@ func (o *TaskQueryDto) HasCaseInstanceId() bool {
 func (o *TaskQueryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *TaskQueryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -953,6 +965,7 @@ func (o *TaskQueryDto) HasCaseInstanceBusinessKey() bool {
 func (o *TaskQueryDto) SetCaseInstanceBusinessKey(v string) {
 	o.CaseInstanceBusinessKey.Set(&v)
 }
+
 // SetCaseInstanceBusinessKeyNil sets the value for CaseInstanceBusinessKey to be an explicit nil
 func (o *TaskQueryDto) SetCaseInstanceBusinessKeyNil() {
 	o.CaseInstanceBusinessKey.Set(nil)
@@ -995,6 +1008,7 @@ func (o *TaskQueryDto) HasCaseInstanceBusinessKeyLike() bool {
 func (o *TaskQueryDto) SetCaseInstanceBusinessKeyLike(v string) {
 	o.CaseInstanceBusinessKeyLike.Set(&v)
 }
+
 // SetCaseInstanceBusinessKeyLikeNil sets the value for CaseInstanceBusinessKeyLike to be an explicit nil
 func (o *TaskQueryDto) SetCaseInstanceBusinessKeyLikeNil() {
 	o.CaseInstanceBusinessKeyLike.Set(nil)
@@ -1037,6 +1051,7 @@ func (o *TaskQueryDto) HasCaseDefinitionId() bool {
 func (o *TaskQueryDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *TaskQueryDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -1079,6 +1094,7 @@ func (o *TaskQueryDto) HasCaseDefinitionKey() bool {
 func (o *TaskQueryDto) SetCaseDefinitionKey(v string) {
 	o.CaseDefinitionKey.Set(&v)
 }
+
 // SetCaseDefinitionKeyNil sets the value for CaseDefinitionKey to be an explicit nil
 func (o *TaskQueryDto) SetCaseDefinitionKeyNil() {
 	o.CaseDefinitionKey.Set(nil)
@@ -1121,6 +1137,7 @@ func (o *TaskQueryDto) HasCaseDefinitionName() bool {
 func (o *TaskQueryDto) SetCaseDefinitionName(v string) {
 	o.CaseDefinitionName.Set(&v)
 }
+
 // SetCaseDefinitionNameNil sets the value for CaseDefinitionName to be an explicit nil
 func (o *TaskQueryDto) SetCaseDefinitionNameNil() {
 	o.CaseDefinitionName.Set(nil)
@@ -1163,6 +1180,7 @@ func (o *TaskQueryDto) HasCaseDefinitionNameLike() bool {
 func (o *TaskQueryDto) SetCaseDefinitionNameLike(v string) {
 	o.CaseDefinitionNameLike.Set(&v)
 }
+
 // SetCaseDefinitionNameLikeNil sets the value for CaseDefinitionNameLike to be an explicit nil
 func (o *TaskQueryDto) SetCaseDefinitionNameLikeNil() {
 	o.CaseDefinitionNameLike.Set(nil)
@@ -1205,6 +1223,7 @@ func (o *TaskQueryDto) HasCaseExecutionId() bool {
 func (o *TaskQueryDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *TaskQueryDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -1313,6 +1332,7 @@ func (o *TaskQueryDto) HasWithoutTenantId() bool {
 func (o *TaskQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *TaskQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -1355,6 +1375,7 @@ func (o *TaskQueryDto) HasAssignee() bool {
 func (o *TaskQueryDto) SetAssignee(v string) {
 	o.Assignee.Set(&v)
 }
+
 // SetAssigneeNil sets the value for Assignee to be an explicit nil
 func (o *TaskQueryDto) SetAssigneeNil() {
 	o.Assignee.Set(nil)
@@ -1397,6 +1418,7 @@ func (o *TaskQueryDto) HasAssigneeExpression() bool {
 func (o *TaskQueryDto) SetAssigneeExpression(v string) {
 	o.AssigneeExpression.Set(&v)
 }
+
 // SetAssigneeExpressionNil sets the value for AssigneeExpression to be an explicit nil
 func (o *TaskQueryDto) SetAssigneeExpressionNil() {
 	o.AssigneeExpression.Set(nil)
@@ -1439,6 +1461,7 @@ func (o *TaskQueryDto) HasAssigneeLike() bool {
 func (o *TaskQueryDto) SetAssigneeLike(v string) {
 	o.AssigneeLike.Set(&v)
 }
+
 // SetAssigneeLikeNil sets the value for AssigneeLike to be an explicit nil
 func (o *TaskQueryDto) SetAssigneeLikeNil() {
 	o.AssigneeLike.Set(nil)
@@ -1481,6 +1504,7 @@ func (o *TaskQueryDto) HasAssigneeLikeExpression() bool {
 func (o *TaskQueryDto) SetAssigneeLikeExpression(v string) {
 	o.AssigneeLikeExpression.Set(&v)
 }
+
 // SetAssigneeLikeExpressionNil sets the value for AssigneeLikeExpression to be an explicit nil
 func (o *TaskQueryDto) SetAssigneeLikeExpressionNil() {
 	o.AssigneeLikeExpression.Set(nil)
@@ -1589,6 +1613,7 @@ func (o *TaskQueryDto) HasOwner() bool {
 func (o *TaskQueryDto) SetOwner(v string) {
 	o.Owner.Set(&v)
 }
+
 // SetOwnerNil sets the value for Owner to be an explicit nil
 func (o *TaskQueryDto) SetOwnerNil() {
 	o.Owner.Set(nil)
@@ -1631,6 +1656,7 @@ func (o *TaskQueryDto) HasOwnerExpression() bool {
 func (o *TaskQueryDto) SetOwnerExpression(v string) {
 	o.OwnerExpression.Set(&v)
 }
+
 // SetOwnerExpressionNil sets the value for OwnerExpression to be an explicit nil
 func (o *TaskQueryDto) SetOwnerExpressionNil() {
 	o.OwnerExpression.Set(nil)
@@ -1673,6 +1699,7 @@ func (o *TaskQueryDto) HasCandidateGroup() bool {
 func (o *TaskQueryDto) SetCandidateGroup(v string) {
 	o.CandidateGroup.Set(&v)
 }
+
 // SetCandidateGroupNil sets the value for CandidateGroup to be an explicit nil
 func (o *TaskQueryDto) SetCandidateGroupNil() {
 	o.CandidateGroup.Set(nil)
@@ -1715,6 +1742,7 @@ func (o *TaskQueryDto) HasCandidateGroupLike() bool {
 func (o *TaskQueryDto) SetCandidateGroupLike(v string) {
 	o.CandidateGroupLike.Set(&v)
 }
+
 // SetCandidateGroupLikeNil sets the value for CandidateGroupLike to be an explicit nil
 func (o *TaskQueryDto) SetCandidateGroupLikeNil() {
 	o.CandidateGroupLike.Set(nil)
@@ -1757,6 +1785,7 @@ func (o *TaskQueryDto) HasCandidateGroupExpression() bool {
 func (o *TaskQueryDto) SetCandidateGroupExpression(v string) {
 	o.CandidateGroupExpression.Set(&v)
 }
+
 // SetCandidateGroupExpressionNil sets the value for CandidateGroupExpression to be an explicit nil
 func (o *TaskQueryDto) SetCandidateGroupExpressionNil() {
 	o.CandidateGroupExpression.Set(nil)
@@ -1799,6 +1828,7 @@ func (o *TaskQueryDto) HasCandidateUser() bool {
 func (o *TaskQueryDto) SetCandidateUser(v string) {
 	o.CandidateUser.Set(&v)
 }
+
 // SetCandidateUserNil sets the value for CandidateUser to be an explicit nil
 func (o *TaskQueryDto) SetCandidateUserNil() {
 	o.CandidateUser.Set(nil)
@@ -1841,6 +1871,7 @@ func (o *TaskQueryDto) HasCandidateUserExpression() bool {
 func (o *TaskQueryDto) SetCandidateUserExpression(v string) {
 	o.CandidateUserExpression.Set(&v)
 }
+
 // SetCandidateUserExpressionNil sets the value for CandidateUserExpression to be an explicit nil
 func (o *TaskQueryDto) SetCandidateUserExpressionNil() {
 	o.CandidateUserExpression.Set(nil)
@@ -1883,6 +1914,7 @@ func (o *TaskQueryDto) HasIncludeAssignedTasks() bool {
 func (o *TaskQueryDto) SetIncludeAssignedTasks(v bool) {
 	o.IncludeAssignedTasks.Set(&v)
 }
+
 // SetIncludeAssignedTasksNil sets the value for IncludeAssignedTasks to be an explicit nil
 func (o *TaskQueryDto) SetIncludeAssignedTasksNil() {
 	o.IncludeAssignedTasks.Set(nil)
@@ -1925,6 +1957,7 @@ func (o *TaskQueryDto) HasInvolvedUser() bool {
 func (o *TaskQueryDto) SetInvolvedUser(v string) {
 	o.InvolvedUser.Set(&v)
 }
+
 // SetInvolvedUserNil sets the value for InvolvedUser to be an explicit nil
 func (o *TaskQueryDto) SetInvolvedUserNil() {
 	o.InvolvedUser.Set(nil)
@@ -1967,6 +2000,7 @@ func (o *TaskQueryDto) HasInvolvedUserExpression() bool {
 func (o *TaskQueryDto) SetInvolvedUserExpression(v string) {
 	o.InvolvedUserExpression.Set(&v)
 }
+
 // SetInvolvedUserExpressionNil sets the value for InvolvedUserExpression to be an explicit nil
 func (o *TaskQueryDto) SetInvolvedUserExpressionNil() {
 	o.InvolvedUserExpression.Set(nil)
@@ -2009,6 +2043,7 @@ func (o *TaskQueryDto) HasAssigned() bool {
 func (o *TaskQueryDto) SetAssigned(v bool) {
 	o.Assigned.Set(&v)
 }
+
 // SetAssignedNil sets the value for Assigned to be an explicit nil
 func (o *TaskQueryDto) SetAssignedNil() {
 	o.Assigned.Set(nil)
@@ -2051,6 +2086,7 @@ func (o *TaskQueryDto) HasUnassigned() bool {
 func (o *TaskQueryDto) SetUnassigned(v bool) {
 	o.Unassigned.Set(&v)
 }
+
 // SetUnassignedNil sets the value for Unassigned to be an explicit nil
 func (o *TaskQueryDto) SetUnassignedNil() {
 	o.Unassigned.Set(nil)
@@ -2093,6 +2129,7 @@ func (o *TaskQueryDto) HasTaskDefinitionKey() bool {
 func (o *TaskQueryDto) SetTaskDefinitionKey(v string) {
 	o.TaskDefinitionKey.Set(&v)
 }
+
 // SetTaskDefinitionKeyNil sets the value for TaskDefinitionKey to be an explicit nil
 func (o *TaskQueryDto) SetTaskDefinitionKeyNil() {
 	o.TaskDefinitionKey.Set(nil)
@@ -2201,6 +2238,7 @@ func (o *TaskQueryDto) HasTaskDefinitionKeyLike() bool {
 func (o *TaskQueryDto) SetTaskDefinitionKeyLike(v string) {
 	o.TaskDefinitionKeyLike.Set(&v)
 }
+
 // SetTaskDefinitionKeyLikeNil sets the value for TaskDefinitionKeyLike to be an explicit nil
 func (o *TaskQueryDto) SetTaskDefinitionKeyLikeNil() {
 	o.TaskDefinitionKeyLike.Set(nil)
@@ -2243,6 +2281,7 @@ func (o *TaskQueryDto) HasName() bool {
 func (o *TaskQueryDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *TaskQueryDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -2285,6 +2324,7 @@ func (o *TaskQueryDto) HasNameNotEqual() bool {
 func (o *TaskQueryDto) SetNameNotEqual(v string) {
 	o.NameNotEqual.Set(&v)
 }
+
 // SetNameNotEqualNil sets the value for NameNotEqual to be an explicit nil
 func (o *TaskQueryDto) SetNameNotEqualNil() {
 	o.NameNotEqual.Set(nil)
@@ -2327,6 +2367,7 @@ func (o *TaskQueryDto) HasNameLike() bool {
 func (o *TaskQueryDto) SetNameLike(v string) {
 	o.NameLike.Set(&v)
 }
+
 // SetNameLikeNil sets the value for NameLike to be an explicit nil
 func (o *TaskQueryDto) SetNameLikeNil() {
 	o.NameLike.Set(nil)
@@ -2369,6 +2410,7 @@ func (o *TaskQueryDto) HasNameNotLike() bool {
 func (o *TaskQueryDto) SetNameNotLike(v string) {
 	o.NameNotLike.Set(&v)
 }
+
 // SetNameNotLikeNil sets the value for NameNotLike to be an explicit nil
 func (o *TaskQueryDto) SetNameNotLikeNil() {
 	o.NameNotLike.Set(nil)
@@ -2411,6 +2453,7 @@ func (o *TaskQueryDto) HasDescription() bool {
 func (o *TaskQueryDto) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *TaskQueryDto) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -2453,6 +2496,7 @@ func (o *TaskQueryDto) HasDescriptionLike() bool {
 func (o *TaskQueryDto) SetDescriptionLike(v string) {
 	o.DescriptionLike.Set(&v)
 }
+
 // SetDescriptionLikeNil sets the value for DescriptionLike to be an explicit nil
 func (o *TaskQueryDto) SetDescriptionLikeNil() {
 	o.DescriptionLike.Set(nil)
@@ -2495,6 +2539,7 @@ func (o *TaskQueryDto) HasPriority() bool {
 func (o *TaskQueryDto) SetPriority(v int32) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *TaskQueryDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -2537,6 +2582,7 @@ func (o *TaskQueryDto) HasMaxPriority() bool {
 func (o *TaskQueryDto) SetMaxPriority(v int32) {
 	o.MaxPriority.Set(&v)
 }
+
 // SetMaxPriorityNil sets the value for MaxPriority to be an explicit nil
 func (o *TaskQueryDto) SetMaxPriorityNil() {
 	o.MaxPriority.Set(nil)
@@ -2579,6 +2625,7 @@ func (o *TaskQueryDto) HasMinPriority() bool {
 func (o *TaskQueryDto) SetMinPriority(v int32) {
 	o.MinPriority.Set(&v)
 }
+
 // SetMinPriorityNil sets the value for MinPriority to be an explicit nil
 func (o *TaskQueryDto) SetMinPriorityNil() {
 	o.MinPriority.Set(nil)
@@ -2621,6 +2668,7 @@ func (o *TaskQueryDto) HasDueDate() bool {
 func (o *TaskQueryDto) SetDueDate(v time.Time) {
 	o.DueDate.Set(&v)
 }
+
 // SetDueDateNil sets the value for DueDate to be an explicit nil
 func (o *TaskQueryDto) SetDueDateNil() {
 	o.DueDate.Set(nil)
@@ -2663,6 +2711,7 @@ func (o *TaskQueryDto) HasDueDateExpression() bool {
 func (o *TaskQueryDto) SetDueDateExpression(v string) {
 	o.DueDateExpression.Set(&v)
 }
+
 // SetDueDateExpressionNil sets the value for DueDateExpression to be an explicit nil
 func (o *TaskQueryDto) SetDueDateExpressionNil() {
 	o.DueDateExpression.Set(nil)
@@ -2705,6 +2754,7 @@ func (o *TaskQueryDto) HasDueAfter() bool {
 func (o *TaskQueryDto) SetDueAfter(v time.Time) {
 	o.DueAfter.Set(&v)
 }
+
 // SetDueAfterNil sets the value for DueAfter to be an explicit nil
 func (o *TaskQueryDto) SetDueAfterNil() {
 	o.DueAfter.Set(nil)
@@ -2747,6 +2797,7 @@ func (o *TaskQueryDto) HasDueAfterExpression() bool {
 func (o *TaskQueryDto) SetDueAfterExpression(v string) {
 	o.DueAfterExpression.Set(&v)
 }
+
 // SetDueAfterExpressionNil sets the value for DueAfterExpression to be an explicit nil
 func (o *TaskQueryDto) SetDueAfterExpressionNil() {
 	o.DueAfterExpression.Set(nil)
@@ -2789,6 +2840,7 @@ func (o *TaskQueryDto) HasDueBefore() bool {
 func (o *TaskQueryDto) SetDueBefore(v time.Time) {
 	o.DueBefore.Set(&v)
 }
+
 // SetDueBeforeNil sets the value for DueBefore to be an explicit nil
 func (o *TaskQueryDto) SetDueBeforeNil() {
 	o.DueBefore.Set(nil)
@@ -2831,6 +2883,7 @@ func (o *TaskQueryDto) HasDueBeforeExpression() bool {
 func (o *TaskQueryDto) SetDueBeforeExpression(v string) {
 	o.DueBeforeExpression.Set(&v)
 }
+
 // SetDueBeforeExpressionNil sets the value for DueBeforeExpression to be an explicit nil
 func (o *TaskQueryDto) SetDueBeforeExpressionNil() {
 	o.DueBeforeExpression.Set(nil)
@@ -2873,6 +2926,7 @@ func (o *TaskQueryDto) HasWithoutDueDate() bool {
 func (o *TaskQueryDto) SetWithoutDueDate(v bool) {
 	o.WithoutDueDate.Set(&v)
 }
+
 // SetWithoutDueDateNil sets the value for WithoutDueDate to be an explicit nil
 func (o *TaskQueryDto) SetWithoutDueDateNil() {
 	o.WithoutDueDate.Set(nil)
@@ -2915,6 +2969,7 @@ func (o *TaskQueryDto) HasFollowUpDate() bool {
 func (o *TaskQueryDto) SetFollowUpDate(v time.Time) {
 	o.FollowUpDate.Set(&v)
 }
+
 // SetFollowUpDateNil sets the value for FollowUpDate to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpDateNil() {
 	o.FollowUpDate.Set(nil)
@@ -2957,6 +3012,7 @@ func (o *TaskQueryDto) HasFollowUpDateExpression() bool {
 func (o *TaskQueryDto) SetFollowUpDateExpression(v string) {
 	o.FollowUpDateExpression.Set(&v)
 }
+
 // SetFollowUpDateExpressionNil sets the value for FollowUpDateExpression to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpDateExpressionNil() {
 	o.FollowUpDateExpression.Set(nil)
@@ -2999,6 +3055,7 @@ func (o *TaskQueryDto) HasFollowUpAfter() bool {
 func (o *TaskQueryDto) SetFollowUpAfter(v time.Time) {
 	o.FollowUpAfter.Set(&v)
 }
+
 // SetFollowUpAfterNil sets the value for FollowUpAfter to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpAfterNil() {
 	o.FollowUpAfter.Set(nil)
@@ -3041,6 +3098,7 @@ func (o *TaskQueryDto) HasFollowUpAfterExpression() bool {
 func (o *TaskQueryDto) SetFollowUpAfterExpression(v string) {
 	o.FollowUpAfterExpression.Set(&v)
 }
+
 // SetFollowUpAfterExpressionNil sets the value for FollowUpAfterExpression to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpAfterExpressionNil() {
 	o.FollowUpAfterExpression.Set(nil)
@@ -3083,6 +3141,7 @@ func (o *TaskQueryDto) HasFollowUpBefore() bool {
 func (o *TaskQueryDto) SetFollowUpBefore(v string) {
 	o.FollowUpBefore.Set(&v)
 }
+
 // SetFollowUpBeforeNil sets the value for FollowUpBefore to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpBeforeNil() {
 	o.FollowUpBefore.Set(nil)
@@ -3125,6 +3184,7 @@ func (o *TaskQueryDto) HasFollowUpBeforeExpression() bool {
 func (o *TaskQueryDto) SetFollowUpBeforeExpression(v string) {
 	o.FollowUpBeforeExpression.Set(&v)
 }
+
 // SetFollowUpBeforeExpressionNil sets the value for FollowUpBeforeExpression to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpBeforeExpressionNil() {
 	o.FollowUpBeforeExpression.Set(nil)
@@ -3167,6 +3227,7 @@ func (o *TaskQueryDto) HasFollowUpBeforeOrNotExistent() bool {
 func (o *TaskQueryDto) SetFollowUpBeforeOrNotExistent(v time.Time) {
 	o.FollowUpBeforeOrNotExistent.Set(&v)
 }
+
 // SetFollowUpBeforeOrNotExistentNil sets the value for FollowUpBeforeOrNotExistent to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpBeforeOrNotExistentNil() {
 	o.FollowUpBeforeOrNotExistent.Set(nil)
@@ -3209,6 +3270,7 @@ func (o *TaskQueryDto) HasFollowUpBeforeOrNotExistentExpression() bool {
 func (o *TaskQueryDto) SetFollowUpBeforeOrNotExistentExpression(v string) {
 	o.FollowUpBeforeOrNotExistentExpression.Set(&v)
 }
+
 // SetFollowUpBeforeOrNotExistentExpressionNil sets the value for FollowUpBeforeOrNotExistentExpression to be an explicit nil
 func (o *TaskQueryDto) SetFollowUpBeforeOrNotExistentExpressionNil() {
 	o.FollowUpBeforeOrNotExistentExpression.Set(nil)
@@ -3251,6 +3313,7 @@ func (o *TaskQueryDto) HasCreatedOn() bool {
 func (o *TaskQueryDto) SetCreatedOn(v time.Time) {
 	o.CreatedOn.Set(&v)
 }
+
 // SetCreatedOnNil sets the value for CreatedOn to be an explicit nil
 func (o *TaskQueryDto) SetCreatedOnNil() {
 	o.CreatedOn.Set(nil)
@@ -3293,6 +3356,7 @@ func (o *TaskQueryDto) HasCreatedOnExpression() bool {
 func (o *TaskQueryDto) SetCreatedOnExpression(v string) {
 	o.CreatedOnExpression.Set(&v)
 }
+
 // SetCreatedOnExpressionNil sets the value for CreatedOnExpression to be an explicit nil
 func (o *TaskQueryDto) SetCreatedOnExpressionNil() {
 	o.CreatedOnExpression.Set(nil)
@@ -3335,6 +3399,7 @@ func (o *TaskQueryDto) HasCreatedAfter() bool {
 func (o *TaskQueryDto) SetCreatedAfter(v time.Time) {
 	o.CreatedAfter.Set(&v)
 }
+
 // SetCreatedAfterNil sets the value for CreatedAfter to be an explicit nil
 func (o *TaskQueryDto) SetCreatedAfterNil() {
 	o.CreatedAfter.Set(nil)
@@ -3377,6 +3442,7 @@ func (o *TaskQueryDto) HasCreatedAfterExpression() bool {
 func (o *TaskQueryDto) SetCreatedAfterExpression(v string) {
 	o.CreatedAfterExpression.Set(&v)
 }
+
 // SetCreatedAfterExpressionNil sets the value for CreatedAfterExpression to be an explicit nil
 func (o *TaskQueryDto) SetCreatedAfterExpressionNil() {
 	o.CreatedAfterExpression.Set(nil)
@@ -3419,6 +3485,7 @@ func (o *TaskQueryDto) HasCreatedBefore() bool {
 func (o *TaskQueryDto) SetCreatedBefore(v time.Time) {
 	o.CreatedBefore.Set(&v)
 }
+
 // SetCreatedBeforeNil sets the value for CreatedBefore to be an explicit nil
 func (o *TaskQueryDto) SetCreatedBeforeNil() {
 	o.CreatedBefore.Set(nil)
@@ -3461,6 +3528,7 @@ func (o *TaskQueryDto) HasCreatedBeforeExpression() bool {
 func (o *TaskQueryDto) SetCreatedBeforeExpression(v string) {
 	o.CreatedBeforeExpression.Set(&v)
 }
+
 // SetCreatedBeforeExpressionNil sets the value for CreatedBeforeExpression to be an explicit nil
 func (o *TaskQueryDto) SetCreatedBeforeExpressionNil() {
 	o.CreatedBeforeExpression.Set(nil)
@@ -3503,6 +3571,7 @@ func (o *TaskQueryDto) HasUpdatedAfter() bool {
 func (o *TaskQueryDto) SetUpdatedAfter(v time.Time) {
 	o.UpdatedAfter.Set(&v)
 }
+
 // SetUpdatedAfterNil sets the value for UpdatedAfter to be an explicit nil
 func (o *TaskQueryDto) SetUpdatedAfterNil() {
 	o.UpdatedAfter.Set(nil)
@@ -3545,6 +3614,7 @@ func (o *TaskQueryDto) HasUpdatedAfterExpression() bool {
 func (o *TaskQueryDto) SetUpdatedAfterExpression(v string) {
 	o.UpdatedAfterExpression.Set(&v)
 }
+
 // SetUpdatedAfterExpressionNil sets the value for UpdatedAfterExpression to be an explicit nil
 func (o *TaskQueryDto) SetUpdatedAfterExpressionNil() {
 	o.UpdatedAfterExpression.Set(nil)
@@ -3587,6 +3657,7 @@ func (o *TaskQueryDto) HasDelegationState() bool {
 func (o *TaskQueryDto) SetDelegationState(v string) {
 	o.DelegationState.Set(&v)
 }
+
 // SetDelegationStateNil sets the value for DelegationState to be an explicit nil
 func (o *TaskQueryDto) SetDelegationStateNil() {
 	o.DelegationState.Set(nil)
@@ -3662,6 +3733,7 @@ func (o *TaskQueryDto) HasCandidateGroupsExpression() bool {
 func (o *TaskQueryDto) SetCandidateGroupsExpression(v string) {
 	o.CandidateGroupsExpression.Set(&v)
 }
+
 // SetCandidateGroupsExpressionNil sets the value for CandidateGroupsExpression to be an explicit nil
 func (o *TaskQueryDto) SetCandidateGroupsExpressionNil() {
 	o.CandidateGroupsExpression.Set(nil)
@@ -3704,6 +3776,7 @@ func (o *TaskQueryDto) HasWithCandidateGroups() bool {
 func (o *TaskQueryDto) SetWithCandidateGroups(v bool) {
 	o.WithCandidateGroups.Set(&v)
 }
+
 // SetWithCandidateGroupsNil sets the value for WithCandidateGroups to be an explicit nil
 func (o *TaskQueryDto) SetWithCandidateGroupsNil() {
 	o.WithCandidateGroups.Set(nil)
@@ -3746,6 +3819,7 @@ func (o *TaskQueryDto) HasWithoutCandidateGroups() bool {
 func (o *TaskQueryDto) SetWithoutCandidateGroups(v bool) {
 	o.WithoutCandidateGroups.Set(&v)
 }
+
 // SetWithoutCandidateGroupsNil sets the value for WithoutCandidateGroups to be an explicit nil
 func (o *TaskQueryDto) SetWithoutCandidateGroupsNil() {
 	o.WithoutCandidateGroups.Set(nil)
@@ -3788,6 +3862,7 @@ func (o *TaskQueryDto) HasWithCandidateUsers() bool {
 func (o *TaskQueryDto) SetWithCandidateUsers(v bool) {
 	o.WithCandidateUsers.Set(&v)
 }
+
 // SetWithCandidateUsersNil sets the value for WithCandidateUsers to be an explicit nil
 func (o *TaskQueryDto) SetWithCandidateUsersNil() {
 	o.WithCandidateUsers.Set(nil)
@@ -3830,6 +3905,7 @@ func (o *TaskQueryDto) HasWithoutCandidateUsers() bool {
 func (o *TaskQueryDto) SetWithoutCandidateUsers(v bool) {
 	o.WithoutCandidateUsers.Set(&v)
 }
+
 // SetWithoutCandidateUsersNil sets the value for WithoutCandidateUsers to be an explicit nil
 func (o *TaskQueryDto) SetWithoutCandidateUsersNil() {
 	o.WithoutCandidateUsers.Set(nil)
@@ -3872,6 +3948,7 @@ func (o *TaskQueryDto) HasActive() bool {
 func (o *TaskQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *TaskQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -3914,6 +3991,7 @@ func (o *TaskQueryDto) HasSuspended() bool {
 func (o *TaskQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *TaskQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -4055,6 +4133,7 @@ func (o *TaskQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *TaskQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *TaskQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -4097,6 +4176,7 @@ func (o *TaskQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *TaskQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *TaskQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -4139,6 +4219,7 @@ func (o *TaskQueryDto) HasParentTaskId() bool {
 func (o *TaskQueryDto) SetParentTaskId(v string) {
 	o.ParentTaskId.Set(&v)
 }
+
 // SetParentTaskIdNil sets the value for ParentTaskId to be an explicit nil
 func (o *TaskQueryDto) SetParentTaskIdNil() {
 	o.ParentTaskId.Set(nil)
@@ -4216,7 +4297,7 @@ func (o *TaskQueryDto) SetSorting(v []TaskQueryDtoSortingInner) {
 }
 
 func (o TaskQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -4554,5 +4635,3 @@ func (v *NullableTaskQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

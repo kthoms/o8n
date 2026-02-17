@@ -86,6 +86,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasDecisionDefinition
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionId(v string) {
 	o.DecisionDefinitionId.Set(&v)
 }
+
 // SetDecisionDefinitionIdNil sets the value for DecisionDefinitionId to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionIdNil() {
 	o.DecisionDefinitionId.Set(nil)
@@ -128,6 +129,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasDecisionDefinition
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionKey(v string) {
 	o.DecisionDefinitionKey.Set(&v)
 }
+
 // SetDecisionDefinitionKeyNil sets the value for DecisionDefinitionKey to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionKeyNil() {
 	o.DecisionDefinitionKey.Set(nil)
@@ -170,6 +172,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasDecisionDefinition
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionName(v string) {
 	o.DecisionDefinitionName.Set(&v)
 }
+
 // SetDecisionDefinitionNameNil sets the value for DecisionDefinitionName to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionNameNil() {
 	o.DecisionDefinitionName.Set(nil)
@@ -212,6 +215,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasDecisionDefinition
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionVersion(v int32) {
 	o.DecisionDefinitionVersion.Set(&v)
 }
+
 // SetDecisionDefinitionVersionNil sets the value for DecisionDefinitionVersion to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetDecisionDefinitionVersionNil() {
 	o.DecisionDefinitionVersion.Set(nil)
@@ -254,6 +258,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasHistoryTimeToLive(
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -296,6 +301,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasFinishedDecisionIn
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetFinishedDecisionInstanceCount(v int64) {
 	o.FinishedDecisionInstanceCount.Set(&v)
 }
+
 // SetFinishedDecisionInstanceCountNil sets the value for FinishedDecisionInstanceCount to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetFinishedDecisionInstanceCountNil() {
 	o.FinishedDecisionInstanceCount.Set(nil)
@@ -338,6 +344,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasCleanableDecisionI
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetCleanableDecisionInstanceCount(v int64) {
 	o.CleanableDecisionInstanceCount.Set(&v)
 }
+
 // SetCleanableDecisionInstanceCountNil sets the value for CleanableDecisionInstanceCount to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetCleanableDecisionInstanceCountNil() {
 	o.CleanableDecisionInstanceCount.Set(nil)
@@ -380,6 +387,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) HasTenantId() bool {
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *CleanableHistoricDecisionInstanceReportResultDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -391,7 +399,7 @@ func (o *CleanableHistoricDecisionInstanceReportResultDto) UnsetTenantId() {
 }
 
 func (o CleanableHistoricDecisionInstanceReportResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -462,5 +470,3 @@ func (v *NullableCleanableHistoricDecisionInstanceReportResultDto) UnmarshalJSON
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

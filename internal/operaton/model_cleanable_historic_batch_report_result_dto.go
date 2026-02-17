@@ -78,6 +78,7 @@ func (o *CleanableHistoricBatchReportResultDto) HasBatchType() bool {
 func (o *CleanableHistoricBatchReportResultDto) SetBatchType(v string) {
 	o.BatchType.Set(&v)
 }
+
 // SetBatchTypeNil sets the value for BatchType to be an explicit nil
 func (o *CleanableHistoricBatchReportResultDto) SetBatchTypeNil() {
 	o.BatchType.Set(nil)
@@ -120,6 +121,7 @@ func (o *CleanableHistoricBatchReportResultDto) HasHistoryTimeToLive() bool {
 func (o *CleanableHistoricBatchReportResultDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *CleanableHistoricBatchReportResultDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -162,6 +164,7 @@ func (o *CleanableHistoricBatchReportResultDto) HasFinishedBatchesCount() bool {
 func (o *CleanableHistoricBatchReportResultDto) SetFinishedBatchesCount(v int64) {
 	o.FinishedBatchesCount.Set(&v)
 }
+
 // SetFinishedBatchesCountNil sets the value for FinishedBatchesCount to be an explicit nil
 func (o *CleanableHistoricBatchReportResultDto) SetFinishedBatchesCountNil() {
 	o.FinishedBatchesCount.Set(nil)
@@ -204,6 +207,7 @@ func (o *CleanableHistoricBatchReportResultDto) HasCleanableBatchesCount() bool 
 func (o *CleanableHistoricBatchReportResultDto) SetCleanableBatchesCount(v int64) {
 	o.CleanableBatchesCount.Set(&v)
 }
+
 // SetCleanableBatchesCountNil sets the value for CleanableBatchesCount to be an explicit nil
 func (o *CleanableHistoricBatchReportResultDto) SetCleanableBatchesCountNil() {
 	o.CleanableBatchesCount.Set(nil)
@@ -215,7 +219,7 @@ func (o *CleanableHistoricBatchReportResultDto) UnsetCleanableBatchesCount() {
 }
 
 func (o CleanableHistoricBatchReportResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -274,5 +278,3 @@ func (v *NullableCleanableHistoricBatchReportResultDto) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

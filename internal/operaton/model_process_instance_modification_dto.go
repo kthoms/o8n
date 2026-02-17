@@ -78,6 +78,7 @@ func (o *ProcessInstanceModificationDto) HasSkipCustomListeners() bool {
 func (o *ProcessInstanceModificationDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *ProcessInstanceModificationDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -120,6 +121,7 @@ func (o *ProcessInstanceModificationDto) HasSkipIoMappings() bool {
 func (o *ProcessInstanceModificationDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *ProcessInstanceModificationDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -195,6 +197,7 @@ func (o *ProcessInstanceModificationDto) HasAnnotation() bool {
 func (o *ProcessInstanceModificationDto) SetAnnotation(v string) {
 	o.Annotation.Set(&v)
 }
+
 // SetAnnotationNil sets the value for Annotation to be an explicit nil
 func (o *ProcessInstanceModificationDto) SetAnnotationNil() {
 	o.Annotation.Set(nil)
@@ -206,7 +209,7 @@ func (o *ProcessInstanceModificationDto) UnsetAnnotation() {
 }
 
 func (o ProcessInstanceModificationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -265,5 +268,3 @@ func (v *NullableProcessInstanceModificationDto) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

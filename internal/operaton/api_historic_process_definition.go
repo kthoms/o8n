@@ -20,22 +20,21 @@ import (
 	"time"
 )
 
-
 // HistoricProcessDefinitionAPIService HistoricProcessDefinitionAPI service
 type HistoricProcessDefinitionAPIService service
 
 type ApiGetCleanableHistoricProcessInstanceReportRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessDefinitionAPIService
-	processDefinitionIdIn *string
+	ctx                    context.Context
+	ApiService             *HistoricProcessDefinitionAPIService
+	processDefinitionIdIn  *string
 	processDefinitionKeyIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	compact *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	tenantIdIn             *string
+	withoutTenantId        *bool
+	compact                *bool
+	sortBy                 *string
+	sortOrder              *string
+	firstResult            *int32
+	maxResults             *int32
 }
 
 // Filter by process definition ids. Must be a comma-separated list of process definition ids.
@@ -101,7 +100,7 @@ GetCleanableHistoricProcessInstanceReport Get Cleanable Process Instance Report
 
 Retrieves a report about a process definition and finished process instances
 relevant to history cleanup (see
-[History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup)) 
+[History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup))
 so that you can tune the history time to live.
 These reports include the count of the finished historic process
 instances, cleanable process instances and basic process definition
@@ -110,24 +109,25 @@ The size of the result set can be retrieved by using the
 [Get Cleanable Process Instance Report Count](https://docs.operaton.org/manual/1.0/reference/rest/history/process-definition/get-cleanable-process-instance-report-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricProcessInstanceReportRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricProcessInstanceReportRequest
 */
 func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanceReport(ctx context.Context) ApiGetCleanableHistoricProcessInstanceReportRequest {
 	return ApiGetCleanableHistoricProcessInstanceReportRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []CleanableHistoricProcessInstanceReportResultDto
+//
+//	@return []CleanableHistoricProcessInstanceReportResultDto
 func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanceReportExecute(r ApiGetCleanableHistoricProcessInstanceReportRequest) ([]CleanableHistoricProcessInstanceReportResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CleanableHistoricProcessInstanceReportResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CleanableHistoricProcessInstanceReportResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessDefinitionAPIService.GetCleanableHistoricProcessInstanceReport")
@@ -214,8 +214,8 @@ func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -233,13 +233,13 @@ func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanc
 }
 
 type ApiGetCleanableHistoricProcessInstanceReportCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessDefinitionAPIService
-	processDefinitionIdIn *string
+	ctx                    context.Context
+	ApiService             *HistoricProcessDefinitionAPIService
+	processDefinitionIdIn  *string
 	processDefinitionKeyIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	compact *bool
+	tenantIdIn             *string
+	withoutTenantId        *bool
+	compact                *bool
 }
 
 // Filter by process definition ids. Must be a comma-separated list of process definition ids.
@@ -286,24 +286,25 @@ Takes the same parameters as the
 [Get Cleanable Process Instance Report](https://docs.operaton.org/manual/1.0/reference/rest/history/process-definition/get-cleanable-process-instance-report/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricProcessInstanceReportCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricProcessInstanceReportCountRequest
 */
 func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanceReportCount(ctx context.Context) ApiGetCleanableHistoricProcessInstanceReportCountRequest {
 	return ApiGetCleanableHistoricProcessInstanceReportCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanceReportCountExecute(r ApiGetCleanableHistoricProcessInstanceReportCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessDefinitionAPIService.GetCleanableHistoricProcessInstanceReportCount")
@@ -378,8 +379,8 @@ func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -397,20 +398,20 @@ func (a *HistoricProcessDefinitionAPIService) GetCleanableHistoricProcessInstanc
 }
 
 type ApiGetHistoricActivityStatisticsRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessDefinitionAPIService
-	id string
-	canceled *bool
-	finished *bool
-	completeScope *bool
-	incidents *bool
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
+	ctx                 context.Context
+	ApiService          *HistoricProcessDefinitionAPIService
+	id                  string
+	canceled            *bool
+	finished            *bool
+	completeScope       *bool
+	incidents           *bool
+	startedBefore       *time.Time
+	startedAfter        *time.Time
+	finishedBefore      *time.Time
+	finishedAfter       *time.Time
 	processInstanceIdIn *string
-	sortBy *string
-	sortOrder *string
+	sortBy              *string
+	sortOrder           *string
 }
 
 // Whether to include the number of canceled activity instances in the result or not. Valid values are &#x60;true&#x60; or &#x60;false&#x60;. Default: &#x60;false&#x60;.
@@ -495,26 +496,27 @@ instance when the activity instance consumed a token but did not emit
 a new token).
 **Note:** This only includes historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition.
- @return ApiGetHistoricActivityStatisticsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition.
+	@return ApiGetHistoricActivityStatisticsRequest
 */
 func (a *HistoricProcessDefinitionAPIService) GetHistoricActivityStatistics(ctx context.Context, id string) ApiGetHistoricActivityStatisticsRequest {
 	return ApiGetHistoricActivityStatisticsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricActivityStatisticsDto
+//
+//	@return []HistoricActivityStatisticsDto
 func (a *HistoricProcessDefinitionAPIService) GetHistoricActivityStatisticsExecute(r ApiGetHistoricActivityStatisticsRequest) ([]HistoricActivityStatisticsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricActivityStatisticsDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricActivityStatisticsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessDefinitionAPIService.GetHistoricActivityStatistics")
@@ -608,8 +610,8 @@ func (a *HistoricProcessDefinitionAPIService) GetHistoricActivityStatisticsExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

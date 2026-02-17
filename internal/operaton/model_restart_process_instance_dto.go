@@ -20,7 +20,7 @@ var _ MappedNullable = &RestartProcessInstanceDto{}
 // RestartProcessInstanceDto struct for RestartProcessInstanceDto
 type RestartProcessInstanceDto struct {
 	// A list of process instance ids to restart.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 	// Skip execution listener invocation for activities that are started as part of this request.
 	SkipCustomListeners NullableBool `json:"skipCustomListeners,omitempty"`
@@ -148,6 +148,7 @@ func (o *RestartProcessInstanceDto) HasSkipCustomListeners() bool {
 func (o *RestartProcessInstanceDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *RestartProcessInstanceDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -190,6 +191,7 @@ func (o *RestartProcessInstanceDto) HasSkipIoMappings() bool {
 func (o *RestartProcessInstanceDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *RestartProcessInstanceDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -232,6 +234,7 @@ func (o *RestartProcessInstanceDto) HasInitialVariables() bool {
 func (o *RestartProcessInstanceDto) SetInitialVariables(v bool) {
 	o.InitialVariables.Set(&v)
 }
+
 // SetInitialVariablesNil sets the value for InitialVariables to be an explicit nil
 func (o *RestartProcessInstanceDto) SetInitialVariablesNil() {
 	o.InitialVariables.Set(nil)
@@ -274,6 +277,7 @@ func (o *RestartProcessInstanceDto) HasWithoutBusinessKey() bool {
 func (o *RestartProcessInstanceDto) SetWithoutBusinessKey(v bool) {
 	o.WithoutBusinessKey.Set(&v)
 }
+
 // SetWithoutBusinessKeyNil sets the value for WithoutBusinessKey to be an explicit nil
 func (o *RestartProcessInstanceDto) SetWithoutBusinessKeyNil() {
 	o.WithoutBusinessKey.Set(nil)
@@ -318,7 +322,7 @@ func (o *RestartProcessInstanceDto) SetInstructions(v []RestartProcessInstanceMo
 }
 
 func (o RestartProcessInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -386,5 +390,3 @@ func (v *NullableRestartProcessInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -77,6 +77,7 @@ func (o *HistoryCleanupConfigurationDto) HasBatchWindowStartTime() bool {
 func (o *HistoryCleanupConfigurationDto) SetBatchWindowStartTime(v time.Time) {
 	o.BatchWindowStartTime.Set(&v)
 }
+
 // SetBatchWindowStartTimeNil sets the value for BatchWindowStartTime to be an explicit nil
 func (o *HistoryCleanupConfigurationDto) SetBatchWindowStartTimeNil() {
 	o.BatchWindowStartTime.Set(nil)
@@ -119,6 +120,7 @@ func (o *HistoryCleanupConfigurationDto) HasBatchWindowEndTime() bool {
 func (o *HistoryCleanupConfigurationDto) SetBatchWindowEndTime(v time.Time) {
 	o.BatchWindowEndTime.Set(&v)
 }
+
 // SetBatchWindowEndTimeNil sets the value for BatchWindowEndTime to be an explicit nil
 func (o *HistoryCleanupConfigurationDto) SetBatchWindowEndTimeNil() {
 	o.BatchWindowEndTime.Set(nil)
@@ -161,6 +163,7 @@ func (o *HistoryCleanupConfigurationDto) HasEnabled() bool {
 func (o *HistoryCleanupConfigurationDto) SetEnabled(v bool) {
 	o.Enabled.Set(&v)
 }
+
 // SetEnabledNil sets the value for Enabled to be an explicit nil
 func (o *HistoryCleanupConfigurationDto) SetEnabledNil() {
 	o.Enabled.Set(nil)
@@ -172,7 +175,7 @@ func (o *HistoryCleanupConfigurationDto) UnsetEnabled() {
 }
 
 func (o HistoryCleanupConfigurationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -228,5 +231,3 @@ func (v *NullableHistoryCleanupConfigurationDto) UnmarshalJSON(src []byte) error
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

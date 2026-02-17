@@ -72,6 +72,7 @@ func (o *SuspensionStateDto) HasSuspended() bool {
 func (o *SuspensionStateDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *SuspensionStateDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -83,7 +84,7 @@ func (o *SuspensionStateDto) UnsetSuspended() {
 }
 
 func (o SuspensionStateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableSuspensionStateDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

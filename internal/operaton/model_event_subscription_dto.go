@@ -87,6 +87,7 @@ func (o *EventSubscriptionDto) HasId() bool {
 func (o *EventSubscriptionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *EventSubscriptionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -129,6 +130,7 @@ func (o *EventSubscriptionDto) HasEventType() bool {
 func (o *EventSubscriptionDto) SetEventType(v string) {
 	o.EventType.Set(&v)
 }
+
 // SetEventTypeNil sets the value for EventType to be an explicit nil
 func (o *EventSubscriptionDto) SetEventTypeNil() {
 	o.EventType.Set(nil)
@@ -171,6 +173,7 @@ func (o *EventSubscriptionDto) HasEventName() bool {
 func (o *EventSubscriptionDto) SetEventName(v string) {
 	o.EventName.Set(&v)
 }
+
 // SetEventNameNil sets the value for EventName to be an explicit nil
 func (o *EventSubscriptionDto) SetEventNameNil() {
 	o.EventName.Set(nil)
@@ -213,6 +216,7 @@ func (o *EventSubscriptionDto) HasExecutionId() bool {
 func (o *EventSubscriptionDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *EventSubscriptionDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -255,6 +259,7 @@ func (o *EventSubscriptionDto) HasProcessInstanceId() bool {
 func (o *EventSubscriptionDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *EventSubscriptionDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -297,6 +302,7 @@ func (o *EventSubscriptionDto) HasActivityId() bool {
 func (o *EventSubscriptionDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *EventSubscriptionDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -339,6 +345,7 @@ func (o *EventSubscriptionDto) HasCreatedDate() bool {
 func (o *EventSubscriptionDto) SetCreatedDate(v time.Time) {
 	o.CreatedDate.Set(&v)
 }
+
 // SetCreatedDateNil sets the value for CreatedDate to be an explicit nil
 func (o *EventSubscriptionDto) SetCreatedDateNil() {
 	o.CreatedDate.Set(nil)
@@ -381,6 +388,7 @@ func (o *EventSubscriptionDto) HasTenantId() bool {
 func (o *EventSubscriptionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *EventSubscriptionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -392,7 +400,7 @@ func (o *EventSubscriptionDto) UnsetTenantId() {
 }
 
 func (o EventSubscriptionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -463,5 +471,3 @@ func (v *NullableEventSubscriptionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

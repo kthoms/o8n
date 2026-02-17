@@ -76,6 +76,7 @@ func (o *TaskBpmnErrorDto) HasErrorCode() bool {
 func (o *TaskBpmnErrorDto) SetErrorCode(v string) {
 	o.ErrorCode.Set(&v)
 }
+
 // SetErrorCodeNil sets the value for ErrorCode to be an explicit nil
 func (o *TaskBpmnErrorDto) SetErrorCodeNil() {
 	o.ErrorCode.Set(nil)
@@ -118,6 +119,7 @@ func (o *TaskBpmnErrorDto) HasErrorMessage() bool {
 func (o *TaskBpmnErrorDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *TaskBpmnErrorDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -162,7 +164,7 @@ func (o *TaskBpmnErrorDto) SetVariables(v map[string]VariableValueDto) {
 }
 
 func (o TaskBpmnErrorDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -218,5 +220,3 @@ func (v *NullableTaskBpmnErrorDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

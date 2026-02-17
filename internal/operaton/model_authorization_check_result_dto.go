@@ -78,6 +78,7 @@ func (o *AuthorizationCheckResultDto) HasPermissionName() bool {
 func (o *AuthorizationCheckResultDto) SetPermissionName(v string) {
 	o.PermissionName.Set(&v)
 }
+
 // SetPermissionNameNil sets the value for PermissionName to be an explicit nil
 func (o *AuthorizationCheckResultDto) SetPermissionNameNil() {
 	o.PermissionName.Set(nil)
@@ -120,6 +121,7 @@ func (o *AuthorizationCheckResultDto) HasResourceName() bool {
 func (o *AuthorizationCheckResultDto) SetResourceName(v string) {
 	o.ResourceName.Set(&v)
 }
+
 // SetResourceNameNil sets the value for ResourceName to be an explicit nil
 func (o *AuthorizationCheckResultDto) SetResourceNameNil() {
 	o.ResourceName.Set(nil)
@@ -162,6 +164,7 @@ func (o *AuthorizationCheckResultDto) HasResourceId() bool {
 func (o *AuthorizationCheckResultDto) SetResourceId(v string) {
 	o.ResourceId.Set(&v)
 }
+
 // SetResourceIdNil sets the value for ResourceId to be an explicit nil
 func (o *AuthorizationCheckResultDto) SetResourceIdNil() {
 	o.ResourceId.Set(nil)
@@ -204,6 +207,7 @@ func (o *AuthorizationCheckResultDto) HasAuthorized() bool {
 func (o *AuthorizationCheckResultDto) SetAuthorized(v bool) {
 	o.Authorized.Set(&v)
 }
+
 // SetAuthorizedNil sets the value for Authorized to be an explicit nil
 func (o *AuthorizationCheckResultDto) SetAuthorizedNil() {
 	o.Authorized.Set(nil)
@@ -215,7 +219,7 @@ func (o *AuthorizationCheckResultDto) UnsetAuthorized() {
 }
 
 func (o AuthorizationCheckResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -274,5 +278,3 @@ func (v *NullableAuthorizationCheckResultDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

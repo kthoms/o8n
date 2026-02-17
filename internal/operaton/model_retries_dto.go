@@ -72,6 +72,7 @@ func (o *RetriesDto) HasRetries() bool {
 func (o *RetriesDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *RetriesDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -83,7 +84,7 @@ func (o *RetriesDto) UnsetRetries() {
 }
 
 func (o RetriesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableRetriesDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -45,9 +45,9 @@ type JobQueryDto struct {
 	Timers NullableBool `json:"timers,omitempty"`
 	// Only select jobs that are messages. Cannot be used together with `timers`. Value may only be `true`, as `false` is the default behavior.
 	Messages NullableBool `json:"messages,omitempty"`
-	// Only select jobs where the due date is lower or higher than the given date. 
+	// Only select jobs where the due date is lower or higher than the given date.
 	DueDates []JobConditionQueryParameterDto `json:"dueDates,omitempty"`
-	// Only select jobs created before or after the given date. 
+	// Only select jobs created before or after the given date.
 	CreateTimes []JobConditionQueryParameterDto `json:"createTimes,omitempty"`
 	// Only select jobs that failed due to an exception. Value may only be `true`, as `false` is the default behavior.
 	WithException NullableBool `json:"withException,omitempty"`
@@ -126,6 +126,7 @@ func (o *JobQueryDto) HasJobId() bool {
 func (o *JobQueryDto) SetJobId(v string) {
 	o.JobId.Set(&v)
 }
+
 // SetJobIdNil sets the value for JobId to be an explicit nil
 func (o *JobQueryDto) SetJobIdNil() {
 	o.JobId.Set(nil)
@@ -201,6 +202,7 @@ func (o *JobQueryDto) HasJobDefinitionId() bool {
 func (o *JobQueryDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *JobQueryDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -243,6 +245,7 @@ func (o *JobQueryDto) HasProcessInstanceId() bool {
 func (o *JobQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *JobQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -318,6 +321,7 @@ func (o *JobQueryDto) HasExecutionId() bool {
 func (o *JobQueryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *JobQueryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -360,6 +364,7 @@ func (o *JobQueryDto) HasProcessDefinitionId() bool {
 func (o *JobQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *JobQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -402,6 +407,7 @@ func (o *JobQueryDto) HasProcessDefinitionKey() bool {
 func (o *JobQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *JobQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -444,6 +450,7 @@ func (o *JobQueryDto) HasActivityId() bool {
 func (o *JobQueryDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *JobQueryDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -486,6 +493,7 @@ func (o *JobQueryDto) HasWithRetriesLeft() bool {
 func (o *JobQueryDto) SetWithRetriesLeft(v bool) {
 	o.WithRetriesLeft.Set(&v)
 }
+
 // SetWithRetriesLeftNil sets the value for WithRetriesLeft to be an explicit nil
 func (o *JobQueryDto) SetWithRetriesLeftNil() {
 	o.WithRetriesLeft.Set(nil)
@@ -528,6 +536,7 @@ func (o *JobQueryDto) HasExecutable() bool {
 func (o *JobQueryDto) SetExecutable(v bool) {
 	o.Executable.Set(&v)
 }
+
 // SetExecutableNil sets the value for Executable to be an explicit nil
 func (o *JobQueryDto) SetExecutableNil() {
 	o.Executable.Set(nil)
@@ -570,6 +579,7 @@ func (o *JobQueryDto) HasTimers() bool {
 func (o *JobQueryDto) SetTimers(v bool) {
 	o.Timers.Set(&v)
 }
+
 // SetTimersNil sets the value for Timers to be an explicit nil
 func (o *JobQueryDto) SetTimersNil() {
 	o.Timers.Set(nil)
@@ -612,6 +622,7 @@ func (o *JobQueryDto) HasMessages() bool {
 func (o *JobQueryDto) SetMessages(v bool) {
 	o.Messages.Set(&v)
 }
+
 // SetMessagesNil sets the value for Messages to be an explicit nil
 func (o *JobQueryDto) SetMessagesNil() {
 	o.Messages.Set(nil)
@@ -720,6 +731,7 @@ func (o *JobQueryDto) HasWithException() bool {
 func (o *JobQueryDto) SetWithException(v bool) {
 	o.WithException.Set(&v)
 }
+
 // SetWithExceptionNil sets the value for WithException to be an explicit nil
 func (o *JobQueryDto) SetWithExceptionNil() {
 	o.WithException.Set(nil)
@@ -762,6 +774,7 @@ func (o *JobQueryDto) HasExceptionMessage() bool {
 func (o *JobQueryDto) SetExceptionMessage(v string) {
 	o.ExceptionMessage.Set(&v)
 }
+
 // SetExceptionMessageNil sets the value for ExceptionMessage to be an explicit nil
 func (o *JobQueryDto) SetExceptionMessageNil() {
 	o.ExceptionMessage.Set(nil)
@@ -804,6 +817,7 @@ func (o *JobQueryDto) HasFailedActivityId() bool {
 func (o *JobQueryDto) SetFailedActivityId(v string) {
 	o.FailedActivityId.Set(&v)
 }
+
 // SetFailedActivityIdNil sets the value for FailedActivityId to be an explicit nil
 func (o *JobQueryDto) SetFailedActivityIdNil() {
 	o.FailedActivityId.Set(nil)
@@ -846,6 +860,7 @@ func (o *JobQueryDto) HasNoRetriesLeft() bool {
 func (o *JobQueryDto) SetNoRetriesLeft(v bool) {
 	o.NoRetriesLeft.Set(&v)
 }
+
 // SetNoRetriesLeftNil sets the value for NoRetriesLeft to be an explicit nil
 func (o *JobQueryDto) SetNoRetriesLeftNil() {
 	o.NoRetriesLeft.Set(nil)
@@ -888,6 +903,7 @@ func (o *JobQueryDto) HasActive() bool {
 func (o *JobQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *JobQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -930,6 +946,7 @@ func (o *JobQueryDto) HasSuspended() bool {
 func (o *JobQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *JobQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -972,6 +989,7 @@ func (o *JobQueryDto) HasPriorityLowerThanOrEquals() bool {
 func (o *JobQueryDto) SetPriorityLowerThanOrEquals(v int64) {
 	o.PriorityLowerThanOrEquals.Set(&v)
 }
+
 // SetPriorityLowerThanOrEqualsNil sets the value for PriorityLowerThanOrEquals to be an explicit nil
 func (o *JobQueryDto) SetPriorityLowerThanOrEqualsNil() {
 	o.PriorityLowerThanOrEquals.Set(nil)
@@ -1014,6 +1032,7 @@ func (o *JobQueryDto) HasPriorityHigherThanOrEquals() bool {
 func (o *JobQueryDto) SetPriorityHigherThanOrEquals(v int64) {
 	o.PriorityHigherThanOrEquals.Set(&v)
 }
+
 // SetPriorityHigherThanOrEqualsNil sets the value for PriorityHigherThanOrEquals to be an explicit nil
 func (o *JobQueryDto) SetPriorityHigherThanOrEqualsNil() {
 	o.PriorityHigherThanOrEquals.Set(nil)
@@ -1089,6 +1108,7 @@ func (o *JobQueryDto) HasWithoutTenantId() bool {
 func (o *JobQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *JobQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -1131,6 +1151,7 @@ func (o *JobQueryDto) HasIncludeJobsWithoutTenantId() bool {
 func (o *JobQueryDto) SetIncludeJobsWithoutTenantId(v bool) {
 	o.IncludeJobsWithoutTenantId.Set(&v)
 }
+
 // SetIncludeJobsWithoutTenantIdNil sets the value for IncludeJobsWithoutTenantId to be an explicit nil
 func (o *JobQueryDto) SetIncludeJobsWithoutTenantIdNil() {
 	o.IncludeJobsWithoutTenantId.Set(nil)
@@ -1173,6 +1194,7 @@ func (o *JobQueryDto) HasAcquired() bool {
 func (o *JobQueryDto) SetAcquired(v bool) {
 	o.Acquired.Set(&v)
 }
+
 // SetAcquiredNil sets the value for Acquired to be an explicit nil
 func (o *JobQueryDto) SetAcquiredNil() {
 	o.Acquired.Set(nil)
@@ -1217,7 +1239,7 @@ func (o *JobQueryDto) SetSorting(v []JobQueryDtoSortingInner) {
 }
 
 func (o JobQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1348,5 +1370,3 @@ func (v *NullableJobQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

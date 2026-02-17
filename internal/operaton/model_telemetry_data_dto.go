@@ -20,8 +20,8 @@ var _ MappedNullable = &TelemetryDataDto{}
 // TelemetryDataDto struct for TelemetryDataDto
 type TelemetryDataDto struct {
 	// An id which is unique for each installation of Operaton. It is stored once per database so all engines connected to the same database will have the same installation ID. The ID is used to identify a single installation of Operaton.
-	Installation NullableString `json:"installation,omitempty"`
-	Product *TelemetryProductDto `json:"product,omitempty"`
+	Installation NullableString       `json:"installation,omitempty"`
+	Product      *TelemetryProductDto `json:"product,omitempty"`
 }
 
 // NewTelemetryDataDto instantiates a new TelemetryDataDto object
@@ -73,6 +73,7 @@ func (o *TelemetryDataDto) HasInstallation() bool {
 func (o *TelemetryDataDto) SetInstallation(v string) {
 	o.Installation.Set(&v)
 }
+
 // SetInstallationNil sets the value for Installation to be an explicit nil
 func (o *TelemetryDataDto) SetInstallationNil() {
 	o.Installation.Set(nil)
@@ -116,7 +117,7 @@ func (o *TelemetryDataDto) SetProduct(v TelemetryProductDto) {
 }
 
 func (o TelemetryDataDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -169,5 +170,3 @@ func (v *NullableTelemetryDataDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

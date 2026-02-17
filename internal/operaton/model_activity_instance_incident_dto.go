@@ -74,6 +74,7 @@ func (o *ActivityInstanceIncidentDto) HasId() bool {
 func (o *ActivityInstanceIncidentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ActivityInstanceIncidentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -116,6 +117,7 @@ func (o *ActivityInstanceIncidentDto) HasActivityId() bool {
 func (o *ActivityInstanceIncidentDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *ActivityInstanceIncidentDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -127,7 +129,7 @@ func (o *ActivityInstanceIncidentDto) UnsetActivityId() {
 }
 
 func (o ActivityInstanceIncidentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableActivityInstanceIncidentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

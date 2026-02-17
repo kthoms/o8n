@@ -20,7 +20,7 @@ var _ MappedNullable = &TelemetryInternalsDto{}
 
 // TelemetryInternalsDto struct for TelemetryInternalsDto
 type TelemetryInternalsDto struct {
-	Database *AbstractVendorVersionInformationDto `json:"database,omitempty"`
+	Database          *AbstractVendorVersionInformationDto `json:"database,omitempty"`
 	ApplicationServer *AbstractVendorVersionInformationDto `json:"application-server,omitempty"`
 	// List of Operaton integrations used (e.g., Operaton Spring Boot Starter, Operaton Run, WildFly/JBoss subsystem, Operaton EJB).
 	OperatonIntegration []string `json:"operaton-integration,omitempty"`
@@ -29,8 +29,8 @@ type TelemetryInternalsDto struct {
 	// The collected metrics are the number of root process instance executions started, the number of activity instances started or also known as flow node instances, and the number of executed decision instances and elements.
 	Metrics map[string]TelemetryCountDto `json:"metrics,omitempty"`
 	// The webapps enabled in this installation of Operaton.
-	Webapps []string `json:"webapps,omitempty"`
-	Jdk *AbstractVendorVersionInformationDto `json:"jdk,omitempty"`
+	Webapps []string                             `json:"webapps,omitempty"`
+	Jdk     *AbstractVendorVersionInformationDto `json:"jdk,omitempty"`
 	// The date when the engine started to collect dynamic data, such as command executions and metrics. If telemetry sending is enabled, dynamic data resets on sending the data to Operaton. Dynamic data and the date returned by this method are reset in three cases: engine startup, after engine start when sending telemetry data to Operaton is enabled via API, after sending telemetry data to Operaton (only when this was enabled) The date is in the format <code>YYYY-MM-DD'T'HH:mm:ss.SSSZ</code>.
 	DataCollectionStartDate *time.Time `json:"data-collection-start-date,omitempty"`
 }
@@ -313,7 +313,7 @@ func (o *TelemetryInternalsDto) SetDataCollectionStartDate(v time.Time) {
 }
 
 func (o TelemetryInternalsDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -384,5 +384,3 @@ func (v *NullableTelemetryInternalsDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

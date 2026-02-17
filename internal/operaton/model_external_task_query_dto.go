@@ -137,6 +137,7 @@ func (o *ExternalTaskQueryDto) HasExternalTaskId() bool {
 func (o *ExternalTaskQueryDto) SetExternalTaskId(v string) {
 	o.ExternalTaskId.Set(&v)
 }
+
 // SetExternalTaskIdNil sets the value for ExternalTaskId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetExternalTaskIdNil() {
 	o.ExternalTaskId.Set(nil)
@@ -212,6 +213,7 @@ func (o *ExternalTaskQueryDto) HasTopicName() bool {
 func (o *ExternalTaskQueryDto) SetTopicName(v string) {
 	o.TopicName.Set(&v)
 }
+
 // SetTopicNameNil sets the value for TopicName to be an explicit nil
 func (o *ExternalTaskQueryDto) SetTopicNameNil() {
 	o.TopicName.Set(nil)
@@ -254,6 +256,7 @@ func (o *ExternalTaskQueryDto) HasWorkerId() bool {
 func (o *ExternalTaskQueryDto) SetWorkerId(v string) {
 	o.WorkerId.Set(&v)
 }
+
 // SetWorkerIdNil sets the value for WorkerId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetWorkerIdNil() {
 	o.WorkerId.Set(nil)
@@ -296,6 +299,7 @@ func (o *ExternalTaskQueryDto) HasLocked() bool {
 func (o *ExternalTaskQueryDto) SetLocked(v bool) {
 	o.Locked.Set(&v)
 }
+
 // SetLockedNil sets the value for Locked to be an explicit nil
 func (o *ExternalTaskQueryDto) SetLockedNil() {
 	o.Locked.Set(nil)
@@ -338,6 +342,7 @@ func (o *ExternalTaskQueryDto) HasNotLocked() bool {
 func (o *ExternalTaskQueryDto) SetNotLocked(v bool) {
 	o.NotLocked.Set(&v)
 }
+
 // SetNotLockedNil sets the value for NotLocked to be an explicit nil
 func (o *ExternalTaskQueryDto) SetNotLockedNil() {
 	o.NotLocked.Set(nil)
@@ -380,6 +385,7 @@ func (o *ExternalTaskQueryDto) HasWithRetriesLeft() bool {
 func (o *ExternalTaskQueryDto) SetWithRetriesLeft(v bool) {
 	o.WithRetriesLeft.Set(&v)
 }
+
 // SetWithRetriesLeftNil sets the value for WithRetriesLeft to be an explicit nil
 func (o *ExternalTaskQueryDto) SetWithRetriesLeftNil() {
 	o.WithRetriesLeft.Set(nil)
@@ -422,6 +428,7 @@ func (o *ExternalTaskQueryDto) HasNoRetriesLeft() bool {
 func (o *ExternalTaskQueryDto) SetNoRetriesLeft(v bool) {
 	o.NoRetriesLeft.Set(&v)
 }
+
 // SetNoRetriesLeftNil sets the value for NoRetriesLeft to be an explicit nil
 func (o *ExternalTaskQueryDto) SetNoRetriesLeftNil() {
 	o.NoRetriesLeft.Set(nil)
@@ -464,6 +471,7 @@ func (o *ExternalTaskQueryDto) HasLockExpirationAfter() bool {
 func (o *ExternalTaskQueryDto) SetLockExpirationAfter(v time.Time) {
 	o.LockExpirationAfter.Set(&v)
 }
+
 // SetLockExpirationAfterNil sets the value for LockExpirationAfter to be an explicit nil
 func (o *ExternalTaskQueryDto) SetLockExpirationAfterNil() {
 	o.LockExpirationAfter.Set(nil)
@@ -506,6 +514,7 @@ func (o *ExternalTaskQueryDto) HasLockExpirationBefore() bool {
 func (o *ExternalTaskQueryDto) SetLockExpirationBefore(v time.Time) {
 	o.LockExpirationBefore.Set(&v)
 }
+
 // SetLockExpirationBeforeNil sets the value for LockExpirationBefore to be an explicit nil
 func (o *ExternalTaskQueryDto) SetLockExpirationBeforeNil() {
 	o.LockExpirationBefore.Set(nil)
@@ -548,6 +557,7 @@ func (o *ExternalTaskQueryDto) HasActivityId() bool {
 func (o *ExternalTaskQueryDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -623,6 +633,7 @@ func (o *ExternalTaskQueryDto) HasExecutionId() bool {
 func (o *ExternalTaskQueryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -665,6 +676,7 @@ func (o *ExternalTaskQueryDto) HasProcessInstanceId() bool {
 func (o *ExternalTaskQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -740,6 +752,7 @@ func (o *ExternalTaskQueryDto) HasProcessDefinitionId() bool {
 func (o *ExternalTaskQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ExternalTaskQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -815,6 +828,7 @@ func (o *ExternalTaskQueryDto) HasActive() bool {
 func (o *ExternalTaskQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *ExternalTaskQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -857,6 +871,7 @@ func (o *ExternalTaskQueryDto) HasSuspended() bool {
 func (o *ExternalTaskQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ExternalTaskQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -899,6 +914,7 @@ func (o *ExternalTaskQueryDto) HasPriorityHigherThanOrEquals() bool {
 func (o *ExternalTaskQueryDto) SetPriorityHigherThanOrEquals(v int64) {
 	o.PriorityHigherThanOrEquals.Set(&v)
 }
+
 // SetPriorityHigherThanOrEqualsNil sets the value for PriorityHigherThanOrEquals to be an explicit nil
 func (o *ExternalTaskQueryDto) SetPriorityHigherThanOrEqualsNil() {
 	o.PriorityHigherThanOrEquals.Set(nil)
@@ -941,6 +957,7 @@ func (o *ExternalTaskQueryDto) HasPriorityLowerThanOrEquals() bool {
 func (o *ExternalTaskQueryDto) SetPriorityLowerThanOrEquals(v int64) {
 	o.PriorityLowerThanOrEquals.Set(&v)
 }
+
 // SetPriorityLowerThanOrEqualsNil sets the value for PriorityLowerThanOrEquals to be an explicit nil
 func (o *ExternalTaskQueryDto) SetPriorityLowerThanOrEqualsNil() {
 	o.PriorityLowerThanOrEquals.Set(nil)
@@ -983,6 +1000,7 @@ func (o *ExternalTaskQueryDto) HasProcessDefinitionKey() bool {
 func (o *ExternalTaskQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *ExternalTaskQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -1058,6 +1076,7 @@ func (o *ExternalTaskQueryDto) HasProcessDefinitionName() bool {
 func (o *ExternalTaskQueryDto) SetProcessDefinitionName(v string) {
 	o.ProcessDefinitionName.Set(&v)
 }
+
 // SetProcessDefinitionNameNil sets the value for ProcessDefinitionName to be an explicit nil
 func (o *ExternalTaskQueryDto) SetProcessDefinitionNameNil() {
 	o.ProcessDefinitionName.Set(nil)
@@ -1100,6 +1119,7 @@ func (o *ExternalTaskQueryDto) HasProcessDefinitionNameLike() bool {
 func (o *ExternalTaskQueryDto) SetProcessDefinitionNameLike(v string) {
 	o.ProcessDefinitionNameLike.Set(&v)
 }
+
 // SetProcessDefinitionNameLikeNil sets the value for ProcessDefinitionNameLike to be an explicit nil
 func (o *ExternalTaskQueryDto) SetProcessDefinitionNameLikeNil() {
 	o.ProcessDefinitionNameLike.Set(nil)
@@ -1142,6 +1162,7 @@ func (o *ExternalTaskQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *ExternalTaskQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *ExternalTaskQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -1184,6 +1205,7 @@ func (o *ExternalTaskQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *ExternalTaskQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *ExternalTaskQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -1261,7 +1283,7 @@ func (o *ExternalTaskQueryDto) SetSorting(v []ExternalTaskQueryDtoSortingInner) 
 }
 
 func (o ExternalTaskQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1395,5 +1417,3 @@ func (v *NullableExternalTaskQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

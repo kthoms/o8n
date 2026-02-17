@@ -89,6 +89,7 @@ func (o *AuthorizationDto) HasId() bool {
 func (o *AuthorizationDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *AuthorizationDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -131,6 +132,7 @@ func (o *AuthorizationDto) HasType() bool {
 func (o *AuthorizationDto) SetType(v int32) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *AuthorizationDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -206,6 +208,7 @@ func (o *AuthorizationDto) HasUserId() bool {
 func (o *AuthorizationDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *AuthorizationDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -248,6 +251,7 @@ func (o *AuthorizationDto) HasGroupId() bool {
 func (o *AuthorizationDto) SetGroupId(v string) {
 	o.GroupId.Set(&v)
 }
+
 // SetGroupIdNil sets the value for GroupId to be an explicit nil
 func (o *AuthorizationDto) SetGroupIdNil() {
 	o.GroupId.Set(nil)
@@ -290,6 +294,7 @@ func (o *AuthorizationDto) HasResourceType() bool {
 func (o *AuthorizationDto) SetResourceType(v int32) {
 	o.ResourceType.Set(&v)
 }
+
 // SetResourceTypeNil sets the value for ResourceType to be an explicit nil
 func (o *AuthorizationDto) SetResourceTypeNil() {
 	o.ResourceType.Set(nil)
@@ -332,6 +337,7 @@ func (o *AuthorizationDto) HasResourceId() bool {
 func (o *AuthorizationDto) SetResourceId(v string) {
 	o.ResourceId.Set(&v)
 }
+
 // SetResourceIdNil sets the value for ResourceId to be an explicit nil
 func (o *AuthorizationDto) SetResourceIdNil() {
 	o.ResourceId.Set(nil)
@@ -374,6 +380,7 @@ func (o *AuthorizationDto) HasRemovalTime() bool {
 func (o *AuthorizationDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *AuthorizationDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -416,6 +423,7 @@ func (o *AuthorizationDto) HasRootProcessInstanceId() bool {
 func (o *AuthorizationDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *AuthorizationDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -427,7 +435,7 @@ func (o *AuthorizationDto) UnsetRootProcessInstanceId() {
 }
 
 func (o AuthorizationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -501,5 +509,3 @@ func (v *NullableAuthorizationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

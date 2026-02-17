@@ -20,8 +20,8 @@ var _ MappedNullable = &PasswordPolicyRequestDto{}
 // PasswordPolicyRequestDto struct for PasswordPolicyRequestDto
 type PasswordPolicyRequestDto struct {
 	// The candidate password to be check against the password policy.
-	Password NullableString `json:"password,omitempty"`
-	Profile *UserProfileDto `json:"profile,omitempty"`
+	Password NullableString  `json:"password,omitempty"`
+	Profile  *UserProfileDto `json:"profile,omitempty"`
 }
 
 // NewPasswordPolicyRequestDto instantiates a new PasswordPolicyRequestDto object
@@ -73,6 +73,7 @@ func (o *PasswordPolicyRequestDto) HasPassword() bool {
 func (o *PasswordPolicyRequestDto) SetPassword(v string) {
 	o.Password.Set(&v)
 }
+
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *PasswordPolicyRequestDto) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -116,7 +117,7 @@ func (o *PasswordPolicyRequestDto) SetProfile(v UserProfileDto) {
 }
 
 func (o PasswordPolicyRequestDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -169,5 +170,3 @@ func (v *NullablePasswordPolicyRequestDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

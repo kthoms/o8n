@@ -109,6 +109,7 @@ func (o *VariableValueDto) HasType() bool {
 func (o *VariableValueDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *VariableValueDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -152,7 +153,7 @@ func (o *VariableValueDto) SetValueInfo(v map[string]interface{}) {
 }
 
 func (o VariableValueDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -208,5 +209,3 @@ func (v *NullableVariableValueDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

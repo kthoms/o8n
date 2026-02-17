@@ -72,6 +72,7 @@ func (o *TelemetryConfigurationDto) HasEnableTelemetry() bool {
 func (o *TelemetryConfigurationDto) SetEnableTelemetry(v bool) {
 	o.EnableTelemetry.Set(&v)
 }
+
 // SetEnableTelemetryNil sets the value for EnableTelemetry to be an explicit nil
 func (o *TelemetryConfigurationDto) SetEnableTelemetryNil() {
 	o.EnableTelemetry.Set(nil)
@@ -83,7 +84,7 @@ func (o *TelemetryConfigurationDto) UnsetEnableTelemetry() {
 }
 
 func (o TelemetryConfigurationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableTelemetryConfigurationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

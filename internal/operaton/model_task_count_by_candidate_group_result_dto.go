@@ -74,6 +74,7 @@ func (o *TaskCountByCandidateGroupResultDto) HasGroupName() bool {
 func (o *TaskCountByCandidateGroupResultDto) SetGroupName(v string) {
 	o.GroupName.Set(&v)
 }
+
 // SetGroupNameNil sets the value for GroupName to be an explicit nil
 func (o *TaskCountByCandidateGroupResultDto) SetGroupNameNil() {
 	o.GroupName.Set(nil)
@@ -116,6 +117,7 @@ func (o *TaskCountByCandidateGroupResultDto) HasTaskCount() bool {
 func (o *TaskCountByCandidateGroupResultDto) SetTaskCount(v int32) {
 	o.TaskCount.Set(&v)
 }
+
 // SetTaskCountNil sets the value for TaskCount to be an explicit nil
 func (o *TaskCountByCandidateGroupResultDto) SetTaskCountNil() {
 	o.TaskCount.Set(nil)
@@ -127,7 +129,7 @@ func (o *TaskCountByCandidateGroupResultDto) UnsetTaskCount() {
 }
 
 func (o TaskCountByCandidateGroupResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableTaskCountByCandidateGroupResultDto) UnmarshalJSON(src []byte) e
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

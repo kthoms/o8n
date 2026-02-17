@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // HistoricDecisionRequirementsDefinitionAPIService HistoricDecisionRequirementsDefinitionAPI service
 type HistoricDecisionRequirementsDefinitionAPIService service
 
 type ApiGetDecisionStatisticsRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionRequirementsDefinitionAPIService
-	id string
+	ctx                context.Context
+	ApiService         *HistoricDecisionRequirementsDefinitionAPIService
+	id                 string
 	decisionInstanceId *string
 }
 
@@ -45,26 +44,27 @@ GetDecisionStatistics Get DRD Statistics
 
 Retrieves evaluation statistics of a given decision requirements definition.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the decision requirements definition.
- @return ApiGetDecisionStatisticsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the decision requirements definition.
+	@return ApiGetDecisionStatisticsRequest
 */
 func (a *HistoricDecisionRequirementsDefinitionAPIService) GetDecisionStatistics(ctx context.Context, id string) ApiGetDecisionStatisticsRequest {
 	return ApiGetDecisionStatisticsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricDecisionInstanceStatisticsDto
+//
+//	@return []HistoricDecisionInstanceStatisticsDto
 func (a *HistoricDecisionRequirementsDefinitionAPIService) GetDecisionStatisticsExecute(r ApiGetDecisionStatisticsRequest) ([]HistoricDecisionInstanceStatisticsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricDecisionInstanceStatisticsDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricDecisionInstanceStatisticsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionRequirementsDefinitionAPIService.GetDecisionStatistics")
@@ -128,8 +128,8 @@ func (a *HistoricDecisionRequirementsDefinitionAPIService) GetDecisionStatistics
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

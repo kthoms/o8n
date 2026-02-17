@@ -19,29 +19,28 @@ import (
 	"time"
 )
 
-
 // HistoricIdentityLinkLogAPIService HistoricIdentityLinkLogAPI service
 type HistoricIdentityLinkLogAPIService service
 
 type ApiGetHistoricIdentityLinksRequest struct {
-	ctx context.Context
-	ApiService *HistoricIdentityLinkLogAPIService
-	type_ *string
-	userId *string
-	groupId *string
-	dateBefore *time.Time
-	dateAfter *time.Time
-	taskId *string
-	processDefinitionId *string
+	ctx                  context.Context
+	ApiService           *HistoricIdentityLinkLogAPIService
+	type_                *string
+	userId               *string
+	groupId              *string
+	dateBefore           *time.Time
+	dateAfter            *time.Time
+	taskId               *string
+	processDefinitionId  *string
 	processDefinitionKey *string
-	operationType *string
-	assignerId *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	operationType        *string
+	assignerId           *string
+	tenantIdIn           *string
+	withoutTenantId      *bool
+	sortBy               *string
+	sortOrder            *string
+	firstResult          *int32
+	maxResults           *int32
 }
 
 // Restricts to identity links that have the given type (candidate/assignee/owner).
@@ -152,24 +151,25 @@ The size of the result set can be retrieved by using the
 [Get Identity-Link-Log Count](https://docs.operaton.org/manual/1.0/reference/rest/history/identity-links/get-identity-link-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricIdentityLinksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricIdentityLinksRequest
 */
 func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinks(ctx context.Context) ApiGetHistoricIdentityLinksRequest {
 	return ApiGetHistoricIdentityLinksRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricIdentityLinkLogDto
+//
+//	@return []HistoricIdentityLinkLogDto
 func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksExecute(r ApiGetHistoricIdentityLinksRequest) ([]HistoricIdentityLinkLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricIdentityLinkLogDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricIdentityLinkLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricIdentityLinkLogAPIService.GetHistoricIdentityLinks")
@@ -277,8 +277,8 @@ func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -296,20 +296,20 @@ func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksExecute(r Ap
 }
 
 type ApiGetHistoricIdentityLinksCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricIdentityLinkLogAPIService
-	type_ *string
-	userId *string
-	groupId *string
-	dateBefore *time.Time
-	dateAfter *time.Time
-	taskId *string
-	processDefinitionId *string
+	ctx                  context.Context
+	ApiService           *HistoricIdentityLinkLogAPIService
+	type_                *string
+	userId               *string
+	groupId              *string
+	dateBefore           *time.Time
+	dateAfter            *time.Time
+	taskId               *string
+	processDefinitionId  *string
 	processDefinitionKey *string
-	operationType *string
-	assignerId *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	operationType        *string
+	assignerId           *string
+	tenantIdIn           *string
+	withoutTenantId      *bool
 }
 
 // Restricts to identity links that have the given type (candidate/assignee/owner).
@@ -396,24 +396,25 @@ parameters. Takes the same parameters as the
 [Get Identity-Link-Logs](https://docs.operaton.org/manual/1.0/reference/rest/history/identity-links/get-identity-link-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricIdentityLinksCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricIdentityLinksCountRequest
 */
 func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksCount(ctx context.Context) ApiGetHistoricIdentityLinksCountRequest {
 	return ApiGetHistoricIdentityLinksCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksCountExecute(r ApiGetHistoricIdentityLinksCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricIdentityLinkLogAPIService.GetHistoricIdentityLinksCount")
@@ -509,8 +510,8 @@ func (a *HistoricIdentityLinkLogAPIService) GetHistoricIdentityLinksCountExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -19,42 +19,41 @@ import (
 	"time"
 )
 
-
 // HistoricIncidentAPIService HistoricIncidentAPI service
 type HistoricIncidentAPIService service
 
 type ApiGetHistoricIncidentsRequest struct {
-	ctx context.Context
-	ApiService *HistoricIncidentAPIService
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	processDefinitionId *string
-	processDefinitionKey *string
+	ctx                    context.Context
+	ApiService             *HistoricIncidentAPIService
+	incidentId             *string
+	incidentType           *string
+	incidentMessage        *string
+	incidentMessageLike    *string
+	processDefinitionId    *string
+	processDefinitionKey   *string
 	processDefinitionKeyIn *string
-	processInstanceId *string
-	executionId *string
-	createTimeBefore *time.Time
-	createTimeAfter *time.Time
-	endTimeBefore *time.Time
-	endTimeAfter *time.Time
-	activityId *string
-	failedActivityId *string
-	causeIncidentId *string
-	rootCauseIncidentId *string
-	configuration *string
-	historyConfiguration *string
-	open *bool
-	resolved *bool
-	deleted *bool
-	tenantIdIn *string
-	withoutTenantId *bool
-	jobDefinitionIdIn *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	processInstanceId      *string
+	executionId            *string
+	createTimeBefore       *time.Time
+	createTimeAfter        *time.Time
+	endTimeBefore          *time.Time
+	endTimeAfter           *time.Time
+	activityId             *string
+	failedActivityId       *string
+	causeIncidentId        *string
+	rootCauseIncidentId    *string
+	configuration          *string
+	historyConfiguration   *string
+	open                   *bool
+	resolved               *bool
+	deleted                *bool
+	tenantIdIn             *string
+	withoutTenantId        *bool
+	jobDefinitionIdIn      *string
+	sortBy                 *string
+	sortOrder              *string
+	firstResult            *int32
+	maxResults             *int32
 }
 
 // Restricts to incidents that have the given id.
@@ -75,7 +74,7 @@ func (r ApiGetHistoricIncidentsRequest) IncidentMessage(incidentMessage string) 
 	return r
 }
 
-// Restricts to incidents that incidents message is a substring of the given value. The string can include the wildcard character &#39;%&#39; to express like-strategy: starts with (string%), ends with (%string) or contains (%string%). 
+// Restricts to incidents that incidents message is a substring of the given value. The string can include the wildcard character &#39;%&#39; to express like-strategy: starts with (string%), ends with (%string) or contains (%string%).
 func (r ApiGetHistoricIncidentsRequest) IncidentMessageLike(incidentMessageLike string) ApiGetHistoricIncidentsRequest {
 	r.incidentMessageLike = &incidentMessageLike
 	return r
@@ -243,24 +242,25 @@ The size of the result set can be retrieved by using the
 [Get Incident Count](https://docs.operaton.org/manual/1.0/reference/rest/history/incident/get-incident-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricIncidentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricIncidentsRequest
 */
 func (a *HistoricIncidentAPIService) GetHistoricIncidents(ctx context.Context) ApiGetHistoricIncidentsRequest {
 	return ApiGetHistoricIncidentsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricIncidentDto
+//
+//	@return []HistoricIncidentDto
 func (a *HistoricIncidentAPIService) GetHistoricIncidentsExecute(r ApiGetHistoricIncidentsRequest) ([]HistoricIncidentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricIncidentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricIncidentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricIncidentAPIService.GetHistoricIncidents")
@@ -407,8 +407,8 @@ func (a *HistoricIncidentAPIService) GetHistoricIncidentsExecute(r ApiGetHistori
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -426,33 +426,33 @@ func (a *HistoricIncidentAPIService) GetHistoricIncidentsExecute(r ApiGetHistori
 }
 
 type ApiGetHistoricIncidentsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricIncidentAPIService
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	processDefinitionId *string
-	processDefinitionKey *string
+	ctx                    context.Context
+	ApiService             *HistoricIncidentAPIService
+	incidentId             *string
+	incidentType           *string
+	incidentMessage        *string
+	incidentMessageLike    *string
+	processDefinitionId    *string
+	processDefinitionKey   *string
 	processDefinitionKeyIn *string
-	processInstanceId *string
-	executionId *string
-	createTimeBefore *time.Time
-	createTimeAfter *time.Time
-	endTimeBefore *time.Time
-	endTimeAfter *time.Time
-	activityId *string
-	failedActivityId *string
-	causeIncidentId *string
-	rootCauseIncidentId *string
-	configuration *string
-	historyConfiguration *string
-	open *bool
-	resolved *bool
-	deleted *bool
-	tenantIdIn *string
-	withoutTenantId *bool
-	jobDefinitionIdIn *string
+	processInstanceId      *string
+	executionId            *string
+	createTimeBefore       *time.Time
+	createTimeAfter        *time.Time
+	endTimeBefore          *time.Time
+	endTimeAfter           *time.Time
+	activityId             *string
+	failedActivityId       *string
+	causeIncidentId        *string
+	rootCauseIncidentId    *string
+	configuration          *string
+	historyConfiguration   *string
+	open                   *bool
+	resolved               *bool
+	deleted                *bool
+	tenantIdIn             *string
+	withoutTenantId        *bool
+	jobDefinitionIdIn      *string
 }
 
 // Restricts to incidents that have the given id.
@@ -473,7 +473,7 @@ func (r ApiGetHistoricIncidentsCountRequest) IncidentMessage(incidentMessage str
 	return r
 }
 
-// Restricts to incidents that incidents message is a substring of the given value. The string can include the wildcard character &#39;%&#39; to express like-strategy: starts with (string%), ends with (%string) or contains (%string%). 
+// Restricts to incidents that incidents message is a substring of the given value. The string can include the wildcard character &#39;%&#39; to express like-strategy: starts with (string%), ends with (%string) or contains (%string%).
 func (r ApiGetHistoricIncidentsCountRequest) IncidentMessageLike(incidentMessageLike string) ApiGetHistoricIncidentsCountRequest {
 	r.incidentMessageLike = &incidentMessageLike
 	return r
@@ -617,24 +617,25 @@ Takes the same parameters as the
 [Get Incidents](https://docs.operaton.org/manual/1.0/reference/rest/history/incident/get-incident-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricIncidentsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricIncidentsCountRequest
 */
 func (a *HistoricIncidentAPIService) GetHistoricIncidentsCount(ctx context.Context) ApiGetHistoricIncidentsCountRequest {
 	return ApiGetHistoricIncidentsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricIncidentAPIService) GetHistoricIncidentsCountExecute(r ApiGetHistoricIncidentsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricIncidentAPIService.GetHistoricIncidentsCount")
@@ -769,8 +770,8 @@ func (a *HistoricIncidentAPIService) GetHistoricIncidentsCountExecute(r ApiGetHi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

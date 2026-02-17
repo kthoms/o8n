@@ -21,7 +21,7 @@ var _ MappedNullable = &StartProcessInstanceDto{}
 type StartProcessInstanceDto struct {
 	// The business key of the process instance.
 	BusinessKey NullableString `json:"businessKey,omitempty"`
-	// 
+	//
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
 	// The case instance id the process instance is to be initialized with.
 	CaseInstanceId NullableString `json:"caseInstanceId,omitempty"`
@@ -84,6 +84,7 @@ func (o *StartProcessInstanceDto) HasBusinessKey() bool {
 func (o *StartProcessInstanceDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *StartProcessInstanceDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -159,6 +160,7 @@ func (o *StartProcessInstanceDto) HasCaseInstanceId() bool {
 func (o *StartProcessInstanceDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *StartProcessInstanceDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -234,6 +236,7 @@ func (o *StartProcessInstanceDto) HasSkipCustomListeners() bool {
 func (o *StartProcessInstanceDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *StartProcessInstanceDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -276,6 +279,7 @@ func (o *StartProcessInstanceDto) HasSkipIoMappings() bool {
 func (o *StartProcessInstanceDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *StartProcessInstanceDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -318,6 +322,7 @@ func (o *StartProcessInstanceDto) HasWithVariablesInReturn() bool {
 func (o *StartProcessInstanceDto) SetWithVariablesInReturn(v bool) {
 	o.WithVariablesInReturn.Set(&v)
 }
+
 // SetWithVariablesInReturnNil sets the value for WithVariablesInReturn to be an explicit nil
 func (o *StartProcessInstanceDto) SetWithVariablesInReturnNil() {
 	o.WithVariablesInReturn.Set(nil)
@@ -329,7 +334,7 @@ func (o *StartProcessInstanceDto) UnsetWithVariablesInReturn() {
 }
 
 func (o StartProcessInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -397,5 +402,3 @@ func (v *NullableStartProcessInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

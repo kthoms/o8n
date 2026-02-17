@@ -20,14 +20,13 @@ import (
 	"time"
 )
 
-
 // MetricsAPIService MetricsAPI service
 type MetricsAPIService service
 
 type ApiDeleteTaskMetricsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *MetricsAPIService
-	date *time.Time
+	date       *time.Time
 }
 
 // The date prior to which all task worker metrics should be deleted.
@@ -45,22 +44,22 @@ DeleteTaskMetrics Delete Task Worker Metrics
 
 Deletes all task worker metrics prior to the given date or all if no date is provided.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteTaskMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteTaskMetricsRequest
 */
 func (a *MetricsAPIService) DeleteTaskMetrics(ctx context.Context) ApiDeleteTaskMetricsRequest {
 	return ApiDeleteTaskMetricsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *MetricsAPIService) DeleteTaskMetricsExecute(r ApiDeleteTaskMetricsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsAPIService.DeleteTaskMetrics")
@@ -123,8 +122,8 @@ func (a *MetricsAPIService) DeleteTaskMetricsExecute(r ApiDeleteTaskMetricsReque
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -133,11 +132,11 @@ func (a *MetricsAPIService) DeleteTaskMetricsExecute(r ApiDeleteTaskMetricsReque
 }
 
 type ApiGetMetricsRequest struct {
-	ctx context.Context
-	ApiService *MetricsAPIService
+	ctx         context.Context
+	ApiService  *MetricsAPIService
 	metricsName string
-	startDate *time.Time
-	endDate *time.Time
+	startDate   *time.Time
+	endDate     *time.Time
 }
 
 // The start date (inclusive).
@@ -161,26 +160,27 @@ GetMetrics Get Sum
 
 Retrieves the `sum` (count) for a given metric.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param metricsName The name of the metric.
- @return ApiGetMetricsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param metricsName The name of the metric.
+	@return ApiGetMetricsRequest
 */
 func (a *MetricsAPIService) GetMetrics(ctx context.Context, metricsName string) ApiGetMetricsRequest {
 	return ApiGetMetricsRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		metricsName: metricsName,
 	}
 }
 
 // Execute executes the request
-//  @return MetricsResultDto
+//
+//	@return MetricsResultDto
 func (a *MetricsAPIService) GetMetricsExecute(r ApiGetMetricsRequest) (*MetricsResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *MetricsResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *MetricsResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsAPIService.GetMetrics")
@@ -256,15 +256,15 @@ func (a *MetricsAPIService) GetMetricsExecute(r ApiGetMetricsRequest) (*MetricsR
 }
 
 type ApiIntervalRequest struct {
-	ctx context.Context
-	ApiService *MetricsAPIService
-	name *string
-	reporter *string
-	startDate *time.Time
-	endDate *time.Time
-	firstResult *int32
-	maxResults *int32
-	interval *int64
+	ctx                 context.Context
+	ApiService          *MetricsAPIService
+	name                *string
+	reporter            *string
+	startDate           *time.Time
+	endDate             *time.Time
+	firstResult         *int32
+	maxResults          *int32
+	interval            *int64
 	aggregateByReporter *string
 }
 
@@ -325,24 +325,25 @@ Interval Get Metrics in Interval
 
 Retrieves a list of metrics, aggregated for a given interval.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiIntervalRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiIntervalRequest
 */
 func (a *MetricsAPIService) Interval(ctx context.Context) ApiIntervalRequest {
 	return ApiIntervalRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []MetricsIntervalResultDto
+//
+//	@return []MetricsIntervalResultDto
 func (a *MetricsAPIService) IntervalExecute(r ApiIntervalRequest) ([]MetricsIntervalResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []MetricsIntervalResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []MetricsIntervalResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MetricsAPIService.Interval")
@@ -429,8 +430,8 @@ func (a *MetricsAPIService) IntervalExecute(r ApiIntervalRequest) ([]MetricsInte
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

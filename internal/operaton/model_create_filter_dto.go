@@ -80,6 +80,7 @@ func (o *CreateFilterDto) HasResourceType() bool {
 func (o *CreateFilterDto) SetResourceType(v string) {
 	o.ResourceType.Set(&v)
 }
+
 // SetResourceTypeNil sets the value for ResourceType to be an explicit nil
 func (o *CreateFilterDto) SetResourceTypeNil() {
 	o.ResourceType.Set(nil)
@@ -122,6 +123,7 @@ func (o *CreateFilterDto) HasName() bool {
 func (o *CreateFilterDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *CreateFilterDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -164,6 +166,7 @@ func (o *CreateFilterDto) HasOwner() bool {
 func (o *CreateFilterDto) SetOwner(v string) {
 	o.Owner.Set(&v)
 }
+
 // SetOwnerNil sets the value for Owner to be an explicit nil
 func (o *CreateFilterDto) SetOwnerNil() {
 	o.Owner.Set(nil)
@@ -239,7 +242,7 @@ func (o *CreateFilterDto) SetProperties(v map[string]interface{}) {
 }
 
 func (o CreateFilterDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -301,5 +304,3 @@ func (v *NullableCreateFilterDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

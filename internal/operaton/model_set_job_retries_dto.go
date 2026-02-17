@@ -25,7 +25,7 @@ type SetJobRetriesDto struct {
 	// The number of retries to set for the resource.  Must be >= 0. If this is 0, an incident is created and the task, or job, cannot be fetched, or acquired anymore unless the retries are increased again. Can not be null.
 	Retries NullableInt32 `json:"retries,omitempty"`
 	// A list of job ids to set retries for.
-	JobIds []string `json:"jobIds,omitempty"`
+	JobIds   []string     `json:"jobIds,omitempty"`
 	JobQuery *JobQueryDto `json:"jobQuery,omitempty"`
 }
 
@@ -78,6 +78,7 @@ func (o *SetJobRetriesDto) HasDueDate() bool {
 func (o *SetJobRetriesDto) SetDueDate(v time.Time) {
 	o.DueDate.Set(&v)
 }
+
 // SetDueDateNil sets the value for DueDate to be an explicit nil
 func (o *SetJobRetriesDto) SetDueDateNil() {
 	o.DueDate.Set(nil)
@@ -120,6 +121,7 @@ func (o *SetJobRetriesDto) HasRetries() bool {
 func (o *SetJobRetriesDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *SetJobRetriesDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -196,7 +198,7 @@ func (o *SetJobRetriesDto) SetJobQuery(v JobQueryDto) {
 }
 
 func (o SetJobRetriesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -255,5 +257,3 @@ func (v *NullableSetJobRetriesDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

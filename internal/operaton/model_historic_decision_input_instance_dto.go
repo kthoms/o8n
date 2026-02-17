@@ -93,6 +93,7 @@ func (o *HistoricDecisionInputInstanceDto) HasId() bool {
 func (o *HistoricDecisionInputInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -135,6 +136,7 @@ func (o *HistoricDecisionInputInstanceDto) HasDecisionInstanceId() bool {
 func (o *HistoricDecisionInputInstanceDto) SetDecisionInstanceId(v string) {
 	o.DecisionInstanceId.Set(&v)
 }
+
 // SetDecisionInstanceIdNil sets the value for DecisionInstanceId to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetDecisionInstanceIdNil() {
 	o.DecisionInstanceId.Set(nil)
@@ -177,6 +179,7 @@ func (o *HistoricDecisionInputInstanceDto) HasClauseId() bool {
 func (o *HistoricDecisionInputInstanceDto) SetClauseId(v string) {
 	o.ClauseId.Set(&v)
 }
+
 // SetClauseIdNil sets the value for ClauseId to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetClauseIdNil() {
 	o.ClauseId.Set(nil)
@@ -219,6 +222,7 @@ func (o *HistoricDecisionInputInstanceDto) HasClauseName() bool {
 func (o *HistoricDecisionInputInstanceDto) SetClauseName(v string) {
 	o.ClauseName.Set(&v)
 }
+
 // SetClauseNameNil sets the value for ClauseName to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetClauseNameNil() {
 	o.ClauseName.Set(nil)
@@ -261,6 +265,7 @@ func (o *HistoricDecisionInputInstanceDto) HasErrorMessage() bool {
 func (o *HistoricDecisionInputInstanceDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -303,6 +308,7 @@ func (o *HistoricDecisionInputInstanceDto) HasType() bool {
 func (o *HistoricDecisionInputInstanceDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -345,6 +351,7 @@ func (o *HistoricDecisionInputInstanceDto) HasCreateTime() bool {
 func (o *HistoricDecisionInputInstanceDto) SetCreateTime(v time.Time) {
 	o.CreateTime.Set(&v)
 }
+
 // SetCreateTimeNil sets the value for CreateTime to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetCreateTimeNil() {
 	o.CreateTime.Set(nil)
@@ -387,6 +394,7 @@ func (o *HistoricDecisionInputInstanceDto) HasRemovalTime() bool {
 func (o *HistoricDecisionInputInstanceDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -429,6 +437,7 @@ func (o *HistoricDecisionInputInstanceDto) HasRootProcessInstanceId() bool {
 func (o *HistoricDecisionInputInstanceDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricDecisionInputInstanceDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -504,7 +513,7 @@ func (o *HistoricDecisionInputInstanceDto) SetValueInfo(v map[string]interface{}
 }
 
 func (o HistoricDecisionInputInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -584,5 +593,3 @@ func (v *NullableHistoricDecisionInputInstanceDto) UnmarshalJSON(src []byte) err
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

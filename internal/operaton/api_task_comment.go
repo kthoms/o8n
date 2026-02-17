@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // TaskCommentAPIService TaskCommentAPI service
 type TaskCommentAPIService service
 
 type ApiCreateCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
+	id         string
 	commentDto *CommentDto
 }
 
@@ -45,26 +44,27 @@ CreateComment Create
 
 Creates a comment for a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to add the comment to.
- @return ApiCreateCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to add the comment to.
+	@return ApiCreateCommentRequest
 */
 func (a *TaskCommentAPIService) CreateComment(ctx context.Context, id string) ApiCreateCommentRequest {
 	return ApiCreateCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return CommentDto
+//
+//	@return CommentDto
 func (a *TaskCommentAPIService) CreateCommentExecute(r ApiCreateCommentRequest) (*CommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CommentDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.CreateComment")
@@ -127,8 +127,8 @@ func (a *TaskCommentAPIService) CreateCommentExecute(r ApiCreateCommentRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -138,8 +138,8 @@ func (a *TaskCommentAPIService) CreateCommentExecute(r ApiCreateCommentRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -157,10 +157,10 @@ func (a *TaskCommentAPIService) CreateCommentExecute(r ApiCreateCommentRequest) 
 }
 
 type ApiDeleteTaskCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
-	commentId string
+	id         string
+	commentId  string
 }
 
 func (r ApiDeleteTaskCommentRequest) Execute() (*http.Response, error) {
@@ -172,26 +172,26 @@ DeleteTaskComment Delete
 
 Removes a comment from a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task.
- @param commentId The id of the comment to be removed.
- @return ApiDeleteTaskCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task.
+	@param commentId The id of the comment to be removed.
+	@return ApiDeleteTaskCommentRequest
 */
 func (a *TaskCommentAPIService) DeleteTaskComment(ctx context.Context, id string, commentId string) ApiDeleteTaskCommentRequest {
 	return ApiDeleteTaskCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		commentId: commentId,
+		ctx:        ctx,
+		id:         id,
+		commentId:  commentId,
 	}
 }
 
 // Execute executes the request
 func (a *TaskCommentAPIService) DeleteTaskCommentExecute(r ApiDeleteTaskCommentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.DeleteTaskComment")
@@ -253,8 +253,8 @@ func (a *TaskCommentAPIService) DeleteTaskCommentExecute(r ApiDeleteTaskCommentR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -264,8 +264,8 @@ func (a *TaskCommentAPIService) DeleteTaskCommentExecute(r ApiDeleteTaskCommentR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -274,9 +274,9 @@ func (a *TaskCommentAPIService) DeleteTaskCommentExecute(r ApiDeleteTaskCommentR
 }
 
 type ApiDeleteTaskCommentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteTaskCommentsRequest) Execute() (*http.Response, error) {
@@ -288,24 +288,24 @@ DeleteTaskComments Delete Task Comments
 
 Deletes all comments of a task by task id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task for which all comments are to be deleted.
- @return ApiDeleteTaskCommentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task for which all comments are to be deleted.
+	@return ApiDeleteTaskCommentsRequest
 */
 func (a *TaskCommentAPIService) DeleteTaskComments(ctx context.Context, id string) ApiDeleteTaskCommentsRequest {
 	return ApiDeleteTaskCommentsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskCommentAPIService) DeleteTaskCommentsExecute(r ApiDeleteTaskCommentsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.DeleteTaskComments")
@@ -366,8 +366,8 @@ func (a *TaskCommentAPIService) DeleteTaskCommentsExecute(r ApiDeleteTaskComment
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -377,8 +377,8 @@ func (a *TaskCommentAPIService) DeleteTaskCommentsExecute(r ApiDeleteTaskComment
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -387,10 +387,10 @@ func (a *TaskCommentAPIService) DeleteTaskCommentsExecute(r ApiDeleteTaskComment
 }
 
 type ApiGetCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
-	commentId string
+	id         string
+	commentId  string
 }
 
 func (r ApiGetCommentRequest) Execute() (*CommentDto, *http.Response, error) {
@@ -402,28 +402,29 @@ GetComment Get
 
 Retrieves a task comment by task id and comment id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task.
- @param commentId The id of the comment to be retrieved.
- @return ApiGetCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task.
+	@param commentId The id of the comment to be retrieved.
+	@return ApiGetCommentRequest
 */
 func (a *TaskCommentAPIService) GetComment(ctx context.Context, id string, commentId string) ApiGetCommentRequest {
 	return ApiGetCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		commentId: commentId,
+		ctx:        ctx,
+		id:         id,
+		commentId:  commentId,
 	}
 }
 
 // Execute executes the request
-//  @return CommentDto
+//
+//	@return CommentDto
 func (a *TaskCommentAPIService) GetCommentExecute(r ApiGetCommentRequest) (*CommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CommentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.GetComment")
@@ -485,8 +486,8 @@ func (a *TaskCommentAPIService) GetCommentExecute(r ApiGetCommentRequest) (*Comm
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -504,9 +505,9 @@ func (a *TaskCommentAPIService) GetCommentExecute(r ApiGetCommentRequest) (*Comm
 }
 
 type ApiGetCommentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetCommentsRequest) Execute() ([]CommentDto, *http.Response, error) {
@@ -518,26 +519,27 @@ GetComments Get List
 
 Gets the comments for a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the comments for.
- @return ApiGetCommentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the comments for.
+	@return ApiGetCommentsRequest
 */
 func (a *TaskCommentAPIService) GetComments(ctx context.Context, id string) ApiGetCommentsRequest {
 	return ApiGetCommentsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []CommentDto
+//
+//	@return []CommentDto
 func (a *TaskCommentAPIService) GetCommentsExecute(r ApiGetCommentsRequest) ([]CommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CommentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.GetComments")
@@ -598,8 +600,8 @@ func (a *TaskCommentAPIService) GetCommentsExecute(r ApiGetCommentsRequest) ([]C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -617,9 +619,9 @@ func (a *TaskCommentAPIService) GetCommentsExecute(r ApiGetCommentsRequest) ([]C
 }
 
 type ApiUpdateTaskCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskCommentAPIService
-	id string
+	id         string
 	commentDto *CommentDto
 }
 
@@ -638,24 +640,24 @@ UpdateTaskComment Update
 
 Updates a Comment.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id associated of a task of a comment to be updated.
- @return ApiUpdateTaskCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id associated of a task of a comment to be updated.
+	@return ApiUpdateTaskCommentRequest
 */
 func (a *TaskCommentAPIService) UpdateTaskComment(ctx context.Context, id string) ApiUpdateTaskCommentRequest {
 	return ApiUpdateTaskCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskCommentAPIService) UpdateTaskCommentExecute(r ApiUpdateTaskCommentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskCommentAPIService.UpdateTaskComment")
@@ -718,8 +720,8 @@ func (a *TaskCommentAPIService) UpdateTaskCommentExecute(r ApiUpdateTaskCommentR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -729,8 +731,8 @@ func (a *TaskCommentAPIService) UpdateTaskCommentExecute(r ApiUpdateTaskCommentR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

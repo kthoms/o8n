@@ -78,6 +78,7 @@ func (o *UserProfileDto) HasId() bool {
 func (o *UserProfileDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *UserProfileDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -120,6 +121,7 @@ func (o *UserProfileDto) HasFirstName() bool {
 func (o *UserProfileDto) SetFirstName(v string) {
 	o.FirstName.Set(&v)
 }
+
 // SetFirstNameNil sets the value for FirstName to be an explicit nil
 func (o *UserProfileDto) SetFirstNameNil() {
 	o.FirstName.Set(nil)
@@ -162,6 +164,7 @@ func (o *UserProfileDto) HasLastName() bool {
 func (o *UserProfileDto) SetLastName(v string) {
 	o.LastName.Set(&v)
 }
+
 // SetLastNameNil sets the value for LastName to be an explicit nil
 func (o *UserProfileDto) SetLastNameNil() {
 	o.LastName.Set(nil)
@@ -204,6 +207,7 @@ func (o *UserProfileDto) HasEmail() bool {
 func (o *UserProfileDto) SetEmail(v string) {
 	o.Email.Set(&v)
 }
+
 // SetEmailNil sets the value for Email to be an explicit nil
 func (o *UserProfileDto) SetEmailNil() {
 	o.Email.Set(nil)
@@ -215,7 +219,7 @@ func (o *UserProfileDto) UnsetEmail() {
 }
 
 func (o UserProfileDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -274,5 +278,3 @@ func (v *NullableUserProfileDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

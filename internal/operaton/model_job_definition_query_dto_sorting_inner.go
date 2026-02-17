@@ -74,6 +74,7 @@ func (o *JobDefinitionQueryDtoSortingInner) HasSortBy() bool {
 func (o *JobDefinitionQueryDtoSortingInner) SetSortBy(v string) {
 	o.SortBy.Set(&v)
 }
+
 // SetSortByNil sets the value for SortBy to be an explicit nil
 func (o *JobDefinitionQueryDtoSortingInner) SetSortByNil() {
 	o.SortBy.Set(nil)
@@ -116,6 +117,7 @@ func (o *JobDefinitionQueryDtoSortingInner) HasSortOrder() bool {
 func (o *JobDefinitionQueryDtoSortingInner) SetSortOrder(v string) {
 	o.SortOrder.Set(&v)
 }
+
 // SetSortOrderNil sets the value for SortOrder to be an explicit nil
 func (o *JobDefinitionQueryDtoSortingInner) SetSortOrderNil() {
 	o.SortOrder.Set(nil)
@@ -127,7 +129,7 @@ func (o *JobDefinitionQueryDtoSortingInner) UnsetSortOrder() {
 }
 
 func (o JobDefinitionQueryDtoSortingInner) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableJobDefinitionQueryDtoSortingInner) UnmarshalJSON(src []byte) er
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // HistoricJobLogAPIService HistoricJobLogAPI service
 type HistoricJobLogAPIService service
 
 type ApiGetHistoricJobLogRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricJobLogAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricJobLogRequest) Execute() (*HistoricJobLogDto, *http.Response, error) {
@@ -38,26 +37,27 @@ GetHistoricJobLog Get Job Log
 
 Retrieves a historic job log by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the log entry.
- @return ApiGetHistoricJobLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the log entry.
+	@return ApiGetHistoricJobLogRequest
 */
 func (a *HistoricJobLogAPIService) GetHistoricJobLog(ctx context.Context, id string) ApiGetHistoricJobLogRequest {
 	return ApiGetHistoricJobLogRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricJobLogDto
+//
+//	@return HistoricJobLogDto
 func (a *HistoricJobLogAPIService) GetHistoricJobLogExecute(r ApiGetHistoricJobLogRequest) (*HistoricJobLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricJobLogDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricJobLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.GetHistoricJobLog")
@@ -118,8 +118,8 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogExecute(r ApiGetHistoricJobL
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -137,34 +137,34 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogExecute(r ApiGetHistoricJobL
 }
 
 type ApiGetHistoricJobLogsRequest struct {
-	ctx context.Context
-	ApiService *HistoricJobLogAPIService
-	logId *string
-	jobId *string
-	jobExceptionMessage *string
-	jobDefinitionId *string
-	jobDefinitionType *string
-	jobDefinitionConfiguration *string
-	activityIdIn *string
-	failedActivityIdIn *string
-	executionIdIn *string
-	processInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	deploymentId *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	hostname *string
-	jobPriorityLowerThanOrEquals *int64
+	ctx                           context.Context
+	ApiService                    *HistoricJobLogAPIService
+	logId                         *string
+	jobId                         *string
+	jobExceptionMessage           *string
+	jobDefinitionId               *string
+	jobDefinitionType             *string
+	jobDefinitionConfiguration    *string
+	activityIdIn                  *string
+	failedActivityIdIn            *string
+	executionIdIn                 *string
+	processInstanceId             *string
+	processDefinitionId           *string
+	processDefinitionKey          *string
+	deploymentId                  *string
+	tenantIdIn                    *string
+	withoutTenantId               *bool
+	hostname                      *string
+	jobPriorityLowerThanOrEquals  *int64
 	jobPriorityHigherThanOrEquals *int64
-	creationLog *bool
-	failureLog *bool
-	successLog *bool
-	deletionLog *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	creationLog                   *bool
+	failureLog                    *bool
+	successLog                    *bool
+	deletionLog                   *bool
+	sortBy                        *string
+	sortOrder                     *string
+	firstResult                   *int32
+	maxResults                    *int32
 }
 
 // Filter by historic job log id.
@@ -335,24 +335,25 @@ The size of the result set can be retrieved by using the
 [Get Job Log Count](https://docs.operaton.org/manual/1.0/reference/rest/history/job-log/get-job-log-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricJobLogsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricJobLogsRequest
 */
 func (a *HistoricJobLogAPIService) GetHistoricJobLogs(ctx context.Context) ApiGetHistoricJobLogsRequest {
 	return ApiGetHistoricJobLogsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricJobLogDto
+//
+//	@return []HistoricJobLogDto
 func (a *HistoricJobLogAPIService) GetHistoricJobLogsExecute(r ApiGetHistoricJobLogsRequest) ([]HistoricJobLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricJobLogDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricJobLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.GetHistoricJobLogs")
@@ -490,8 +491,8 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogsExecute(r ApiGetHistoricJob
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -509,30 +510,30 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogsExecute(r ApiGetHistoricJob
 }
 
 type ApiGetHistoricJobLogsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricJobLogAPIService
-	logId *string
-	jobId *string
-	jobExceptionMessage *string
-	jobDefinitionId *string
-	jobDefinitionType *string
-	jobDefinitionConfiguration *string
-	activityIdIn *string
-	failedActivityIdIn *string
-	executionIdIn *string
-	processInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	deploymentId *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	hostname *string
-	jobPriorityLowerThanOrEquals *int64
+	ctx                           context.Context
+	ApiService                    *HistoricJobLogAPIService
+	logId                         *string
+	jobId                         *string
+	jobExceptionMessage           *string
+	jobDefinitionId               *string
+	jobDefinitionType             *string
+	jobDefinitionConfiguration    *string
+	activityIdIn                  *string
+	failedActivityIdIn            *string
+	executionIdIn                 *string
+	processInstanceId             *string
+	processDefinitionId           *string
+	processDefinitionKey          *string
+	deploymentId                  *string
+	tenantIdIn                    *string
+	withoutTenantId               *bool
+	hostname                      *string
+	jobPriorityLowerThanOrEquals  *int64
 	jobPriorityHigherThanOrEquals *int64
-	creationLog *bool
-	failureLog *bool
-	successLog *bool
-	deletionLog *bool
+	creationLog                   *bool
+	failureLog                    *bool
+	successLog                    *bool
+	deletionLog                   *bool
 }
 
 // Filter by historic job log id.
@@ -679,24 +680,25 @@ Takes the same parameters as the
 [Get Job Logs](https://docs.operaton.org/manual/1.0/reference/rest/history/job-log/get-job-log-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricJobLogsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricJobLogsCountRequest
 */
 func (a *HistoricJobLogAPIService) GetHistoricJobLogsCount(ctx context.Context) ApiGetHistoricJobLogsCountRequest {
 	return ApiGetHistoricJobLogsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricJobLogAPIService) GetHistoricJobLogsCountExecute(r ApiGetHistoricJobLogsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.GetHistoricJobLogsCount")
@@ -822,8 +824,8 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogsCountExecute(r ApiGetHistor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -841,9 +843,9 @@ func (a *HistoricJobLogAPIService) GetHistoricJobLogsCountExecute(r ApiGetHistor
 }
 
 type ApiGetStacktraceHistoricJobLogRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricJobLogAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetStacktraceHistoricJobLogRequest) Execute() (string, *http.Response, error) {
@@ -856,26 +858,27 @@ GetStacktraceHistoricJobLog Get Job Log Exception Stacktrace
 Retrieves the corresponding exception stacktrace to the passed historic job log by
 id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic job log to get the exception stacktrace for.
- @return ApiGetStacktraceHistoricJobLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic job log to get the exception stacktrace for.
+	@return ApiGetStacktraceHistoricJobLogRequest
 */
 func (a *HistoricJobLogAPIService) GetStacktraceHistoricJobLog(ctx context.Context, id string) ApiGetStacktraceHistoricJobLogRequest {
 	return ApiGetStacktraceHistoricJobLogRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return string
+//
+//	@return string
 func (a *HistoricJobLogAPIService) GetStacktraceHistoricJobLogExecute(r ApiGetStacktraceHistoricJobLogRequest) (string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.GetStacktraceHistoricJobLog")
@@ -936,8 +939,8 @@ func (a *HistoricJobLogAPIService) GetStacktraceHistoricJobLogExecute(r ApiGetSt
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -955,10 +958,10 @@ func (a *HistoricJobLogAPIService) GetStacktraceHistoricJobLogExecute(r ApiGetSt
 }
 
 type ApiQueryHistoricJobLogsRequest struct {
-	ctx context.Context
-	ApiService *HistoricJobLogAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                    context.Context
+	ApiService             *HistoricJobLogAPIService
+	firstResult            *int32
+	maxResults             *int32
 	historicJobLogQueryDto *HistoricJobLogQueryDto
 }
 
@@ -992,24 +995,25 @@ This method is slightly more powerful than the
 method because it allows filtering by historic job logs values of the
 different types `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricJobLogsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricJobLogsRequest
 */
 func (a *HistoricJobLogAPIService) QueryHistoricJobLogs(ctx context.Context) ApiQueryHistoricJobLogsRequest {
 	return ApiQueryHistoricJobLogsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricJobLogDto
+//
+//	@return []HistoricJobLogDto
 func (a *HistoricJobLogAPIService) QueryHistoricJobLogsExecute(r ApiQueryHistoricJobLogsRequest) ([]HistoricJobLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricJobLogDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricJobLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.QueryHistoricJobLogs")
@@ -1077,8 +1081,8 @@ func (a *HistoricJobLogAPIService) QueryHistoricJobLogsExecute(r ApiQueryHistori
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1096,8 +1100,8 @@ func (a *HistoricJobLogAPIService) QueryHistoricJobLogsExecute(r ApiQueryHistori
 }
 
 type ApiQueryHistoricJobLogsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricJobLogAPIService
+	ctx                    context.Context
+	ApiService             *HistoricJobLogAPIService
 	historicJobLogQueryDto *HistoricJobLogQueryDto
 }
 
@@ -1120,24 +1124,25 @@ method and therefore it is slightly more powerful than the
 [Get Job Log Count](https://docs.operaton.org/manual/1.0/reference/rest/history/job-log/get-job-log-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricJobLogsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricJobLogsCountRequest
 */
 func (a *HistoricJobLogAPIService) QueryHistoricJobLogsCount(ctx context.Context) ApiQueryHistoricJobLogsCountRequest {
 	return ApiQueryHistoricJobLogsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricJobLogAPIService) QueryHistoricJobLogsCountExecute(r ApiQueryHistoricJobLogsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricJobLogAPIService.QueryHistoricJobLogsCount")
@@ -1199,8 +1204,8 @@ func (a *HistoricJobLogAPIService) QueryHistoricJobLogsCountExecute(r ApiQueryHi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

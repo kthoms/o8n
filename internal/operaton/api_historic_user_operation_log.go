@@ -20,13 +20,12 @@ import (
 	"time"
 )
 
-
 // HistoricUserOperationLogAPIService HistoricUserOperationLogAPI service
 type HistoricUserOperationLogAPIService service
 
 type ApiClearAnnotationUserOperationLogRequest struct {
-	ctx context.Context
-	ApiService *HistoricUserOperationLogAPIService
+	ctx         context.Context
+	ApiService  *HistoricUserOperationLogAPIService
 	operationId string
 }
 
@@ -39,14 +38,14 @@ ClearAnnotationUserOperationLog Clear Annotation of an User Operation Log (Histo
 
 Clear the annotation which was previously set for auditing reasons.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param operationId The operation id of the operation log to be updated.
- @return ApiClearAnnotationUserOperationLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param operationId The operation id of the operation log to be updated.
+	@return ApiClearAnnotationUserOperationLogRequest
 */
 func (a *HistoricUserOperationLogAPIService) ClearAnnotationUserOperationLog(ctx context.Context, operationId string) ApiClearAnnotationUserOperationLogRequest {
 	return ApiClearAnnotationUserOperationLogRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		operationId: operationId,
 	}
 }
@@ -54,9 +53,9 @@ func (a *HistoricUserOperationLogAPIService) ClearAnnotationUserOperationLog(ctx
 // Execute executes the request
 func (a *HistoricUserOperationLogAPIService) ClearAnnotationUserOperationLogExecute(r ApiClearAnnotationUserOperationLogRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricUserOperationLogAPIService.ClearAnnotationUserOperationLog")
@@ -117,8 +116,8 @@ func (a *HistoricUserOperationLogAPIService) ClearAnnotationUserOperationLogExec
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -127,31 +126,31 @@ func (a *HistoricUserOperationLogAPIService) ClearAnnotationUserOperationLogExec
 }
 
 type ApiQueryUserOperationCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricUserOperationLogAPIService
-	deploymentId *string
-	processDefinitionId *string
+	ctx                  context.Context
+	ApiService           *HistoricUserOperationLogAPIService
+	deploymentId         *string
+	processDefinitionId  *string
 	processDefinitionKey *string
-	processInstanceId *string
-	executionId *string
-	caseDefinitionId *string
-	caseInstanceId *string
-	caseExecutionId *string
-	taskId *string
-	externalTaskId *string
-	batchId *string
-	jobId *string
-	jobDefinitionId *string
-	userId *string
-	operationId *string
-	operationType *string
-	entityType *string
-	entityTypeIn *string
-	category *string
-	categoryIn *string
-	property *string
-	afterTimestamp *time.Time
-	beforeTimestamp *time.Time
+	processInstanceId    *string
+	executionId          *string
+	caseDefinitionId     *string
+	caseInstanceId       *string
+	caseExecutionId      *string
+	taskId               *string
+	externalTaskId       *string
+	batchId              *string
+	jobId                *string
+	jobDefinitionId      *string
+	userId               *string
+	operationId          *string
+	operationType        *string
+	entityType           *string
+	entityTypeIn         *string
+	category             *string
+	categoryIn           *string
+	property             *string
+	afterTimestamp       *time.Time
+	beforeTimestamp      *time.Time
 }
 
 // Filter by deployment id.
@@ -304,24 +303,25 @@ Takes the same parameters as the
 [Get User Operation Log (Historic)](https://docs.operaton.org/manual/1.0/reference/rest/history/user-operation-log/get-user-operation-log-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryUserOperationCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryUserOperationCountRequest
 */
 func (a *HistoricUserOperationLogAPIService) QueryUserOperationCount(ctx context.Context) ApiQueryUserOperationCountRequest {
 	return ApiQueryUserOperationCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricUserOperationLogAPIService) QueryUserOperationCountExecute(r ApiQueryUserOperationCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricUserOperationLogAPIService.QueryUserOperationCount")
@@ -450,8 +450,8 @@ func (a *HistoricUserOperationLogAPIService) QueryUserOperationCountExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -469,35 +469,35 @@ func (a *HistoricUserOperationLogAPIService) QueryUserOperationCountExecute(r Ap
 }
 
 type ApiQueryUserOperationEntriesRequest struct {
-	ctx context.Context
-	ApiService *HistoricUserOperationLogAPIService
-	deploymentId *string
-	processDefinitionId *string
+	ctx                  context.Context
+	ApiService           *HistoricUserOperationLogAPIService
+	deploymentId         *string
+	processDefinitionId  *string
 	processDefinitionKey *string
-	processInstanceId *string
-	executionId *string
-	caseDefinitionId *string
-	caseInstanceId *string
-	caseExecutionId *string
-	taskId *string
-	externalTaskId *string
-	batchId *string
-	jobId *string
-	jobDefinitionId *string
-	userId *string
-	operationId *string
-	operationType *string
-	entityType *string
-	entityTypeIn *string
-	category *string
-	categoryIn *string
-	property *string
-	afterTimestamp *time.Time
-	beforeTimestamp *time.Time
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	processInstanceId    *string
+	executionId          *string
+	caseDefinitionId     *string
+	caseInstanceId       *string
+	caseExecutionId      *string
+	taskId               *string
+	externalTaskId       *string
+	batchId              *string
+	jobId                *string
+	jobDefinitionId      *string
+	userId               *string
+	operationId          *string
+	operationType        *string
+	entityType           *string
+	entityTypeIn         *string
+	category             *string
+	categoryIn           *string
+	property             *string
+	afterTimestamp       *time.Time
+	beforeTimestamp      *time.Time
+	sortBy               *string
+	sortOrder            *string
+	firstResult          *int32
+	maxResults           *int32
 }
 
 // Filter by deployment id.
@@ -684,24 +684,25 @@ instance with any id) and the field `processDefinitionId` is
 populated. This way, which entities were changed by a user operation
 can easily be reconstructed.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryUserOperationEntriesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryUserOperationEntriesRequest
 */
 func (a *HistoricUserOperationLogAPIService) QueryUserOperationEntries(ctx context.Context) ApiQueryUserOperationEntriesRequest {
 	return ApiQueryUserOperationEntriesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []UserOperationLogEntryDto
+//
+//	@return []UserOperationLogEntryDto
 func (a *HistoricUserOperationLogAPIService) QueryUserOperationEntriesExecute(r ApiQueryUserOperationEntriesRequest) ([]UserOperationLogEntryDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []UserOperationLogEntryDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []UserOperationLogEntryDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricUserOperationLogAPIService.QueryUserOperationEntries")
@@ -842,8 +843,8 @@ func (a *HistoricUserOperationLogAPIService) QueryUserOperationEntriesExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -861,9 +862,9 @@ func (a *HistoricUserOperationLogAPIService) QueryUserOperationEntriesExecute(r 
 }
 
 type ApiSetAnnotationUserOperationLogRequest struct {
-	ctx context.Context
-	ApiService *HistoricUserOperationLogAPIService
-	operationId string
+	ctx           context.Context
+	ApiService    *HistoricUserOperationLogAPIService
+	operationId   string
 	annotationDto *AnnotationDto
 }
 
@@ -881,14 +882,14 @@ SetAnnotationUserOperationLog Set Annotation to an User Operation Log (Historic)
 
 Set an annotation for auditing reasons.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param operationId The operation id of the operation log to be updated.
- @return ApiSetAnnotationUserOperationLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param operationId The operation id of the operation log to be updated.
+	@return ApiSetAnnotationUserOperationLogRequest
 */
 func (a *HistoricUserOperationLogAPIService) SetAnnotationUserOperationLog(ctx context.Context, operationId string) ApiSetAnnotationUserOperationLogRequest {
 	return ApiSetAnnotationUserOperationLogRequest{
-		ApiService: a,
-		ctx: ctx,
+		ApiService:  a,
+		ctx:         ctx,
 		operationId: operationId,
 	}
 }
@@ -896,9 +897,9 @@ func (a *HistoricUserOperationLogAPIService) SetAnnotationUserOperationLog(ctx c
 // Execute executes the request
 func (a *HistoricUserOperationLogAPIService) SetAnnotationUserOperationLogExecute(r ApiSetAnnotationUserOperationLogRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricUserOperationLogAPIService.SetAnnotationUserOperationLog")
@@ -961,8 +962,8 @@ func (a *HistoricUserOperationLogAPIService) SetAnnotationUserOperationLogExecut
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

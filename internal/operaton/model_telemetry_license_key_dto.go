@@ -82,6 +82,7 @@ func (o *TelemetryLicenseKeyDto) HasCustomer() bool {
 func (o *TelemetryLicenseKeyDto) SetCustomer(v string) {
 	o.Customer.Set(&v)
 }
+
 // SetCustomerNil sets the value for Customer to be an explicit nil
 func (o *TelemetryLicenseKeyDto) SetCustomerNil() {
 	o.Customer.Set(nil)
@@ -124,6 +125,7 @@ func (o *TelemetryLicenseKeyDto) HasType() bool {
 func (o *TelemetryLicenseKeyDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *TelemetryLicenseKeyDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -166,6 +168,7 @@ func (o *TelemetryLicenseKeyDto) HasValidUntil() bool {
 func (o *TelemetryLicenseKeyDto) SetValidUntil(v string) {
 	o.ValidUntil.Set(&v)
 }
+
 // SetValidUntilNil sets the value for ValidUntil to be an explicit nil
 func (o *TelemetryLicenseKeyDto) SetValidUntilNil() {
 	o.ValidUntil.Set(nil)
@@ -208,6 +211,7 @@ func (o *TelemetryLicenseKeyDto) HasUnlimited() bool {
 func (o *TelemetryLicenseKeyDto) SetUnlimited(v bool) {
 	o.Unlimited.Set(&v)
 }
+
 // SetUnlimitedNil sets the value for Unlimited to be an explicit nil
 func (o *TelemetryLicenseKeyDto) SetUnlimitedNil() {
 	o.Unlimited.Set(nil)
@@ -282,6 +286,7 @@ func (o *TelemetryLicenseKeyDto) HasRaw() bool {
 func (o *TelemetryLicenseKeyDto) SetRaw(v string) {
 	o.Raw.Set(&v)
 }
+
 // SetRawNil sets the value for Raw to be an explicit nil
 func (o *TelemetryLicenseKeyDto) SetRawNil() {
 	o.Raw.Set(nil)
@@ -293,7 +298,7 @@ func (o *TelemetryLicenseKeyDto) UnsetRaw() {
 }
 
 func (o TelemetryLicenseKeyDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -358,5 +363,3 @@ func (v *NullableTelemetryLicenseKeyDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

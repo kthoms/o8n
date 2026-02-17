@@ -76,6 +76,7 @@ func (o *GroupDto) HasId() bool {
 func (o *GroupDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *GroupDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -118,6 +119,7 @@ func (o *GroupDto) HasName() bool {
 func (o *GroupDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *GroupDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -160,6 +162,7 @@ func (o *GroupDto) HasType() bool {
 func (o *GroupDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *GroupDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -171,7 +174,7 @@ func (o *GroupDto) UnsetType() {
 }
 
 func (o GroupDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableGroupDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

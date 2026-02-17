@@ -116,6 +116,7 @@ func (o *ExternalTaskFailureDto) HasErrorMessage() bool {
 func (o *ExternalTaskFailureDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *ExternalTaskFailureDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -158,6 +159,7 @@ func (o *ExternalTaskFailureDto) HasErrorDetails() bool {
 func (o *ExternalTaskFailureDto) SetErrorDetails(v string) {
 	o.ErrorDetails.Set(&v)
 }
+
 // SetErrorDetailsNil sets the value for ErrorDetails to be an explicit nil
 func (o *ExternalTaskFailureDto) SetErrorDetailsNil() {
 	o.ErrorDetails.Set(nil)
@@ -200,6 +202,7 @@ func (o *ExternalTaskFailureDto) HasRetries() bool {
 func (o *ExternalTaskFailureDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *ExternalTaskFailureDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -242,6 +245,7 @@ func (o *ExternalTaskFailureDto) HasRetryTimeout() bool {
 func (o *ExternalTaskFailureDto) SetRetryTimeout(v int64) {
 	o.RetryTimeout.Set(&v)
 }
+
 // SetRetryTimeoutNil sets the value for RetryTimeout to be an explicit nil
 func (o *ExternalTaskFailureDto) SetRetryTimeoutNil() {
 	o.RetryTimeout.Set(nil)
@@ -319,7 +323,7 @@ func (o *ExternalTaskFailureDto) SetLocalVariables(v map[string]VariableValueDto
 }
 
 func (o ExternalTaskFailureDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -387,5 +391,3 @@ func (v *NullableExternalTaskFailureDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

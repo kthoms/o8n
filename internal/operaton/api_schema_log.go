@@ -18,18 +18,17 @@ import (
 	"net/url"
 )
 
-
 // SchemaLogAPIService SchemaLogAPI service
 type SchemaLogAPIService service
 
 type ApiGetSchemaLogRequest struct {
-	ctx context.Context
-	ApiService *SchemaLogAPIService
-	version *string
-	sortBy *string
-	sortOrder *string
+	ctx         context.Context
+	ApiService  *SchemaLogAPIService
+	version     *string
+	sortBy      *string
+	sortOrder   *string
 	firstResult *int32
-	maxResults *int32
+	maxResults  *int32
 }
 
 // Only return schema log entries with a specific version.
@@ -71,24 +70,25 @@ GetSchemaLog Get List
 
 Queries for schema log entries that fulfill given parameters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetSchemaLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetSchemaLogRequest
 */
 func (a *SchemaLogAPIService) GetSchemaLog(ctx context.Context) ApiGetSchemaLogRequest {
 	return ApiGetSchemaLogRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []SchemaLogEntryDto
+//
+//	@return []SchemaLogEntryDto
 func (a *SchemaLogAPIService) GetSchemaLogExecute(r ApiGetSchemaLogRequest) ([]SchemaLogEntryDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []SchemaLogEntryDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []SchemaLogEntryDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SchemaLogAPIService.GetSchemaLog")
@@ -172,10 +172,10 @@ func (a *SchemaLogAPIService) GetSchemaLogExecute(r ApiGetSchemaLogRequest) ([]S
 }
 
 type ApiQuerySchemaLogRequest struct {
-	ctx context.Context
-	ApiService *SchemaLogAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx               context.Context
+	ApiService        *SchemaLogAPIService
+	firstResult       *int32
+	maxResults        *int32
 	schemaLogQueryDto *SchemaLogQueryDto
 }
 
@@ -205,24 +205,25 @@ QuerySchemaLog Get List (POST)
 
 Queries for schema log entries that fulfill given parameters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQuerySchemaLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQuerySchemaLogRequest
 */
 func (a *SchemaLogAPIService) QuerySchemaLog(ctx context.Context) ApiQuerySchemaLogRequest {
 	return ApiQuerySchemaLogRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []SchemaLogEntryDto
+//
+//	@return []SchemaLogEntryDto
 func (a *SchemaLogAPIService) QuerySchemaLogExecute(r ApiQuerySchemaLogRequest) ([]SchemaLogEntryDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []SchemaLogEntryDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []SchemaLogEntryDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SchemaLogAPIService.QuerySchemaLog")

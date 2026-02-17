@@ -28,8 +28,8 @@ type DeleteProcessInstancesDto struct {
 	// Skip deletion of the subprocesses related to deleted processes as part of this request.
 	SkipSubprocesses NullableBool `json:"skipSubprocesses,omitempty"`
 	// Skip execution of [input/output variable mappings](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/#input-output-variable-mapping) for activities that are started or ended as part of this request.
-	SkipIoMappings NullableBool `json:"skipIoMappings,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	SkipIoMappings               NullableBool                     `json:"skipIoMappings,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 }
 
@@ -115,6 +115,7 @@ func (o *DeleteProcessInstancesDto) HasDeleteReason() bool {
 func (o *DeleteProcessInstancesDto) SetDeleteReason(v string) {
 	o.DeleteReason.Set(&v)
 }
+
 // SetDeleteReasonNil sets the value for DeleteReason to be an explicit nil
 func (o *DeleteProcessInstancesDto) SetDeleteReasonNil() {
 	o.DeleteReason.Set(nil)
@@ -157,6 +158,7 @@ func (o *DeleteProcessInstancesDto) HasSkipCustomListeners() bool {
 func (o *DeleteProcessInstancesDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *DeleteProcessInstancesDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -199,6 +201,7 @@ func (o *DeleteProcessInstancesDto) HasSkipSubprocesses() bool {
 func (o *DeleteProcessInstancesDto) SetSkipSubprocesses(v bool) {
 	o.SkipSubprocesses.Set(&v)
 }
+
 // SetSkipSubprocessesNil sets the value for SkipSubprocesses to be an explicit nil
 func (o *DeleteProcessInstancesDto) SetSkipSubprocessesNil() {
 	o.SkipSubprocesses.Set(nil)
@@ -241,6 +244,7 @@ func (o *DeleteProcessInstancesDto) HasSkipIoMappings() bool {
 func (o *DeleteProcessInstancesDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *DeleteProcessInstancesDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -316,7 +320,7 @@ func (o *DeleteProcessInstancesDto) SetHistoricProcessInstanceQuery(v HistoricPr
 }
 
 func (o DeleteProcessInstancesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -384,5 +388,3 @@ func (v *NullableDeleteProcessInstancesDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

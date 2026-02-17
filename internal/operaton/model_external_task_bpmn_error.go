@@ -78,6 +78,7 @@ func (o *ExternalTaskBpmnError) HasErrorCode() bool {
 func (o *ExternalTaskBpmnError) SetErrorCode(v string) {
 	o.ErrorCode.Set(&v)
 }
+
 // SetErrorCodeNil sets the value for ErrorCode to be an explicit nil
 func (o *ExternalTaskBpmnError) SetErrorCodeNil() {
 	o.ErrorCode.Set(nil)
@@ -120,6 +121,7 @@ func (o *ExternalTaskBpmnError) HasErrorMessage() bool {
 func (o *ExternalTaskBpmnError) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *ExternalTaskBpmnError) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -195,6 +197,7 @@ func (o *ExternalTaskBpmnError) HasWorkerId() bool {
 func (o *ExternalTaskBpmnError) SetWorkerId(v string) {
 	o.WorkerId.Set(&v)
 }
+
 // SetWorkerIdNil sets the value for WorkerId to be an explicit nil
 func (o *ExternalTaskBpmnError) SetWorkerIdNil() {
 	o.WorkerId.Set(nil)
@@ -206,7 +209,7 @@ func (o *ExternalTaskBpmnError) UnsetWorkerId() {
 }
 
 func (o ExternalTaskBpmnError) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -265,5 +268,3 @@ func (v *NullableExternalTaskBpmnError) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

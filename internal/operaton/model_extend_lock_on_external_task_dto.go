@@ -106,6 +106,7 @@ func (o *ExtendLockOnExternalTaskDto) HasNewDuration() bool {
 func (o *ExtendLockOnExternalTaskDto) SetNewDuration(v int64) {
 	o.NewDuration.Set(&v)
 }
+
 // SetNewDurationNil sets the value for NewDuration to be an explicit nil
 func (o *ExtendLockOnExternalTaskDto) SetNewDurationNil() {
 	o.NewDuration.Set(nil)
@@ -117,7 +118,7 @@ func (o *ExtendLockOnExternalTaskDto) UnsetNewDuration() {
 }
 
 func (o ExtendLockOnExternalTaskDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -170,5 +171,3 @@ func (v *NullableExtendLockOnExternalTaskDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

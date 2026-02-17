@@ -75,6 +75,7 @@ func (o *JobConditionQueryParameterDto) HasOperator() bool {
 func (o *JobConditionQueryParameterDto) SetOperator(v string) {
 	o.Operator.Set(&v)
 }
+
 // SetOperatorNil sets the value for Operator to be an explicit nil
 func (o *JobConditionQueryParameterDto) SetOperatorNil() {
 	o.Operator.Set(nil)
@@ -117,6 +118,7 @@ func (o *JobConditionQueryParameterDto) HasValue() bool {
 func (o *JobConditionQueryParameterDto) SetValue(v time.Time) {
 	o.Value.Set(&v)
 }
+
 // SetValueNil sets the value for Value to be an explicit nil
 func (o *JobConditionQueryParameterDto) SetValueNil() {
 	o.Value.Set(nil)
@@ -128,7 +130,7 @@ func (o *JobConditionQueryParameterDto) UnsetValue() {
 }
 
 func (o JobConditionQueryParameterDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -181,5 +183,3 @@ func (v *NullableJobConditionQueryParameterDto) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

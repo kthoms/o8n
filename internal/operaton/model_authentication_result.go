@@ -78,6 +78,7 @@ func (o *AuthenticationResult) HasAuthenticatedUser() bool {
 func (o *AuthenticationResult) SetAuthenticatedUser(v string) {
 	o.AuthenticatedUser.Set(&v)
 }
+
 // SetAuthenticatedUserNil sets the value for AuthenticatedUser to be an explicit nil
 func (o *AuthenticationResult) SetAuthenticatedUserNil() {
 	o.AuthenticatedUser.Set(nil)
@@ -120,6 +121,7 @@ func (o *AuthenticationResult) HasAuthenticated() bool {
 func (o *AuthenticationResult) SetAuthenticated(v bool) {
 	o.Authenticated.Set(&v)
 }
+
 // SetAuthenticatedNil sets the value for Authenticated to be an explicit nil
 func (o *AuthenticationResult) SetAuthenticatedNil() {
 	o.Authenticated.Set(nil)
@@ -197,7 +199,7 @@ func (o *AuthenticationResult) SetGroups(v []string) {
 }
 
 func (o AuthenticationResult) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -256,5 +258,3 @@ func (v *NullableAuthenticationResult) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

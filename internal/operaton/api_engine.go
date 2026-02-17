@@ -18,12 +18,11 @@ import (
 	"net/url"
 )
 
-
 // EngineAPIService EngineAPI service
 type EngineAPIService service
 
 type ApiGetProcessEngineNamesRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *EngineAPIService
 }
 
@@ -37,24 +36,25 @@ GetProcessEngineNames Get List
 Retrieves the names of all process engines available on your platform.
 **Note**: You cannot prepend `/engine/{name}` to this method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessEngineNamesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessEngineNamesRequest
 */
 func (a *EngineAPIService) GetProcessEngineNames(ctx context.Context) ApiGetProcessEngineNamesRequest {
 	return ApiGetProcessEngineNamesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessEngineDto
+//
+//	@return []ProcessEngineDto
 func (a *EngineAPIService) GetProcessEngineNamesExecute(r ApiGetProcessEngineNamesRequest) ([]ProcessEngineDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessEngineDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessEngineDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EngineAPIService.GetProcessEngineNames")

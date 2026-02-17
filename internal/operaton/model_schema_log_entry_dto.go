@@ -77,6 +77,7 @@ func (o *SchemaLogEntryDto) HasId() bool {
 func (o *SchemaLogEntryDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *SchemaLogEntryDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -119,6 +120,7 @@ func (o *SchemaLogEntryDto) HasTimestamp() bool {
 func (o *SchemaLogEntryDto) SetTimestamp(v time.Time) {
 	o.Timestamp.Set(&v)
 }
+
 // SetTimestampNil sets the value for Timestamp to be an explicit nil
 func (o *SchemaLogEntryDto) SetTimestampNil() {
 	o.Timestamp.Set(nil)
@@ -161,6 +163,7 @@ func (o *SchemaLogEntryDto) HasVersion() bool {
 func (o *SchemaLogEntryDto) SetVersion(v string) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *SchemaLogEntryDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -172,7 +175,7 @@ func (o *SchemaLogEntryDto) UnsetVersion() {
 }
 
 func (o SchemaLogEntryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -228,5 +231,3 @@ func (v *NullableSchemaLogEntryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

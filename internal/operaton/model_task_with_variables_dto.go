@@ -61,7 +61,7 @@ type TaskWithVariablesDto struct {
 	// Whether the task belongs to a process instance that is suspended.
 	Suspended NullableBool `json:"suspended,omitempty"`
 	// If not `null`, the form key for the task.
-	FormKey NullableString `json:"formKey,omitempty"`
+	FormKey         NullableString   `json:"formKey,omitempty"`
 	OperatonFormRef *OperatonFormRef `json:"operatonFormRef,omitempty"`
 	// If not `null`, the tenant id of the task.
 	TenantId NullableString `json:"tenantId,omitempty"`
@@ -120,6 +120,7 @@ func (o *TaskWithVariablesDto) HasId() bool {
 func (o *TaskWithVariablesDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *TaskWithVariablesDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -162,6 +163,7 @@ func (o *TaskWithVariablesDto) HasName() bool {
 func (o *TaskWithVariablesDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *TaskWithVariablesDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -204,6 +206,7 @@ func (o *TaskWithVariablesDto) HasAssignee() bool {
 func (o *TaskWithVariablesDto) SetAssignee(v string) {
 	o.Assignee.Set(&v)
 }
+
 // SetAssigneeNil sets the value for Assignee to be an explicit nil
 func (o *TaskWithVariablesDto) SetAssigneeNil() {
 	o.Assignee.Set(nil)
@@ -246,6 +249,7 @@ func (o *TaskWithVariablesDto) HasOwner() bool {
 func (o *TaskWithVariablesDto) SetOwner(v string) {
 	o.Owner.Set(&v)
 }
+
 // SetOwnerNil sets the value for Owner to be an explicit nil
 func (o *TaskWithVariablesDto) SetOwnerNil() {
 	o.Owner.Set(nil)
@@ -288,6 +292,7 @@ func (o *TaskWithVariablesDto) HasCreated() bool {
 func (o *TaskWithVariablesDto) SetCreated(v time.Time) {
 	o.Created.Set(&v)
 }
+
 // SetCreatedNil sets the value for Created to be an explicit nil
 func (o *TaskWithVariablesDto) SetCreatedNil() {
 	o.Created.Set(nil)
@@ -330,6 +335,7 @@ func (o *TaskWithVariablesDto) HasLastUpdated() bool {
 func (o *TaskWithVariablesDto) SetLastUpdated(v time.Time) {
 	o.LastUpdated.Set(&v)
 }
+
 // SetLastUpdatedNil sets the value for LastUpdated to be an explicit nil
 func (o *TaskWithVariablesDto) SetLastUpdatedNil() {
 	o.LastUpdated.Set(nil)
@@ -372,6 +378,7 @@ func (o *TaskWithVariablesDto) HasDue() bool {
 func (o *TaskWithVariablesDto) SetDue(v time.Time) {
 	o.Due.Set(&v)
 }
+
 // SetDueNil sets the value for Due to be an explicit nil
 func (o *TaskWithVariablesDto) SetDueNil() {
 	o.Due.Set(nil)
@@ -414,6 +421,7 @@ func (o *TaskWithVariablesDto) HasFollowUp() bool {
 func (o *TaskWithVariablesDto) SetFollowUp(v time.Time) {
 	o.FollowUp.Set(&v)
 }
+
 // SetFollowUpNil sets the value for FollowUp to be an explicit nil
 func (o *TaskWithVariablesDto) SetFollowUpNil() {
 	o.FollowUp.Set(nil)
@@ -456,6 +464,7 @@ func (o *TaskWithVariablesDto) HasDelegationState() bool {
 func (o *TaskWithVariablesDto) SetDelegationState(v string) {
 	o.DelegationState.Set(&v)
 }
+
 // SetDelegationStateNil sets the value for DelegationState to be an explicit nil
 func (o *TaskWithVariablesDto) SetDelegationStateNil() {
 	o.DelegationState.Set(nil)
@@ -498,6 +507,7 @@ func (o *TaskWithVariablesDto) HasDescription() bool {
 func (o *TaskWithVariablesDto) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *TaskWithVariablesDto) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -540,6 +550,7 @@ func (o *TaskWithVariablesDto) HasExecutionId() bool {
 func (o *TaskWithVariablesDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *TaskWithVariablesDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -582,6 +593,7 @@ func (o *TaskWithVariablesDto) HasParentTaskId() bool {
 func (o *TaskWithVariablesDto) SetParentTaskId(v string) {
 	o.ParentTaskId.Set(&v)
 }
+
 // SetParentTaskIdNil sets the value for ParentTaskId to be an explicit nil
 func (o *TaskWithVariablesDto) SetParentTaskIdNil() {
 	o.ParentTaskId.Set(nil)
@@ -624,6 +636,7 @@ func (o *TaskWithVariablesDto) HasPriority() bool {
 func (o *TaskWithVariablesDto) SetPriority(v int32) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *TaskWithVariablesDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -666,6 +679,7 @@ func (o *TaskWithVariablesDto) HasProcessDefinitionId() bool {
 func (o *TaskWithVariablesDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *TaskWithVariablesDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -708,6 +722,7 @@ func (o *TaskWithVariablesDto) HasProcessInstanceId() bool {
 func (o *TaskWithVariablesDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *TaskWithVariablesDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -750,6 +765,7 @@ func (o *TaskWithVariablesDto) HasCaseExecutionId() bool {
 func (o *TaskWithVariablesDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *TaskWithVariablesDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -792,6 +808,7 @@ func (o *TaskWithVariablesDto) HasCaseDefinitionId() bool {
 func (o *TaskWithVariablesDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *TaskWithVariablesDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -834,6 +851,7 @@ func (o *TaskWithVariablesDto) HasCaseInstanceId() bool {
 func (o *TaskWithVariablesDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *TaskWithVariablesDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -876,6 +894,7 @@ func (o *TaskWithVariablesDto) HasTaskDefinitionKey() bool {
 func (o *TaskWithVariablesDto) SetTaskDefinitionKey(v string) {
 	o.TaskDefinitionKey.Set(&v)
 }
+
 // SetTaskDefinitionKeyNil sets the value for TaskDefinitionKey to be an explicit nil
 func (o *TaskWithVariablesDto) SetTaskDefinitionKeyNil() {
 	o.TaskDefinitionKey.Set(nil)
@@ -918,6 +937,7 @@ func (o *TaskWithVariablesDto) HasSuspended() bool {
 func (o *TaskWithVariablesDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *TaskWithVariablesDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -960,6 +980,7 @@ func (o *TaskWithVariablesDto) HasFormKey() bool {
 func (o *TaskWithVariablesDto) SetFormKey(v string) {
 	o.FormKey.Set(&v)
 }
+
 // SetFormKeyNil sets the value for FormKey to be an explicit nil
 func (o *TaskWithVariablesDto) SetFormKeyNil() {
 	o.FormKey.Set(nil)
@@ -1034,6 +1055,7 @@ func (o *TaskWithVariablesDto) HasTenantId() bool {
 func (o *TaskWithVariablesDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *TaskWithVariablesDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -1076,6 +1098,7 @@ func (o *TaskWithVariablesDto) HasTaskState() bool {
 func (o *TaskWithVariablesDto) SetTaskState(v string) {
 	o.TaskState.Set(&v)
 }
+
 // SetTaskStateNil sets the value for TaskState to be an explicit nil
 func (o *TaskWithVariablesDto) SetTaskStateNil() {
 	o.TaskState.Set(nil)
@@ -1120,7 +1143,7 @@ func (o *TaskWithVariablesDto) SetVariables(v map[string]VariableValueDto) {
 }
 
 func (o TaskWithVariablesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1242,5 +1265,3 @@ func (v *NullableTaskWithVariablesDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

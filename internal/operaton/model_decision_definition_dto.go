@@ -94,6 +94,7 @@ func (o *DecisionDefinitionDto) HasId() bool {
 func (o *DecisionDefinitionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DecisionDefinitionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -136,6 +137,7 @@ func (o *DecisionDefinitionDto) HasKey() bool {
 func (o *DecisionDefinitionDto) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *DecisionDefinitionDto) SetKeyNil() {
 	o.Key.Set(nil)
@@ -178,6 +180,7 @@ func (o *DecisionDefinitionDto) HasCategory() bool {
 func (o *DecisionDefinitionDto) SetCategory(v string) {
 	o.Category.Set(&v)
 }
+
 // SetCategoryNil sets the value for Category to be an explicit nil
 func (o *DecisionDefinitionDto) SetCategoryNil() {
 	o.Category.Set(nil)
@@ -220,6 +223,7 @@ func (o *DecisionDefinitionDto) HasName() bool {
 func (o *DecisionDefinitionDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *DecisionDefinitionDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -262,6 +266,7 @@ func (o *DecisionDefinitionDto) HasVersion() bool {
 func (o *DecisionDefinitionDto) SetVersion(v int32) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *DecisionDefinitionDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -304,6 +309,7 @@ func (o *DecisionDefinitionDto) HasResource() bool {
 func (o *DecisionDefinitionDto) SetResource(v string) {
 	o.Resource.Set(&v)
 }
+
 // SetResourceNil sets the value for Resource to be an explicit nil
 func (o *DecisionDefinitionDto) SetResourceNil() {
 	o.Resource.Set(nil)
@@ -346,6 +352,7 @@ func (o *DecisionDefinitionDto) HasDeploymentId() bool {
 func (o *DecisionDefinitionDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *DecisionDefinitionDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -388,6 +395,7 @@ func (o *DecisionDefinitionDto) HasTenantId() bool {
 func (o *DecisionDefinitionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *DecisionDefinitionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -430,6 +438,7 @@ func (o *DecisionDefinitionDto) HasDecisionRequirementsDefinitionId() bool {
 func (o *DecisionDefinitionDto) SetDecisionRequirementsDefinitionId(v string) {
 	o.DecisionRequirementsDefinitionId.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionIdNil sets the value for DecisionRequirementsDefinitionId to be an explicit nil
 func (o *DecisionDefinitionDto) SetDecisionRequirementsDefinitionIdNil() {
 	o.DecisionRequirementsDefinitionId.Set(nil)
@@ -472,6 +481,7 @@ func (o *DecisionDefinitionDto) HasDecisionRequirementsDefinitionKey() bool {
 func (o *DecisionDefinitionDto) SetDecisionRequirementsDefinitionKey(v string) {
 	o.DecisionRequirementsDefinitionKey.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionKeyNil sets the value for DecisionRequirementsDefinitionKey to be an explicit nil
 func (o *DecisionDefinitionDto) SetDecisionRequirementsDefinitionKeyNil() {
 	o.DecisionRequirementsDefinitionKey.Set(nil)
@@ -514,6 +524,7 @@ func (o *DecisionDefinitionDto) HasHistoryTimeToLive() bool {
 func (o *DecisionDefinitionDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *DecisionDefinitionDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -556,6 +567,7 @@ func (o *DecisionDefinitionDto) HasVersionTag() bool {
 func (o *DecisionDefinitionDto) SetVersionTag(v string) {
 	o.VersionTag.Set(&v)
 }
+
 // SetVersionTagNil sets the value for VersionTag to be an explicit nil
 func (o *DecisionDefinitionDto) SetVersionTagNil() {
 	o.VersionTag.Set(nil)
@@ -567,7 +579,7 @@ func (o *DecisionDefinitionDto) UnsetVersionTag() {
 }
 
 func (o DecisionDefinitionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -650,5 +662,3 @@ func (v *NullableDecisionDefinitionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

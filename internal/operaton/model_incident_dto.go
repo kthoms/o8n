@@ -101,6 +101,7 @@ func (o *IncidentDto) HasId() bool {
 func (o *IncidentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *IncidentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -143,6 +144,7 @@ func (o *IncidentDto) HasProcessDefinitionId() bool {
 func (o *IncidentDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *IncidentDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -185,6 +187,7 @@ func (o *IncidentDto) HasProcessInstanceId() bool {
 func (o *IncidentDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *IncidentDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -227,6 +230,7 @@ func (o *IncidentDto) HasExecutionId() bool {
 func (o *IncidentDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *IncidentDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -269,6 +273,7 @@ func (o *IncidentDto) HasIncidentTimestamp() bool {
 func (o *IncidentDto) SetIncidentTimestamp(v time.Time) {
 	o.IncidentTimestamp.Set(&v)
 }
+
 // SetIncidentTimestampNil sets the value for IncidentTimestamp to be an explicit nil
 func (o *IncidentDto) SetIncidentTimestampNil() {
 	o.IncidentTimestamp.Set(nil)
@@ -311,6 +316,7 @@ func (o *IncidentDto) HasIncidentType() bool {
 func (o *IncidentDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *IncidentDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -353,6 +359,7 @@ func (o *IncidentDto) HasActivityId() bool {
 func (o *IncidentDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *IncidentDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -395,6 +402,7 @@ func (o *IncidentDto) HasFailedActivityId() bool {
 func (o *IncidentDto) SetFailedActivityId(v string) {
 	o.FailedActivityId.Set(&v)
 }
+
 // SetFailedActivityIdNil sets the value for FailedActivityId to be an explicit nil
 func (o *IncidentDto) SetFailedActivityIdNil() {
 	o.FailedActivityId.Set(nil)
@@ -437,6 +445,7 @@ func (o *IncidentDto) HasCauseIncidentId() bool {
 func (o *IncidentDto) SetCauseIncidentId(v string) {
 	o.CauseIncidentId.Set(&v)
 }
+
 // SetCauseIncidentIdNil sets the value for CauseIncidentId to be an explicit nil
 func (o *IncidentDto) SetCauseIncidentIdNil() {
 	o.CauseIncidentId.Set(nil)
@@ -479,6 +488,7 @@ func (o *IncidentDto) HasRootCauseIncidentId() bool {
 func (o *IncidentDto) SetRootCauseIncidentId(v string) {
 	o.RootCauseIncidentId.Set(&v)
 }
+
 // SetRootCauseIncidentIdNil sets the value for RootCauseIncidentId to be an explicit nil
 func (o *IncidentDto) SetRootCauseIncidentIdNil() {
 	o.RootCauseIncidentId.Set(nil)
@@ -521,6 +531,7 @@ func (o *IncidentDto) HasConfiguration() bool {
 func (o *IncidentDto) SetConfiguration(v string) {
 	o.Configuration.Set(&v)
 }
+
 // SetConfigurationNil sets the value for Configuration to be an explicit nil
 func (o *IncidentDto) SetConfigurationNil() {
 	o.Configuration.Set(nil)
@@ -563,6 +574,7 @@ func (o *IncidentDto) HasTenantId() bool {
 func (o *IncidentDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *IncidentDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -605,6 +617,7 @@ func (o *IncidentDto) HasIncidentMessage() bool {
 func (o *IncidentDto) SetIncidentMessage(v string) {
 	o.IncidentMessage.Set(&v)
 }
+
 // SetIncidentMessageNil sets the value for IncidentMessage to be an explicit nil
 func (o *IncidentDto) SetIncidentMessageNil() {
 	o.IncidentMessage.Set(nil)
@@ -647,6 +660,7 @@ func (o *IncidentDto) HasJobDefinitionId() bool {
 func (o *IncidentDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *IncidentDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -689,6 +703,7 @@ func (o *IncidentDto) HasAnnotation() bool {
 func (o *IncidentDto) SetAnnotation(v string) {
 	o.Annotation.Set(&v)
 }
+
 // SetAnnotationNil sets the value for Annotation to be an explicit nil
 func (o *IncidentDto) SetAnnotationNil() {
 	o.Annotation.Set(nil)
@@ -700,7 +715,7 @@ func (o *IncidentDto) UnsetAnnotation() {
 }
 
 func (o IncidentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -792,5 +807,3 @@ func (v *NullableIncidentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

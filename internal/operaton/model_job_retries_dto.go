@@ -75,6 +75,7 @@ func (o *JobRetriesDto) HasRetries() bool {
 func (o *JobRetriesDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *JobRetriesDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -117,6 +118,7 @@ func (o *JobRetriesDto) HasDueDate() bool {
 func (o *JobRetriesDto) SetDueDate(v time.Time) {
 	o.DueDate.Set(&v)
 }
+
 // SetDueDateNil sets the value for DueDate to be an explicit nil
 func (o *JobRetriesDto) SetDueDateNil() {
 	o.DueDate.Set(nil)
@@ -128,7 +130,7 @@ func (o *JobRetriesDto) UnsetDueDate() {
 }
 
 func (o JobRetriesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -181,5 +183,3 @@ func (v *NullableJobRetriesDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

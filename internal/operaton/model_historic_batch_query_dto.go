@@ -82,6 +82,7 @@ func (o *HistoricBatchQueryDto) HasBatchId() bool {
 func (o *HistoricBatchQueryDto) SetBatchId(v string) {
 	o.BatchId.Set(&v)
 }
+
 // SetBatchIdNil sets the value for BatchId to be an explicit nil
 func (o *HistoricBatchQueryDto) SetBatchIdNil() {
 	o.BatchId.Set(nil)
@@ -124,6 +125,7 @@ func (o *HistoricBatchQueryDto) HasType() bool {
 func (o *HistoricBatchQueryDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *HistoricBatchQueryDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -166,6 +168,7 @@ func (o *HistoricBatchQueryDto) HasCompleted() bool {
 func (o *HistoricBatchQueryDto) SetCompleted(v bool) {
 	o.Completed.Set(&v)
 }
+
 // SetCompletedNil sets the value for Completed to be an explicit nil
 func (o *HistoricBatchQueryDto) SetCompletedNil() {
 	o.Completed.Set(nil)
@@ -241,6 +244,7 @@ func (o *HistoricBatchQueryDto) HasWithoutTenantId() bool {
 func (o *HistoricBatchQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *HistoricBatchQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -285,7 +289,7 @@ func (o *HistoricBatchQueryDto) SetSorting(v []HistoricBatchQueryDtoSortingInner
 }
 
 func (o HistoricBatchQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -350,5 +354,3 @@ func (v *NullableHistoricBatchQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

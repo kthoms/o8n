@@ -80,6 +80,7 @@ func (o *DurationReportResultDto) HasPeriod() bool {
 func (o *DurationReportResultDto) SetPeriod(v int32) {
 	o.Period.Set(&v)
 }
+
 // SetPeriodNil sets the value for Period to be an explicit nil
 func (o *DurationReportResultDto) SetPeriodNil() {
 	o.Period.Set(nil)
@@ -122,6 +123,7 @@ func (o *DurationReportResultDto) HasPeriodUnit() bool {
 func (o *DurationReportResultDto) SetPeriodUnit(v string) {
 	o.PeriodUnit.Set(&v)
 }
+
 // SetPeriodUnitNil sets the value for PeriodUnit to be an explicit nil
 func (o *DurationReportResultDto) SetPeriodUnitNil() {
 	o.PeriodUnit.Set(nil)
@@ -164,6 +166,7 @@ func (o *DurationReportResultDto) HasMinimum() bool {
 func (o *DurationReportResultDto) SetMinimum(v int64) {
 	o.Minimum.Set(&v)
 }
+
 // SetMinimumNil sets the value for Minimum to be an explicit nil
 func (o *DurationReportResultDto) SetMinimumNil() {
 	o.Minimum.Set(nil)
@@ -206,6 +209,7 @@ func (o *DurationReportResultDto) HasMaximum() bool {
 func (o *DurationReportResultDto) SetMaximum(v int64) {
 	o.Maximum.Set(&v)
 }
+
 // SetMaximumNil sets the value for Maximum to be an explicit nil
 func (o *DurationReportResultDto) SetMaximumNil() {
 	o.Maximum.Set(nil)
@@ -248,6 +252,7 @@ func (o *DurationReportResultDto) HasAverage() bool {
 func (o *DurationReportResultDto) SetAverage(v int64) {
 	o.Average.Set(&v)
 }
+
 // SetAverageNil sets the value for Average to be an explicit nil
 func (o *DurationReportResultDto) SetAverageNil() {
 	o.Average.Set(nil)
@@ -259,7 +264,7 @@ func (o *DurationReportResultDto) UnsetAverage() {
 }
 
 func (o DurationReportResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -321,5 +326,3 @@ func (v *NullableDurationReportResultDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

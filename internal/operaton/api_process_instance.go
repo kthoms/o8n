@@ -16,17 +16,16 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // ProcessInstanceAPIService ProcessInstanceAPI service
 type ProcessInstanceAPIService service
 
 type ApiCorrelateMessageAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                        context.Context
+	ApiService                 *ProcessInstanceAPIService
 	correlationMessageAsyncDto *CorrelationMessageAsyncDto
 }
 
@@ -42,27 +41,28 @@ func (r ApiCorrelateMessageAsyncOperationRequest) Execute() (*BatchDto, *http.Re
 /*
 CorrelateMessageAsyncOperation Correlate Message Async (POST)
 
-Correlates a message asynchronously to executions that are waiting for this message. 
+Correlates a message asynchronously to executions that are waiting for this message.
 Messages will not be correlated to process definition-level start message events to start process instances.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCorrelateMessageAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCorrelateMessageAsyncOperationRequest
 */
 func (a *ProcessInstanceAPIService) CorrelateMessageAsyncOperation(ctx context.Context) ApiCorrelateMessageAsyncOperationRequest {
 	return ApiCorrelateMessageAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) CorrelateMessageAsyncOperationExecute(r ApiCorrelateMessageAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.CorrelateMessageAsyncOperation")
@@ -124,8 +124,8 @@ func (a *ProcessInstanceAPIService) CorrelateMessageAsyncOperationExecute(r ApiC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -135,8 +135,8 @@ func (a *ProcessInstanceAPIService) CorrelateMessageAsyncOperationExecute(r ApiC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -154,8 +154,8 @@ func (a *ProcessInstanceAPIService) CorrelateMessageAsyncOperationExecute(r ApiC
 }
 
 type ApiDeleteAsyncHistoricQueryBasedRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                       context.Context
+	ApiService                *ProcessInstanceAPIService
 	deleteProcessInstancesDto *DeleteProcessInstancesDto
 }
 
@@ -174,24 +174,25 @@ DeleteAsyncHistoricQueryBased Delete Async Historic Query Based (POST)
 
 Deletes a set of process instances asynchronously (batch) based on a historic process instance query.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteAsyncHistoricQueryBasedRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteAsyncHistoricQueryBasedRequest
 */
 func (a *ProcessInstanceAPIService) DeleteAsyncHistoricQueryBased(ctx context.Context) ApiDeleteAsyncHistoricQueryBasedRequest {
 	return ApiDeleteAsyncHistoricQueryBasedRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) DeleteAsyncHistoricQueryBasedExecute(r ApiDeleteAsyncHistoricQueryBasedRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.DeleteAsyncHistoricQueryBased")
@@ -253,8 +254,8 @@ func (a *ProcessInstanceAPIService) DeleteAsyncHistoricQueryBasedExecute(r ApiDe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -272,13 +273,13 @@ func (a *ProcessInstanceAPIService) DeleteAsyncHistoricQueryBasedExecute(r ApiDe
 }
 
 type ApiDeleteProcessInstanceRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx                 context.Context
+	ApiService          *ProcessInstanceAPIService
+	id                  string
 	skipCustomListeners *bool
-	skipIoMappings *bool
-	skipSubprocesses *bool
-	failIfNotExists *bool
+	skipIoMappings      *bool
+	skipSubprocesses    *bool
+	failIfNotExists     *bool
 }
 
 // If set to true, the custom listeners will be skipped.
@@ -314,24 +315,24 @@ DeleteProcessInstance Delete
 
 Deletes a running process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to be deleted.
- @return ApiDeleteProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to be deleted.
+	@return ApiDeleteProcessInstanceRequest
 */
 func (a *ProcessInstanceAPIService) DeleteProcessInstance(ctx context.Context, id string) ApiDeleteProcessInstanceRequest {
 	return ApiDeleteProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) DeleteProcessInstanceExecute(r ApiDeleteProcessInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.DeleteProcessInstance")
@@ -416,8 +417,8 @@ func (a *ProcessInstanceAPIService) DeleteProcessInstanceExecute(r ApiDeleteProc
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -426,10 +427,10 @@ func (a *ProcessInstanceAPIService) DeleteProcessInstanceExecute(r ApiDeleteProc
 }
 
 type ApiDeleteProcessInstanceVariableRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiDeleteProcessInstanceVariableRequest) Execute() (*http.Response, error) {
@@ -441,26 +442,26 @@ DeleteProcessInstanceVariable Delete Process Variable
 
 Deletes a variable of a process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to delete the variable from.
- @param varName The name of the variable to delete.
- @return ApiDeleteProcessInstanceVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to delete the variable from.
+	@param varName The name of the variable to delete.
+	@return ApiDeleteProcessInstanceVariableRequest
 */
 func (a *ProcessInstanceAPIService) DeleteProcessInstanceVariable(ctx context.Context, id string, varName string) ApiDeleteProcessInstanceVariableRequest {
 	return ApiDeleteProcessInstanceVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) DeleteProcessInstanceVariableExecute(r ApiDeleteProcessInstanceVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.DeleteProcessInstanceVariable")
@@ -522,8 +523,8 @@ func (a *ProcessInstanceAPIService) DeleteProcessInstanceVariableExecute(r ApiDe
 }
 
 type ApiDeleteProcessInstancesAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                       context.Context
+	ApiService                *ProcessInstanceAPIService
 	deleteProcessInstancesDto *DeleteProcessInstancesDto
 }
 
@@ -542,24 +543,25 @@ DeleteProcessInstancesAsyncOperation Delete Async (POST)
 
 Deletes multiple process instances asynchronously (batch).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteProcessInstancesAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteProcessInstancesAsyncOperationRequest
 */
 func (a *ProcessInstanceAPIService) DeleteProcessInstancesAsyncOperation(ctx context.Context) ApiDeleteProcessInstancesAsyncOperationRequest {
 	return ApiDeleteProcessInstancesAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) DeleteProcessInstancesAsyncOperationExecute(r ApiDeleteProcessInstancesAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.DeleteProcessInstancesAsyncOperation")
@@ -621,8 +623,8 @@ func (a *ProcessInstanceAPIService) DeleteProcessInstancesAsyncOperationExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -640,9 +642,9 @@ func (a *ProcessInstanceAPIService) DeleteProcessInstancesAsyncOperationExecute(
 }
 
 type ApiGetActivityInstanceTreeRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetActivityInstanceTreeRequest) Execute() (*ActivityInstanceDto, *http.Response, error) {
@@ -654,26 +656,27 @@ GetActivityInstanceTree Get Activity Instance
 
 Retrieves an Activity Instance (Tree) for a given process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance for which the activity instance should be retrieved.
- @return ApiGetActivityInstanceTreeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance for which the activity instance should be retrieved.
+	@return ApiGetActivityInstanceTreeRequest
 */
 func (a *ProcessInstanceAPIService) GetActivityInstanceTree(ctx context.Context, id string) ApiGetActivityInstanceTreeRequest {
 	return ApiGetActivityInstanceTreeRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ActivityInstanceDto
+//
+//	@return ActivityInstanceDto
 func (a *ProcessInstanceAPIService) GetActivityInstanceTreeExecute(r ApiGetActivityInstanceTreeRequest) (*ActivityInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ActivityInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ActivityInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetActivityInstanceTree")
@@ -734,8 +737,8 @@ func (a *ProcessInstanceAPIService) GetActivityInstanceTreeExecute(r ApiGetActiv
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -753,9 +756,9 @@ func (a *ProcessInstanceAPIService) GetActivityInstanceTreeExecute(r ApiGetActiv
 }
 
 type ApiGetProcessInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetProcessInstanceRequest) Execute() (*ProcessInstanceDto, *http.Response, error) {
@@ -767,26 +770,27 @@ GetProcessInstance Get Process Instance
 
 Retrieves a process instance by id, according to the `ProcessInstance` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to be retrieved.
- @return ApiGetProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to be retrieved.
+	@return ApiGetProcessInstanceRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstance(ctx context.Context, id string) ApiGetProcessInstanceRequest {
 	return ApiGetProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceDto
+//
+//	@return ProcessInstanceDto
 func (a *ProcessInstanceAPIService) GetProcessInstanceExecute(r ApiGetProcessInstanceRequest) (*ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstance")
@@ -847,8 +851,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceExecute(r ApiGetProcessIns
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -866,10 +870,10 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceExecute(r ApiGetProcessIns
 }
 
 type ApiGetProcessInstanceVariableRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *ProcessInstanceAPIService
+	id               string
+	varName          string
 	deserializeValue *bool
 }
 
@@ -888,28 +892,29 @@ GetProcessInstanceVariable Get Process Variable
 
 Retrieves a variable of a given process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to retrieve the variable for.
- @param varName The name of the variable to retrieve.
- @return ApiGetProcessInstanceVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to retrieve the variable for.
+	@param varName The name of the variable to retrieve.
+	@return ApiGetProcessInstanceVariableRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariable(ctx context.Context, id string, varName string) ApiGetProcessInstanceVariableRequest {
 	return ApiGetProcessInstanceVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return VariableValueDto
+//
+//	@return VariableValueDto
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariableExecute(r ApiGetProcessInstanceVariableRequest) (*VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstanceVariable")
@@ -977,8 +982,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariableExecute(r ApiGetPr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -996,10 +1001,10 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariableExecute(r ApiGetPr
 }
 
 type ApiGetProcessInstanceVariableBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiGetProcessInstanceVariableBinaryRequest) Execute() (*os.File, *http.Response, error) {
@@ -1012,28 +1017,29 @@ GetProcessInstanceVariableBinary Get Process Variable (Binary)
 Retrieves the content of a Process Variable by the Process Instance id and the Process Variable name.
 Applicable for byte array or file Process Variables.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to retrieve the variable for.
- @param varName The name of the variable to retrieve.
- @return ApiGetProcessInstanceVariableBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to retrieve the variable for.
+	@param varName The name of the variable to retrieve.
+	@return ApiGetProcessInstanceVariableBinaryRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariableBinary(ctx context.Context, id string, varName string) ApiGetProcessInstanceVariableBinaryRequest {
 	return ApiGetProcessInstanceVariableBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariableBinaryExecute(r ApiGetProcessInstanceVariableBinaryRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstanceVariableBinary")
@@ -1095,8 +1101,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariableBinaryExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1106,8 +1112,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariableBinaryExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1125,9 +1131,9 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariableBinaryExecute(r Ap
 }
 
 type ApiGetProcessInstanceVariablesRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx               context.Context
+	ApiService        *ProcessInstanceAPIService
+	id                string
 	deserializeValues *bool
 }
 
@@ -1146,26 +1152,27 @@ GetProcessInstanceVariables Get Process Variables
 
 Retrieves all variables of a given process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to retrieve the variables from.
- @return ApiGetProcessInstanceVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to retrieve the variables from.
+	@return ApiGetProcessInstanceVariablesRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariables(ctx context.Context, id string) ApiGetProcessInstanceVariablesRequest {
 	return ApiGetProcessInstanceVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *ProcessInstanceAPIService) GetProcessInstanceVariablesExecute(r ApiGetProcessInstanceVariablesRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstanceVariables")
@@ -1232,8 +1239,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariablesExecute(r ApiGetP
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1251,42 +1258,42 @@ func (a *ProcessInstanceAPIService) GetProcessInstanceVariablesExecute(r ApiGetP
 }
 
 type ApiGetProcessInstancesRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	processInstanceIds *string
-	businessKey *string
-	businessKeyLike *string
-	caseInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionKeyNotIn *string
-	deploymentId *string
-	superProcessInstance *string
-	subProcessInstance *string
-	superCaseInstance *string
-	subCaseInstance *string
-	active *bool
-	suspended *bool
-	withIncident *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                              context.Context
+	ApiService                       *ProcessInstanceAPIService
+	sortBy                           *string
+	sortOrder                        *string
+	firstResult                      *int32
+	maxResults                       *int32
+	processInstanceIds               *string
+	businessKey                      *string
+	businessKeyLike                  *string
+	caseInstanceId                   *string
+	processDefinitionId              *string
+	processDefinitionKey             *string
+	processDefinitionKeyIn           *string
+	processDefinitionKeyNotIn        *string
+	deploymentId                     *string
+	superProcessInstance             *string
+	subProcessInstance               *string
+	superCaseInstance                *string
+	subCaseInstance                  *string
+	active                           *bool
+	suspended                        *bool
+	withIncident                     *bool
+	incidentId                       *string
+	incidentType                     *string
+	incidentMessage                  *string
+	incidentMessageLike              *string
+	tenantIdIn                       *string
+	withoutTenantId                  *bool
 	processDefinitionWithoutTenantId *bool
-	activityIdIn *string
-	rootProcessInstances *bool
-	rootProcessInstanceId *string
-	leafProcessInstances *bool
-	variables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
+	activityIdIn                     *string
+	rootProcessInstances             *bool
+	rootProcessInstanceId            *string
+	leafProcessInstances             *bool
+	variables                        *string
+	variableNamesIgnoreCase          *bool
+	variableValuesIgnoreCase         *bool
 }
 
 // Sort the results lexicographically by a given criterion. Must be used in conjunction with the sortOrder parameter.
@@ -1504,24 +1511,25 @@ Queries for process instances that fulfill given parameters.
 Parameters may be static as well as dynamic runtime properties of process instances.
 The size of the result set can be retrieved by using the Get Instance Count method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessInstancesRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstances(ctx context.Context) ApiGetProcessInstancesRequest {
 	return ApiGetProcessInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessInstanceDto
+//
+//	@return []ProcessInstanceDto
 func (a *ProcessInstanceAPIService) GetProcessInstancesExecute(r ApiGetProcessInstancesRequest) ([]ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstances")
@@ -1710,8 +1718,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstancesExecute(r ApiGetProcessIn
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1729,38 +1737,38 @@ func (a *ProcessInstanceAPIService) GetProcessInstancesExecute(r ApiGetProcessIn
 }
 
 type ApiGetProcessInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	processInstanceIds *string
-	businessKey *string
-	businessKeyLike *string
-	caseInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionKeyNotIn *string
-	deploymentId *string
-	superProcessInstance *string
-	subProcessInstance *string
-	superCaseInstance *string
-	subCaseInstance *string
-	active *bool
-	suspended *bool
-	withIncident *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                              context.Context
+	ApiService                       *ProcessInstanceAPIService
+	processInstanceIds               *string
+	businessKey                      *string
+	businessKeyLike                  *string
+	caseInstanceId                   *string
+	processDefinitionId              *string
+	processDefinitionKey             *string
+	processDefinitionKeyIn           *string
+	processDefinitionKeyNotIn        *string
+	deploymentId                     *string
+	superProcessInstance             *string
+	subProcessInstance               *string
+	superCaseInstance                *string
+	subCaseInstance                  *string
+	active                           *bool
+	suspended                        *bool
+	withIncident                     *bool
+	incidentId                       *string
+	incidentType                     *string
+	incidentMessage                  *string
+	incidentMessageLike              *string
+	tenantIdIn                       *string
+	withoutTenantId                  *bool
 	processDefinitionWithoutTenantId *bool
-	activityIdIn *string
-	rootProcessInstances *bool
-	rootProcessInstanceId *string
-	leafProcessInstances *bool
-	variables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
+	activityIdIn                     *string
+	rootProcessInstances             *bool
+	rootProcessInstanceId            *string
+	leafProcessInstances             *bool
+	variables                        *string
+	variableNamesIgnoreCase          *bool
+	variableValuesIgnoreCase         *bool
 }
 
 // Filter by a comma-separated list of process instance ids.
@@ -1952,24 +1960,25 @@ GetProcessInstancesCount Get List Count
 
 Queries for the number of process instances that fulfill given parameters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessInstancesCountRequest
 */
 func (a *ProcessInstanceAPIService) GetProcessInstancesCount(ctx context.Context) ApiGetProcessInstancesCountRequest {
 	return ApiGetProcessInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ProcessInstanceAPIService) GetProcessInstancesCountExecute(r ApiGetProcessInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.GetProcessInstancesCount")
@@ -2146,8 +2155,8 @@ func (a *ProcessInstanceAPIService) GetProcessInstancesCountExecute(r ApiGetProc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2165,9 +2174,9 @@ func (a *ProcessInstanceAPIService) GetProcessInstancesCountExecute(r ApiGetProc
 }
 
 type ApiModifyProcessInstanceRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx                            context.Context
+	ApiService                     *ProcessInstanceAPIService
+	id                             string
 	processInstanceModificationDto *ProcessInstanceModificationDto
 }
 
@@ -2196,24 +2205,24 @@ Variables can be provided with every starting instruction.
 
 The exact semantics of modification can be read about in the [User guide](https://docs.operaton.org/manual/develop/user-guide/process-engine/process-instance-modification/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to modify.
- @return ApiModifyProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to modify.
+	@return ApiModifyProcessInstanceRequest
 */
 func (a *ProcessInstanceAPIService) ModifyProcessInstance(ctx context.Context, id string) ApiModifyProcessInstanceRequest {
 	return ApiModifyProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) ModifyProcessInstanceExecute(r ApiModifyProcessInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.ModifyProcessInstance")
@@ -2276,8 +2285,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceExecute(r ApiModifyProc
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -2287,8 +2296,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceExecute(r ApiModifyProc
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2297,9 +2306,9 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceExecute(r ApiModifyProc
 }
 
 type ApiModifyProcessInstanceAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx                            context.Context
+	ApiService                     *ProcessInstanceAPIService
+	id                             string
 	processInstanceModificationDto *ProcessInstanceModificationDto
 }
 
@@ -2329,26 +2338,27 @@ Variables can be provided with every starting instruction.
 The exact semantics of modification can be read about in the
 [User guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-modification/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to modify.
- @return ApiModifyProcessInstanceAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to modify.
+	@return ApiModifyProcessInstanceAsyncOperationRequest
 */
 func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperation(ctx context.Context, id string) ApiModifyProcessInstanceAsyncOperationRequest {
 	return ApiModifyProcessInstanceAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperationExecute(r ApiModifyProcessInstanceAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.ModifyProcessInstanceAsyncOperation")
@@ -2411,8 +2421,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperationExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2422,8 +2432,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperationExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -2433,8 +2443,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperationExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2452,9 +2462,9 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceAsyncOperationExecute(r
 }
 
 type ApiModifyProcessInstanceVariablesRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx               context.Context
+	ApiService        *ProcessInstanceAPIService
+	id                string
 	patchVariablesDto *PatchVariablesDto
 }
 
@@ -2473,24 +2483,24 @@ ModifyProcessInstanceVariables Update/Delete Process Variables
 Updates or deletes the variables of a process instance by id. Updates precede deletions.
 So, if a variable is updated AND deleted, the deletion overrides the update.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to set variables for.
- @return ApiModifyProcessInstanceVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to set variables for.
+	@return ApiModifyProcessInstanceVariablesRequest
 */
 func (a *ProcessInstanceAPIService) ModifyProcessInstanceVariables(ctx context.Context, id string) ApiModifyProcessInstanceVariablesRequest {
 	return ApiModifyProcessInstanceVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) ModifyProcessInstanceVariablesExecute(r ApiModifyProcessInstanceVariablesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.ModifyProcessInstanceVariables")
@@ -2553,8 +2563,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceVariablesExecute(r ApiM
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -2564,8 +2574,8 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceVariablesExecute(r ApiM
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2574,10 +2584,10 @@ func (a *ProcessInstanceAPIService) ModifyProcessInstanceVariablesExecute(r ApiM
 }
 
 type ApiQueryProcessInstancesRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                     context.Context
+	ApiService              *ProcessInstanceAPIService
+	firstResult             *int32
+	maxResults              *int32
 	processInstanceQueryDto *ProcessInstanceQueryDto
 }
 
@@ -2609,24 +2619,25 @@ Queries for process instances that fulfill given parameters through a JSON objec
 This method is slightly more powerful than the Get Instances method because
 it allows filtering by multiple process variables of types `string`, `number` or `boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryProcessInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryProcessInstancesRequest
 */
 func (a *ProcessInstanceAPIService) QueryProcessInstances(ctx context.Context) ApiQueryProcessInstancesRequest {
 	return ApiQueryProcessInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessInstanceDto
+//
+//	@return []ProcessInstanceDto
 func (a *ProcessInstanceAPIService) QueryProcessInstancesExecute(r ApiQueryProcessInstancesRequest) ([]ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.QueryProcessInstances")
@@ -2694,8 +2705,8 @@ func (a *ProcessInstanceAPIService) QueryProcessInstancesExecute(r ApiQueryProce
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2713,8 +2724,8 @@ func (a *ProcessInstanceAPIService) QueryProcessInstancesExecute(r ApiQueryProce
 }
 
 type ApiQueryProcessInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                     context.Context
+	ApiService              *ProcessInstanceAPIService
 	processInstanceQueryDto *ProcessInstanceQueryDto
 }
 
@@ -2734,24 +2745,25 @@ Queries for the number of process instances that fulfill the given parameters.
 This method takes the same message body as the Get Instances (POST) method and
 therefore it is slightly more powerful than the Get Instance Count method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryProcessInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryProcessInstancesCountRequest
 */
 func (a *ProcessInstanceAPIService) QueryProcessInstancesCount(ctx context.Context) ApiQueryProcessInstancesCountRequest {
 	return ApiQueryProcessInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ProcessInstanceAPIService) QueryProcessInstancesCountExecute(r ApiQueryProcessInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.QueryProcessInstancesCount")
@@ -2813,8 +2825,8 @@ func (a *ProcessInstanceAPIService) QueryProcessInstancesCountExecute(r ApiQuery
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2832,10 +2844,10 @@ func (a *ProcessInstanceAPIService) QueryProcessInstancesCountExecute(r ApiQuery
 }
 
 type ApiSetProcessInstanceVariableRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *ProcessInstanceAPIService
+	id               string
+	varName          string
 	variableValueDto *VariableValueDto
 }
 
@@ -2853,26 +2865,26 @@ SetProcessInstanceVariable Update Process Variable
 
 Sets a variable of a given process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to set the variable for.
- @param varName The name of the variable to set.
- @return ApiSetProcessInstanceVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to set the variable for.
+	@param varName The name of the variable to set.
+	@return ApiSetProcessInstanceVariableRequest
 */
 func (a *ProcessInstanceAPIService) SetProcessInstanceVariable(ctx context.Context, id string, varName string) ApiSetProcessInstanceVariableRequest {
 	return ApiSetProcessInstanceVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) SetProcessInstanceVariableExecute(r ApiSetProcessInstanceVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.SetProcessInstanceVariable")
@@ -2936,8 +2948,8 @@ func (a *ProcessInstanceAPIService) SetProcessInstanceVariableExecute(r ApiSetPr
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2946,12 +2958,12 @@ func (a *ProcessInstanceAPIService) SetProcessInstanceVariableExecute(r ApiSetPr
 }
 
 type ApiSetProcessInstanceVariableBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceAPIService
-	id string
-	varName string
-	data *os.File
-	valueType *string
+	id         string
+	varName    string
+	data       *os.File
+	valueType  *string
 }
 
 // The binary data to be set. For File variables, this multipart can contain the filename, binary value and MIME type of the file variable to be set Only the filename is mandatory.
@@ -2975,26 +2987,26 @@ SetProcessInstanceVariableBinary Update Process Variable (Binary)
 
 Sets the serialized value for a binary variable or the binary value for a file variable.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to retrieve the variable for.
- @param varName The name of the variable to retrieve.
- @return ApiSetProcessInstanceVariableBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to retrieve the variable for.
+	@param varName The name of the variable to retrieve.
+	@return ApiSetProcessInstanceVariableBinaryRequest
 */
 func (a *ProcessInstanceAPIService) SetProcessInstanceVariableBinary(ctx context.Context, id string, varName string) ApiSetProcessInstanceVariableBinaryRequest {
 	return ApiSetProcessInstanceVariableBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) SetProcessInstanceVariableBinaryExecute(r ApiSetProcessInstanceVariableBinaryRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.SetProcessInstanceVariableBinary")
@@ -3028,8 +3040,8 @@ func (a *ProcessInstanceAPIService) SetProcessInstanceVariableBinaryExecute(r Ap
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	var dataLocalVarFormFileName string
-	var dataLocalVarFileName     string
-	var dataLocalVarFileBytes    []byte
+	var dataLocalVarFileName string
+	var dataLocalVarFileBytes []byte
 
 	dataLocalVarFormFileName = "data"
 	dataLocalVarFile := r.data
@@ -3074,8 +3086,8 @@ func (a *ProcessInstanceAPIService) SetProcessInstanceVariableBinaryExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3084,8 +3096,8 @@ func (a *ProcessInstanceAPIService) SetProcessInstanceVariableBinaryExecute(r Ap
 }
 
 type ApiSetRetriesByProcessRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                       context.Context
+	ApiService                *ProcessInstanceAPIService
 	setJobRetriesByProcessDto *SetJobRetriesByProcessDto
 }
 
@@ -3104,24 +3116,25 @@ SetRetriesByProcess Set Job Retries Async (POST)
 
 Create a batch to set retries of jobs associated with given processes asynchronously.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRetriesByProcessRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRetriesByProcessRequest
 */
 func (a *ProcessInstanceAPIService) SetRetriesByProcess(ctx context.Context) ApiSetRetriesByProcessRequest {
 	return ApiSetRetriesByProcessRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) SetRetriesByProcessExecute(r ApiSetRetriesByProcessRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.SetRetriesByProcess")
@@ -3183,8 +3196,8 @@ func (a *ProcessInstanceAPIService) SetRetriesByProcessExecute(r ApiSetRetriesBy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3202,8 +3215,8 @@ func (a *ProcessInstanceAPIService) SetRetriesByProcessExecute(r ApiSetRetriesBy
 }
 
 type ApiSetRetriesByProcessHistoricQueryBasedRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                       context.Context
+	ApiService                *ProcessInstanceAPIService
 	setJobRetriesByProcessDto *SetJobRetriesByProcessDto
 }
 
@@ -3222,24 +3235,25 @@ SetRetriesByProcessHistoricQueryBased Set Job Retries Async Historic Query Based
 
 Create a batch to set retries of jobs asynchronously based on a historic process instance query.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRetriesByProcessHistoricQueryBasedRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRetriesByProcessHistoricQueryBasedRequest
 */
 func (a *ProcessInstanceAPIService) SetRetriesByProcessHistoricQueryBased(ctx context.Context) ApiSetRetriesByProcessHistoricQueryBasedRequest {
 	return ApiSetRetriesByProcessHistoricQueryBasedRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) SetRetriesByProcessHistoricQueryBasedExecute(r ApiSetRetriesByProcessHistoricQueryBasedRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.SetRetriesByProcessHistoricQueryBased")
@@ -3301,8 +3315,8 @@ func (a *ProcessInstanceAPIService) SetRetriesByProcessHistoricQueryBasedExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3320,8 +3334,8 @@ func (a *ProcessInstanceAPIService) SetRetriesByProcessHistoricQueryBasedExecute
 }
 
 type ApiSetVariablesAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                  context.Context
+	ApiService           *ProcessInstanceAPIService
 	setVariablesAsyncDto *SetVariablesAsyncDto
 }
 
@@ -3339,24 +3353,25 @@ SetVariablesAsyncOperation Set Variables Async (POST)
 
 Update or create runtime process variables in the root scope of process instances.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetVariablesAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetVariablesAsyncOperationRequest
 */
 func (a *ProcessInstanceAPIService) SetVariablesAsyncOperation(ctx context.Context) ApiSetVariablesAsyncOperationRequest {
 	return ApiSetVariablesAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) SetVariablesAsyncOperationExecute(r ApiSetVariablesAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.SetVariablesAsyncOperation")
@@ -3418,8 +3433,8 @@ func (a *ProcessInstanceAPIService) SetVariablesAsyncOperationExecute(r ApiSetVa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3429,8 +3444,8 @@ func (a *ProcessInstanceAPIService) SetVariablesAsyncOperationExecute(r ApiSetVa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3448,8 +3463,8 @@ func (a *ProcessInstanceAPIService) SetVariablesAsyncOperationExecute(r ApiSetVa
 }
 
 type ApiUpdateSuspensionStateRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                               context.Context
+	ApiService                        *ProcessInstanceAPIService
 	processInstanceSuspensionStateDto *ProcessInstanceSuspensionStateDto
 }
 
@@ -3484,22 +3499,22 @@ Activates or suspends process instances by providing certain criteria:
 * `processInstanceQuery`
 * `historicProcessInstanceQuery`
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUpdateSuspensionStateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiUpdateSuspensionStateRequest
 */
 func (a *ProcessInstanceAPIService) UpdateSuspensionState(ctx context.Context) ApiUpdateSuspensionStateRequest {
 	return ApiUpdateSuspensionStateRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) UpdateSuspensionStateExecute(r ApiUpdateSuspensionStateRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.UpdateSuspensionState")
@@ -3561,8 +3576,8 @@ func (a *ProcessInstanceAPIService) UpdateSuspensionStateExecute(r ApiUpdateSusp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3571,8 +3586,8 @@ func (a *ProcessInstanceAPIService) UpdateSuspensionStateExecute(r ApiUpdateSusp
 }
 
 type ApiUpdateSuspensionStateAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
+	ctx                                    context.Context
+	ApiService                             *ProcessInstanceAPIService
 	processInstanceSuspensionStateAsyncDto *ProcessInstanceSuspensionStateAsyncDto
 }
 
@@ -3591,24 +3606,25 @@ UpdateSuspensionStateAsyncOperation Activate/Suspend In Batch
 Activates or suspends process instances asynchronously with a list of process instance ids,
 a process instance query, and/or a historical process instance query.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUpdateSuspensionStateAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiUpdateSuspensionStateAsyncOperationRequest
 */
 func (a *ProcessInstanceAPIService) UpdateSuspensionStateAsyncOperation(ctx context.Context) ApiUpdateSuspensionStateAsyncOperationRequest {
 	return ApiUpdateSuspensionStateAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessInstanceAPIService) UpdateSuspensionStateAsyncOperationExecute(r ApiUpdateSuspensionStateAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.UpdateSuspensionStateAsyncOperation")
@@ -3670,8 +3686,8 @@ func (a *ProcessInstanceAPIService) UpdateSuspensionStateAsyncOperationExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3689,9 +3705,9 @@ func (a *ProcessInstanceAPIService) UpdateSuspensionStateAsyncOperationExecute(r
 }
 
 type ApiUpdateSuspensionStateByIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessInstanceAPIService
-	id string
+	ctx                context.Context
+	ApiService         *ProcessInstanceAPIService
+	id                 string
 	suspensionStateDto *SuspensionStateDto
 }
 
@@ -3709,24 +3725,24 @@ UpdateSuspensionStateById Activate/Suspend Process Instance By Id
 
 Activates or suspends a given process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to activate or suspend.
- @return ApiUpdateSuspensionStateByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to activate or suspend.
+	@return ApiUpdateSuspensionStateByIdRequest
 */
 func (a *ProcessInstanceAPIService) UpdateSuspensionStateById(ctx context.Context, id string) ApiUpdateSuspensionStateByIdRequest {
 	return ApiUpdateSuspensionStateByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceAPIService) UpdateSuspensionStateByIdExecute(r ApiUpdateSuspensionStateByIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceAPIService.UpdateSuspensionStateById")

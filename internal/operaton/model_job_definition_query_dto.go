@@ -96,6 +96,7 @@ func (o *JobDefinitionQueryDto) HasJobDefinitionId() bool {
 func (o *JobDefinitionQueryDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *JobDefinitionQueryDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -171,6 +172,7 @@ func (o *JobDefinitionQueryDto) HasProcessDefinitionId() bool {
 func (o *JobDefinitionQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *JobDefinitionQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -213,6 +215,7 @@ func (o *JobDefinitionQueryDto) HasProcessDefinitionKey() bool {
 func (o *JobDefinitionQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *JobDefinitionQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -255,6 +258,7 @@ func (o *JobDefinitionQueryDto) HasJobType() bool {
 func (o *JobDefinitionQueryDto) SetJobType(v string) {
 	o.JobType.Set(&v)
 }
+
 // SetJobTypeNil sets the value for JobType to be an explicit nil
 func (o *JobDefinitionQueryDto) SetJobTypeNil() {
 	o.JobType.Set(nil)
@@ -297,6 +301,7 @@ func (o *JobDefinitionQueryDto) HasJobConfiguration() bool {
 func (o *JobDefinitionQueryDto) SetJobConfiguration(v string) {
 	o.JobConfiguration.Set(&v)
 }
+
 // SetJobConfigurationNil sets the value for JobConfiguration to be an explicit nil
 func (o *JobDefinitionQueryDto) SetJobConfigurationNil() {
 	o.JobConfiguration.Set(nil)
@@ -339,6 +344,7 @@ func (o *JobDefinitionQueryDto) HasActive() bool {
 func (o *JobDefinitionQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *JobDefinitionQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -381,6 +387,7 @@ func (o *JobDefinitionQueryDto) HasSuspended() bool {
 func (o *JobDefinitionQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *JobDefinitionQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -423,6 +430,7 @@ func (o *JobDefinitionQueryDto) HasWithOverridingJobPriority() bool {
 func (o *JobDefinitionQueryDto) SetWithOverridingJobPriority(v bool) {
 	o.WithOverridingJobPriority.Set(&v)
 }
+
 // SetWithOverridingJobPriorityNil sets the value for WithOverridingJobPriority to be an explicit nil
 func (o *JobDefinitionQueryDto) SetWithOverridingJobPriorityNil() {
 	o.WithOverridingJobPriority.Set(nil)
@@ -498,6 +506,7 @@ func (o *JobDefinitionQueryDto) HasWithoutTenantId() bool {
 func (o *JobDefinitionQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *JobDefinitionQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -540,6 +549,7 @@ func (o *JobDefinitionQueryDto) HasIncludeJobDefinitionsWithoutTenantId() bool {
 func (o *JobDefinitionQueryDto) SetIncludeJobDefinitionsWithoutTenantId(v bool) {
 	o.IncludeJobDefinitionsWithoutTenantId.Set(&v)
 }
+
 // SetIncludeJobDefinitionsWithoutTenantIdNil sets the value for IncludeJobDefinitionsWithoutTenantId to be an explicit nil
 func (o *JobDefinitionQueryDto) SetIncludeJobDefinitionsWithoutTenantIdNil() {
 	o.IncludeJobDefinitionsWithoutTenantId.Set(nil)
@@ -584,7 +594,7 @@ func (o *JobDefinitionQueryDto) SetSorting(v []JobDefinitionQueryDtoSortingInner
 }
 
 func (o JobDefinitionQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -670,5 +680,3 @@ func (v *NullableJobDefinitionQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

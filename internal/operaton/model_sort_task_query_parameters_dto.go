@@ -74,6 +74,7 @@ func (o *SortTaskQueryParametersDto) HasVariable() bool {
 func (o *SortTaskQueryParametersDto) SetVariable(v string) {
 	o.Variable.Set(&v)
 }
+
 // SetVariableNil sets the value for Variable to be an explicit nil
 func (o *SortTaskQueryParametersDto) SetVariableNil() {
 	o.Variable.Set(nil)
@@ -116,6 +117,7 @@ func (o *SortTaskQueryParametersDto) HasType() bool {
 func (o *SortTaskQueryParametersDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *SortTaskQueryParametersDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -127,7 +129,7 @@ func (o *SortTaskQueryParametersDto) UnsetType() {
 }
 
 func (o SortTaskQueryParametersDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableSortTaskQueryParametersDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

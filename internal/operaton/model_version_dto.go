@@ -72,6 +72,7 @@ func (o *VersionDto) HasVersion() bool {
 func (o *VersionDto) SetVersion(v string) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *VersionDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -83,7 +84,7 @@ func (o *VersionDto) UnsetVersion() {
 }
 
 func (o VersionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableVersionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

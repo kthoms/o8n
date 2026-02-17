@@ -79,6 +79,7 @@ func (o *MetricsIntervalResultDto) HasTimestamp() bool {
 func (o *MetricsIntervalResultDto) SetTimestamp(v time.Time) {
 	o.Timestamp.Set(&v)
 }
+
 // SetTimestampNil sets the value for Timestamp to be an explicit nil
 func (o *MetricsIntervalResultDto) SetTimestampNil() {
 	o.Timestamp.Set(nil)
@@ -121,6 +122,7 @@ func (o *MetricsIntervalResultDto) HasName() bool {
 func (o *MetricsIntervalResultDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *MetricsIntervalResultDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -163,6 +165,7 @@ func (o *MetricsIntervalResultDto) HasReporter() bool {
 func (o *MetricsIntervalResultDto) SetReporter(v string) {
 	o.Reporter.Set(&v)
 }
+
 // SetReporterNil sets the value for Reporter to be an explicit nil
 func (o *MetricsIntervalResultDto) SetReporterNil() {
 	o.Reporter.Set(nil)
@@ -205,6 +208,7 @@ func (o *MetricsIntervalResultDto) HasValue() bool {
 func (o *MetricsIntervalResultDto) SetValue(v int64) {
 	o.Value.Set(&v)
 }
+
 // SetValueNil sets the value for Value to be an explicit nil
 func (o *MetricsIntervalResultDto) SetValueNil() {
 	o.Value.Set(nil)
@@ -216,7 +220,7 @@ func (o *MetricsIntervalResultDto) UnsetValue() {
 }
 
 func (o MetricsIntervalResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -275,5 +279,3 @@ func (v *NullableMetricsIntervalResultDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

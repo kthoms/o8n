@@ -86,6 +86,7 @@ func (o *GroupQueryDto) HasId() bool {
 func (o *GroupQueryDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *GroupQueryDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -161,6 +162,7 @@ func (o *GroupQueryDto) HasName() bool {
 func (o *GroupQueryDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *GroupQueryDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -203,6 +205,7 @@ func (o *GroupQueryDto) HasNameLike() bool {
 func (o *GroupQueryDto) SetNameLike(v string) {
 	o.NameLike.Set(&v)
 }
+
 // SetNameLikeNil sets the value for NameLike to be an explicit nil
 func (o *GroupQueryDto) SetNameLikeNil() {
 	o.NameLike.Set(nil)
@@ -245,6 +248,7 @@ func (o *GroupQueryDto) HasType() bool {
 func (o *GroupQueryDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *GroupQueryDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -287,6 +291,7 @@ func (o *GroupQueryDto) HasMember() bool {
 func (o *GroupQueryDto) SetMember(v string) {
 	o.Member.Set(&v)
 }
+
 // SetMemberNil sets the value for Member to be an explicit nil
 func (o *GroupQueryDto) SetMemberNil() {
 	o.Member.Set(nil)
@@ -329,6 +334,7 @@ func (o *GroupQueryDto) HasMemberOfTenant() bool {
 func (o *GroupQueryDto) SetMemberOfTenant(v string) {
 	o.MemberOfTenant.Set(&v)
 }
+
 // SetMemberOfTenantNil sets the value for MemberOfTenant to be an explicit nil
 func (o *GroupQueryDto) SetMemberOfTenantNil() {
 	o.MemberOfTenant.Set(nil)
@@ -373,7 +379,7 @@ func (o *GroupQueryDto) SetSorting(v []GroupQueryDtoSortingInner) {
 }
 
 func (o GroupQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -444,5 +450,3 @@ func (v *NullableGroupQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

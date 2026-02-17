@@ -129,6 +129,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionInstanceId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionInstanceId(v string) {
 	o.DecisionInstanceId.Set(&v)
 }
+
 // SetDecisionInstanceIdNil sets the value for DecisionInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionInstanceIdNil() {
 	o.DecisionInstanceId.Set(nil)
@@ -204,6 +205,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionDefinitionId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionId(v string) {
 	o.DecisionDefinitionId.Set(&v)
 }
+
 // SetDecisionDefinitionIdNil sets the value for DecisionDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionIdNil() {
 	o.DecisionDefinitionId.Set(nil)
@@ -279,6 +281,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionDefinitionKey() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionKey(v string) {
 	o.DecisionDefinitionKey.Set(&v)
 }
+
 // SetDecisionDefinitionKeyNil sets the value for DecisionDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionKeyNil() {
 	o.DecisionDefinitionKey.Set(nil)
@@ -354,6 +357,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionDefinitionName() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionName(v string) {
 	o.DecisionDefinitionName.Set(&v)
 }
+
 // SetDecisionDefinitionNameNil sets the value for DecisionDefinitionName to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionNameNil() {
 	o.DecisionDefinitionName.Set(nil)
@@ -396,6 +400,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionDefinitionNameLike() bool 
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionNameLike(v string) {
 	o.DecisionDefinitionNameLike.Set(&v)
 }
+
 // SetDecisionDefinitionNameLikeNil sets the value for DecisionDefinitionNameLike to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionDefinitionNameLikeNil() {
 	o.DecisionDefinitionNameLike.Set(nil)
@@ -438,6 +443,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasProcessDefinitionId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -480,6 +486,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasProcessDefinitionKey() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -522,6 +529,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasProcessInstanceId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -564,6 +572,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasCaseDefinitionId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -606,6 +615,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasCaseDefinitionKey() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetCaseDefinitionKey(v string) {
 	o.CaseDefinitionKey.Set(&v)
 }
+
 // SetCaseDefinitionKeyNil sets the value for CaseDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetCaseDefinitionKeyNil() {
 	o.CaseDefinitionKey.Set(nil)
@@ -648,6 +658,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasCaseInstanceId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -789,6 +800,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasWithoutTenantId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -831,6 +843,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasEvaluatedBefore() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetEvaluatedBefore(v time.Time) {
 	o.EvaluatedBefore.Set(&v)
 }
+
 // SetEvaluatedBeforeNil sets the value for EvaluatedBefore to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetEvaluatedBeforeNil() {
 	o.EvaluatedBefore.Set(nil)
@@ -873,6 +886,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasEvaluatedAfter() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetEvaluatedAfter(v time.Time) {
 	o.EvaluatedAfter.Set(&v)
 }
+
 // SetEvaluatedAfterNil sets the value for EvaluatedAfter to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetEvaluatedAfterNil() {
 	o.EvaluatedAfter.Set(nil)
@@ -915,6 +929,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasUserId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -957,6 +972,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasRootDecisionInstanceId() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetRootDecisionInstanceId(v string) {
 	o.RootDecisionInstanceId.Set(&v)
 }
+
 // SetRootDecisionInstanceIdNil sets the value for RootDecisionInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetRootDecisionInstanceIdNil() {
 	o.RootDecisionInstanceId.Set(nil)
@@ -999,6 +1015,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasRootDecisionInstancesOnly() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetRootDecisionInstancesOnly(v bool) {
 	o.RootDecisionInstancesOnly.Set(&v)
 }
+
 // SetRootDecisionInstancesOnlyNil sets the value for RootDecisionInstancesOnly to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetRootDecisionInstancesOnlyNil() {
 	o.RootDecisionInstancesOnly.Set(nil)
@@ -1041,6 +1058,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionRequirementsDefinitionId()
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionRequirementsDefinitionId(v string) {
 	o.DecisionRequirementsDefinitionId.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionIdNil sets the value for DecisionRequirementsDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionRequirementsDefinitionIdNil() {
 	o.DecisionRequirementsDefinitionId.Set(nil)
@@ -1083,6 +1101,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDecisionRequirementsDefinitionKey(
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionRequirementsDefinitionKey(v string) {
 	o.DecisionRequirementsDefinitionKey.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionKeyNil sets the value for DecisionRequirementsDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDecisionRequirementsDefinitionKeyNil() {
 	o.DecisionRequirementsDefinitionKey.Set(nil)
@@ -1125,6 +1144,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasIncludeInputs() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetIncludeInputs(v bool) {
 	o.IncludeInputs.Set(&v)
 }
+
 // SetIncludeInputsNil sets the value for IncludeInputs to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetIncludeInputsNil() {
 	o.IncludeInputs.Set(nil)
@@ -1167,6 +1187,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasIncludeOutputs() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetIncludeOutputs(v bool) {
 	o.IncludeOutputs.Set(&v)
 }
+
 // SetIncludeOutputsNil sets the value for IncludeOutputs to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetIncludeOutputsNil() {
 	o.IncludeOutputs.Set(nil)
@@ -1209,6 +1230,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDisableBinaryFetching() bool {
 func (o *HistoricDecisionInstanceQueryDto) SetDisableBinaryFetching(v bool) {
 	o.DisableBinaryFetching.Set(&v)
 }
+
 // SetDisableBinaryFetchingNil sets the value for DisableBinaryFetching to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDisableBinaryFetchingNil() {
 	o.DisableBinaryFetching.Set(nil)
@@ -1251,6 +1273,7 @@ func (o *HistoricDecisionInstanceQueryDto) HasDisableCustomObjectDeserialization
 func (o *HistoricDecisionInstanceQueryDto) SetDisableCustomObjectDeserialization(v bool) {
 	o.DisableCustomObjectDeserialization.Set(&v)
 }
+
 // SetDisableCustomObjectDeserializationNil sets the value for DisableCustomObjectDeserialization to be an explicit nil
 func (o *HistoricDecisionInstanceQueryDto) SetDisableCustomObjectDeserializationNil() {
 	o.DisableCustomObjectDeserialization.Set(nil)
@@ -1262,7 +1285,7 @@ func (o *HistoricDecisionInstanceQueryDto) UnsetDisableCustomObjectDeserializati
 }
 
 func (o HistoricDecisionInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1396,5 +1419,3 @@ func (v *NullableHistoricDecisionInstanceQueryDto) UnmarshalJSON(src []byte) err
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

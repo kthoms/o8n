@@ -100,6 +100,7 @@ func (o *VariableInstanceQueryDto) HasVariableName() bool {
 func (o *VariableInstanceQueryDto) SetVariableName(v string) {
 	o.VariableName.Set(&v)
 }
+
 // SetVariableNameNil sets the value for VariableName to be an explicit nil
 func (o *VariableInstanceQueryDto) SetVariableNameNil() {
 	o.VariableName.Set(nil)
@@ -142,6 +143,7 @@ func (o *VariableInstanceQueryDto) HasVariableNameLike() bool {
 func (o *VariableInstanceQueryDto) SetVariableNameLike(v string) {
 	o.VariableNameLike.Set(&v)
 }
+
 // SetVariableNameLikeNil sets the value for VariableNameLike to be an explicit nil
 func (o *VariableInstanceQueryDto) SetVariableNameLikeNil() {
 	o.VariableNameLike.Set(nil)
@@ -481,6 +483,7 @@ func (o *VariableInstanceQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *VariableInstanceQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *VariableInstanceQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -523,6 +526,7 @@ func (o *VariableInstanceQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *VariableInstanceQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *VariableInstanceQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -600,7 +604,7 @@ func (o *VariableInstanceQueryDto) SetSorting(v []VariableInstanceQueryDtoSortin
 }
 
 func (o VariableInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -692,5 +696,3 @@ func (v *NullableVariableInstanceQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

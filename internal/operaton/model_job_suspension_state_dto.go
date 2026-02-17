@@ -84,6 +84,7 @@ func (o *JobSuspensionStateDto) HasSuspended() bool {
 func (o *JobSuspensionStateDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *JobSuspensionStateDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -126,6 +127,7 @@ func (o *JobSuspensionStateDto) HasJobDefinitionId() bool {
 func (o *JobSuspensionStateDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *JobSuspensionStateDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -168,6 +170,7 @@ func (o *JobSuspensionStateDto) HasProcessDefinitionId() bool {
 func (o *JobSuspensionStateDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *JobSuspensionStateDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -210,6 +213,7 @@ func (o *JobSuspensionStateDto) HasProcessInstanceId() bool {
 func (o *JobSuspensionStateDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *JobSuspensionStateDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -252,6 +256,7 @@ func (o *JobSuspensionStateDto) HasProcessDefinitionKey() bool {
 func (o *JobSuspensionStateDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *JobSuspensionStateDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -294,6 +299,7 @@ func (o *JobSuspensionStateDto) HasProcessDefinitionTenantId() bool {
 func (o *JobSuspensionStateDto) SetProcessDefinitionTenantId(v string) {
 	o.ProcessDefinitionTenantId.Set(&v)
 }
+
 // SetProcessDefinitionTenantIdNil sets the value for ProcessDefinitionTenantId to be an explicit nil
 func (o *JobSuspensionStateDto) SetProcessDefinitionTenantIdNil() {
 	o.ProcessDefinitionTenantId.Set(nil)
@@ -336,6 +342,7 @@ func (o *JobSuspensionStateDto) HasProcessDefinitionWithoutTenantId() bool {
 func (o *JobSuspensionStateDto) SetProcessDefinitionWithoutTenantId(v bool) {
 	o.ProcessDefinitionWithoutTenantId.Set(&v)
 }
+
 // SetProcessDefinitionWithoutTenantIdNil sets the value for ProcessDefinitionWithoutTenantId to be an explicit nil
 func (o *JobSuspensionStateDto) SetProcessDefinitionWithoutTenantIdNil() {
 	o.ProcessDefinitionWithoutTenantId.Set(nil)
@@ -347,7 +354,7 @@ func (o *JobSuspensionStateDto) UnsetProcessDefinitionWithoutTenantId() {
 }
 
 func (o JobSuspensionStateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -415,5 +422,3 @@ func (v *NullableJobSuspensionStateDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

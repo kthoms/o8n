@@ -74,6 +74,7 @@ func (o *IdentityServiceGroupDto) HasId() bool {
 func (o *IdentityServiceGroupDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *IdentityServiceGroupDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -116,6 +117,7 @@ func (o *IdentityServiceGroupDto) HasName() bool {
 func (o *IdentityServiceGroupDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *IdentityServiceGroupDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -127,7 +129,7 @@ func (o *IdentityServiceGroupDto) UnsetName() {
 }
 
 func (o IdentityServiceGroupDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableIdentityServiceGroupDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

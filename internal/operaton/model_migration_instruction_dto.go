@@ -142,6 +142,7 @@ func (o *MigrationInstructionDto) HasUpdateEventTrigger() bool {
 func (o *MigrationInstructionDto) SetUpdateEventTrigger(v bool) {
 	o.UpdateEventTrigger.Set(&v)
 }
+
 // SetUpdateEventTriggerNil sets the value for UpdateEventTrigger to be an explicit nil
 func (o *MigrationInstructionDto) SetUpdateEventTriggerNil() {
 	o.UpdateEventTrigger.Set(nil)
@@ -153,7 +154,7 @@ func (o *MigrationInstructionDto) UnsetUpdateEventTrigger() {
 }
 
 func (o MigrationInstructionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -209,5 +210,3 @@ func (v *NullableMigrationInstructionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

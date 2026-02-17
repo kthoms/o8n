@@ -22,7 +22,7 @@ type TaskQueryDtoSortingInner struct {
 	// Sort the results lexicographically by a given criterion. Must be used in conjunction with the sortOrder parameter.
 	SortBy NullableString `json:"sortBy,omitempty"`
 	// Sort the results in a given order. Values may be `asc` for ascending order or `desc` for descending order. Must be used in conjunction with the sortBy parameter.
-	SortOrder NullableString `json:"sortOrder,omitempty"`
+	SortOrder  NullableString              `json:"sortOrder,omitempty"`
 	Parameters *SortTaskQueryParametersDto `json:"parameters,omitempty"`
 }
 
@@ -75,6 +75,7 @@ func (o *TaskQueryDtoSortingInner) HasSortBy() bool {
 func (o *TaskQueryDtoSortingInner) SetSortBy(v string) {
 	o.SortBy.Set(&v)
 }
+
 // SetSortByNil sets the value for SortBy to be an explicit nil
 func (o *TaskQueryDtoSortingInner) SetSortByNil() {
 	o.SortBy.Set(nil)
@@ -117,6 +118,7 @@ func (o *TaskQueryDtoSortingInner) HasSortOrder() bool {
 func (o *TaskQueryDtoSortingInner) SetSortOrder(v string) {
 	o.SortOrder.Set(&v)
 }
+
 // SetSortOrderNil sets the value for SortOrder to be an explicit nil
 func (o *TaskQueryDtoSortingInner) SetSortOrderNil() {
 	o.SortOrder.Set(nil)
@@ -160,7 +162,7 @@ func (o *TaskQueryDtoSortingInner) SetParameters(v SortTaskQueryParametersDto) {
 }
 
 func (o TaskQueryDtoSortingInner) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -216,5 +218,3 @@ func (v *NullableTaskQueryDtoSortingInner) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

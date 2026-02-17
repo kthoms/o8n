@@ -101,6 +101,7 @@ func (o *JobDto) HasId() bool {
 func (o *JobDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *JobDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -143,6 +144,7 @@ func (o *JobDto) HasJobDefinitionId() bool {
 func (o *JobDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *JobDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -185,6 +187,7 @@ func (o *JobDto) HasDueDate() bool {
 func (o *JobDto) SetDueDate(v time.Time) {
 	o.DueDate.Set(&v)
 }
+
 // SetDueDateNil sets the value for DueDate to be an explicit nil
 func (o *JobDto) SetDueDateNil() {
 	o.DueDate.Set(nil)
@@ -227,6 +230,7 @@ func (o *JobDto) HasProcessInstanceId() bool {
 func (o *JobDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *JobDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -269,6 +273,7 @@ func (o *JobDto) HasExecutionId() bool {
 func (o *JobDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *JobDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -311,6 +316,7 @@ func (o *JobDto) HasProcessDefinitionId() bool {
 func (o *JobDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *JobDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -353,6 +359,7 @@ func (o *JobDto) HasProcessDefinitionKey() bool {
 func (o *JobDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *JobDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -395,6 +402,7 @@ func (o *JobDto) HasRetries() bool {
 func (o *JobDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *JobDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -437,6 +445,7 @@ func (o *JobDto) HasExceptionMessage() bool {
 func (o *JobDto) SetExceptionMessage(v string) {
 	o.ExceptionMessage.Set(&v)
 }
+
 // SetExceptionMessageNil sets the value for ExceptionMessage to be an explicit nil
 func (o *JobDto) SetExceptionMessageNil() {
 	o.ExceptionMessage.Set(nil)
@@ -479,6 +488,7 @@ func (o *JobDto) HasFailedActivityId() bool {
 func (o *JobDto) SetFailedActivityId(v string) {
 	o.FailedActivityId.Set(&v)
 }
+
 // SetFailedActivityIdNil sets the value for FailedActivityId to be an explicit nil
 func (o *JobDto) SetFailedActivityIdNil() {
 	o.FailedActivityId.Set(nil)
@@ -521,6 +531,7 @@ func (o *JobDto) HasSuspended() bool {
 func (o *JobDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *JobDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -563,6 +574,7 @@ func (o *JobDto) HasPriority() bool {
 func (o *JobDto) SetPriority(v int64) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *JobDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -605,6 +617,7 @@ func (o *JobDto) HasTenantId() bool {
 func (o *JobDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *JobDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -647,6 +660,7 @@ func (o *JobDto) HasCreateTime() bool {
 func (o *JobDto) SetCreateTime(v time.Time) {
 	o.CreateTime.Set(&v)
 }
+
 // SetCreateTimeNil sets the value for CreateTime to be an explicit nil
 func (o *JobDto) SetCreateTimeNil() {
 	o.CreateTime.Set(nil)
@@ -689,6 +703,7 @@ func (o *JobDto) HasBatchId() bool {
 func (o *JobDto) SetBatchId(v string) {
 	o.BatchId.Set(&v)
 }
+
 // SetBatchIdNil sets the value for BatchId to be an explicit nil
 func (o *JobDto) SetBatchIdNil() {
 	o.BatchId.Set(nil)
@@ -700,7 +715,7 @@ func (o *JobDto) UnsetBatchId() {
 }
 
 func (o JobDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -792,5 +807,3 @@ func (v *NullableJobDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -76,6 +76,7 @@ func (o *JobDefinitionSuspensionStateDto) HasSuspended() bool {
 func (o *JobDefinitionSuspensionStateDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *JobDefinitionSuspensionStateDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -118,6 +119,7 @@ func (o *JobDefinitionSuspensionStateDto) HasIncludeJobs() bool {
 func (o *JobDefinitionSuspensionStateDto) SetIncludeJobs(v bool) {
 	o.IncludeJobs.Set(&v)
 }
+
 // SetIncludeJobsNil sets the value for IncludeJobs to be an explicit nil
 func (o *JobDefinitionSuspensionStateDto) SetIncludeJobsNil() {
 	o.IncludeJobs.Set(nil)
@@ -160,6 +162,7 @@ func (o *JobDefinitionSuspensionStateDto) HasExecutionDate() bool {
 func (o *JobDefinitionSuspensionStateDto) SetExecutionDate(v string) {
 	o.ExecutionDate.Set(&v)
 }
+
 // SetExecutionDateNil sets the value for ExecutionDate to be an explicit nil
 func (o *JobDefinitionSuspensionStateDto) SetExecutionDateNil() {
 	o.ExecutionDate.Set(nil)
@@ -171,7 +174,7 @@ func (o *JobDefinitionSuspensionStateDto) UnsetExecutionDate() {
 }
 
 func (o JobDefinitionSuspensionStateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableJobDefinitionSuspensionStateDto) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

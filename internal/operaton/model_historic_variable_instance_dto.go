@@ -146,6 +146,7 @@ func (o *HistoricVariableInstanceDto) HasType() bool {
 func (o *HistoricVariableInstanceDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -220,6 +221,7 @@ func (o *HistoricVariableInstanceDto) HasId() bool {
 func (o *HistoricVariableInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -262,6 +264,7 @@ func (o *HistoricVariableInstanceDto) HasName() bool {
 func (o *HistoricVariableInstanceDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -304,6 +307,7 @@ func (o *HistoricVariableInstanceDto) HasProcessDefinitionKey() bool {
 func (o *HistoricVariableInstanceDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -346,6 +350,7 @@ func (o *HistoricVariableInstanceDto) HasProcessDefinitionId() bool {
 func (o *HistoricVariableInstanceDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -388,6 +393,7 @@ func (o *HistoricVariableInstanceDto) HasProcessInstanceId() bool {
 func (o *HistoricVariableInstanceDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -430,6 +436,7 @@ func (o *HistoricVariableInstanceDto) HasExecutionId() bool {
 func (o *HistoricVariableInstanceDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -472,6 +479,7 @@ func (o *HistoricVariableInstanceDto) HasActivityInstanceId() bool {
 func (o *HistoricVariableInstanceDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -514,6 +522,7 @@ func (o *HistoricVariableInstanceDto) HasCaseDefinitionKey() bool {
 func (o *HistoricVariableInstanceDto) SetCaseDefinitionKey(v string) {
 	o.CaseDefinitionKey.Set(&v)
 }
+
 // SetCaseDefinitionKeyNil sets the value for CaseDefinitionKey to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetCaseDefinitionKeyNil() {
 	o.CaseDefinitionKey.Set(nil)
@@ -556,6 +565,7 @@ func (o *HistoricVariableInstanceDto) HasCaseDefinitionId() bool {
 func (o *HistoricVariableInstanceDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -598,6 +608,7 @@ func (o *HistoricVariableInstanceDto) HasCaseInstanceId() bool {
 func (o *HistoricVariableInstanceDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -640,6 +651,7 @@ func (o *HistoricVariableInstanceDto) HasCaseExecutionId() bool {
 func (o *HistoricVariableInstanceDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -682,6 +694,7 @@ func (o *HistoricVariableInstanceDto) HasTaskId() bool {
 func (o *HistoricVariableInstanceDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -724,6 +737,7 @@ func (o *HistoricVariableInstanceDto) HasTenantId() bool {
 func (o *HistoricVariableInstanceDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -766,6 +780,7 @@ func (o *HistoricVariableInstanceDto) HasErrorMessage() bool {
 func (o *HistoricVariableInstanceDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -808,6 +823,7 @@ func (o *HistoricVariableInstanceDto) HasState() bool {
 func (o *HistoricVariableInstanceDto) SetState(v string) {
 	o.State.Set(&v)
 }
+
 // SetStateNil sets the value for State to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetStateNil() {
 	o.State.Set(nil)
@@ -850,6 +866,7 @@ func (o *HistoricVariableInstanceDto) HasCreateTime() bool {
 func (o *HistoricVariableInstanceDto) SetCreateTime(v time.Time) {
 	o.CreateTime.Set(&v)
 }
+
 // SetCreateTimeNil sets the value for CreateTime to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetCreateTimeNil() {
 	o.CreateTime.Set(nil)
@@ -892,6 +909,7 @@ func (o *HistoricVariableInstanceDto) HasRemovalTime() bool {
 func (o *HistoricVariableInstanceDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -934,6 +952,7 @@ func (o *HistoricVariableInstanceDto) HasRootProcessInstanceId() bool {
 func (o *HistoricVariableInstanceDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricVariableInstanceDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -945,7 +964,7 @@ func (o *HistoricVariableInstanceDto) UnsetRootProcessInstanceId() {
 }
 
 func (o HistoricVariableInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1055,5 +1074,3 @@ func (v *NullableHistoricVariableInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

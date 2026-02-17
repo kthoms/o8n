@@ -92,6 +92,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasTaskName() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetTaskName(v string) {
 	o.TaskName.Set(&v)
 }
+
 // SetTaskNameNil sets the value for TaskName to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetTaskNameNil() {
 	o.TaskName.Set(nil)
@@ -134,6 +135,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasCount() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetCount(v int64) {
 	o.Count.Set(&v)
 }
+
 // SetCountNil sets the value for Count to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetCountNil() {
 	o.Count.Set(nil)
@@ -176,6 +178,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasProcessDefinitionKey() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -218,6 +221,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasProcessDefinitionId() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -260,6 +264,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasProcessDefinitionName() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionName(v string) {
 	o.ProcessDefinitionName.Set(&v)
 }
+
 // SetProcessDefinitionNameNil sets the value for ProcessDefinitionName to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetProcessDefinitionNameNil() {
 	o.ProcessDefinitionName.Set(nil)
@@ -302,6 +307,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasPeriod() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetPeriod(v int32) {
 	o.Period.Set(&v)
 }
+
 // SetPeriodNil sets the value for Period to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetPeriodNil() {
 	o.Period.Set(nil)
@@ -344,6 +350,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasPeriodUnit() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetPeriodUnit(v string) {
 	o.PeriodUnit.Set(&v)
 }
+
 // SetPeriodUnitNil sets the value for PeriodUnit to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetPeriodUnitNil() {
 	o.PeriodUnit.Set(nil)
@@ -386,6 +393,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasMinimum() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetMinimum(v int64) {
 	o.Minimum.Set(&v)
 }
+
 // SetMinimumNil sets the value for Minimum to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetMinimumNil() {
 	o.Minimum.Set(nil)
@@ -428,6 +436,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasMaximum() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetMaximum(v int64) {
 	o.Maximum.Set(&v)
 }
+
 // SetMaximumNil sets the value for Maximum to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetMaximumNil() {
 	o.Maximum.Set(nil)
@@ -470,6 +479,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasAverage() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetAverage(v int64) {
 	o.Average.Set(&v)
 }
+
 // SetAverageNil sets the value for Average to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetAverageNil() {
 	o.Average.Set(nil)
@@ -512,6 +522,7 @@ func (o *HistoricTaskInstanceReportResultDto) HasTenantId() bool {
 func (o *HistoricTaskInstanceReportResultDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricTaskInstanceReportResultDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -523,7 +534,7 @@ func (o *HistoricTaskInstanceReportResultDto) UnsetTenantId() {
 }
 
 func (o HistoricTaskInstanceReportResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -603,5 +614,3 @@ func (v *NullableHistoricTaskInstanceReportResultDto) UnmarshalJSON(src []byte) 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

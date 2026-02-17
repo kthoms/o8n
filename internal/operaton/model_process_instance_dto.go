@@ -122,6 +122,7 @@ func (o *ProcessInstanceDto) HasId() bool {
 func (o *ProcessInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ProcessInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -164,6 +165,7 @@ func (o *ProcessInstanceDto) HasDefinitionId() bool {
 func (o *ProcessInstanceDto) SetDefinitionId(v string) {
 	o.DefinitionId.Set(&v)
 }
+
 // SetDefinitionIdNil sets the value for DefinitionId to be an explicit nil
 func (o *ProcessInstanceDto) SetDefinitionIdNil() {
 	o.DefinitionId.Set(nil)
@@ -206,6 +208,7 @@ func (o *ProcessInstanceDto) HasDefinitionKey() bool {
 func (o *ProcessInstanceDto) SetDefinitionKey(v string) {
 	o.DefinitionKey.Set(&v)
 }
+
 // SetDefinitionKeyNil sets the value for DefinitionKey to be an explicit nil
 func (o *ProcessInstanceDto) SetDefinitionKeyNil() {
 	o.DefinitionKey.Set(nil)
@@ -248,6 +251,7 @@ func (o *ProcessInstanceDto) HasBusinessKey() bool {
 func (o *ProcessInstanceDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *ProcessInstanceDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -290,6 +294,7 @@ func (o *ProcessInstanceDto) HasCaseInstanceId() bool {
 func (o *ProcessInstanceDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *ProcessInstanceDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -335,6 +340,7 @@ func (o *ProcessInstanceDto) HasEnded() bool {
 func (o *ProcessInstanceDto) SetEnded(v bool) {
 	o.Ended.Set(&v)
 }
+
 // SetEndedNil sets the value for Ended to be an explicit nil
 func (o *ProcessInstanceDto) SetEndedNil() {
 	o.Ended.Set(nil)
@@ -377,6 +383,7 @@ func (o *ProcessInstanceDto) HasSuspended() bool {
 func (o *ProcessInstanceDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ProcessInstanceDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -419,6 +426,7 @@ func (o *ProcessInstanceDto) HasTenantId() bool {
 func (o *ProcessInstanceDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *ProcessInstanceDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -430,7 +438,7 @@ func (o *ProcessInstanceDto) UnsetTenantId() {
 }
 
 func (o ProcessInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -504,5 +512,3 @@ func (v *NullableProcessInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -72,6 +72,7 @@ func (o *UserIdDto) HasUserId() bool {
 func (o *UserIdDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *UserIdDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -83,7 +84,7 @@ func (o *UserIdDto) UnsetUserId() {
 }
 
 func (o UserIdDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableUserIdDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

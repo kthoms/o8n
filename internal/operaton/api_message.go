@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // MessageAPIService MessageAPI service
 type MessageAPIService service
 
 type ApiDeliverMessageRequest struct {
-	ctx context.Context
-	ApiService *MessageAPIService
+	ctx                   context.Context
+	ApiService            *MessageAPIService
 	correlationMessageDto *CorrelationMessageDto
 }
 
@@ -40,30 +39,31 @@ func (r ApiDeliverMessageRequest) Execute() ([]MessageCorrelationResultWithVaria
 /*
 DeliverMessage Correlate
 
-Correlates a message to the process engine to either trigger a message start event or an intermediate message 
+Correlates a message to the process engine to either trigger a message start event or an intermediate message
 catching event. Internally this maps to the engine's message correlation builder methods
 `MessageCorrelationBuilder#correlateWithResult()` and `MessageCorrelationBuilder#correlateAllWithResult()`.
 For more information about the correlation behavior, see the [Message Events](https://docs.operaton.org/manual/1.0/bpmn20/events/message-events/)
 section of the [BPMN 2.0 Implementation Reference](https://docs.operaton.org/manual/1.0/reference/bpmn20/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeliverMessageRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeliverMessageRequest
 */
 func (a *MessageAPIService) DeliverMessage(ctx context.Context) ApiDeliverMessageRequest {
 	return ApiDeliverMessageRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []MessageCorrelationResultWithVariableDto
+//
+//	@return []MessageCorrelationResultWithVariableDto
 func (a *MessageAPIService) DeliverMessageExecute(r ApiDeliverMessageRequest) ([]MessageCorrelationResultWithVariableDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []MessageCorrelationResultWithVariableDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []MessageCorrelationResultWithVariableDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MessageAPIService.DeliverMessage")
@@ -125,8 +125,8 @@ func (a *MessageAPIService) DeliverMessageExecute(r ApiDeliverMessageRequest) ([
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

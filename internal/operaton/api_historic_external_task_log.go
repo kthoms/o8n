@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // HistoricExternalTaskLogAPIService HistoricExternalTaskLogAPI service
 type HistoricExternalTaskLogAPIService service
 
 type ApiGetErrorDetailsHistoricExternalTaskLogRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricExternalTaskLogAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetErrorDetailsHistoricExternalTaskLogRequest) Execute() (string, *http.Response, error) {
@@ -39,26 +38,27 @@ GetErrorDetailsHistoricExternalTaskLog Get External Task Log Error Details
 Retrieves the corresponding error details of the passed historic external task log
 by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic external task log to get the error details for.
- @return ApiGetErrorDetailsHistoricExternalTaskLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic external task log to get the error details for.
+	@return ApiGetErrorDetailsHistoricExternalTaskLogRequest
 */
 func (a *HistoricExternalTaskLogAPIService) GetErrorDetailsHistoricExternalTaskLog(ctx context.Context, id string) ApiGetErrorDetailsHistoricExternalTaskLogRequest {
 	return ApiGetErrorDetailsHistoricExternalTaskLogRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return string
+//
+//	@return string
 func (a *HistoricExternalTaskLogAPIService) GetErrorDetailsHistoricExternalTaskLogExecute(r ApiGetErrorDetailsHistoricExternalTaskLogRequest) (string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.GetErrorDetailsHistoricExternalTaskLog")
@@ -119,8 +119,8 @@ func (a *HistoricExternalTaskLogAPIService) GetErrorDetailsHistoricExternalTaskL
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -138,9 +138,9 @@ func (a *HistoricExternalTaskLogAPIService) GetErrorDetailsHistoricExternalTaskL
 }
 
 type ApiGetHistoricExternalTaskLogRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricExternalTaskLogAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricExternalTaskLogRequest) Execute() (*HistoricExternalTaskLogDto, *http.Response, error) {
@@ -152,26 +152,27 @@ GetHistoricExternalTaskLog Get External Task Log
 
 Retrieves a historic external task log by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the log entry.
- @return ApiGetHistoricExternalTaskLogRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the log entry.
+	@return ApiGetHistoricExternalTaskLogRequest
 */
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLog(ctx context.Context, id string) ApiGetHistoricExternalTaskLogRequest {
 	return ApiGetHistoricExternalTaskLogRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricExternalTaskLogDto
+//
+//	@return HistoricExternalTaskLogDto
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogExecute(r ApiGetHistoricExternalTaskLogRequest) (*HistoricExternalTaskLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricExternalTaskLogDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricExternalTaskLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.GetHistoricExternalTaskLog")
@@ -232,8 +233,8 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -251,31 +252,31 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogExecute(r 
 }
 
 type ApiGetHistoricExternalTaskLogsRequest struct {
-	ctx context.Context
-	ApiService *HistoricExternalTaskLogAPIService
-	logId *string
-	externalTaskId *string
-	topicName *string
-	workerId *string
-	errorMessage *string
-	activityIdIn *string
-	activityInstanceIdIn *string
-	executionIdIn *string
-	processInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	priorityLowerThanOrEquals *int64
+	ctx                        context.Context
+	ApiService                 *HistoricExternalTaskLogAPIService
+	logId                      *string
+	externalTaskId             *string
+	topicName                  *string
+	workerId                   *string
+	errorMessage               *string
+	activityIdIn               *string
+	activityInstanceIdIn       *string
+	executionIdIn              *string
+	processInstanceId          *string
+	processDefinitionId        *string
+	processDefinitionKey       *string
+	tenantIdIn                 *string
+	withoutTenantId            *bool
+	priorityLowerThanOrEquals  *int64
 	priorityHigherThanOrEquals *int64
-	creationLog *bool
-	failureLog *bool
-	successLog *bool
-	deletionLog *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	creationLog                *bool
+	failureLog                 *bool
+	successLog                 *bool
+	deletionLog                *bool
+	sortBy                     *string
+	sortOrder                  *string
+	firstResult                *int32
+	maxResults                 *int32
 }
 
 // Filter by historic external task log id.
@@ -428,24 +429,25 @@ The size of the result set can be retrieved by using the
 [Get External Task Log Count](https://docs.operaton.org/manual/1.0/reference/rest/history/external-task-log/get-external-task-log-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricExternalTaskLogsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricExternalTaskLogsRequest
 */
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogs(ctx context.Context) ApiGetHistoricExternalTaskLogsRequest {
 	return ApiGetHistoricExternalTaskLogsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricExternalTaskLogDto
+//
+//	@return []HistoricExternalTaskLogDto
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsExecute(r ApiGetHistoricExternalTaskLogsRequest) ([]HistoricExternalTaskLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricExternalTaskLogDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricExternalTaskLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.GetHistoricExternalTaskLogs")
@@ -574,8 +576,8 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -593,27 +595,27 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsExecute(r
 }
 
 type ApiGetHistoricExternalTaskLogsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricExternalTaskLogAPIService
-	logId *string
-	externalTaskId *string
-	topicName *string
-	workerId *string
-	errorMessage *string
-	activityIdIn *string
-	activityInstanceIdIn *string
-	executionIdIn *string
-	processInstanceId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	priorityLowerThanOrEquals *int64
+	ctx                        context.Context
+	ApiService                 *HistoricExternalTaskLogAPIService
+	logId                      *string
+	externalTaskId             *string
+	topicName                  *string
+	workerId                   *string
+	errorMessage               *string
+	activityIdIn               *string
+	activityInstanceIdIn       *string
+	executionIdIn              *string
+	processInstanceId          *string
+	processDefinitionId        *string
+	processDefinitionKey       *string
+	tenantIdIn                 *string
+	withoutTenantId            *bool
+	priorityLowerThanOrEquals  *int64
 	priorityHigherThanOrEquals *int64
-	creationLog *bool
-	failureLog *bool
-	successLog *bool
-	deletionLog *bool
+	creationLog                *bool
+	failureLog                 *bool
+	successLog                 *bool
+	deletionLog                *bool
 }
 
 // Filter by historic external task log id.
@@ -743,24 +745,25 @@ Takes the same parameters as the
 [Get External Task Logs](https://docs.operaton.org/manual/1.0/reference/rest/history/external-task-log/get-external-task-log-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricExternalTaskLogsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricExternalTaskLogsCountRequest
 */
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsCount(ctx context.Context) ApiGetHistoricExternalTaskLogsCountRequest {
 	return ApiGetHistoricExternalTaskLogsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsCountExecute(r ApiGetHistoricExternalTaskLogsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.GetHistoricExternalTaskLogsCount")
@@ -877,8 +880,8 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsCountExec
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -896,8 +899,8 @@ func (a *HistoricExternalTaskLogAPIService) GetHistoricExternalTaskLogsCountExec
 }
 
 type ApiQueryHistoricExternalTaskLogsRequest struct {
-	ctx context.Context
-	ApiService *HistoricExternalTaskLogAPIService
+	ctx                             context.Context
+	ApiService                      *HistoricExternalTaskLogAPIService
 	historicExternalTaskLogQueryDto *HistoricExternalTaskLogQueryDto
 }
 
@@ -919,24 +922,25 @@ This method is slightly more powerful than the
 method because it allows filtering by historic external task logs
 values of the different types `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricExternalTaskLogsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricExternalTaskLogsRequest
 */
 func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogs(ctx context.Context) ApiQueryHistoricExternalTaskLogsRequest {
 	return ApiQueryHistoricExternalTaskLogsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricExternalTaskLogDto
+//
+//	@return []HistoricExternalTaskLogDto
 func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsExecute(r ApiQueryHistoricExternalTaskLogsRequest) ([]HistoricExternalTaskLogDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricExternalTaskLogDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricExternalTaskLogDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.QueryHistoricExternalTaskLogs")
@@ -998,8 +1002,8 @@ func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1017,8 +1021,8 @@ func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsExecute
 }
 
 type ApiQueryHistoricExternalTaskLogsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricExternalTaskLogAPIService
+	ctx                             context.Context
+	ApiService                      *HistoricExternalTaskLogAPIService
 	historicExternalTaskLogQueryDto *HistoricExternalTaskLogQueryDto
 }
 
@@ -1042,24 +1046,25 @@ method and therefore it is slightly more powerful than the
 [Get External Task Log Count](https://docs.operaton.org/manual/1.0/reference/rest/history/external-task-log/get-external-task-log-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricExternalTaskLogsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricExternalTaskLogsCountRequest
 */
 func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsCount(ctx context.Context) ApiQueryHistoricExternalTaskLogsCountRequest {
 	return ApiQueryHistoricExternalTaskLogsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsCountExecute(r ApiQueryHistoricExternalTaskLogsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricExternalTaskLogAPIService.QueryHistoricExternalTaskLogsCount")
@@ -1121,8 +1126,8 @@ func (a *HistoricExternalTaskLogAPIService) QueryHistoricExternalTaskLogsCountEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

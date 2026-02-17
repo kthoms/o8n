@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // GroupAPIService GroupAPI service
 type GroupAPIService service
 
 type ApiAvailableGroupInstanceOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableGroupInstanceOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -41,26 +40,27 @@ The OPTIONS request allows checking for the set of available operations that the
 `/group/{id}` resource instance. If the user can perform an operation or not may depend on various things, including the users authorizations
 to interact with this resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group.
- @return ApiAvailableGroupInstanceOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group.
+	@return ApiAvailableGroupInstanceOperationsRequest
 */
 func (a *GroupAPIService) AvailableGroupInstanceOperations(ctx context.Context, id string) ApiAvailableGroupInstanceOperationsRequest {
 	return ApiAvailableGroupInstanceOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *GroupAPIService) AvailableGroupInstanceOperationsExecute(r ApiAvailableGroupInstanceOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.AvailableGroupInstanceOperations")
@@ -130,9 +130,9 @@ func (a *GroupAPIService) AvailableGroupInstanceOperationsExecute(r ApiAvailable
 }
 
 type ApiAvailableGroupMembersOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableGroupMembersOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -147,26 +147,27 @@ user can perform on the resource. If the user can perform an operation or not ma
 things, including the users authorizations to interact with this resource and the internal configuration
 of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group.
- @return ApiAvailableGroupMembersOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group.
+	@return ApiAvailableGroupMembersOperationsRequest
 */
 func (a *GroupAPIService) AvailableGroupMembersOperations(ctx context.Context, id string) ApiAvailableGroupMembersOperationsRequest {
 	return ApiAvailableGroupMembersOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *GroupAPIService) AvailableGroupMembersOperationsExecute(r ApiAvailableGroupMembersOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.AvailableGroupMembersOperations")
@@ -236,7 +237,7 @@ func (a *GroupAPIService) AvailableGroupMembersOperationsExecute(r ApiAvailableG
 }
 
 type ApiAvailableGroupOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
 }
 
@@ -253,24 +254,25 @@ the currently authenticated user can perform on the `/group` resource. If the us
 or not may depend on various things, including the users authorizations to interact with this resource and
 the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAvailableGroupOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiAvailableGroupOperationsRequest
 */
 func (a *GroupAPIService) AvailableGroupOperations(ctx context.Context) ApiAvailableGroupOperationsRequest {
 	return ApiAvailableGroupOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *GroupAPIService) AvailableGroupOperationsExecute(r ApiAvailableGroupOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.AvailableGroupOperations")
@@ -339,9 +341,9 @@ func (a *GroupAPIService) AvailableGroupOperationsExecute(r ApiAvailableGroupOpe
 }
 
 type ApiCreateGroupRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	groupDto *GroupDto
+	groupDto   *GroupDto
 }
 
 func (r ApiCreateGroupRequest) GroupDto(groupDto GroupDto) ApiCreateGroupRequest {
@@ -358,22 +360,22 @@ CreateGroup Create Group
 
 Creates a new group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateGroupRequest
 */
 func (a *GroupAPIService) CreateGroup(ctx context.Context) ApiCreateGroupRequest {
 	return ApiCreateGroupRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *GroupAPIService) CreateGroupExecute(r ApiCreateGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.CreateGroup")
@@ -435,8 +437,8 @@ func (a *GroupAPIService) CreateGroupExecute(r ApiCreateGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -446,8 +448,8 @@ func (a *GroupAPIService) CreateGroupExecute(r ApiCreateGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -456,10 +458,10 @@ func (a *GroupAPIService) CreateGroupExecute(r ApiCreateGroupRequest) (*http.Res
 }
 
 type ApiCreateGroupMemberRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
-	userId string
+	id         string
+	userId     string
 }
 
 func (r ApiCreateGroupMemberRequest) Execute() (*http.Response, error) {
@@ -471,26 +473,26 @@ CreateGroupMember Create Group Member
 
 Adds a member to a group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group.
- @param userId The id of user to add to the group.
- @return ApiCreateGroupMemberRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group.
+	@param userId The id of user to add to the group.
+	@return ApiCreateGroupMemberRequest
 */
 func (a *GroupAPIService) CreateGroupMember(ctx context.Context, id string, userId string) ApiCreateGroupMemberRequest {
 	return ApiCreateGroupMemberRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		userId: userId,
+		ctx:        ctx,
+		id:         id,
+		userId:     userId,
 	}
 }
 
 // Execute executes the request
 func (a *GroupAPIService) CreateGroupMemberExecute(r ApiCreateGroupMemberRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.CreateGroupMember")
@@ -552,8 +554,8 @@ func (a *GroupAPIService) CreateGroupMemberExecute(r ApiCreateGroupMemberRequest
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -563,8 +565,8 @@ func (a *GroupAPIService) CreateGroupMemberExecute(r ApiCreateGroupMemberRequest
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -573,9 +575,9 @@ func (a *GroupAPIService) CreateGroupMemberExecute(r ApiCreateGroupMemberRequest
 }
 
 type ApiDeleteGroupRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteGroupRequest) Execute() (*http.Response, error) {
@@ -587,24 +589,24 @@ DeleteGroup Delete Group
 
 Deletes a group by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group to be deleted.
- @return ApiDeleteGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group to be deleted.
+	@return ApiDeleteGroupRequest
 */
 func (a *GroupAPIService) DeleteGroup(ctx context.Context, id string) ApiDeleteGroupRequest {
 	return ApiDeleteGroupRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *GroupAPIService) DeleteGroupExecute(r ApiDeleteGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.DeleteGroup")
@@ -665,8 +667,8 @@ func (a *GroupAPIService) DeleteGroupExecute(r ApiDeleteGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -676,8 +678,8 @@ func (a *GroupAPIService) DeleteGroupExecute(r ApiDeleteGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -686,10 +688,10 @@ func (a *GroupAPIService) DeleteGroupExecute(r ApiDeleteGroupRequest) (*http.Res
 }
 
 type ApiDeleteGroupMemberRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
-	userId string
+	id         string
+	userId     string
 }
 
 func (r ApiDeleteGroupMemberRequest) Execute() (*http.Response, error) {
@@ -701,26 +703,26 @@ DeleteGroupMember Delete a Group Member
 
 Removes a member from a group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group.
- @param userId The id of user to remove from the group.
- @return ApiDeleteGroupMemberRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group.
+	@param userId The id of user to remove from the group.
+	@return ApiDeleteGroupMemberRequest
 */
 func (a *GroupAPIService) DeleteGroupMember(ctx context.Context, id string, userId string) ApiDeleteGroupMemberRequest {
 	return ApiDeleteGroupMemberRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		userId: userId,
+		ctx:        ctx,
+		id:         id,
+		userId:     userId,
 	}
 }
 
 // Execute executes the request
 func (a *GroupAPIService) DeleteGroupMemberExecute(r ApiDeleteGroupMemberRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.DeleteGroupMember")
@@ -782,8 +784,8 @@ func (a *GroupAPIService) DeleteGroupMemberExecute(r ApiDeleteGroupMemberRequest
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -793,8 +795,8 @@ func (a *GroupAPIService) DeleteGroupMemberExecute(r ApiDeleteGroupMemberRequest
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -803,9 +805,9 @@ func (a *GroupAPIService) DeleteGroupMemberExecute(r ApiDeleteGroupMemberRequest
 }
 
 type ApiGetGroupRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetGroupRequest) Execute() (*GroupDto, *http.Response, error) {
@@ -817,26 +819,27 @@ GetGroup Get Group
 
 Retrieves a group by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group to be retrieved.
- @return ApiGetGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group to be retrieved.
+	@return ApiGetGroupRequest
 */
 func (a *GroupAPIService) GetGroup(ctx context.Context, id string) ApiGetGroupRequest {
 	return ApiGetGroupRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return GroupDto
+//
+//	@return GroupDto
 func (a *GroupAPIService) GetGroupExecute(r ApiGetGroupRequest) (*GroupDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *GroupDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *GroupDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.GetGroup")
@@ -897,8 +900,8 @@ func (a *GroupAPIService) GetGroupExecute(r ApiGetGroupRequest) (*GroupDto, *htt
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -916,14 +919,14 @@ func (a *GroupAPIService) GetGroupExecute(r ApiGetGroupRequest) (*GroupDto, *htt
 }
 
 type ApiGetGroupCountRequest struct {
-	ctx context.Context
-	ApiService *GroupAPIService
-	id *string
-	idIn *string
-	name *string
-	nameLike *string
-	type_ *string
-	member *string
+	ctx            context.Context
+	ApiService     *GroupAPIService
+	id             *string
+	idIn           *string
+	name           *string
+	nameLike       *string
+	type_          *string
+	member         *string
 	memberOfTenant *string
 }
 
@@ -978,24 +981,25 @@ GetGroupCount Get List Count
 
 Queries for groups using a list of parameters and retrieves the count.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetGroupCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetGroupCountRequest
 */
 func (a *GroupAPIService) GetGroupCount(ctx context.Context) ApiGetGroupCountRequest {
 	return ApiGetGroupCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *GroupAPIService) GetGroupCountExecute(r ApiGetGroupCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.GetGroupCount")
@@ -1076,8 +1080,8 @@ func (a *GroupAPIService) GetGroupCountExecute(r ApiGetGroupCountRequest) (*Coun
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1095,18 +1099,18 @@ func (a *GroupAPIService) GetGroupCountExecute(r ApiGetGroupCountRequest) (*Coun
 }
 
 type ApiGetQueryGroupsRequest struct {
-	ctx context.Context
-	ApiService *GroupAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	id *string
-	idIn *string
-	name *string
-	nameLike *string
-	type_ *string
-	member *string
+	ctx            context.Context
+	ApiService     *GroupAPIService
+	sortBy         *string
+	sortOrder      *string
+	firstResult    *int32
+	maxResults     *int32
+	id             *string
+	idIn           *string
+	name           *string
+	nameLike       *string
+	type_          *string
+	member         *string
 	memberOfTenant *string
 }
 
@@ -1186,24 +1190,25 @@ GetQueryGroups Get List
 Queries for a list of groups using a list of parameters. The size of the result set can be retrieved
 by using the [Get Group Count](https://docs.operaton.org/manual/1.0/reference/rest/group/get-query-count) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetQueryGroupsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetQueryGroupsRequest
 */
 func (a *GroupAPIService) GetQueryGroups(ctx context.Context) ApiGetQueryGroupsRequest {
 	return ApiGetQueryGroupsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []GroupDto
+//
+//	@return []GroupDto
 func (a *GroupAPIService) GetQueryGroupsExecute(r ApiGetQueryGroupsRequest) ([]GroupDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []GroupDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []GroupDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.GetQueryGroups")
@@ -1296,8 +1301,8 @@ func (a *GroupAPIService) GetQueryGroupsExecute(r ApiGetQueryGroupsRequest) ([]G
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1315,10 +1320,10 @@ func (a *GroupAPIService) GetQueryGroupsExecute(r ApiGetQueryGroupsRequest) ([]G
 }
 
 type ApiPostQueryGroupsRequest struct {
-	ctx context.Context
-	ApiService *GroupAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx           context.Context
+	ApiService    *GroupAPIService
+	firstResult   *int32
+	maxResults    *int32
 	groupQueryDto *GroupQueryDto
 }
 
@@ -1350,24 +1355,25 @@ Queries for a list of groups using a list of parameters.
 The size of the result set can be retrieved by using the
 [Get Group Count (POST)](https://docs.operaton.org/manual/1.0/reference/rest/group/post-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiPostQueryGroupsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiPostQueryGroupsRequest
 */
 func (a *GroupAPIService) PostQueryGroups(ctx context.Context) ApiPostQueryGroupsRequest {
 	return ApiPostQueryGroupsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []GroupDto
+//
+//	@return []GroupDto
 func (a *GroupAPIService) PostQueryGroupsExecute(r ApiPostQueryGroupsRequest) ([]GroupDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []GroupDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []GroupDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.PostQueryGroups")
@@ -1435,8 +1441,8 @@ func (a *GroupAPIService) PostQueryGroupsExecute(r ApiPostQueryGroupsRequest) ([
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1454,8 +1460,8 @@ func (a *GroupAPIService) PostQueryGroupsExecute(r ApiPostQueryGroupsRequest) ([
 }
 
 type ApiQueryGroupCountRequest struct {
-	ctx context.Context
-	ApiService *GroupAPIService
+	ctx           context.Context
+	ApiService    *GroupAPIService
 	groupQueryDto *GroupQueryDto
 }
 
@@ -1473,24 +1479,25 @@ QueryGroupCount Get List Count (POST)
 
 Queries for groups using a list of parameters and retrieves the count.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryGroupCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryGroupCountRequest
 */
 func (a *GroupAPIService) QueryGroupCount(ctx context.Context) ApiQueryGroupCountRequest {
 	return ApiQueryGroupCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *GroupAPIService) QueryGroupCountExecute(r ApiQueryGroupCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.QueryGroupCount")
@@ -1552,8 +1559,8 @@ func (a *GroupAPIService) QueryGroupCountExecute(r ApiQueryGroupCountRequest) (*
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1571,10 +1578,10 @@ func (a *GroupAPIService) QueryGroupCountExecute(r ApiQueryGroupCountRequest) (*
 }
 
 type ApiUpdateGroupRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *GroupAPIService
-	id string
-	groupDto *GroupDto
+	id         string
+	groupDto   *GroupDto
 }
 
 func (r ApiUpdateGroupRequest) GroupDto(groupDto GroupDto) ApiUpdateGroupRequest {
@@ -1591,24 +1598,24 @@ UpdateGroup Update Group
 
 Updates a given group by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the group.
- @return ApiUpdateGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the group.
+	@return ApiUpdateGroupRequest
 */
 func (a *GroupAPIService) UpdateGroup(ctx context.Context, id string) ApiUpdateGroupRequest {
 	return ApiUpdateGroupRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *GroupAPIService) UpdateGroupExecute(r ApiUpdateGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "GroupAPIService.UpdateGroup")
@@ -1671,8 +1678,8 @@ func (a *GroupAPIService) UpdateGroupExecute(r ApiUpdateGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1682,8 +1689,8 @@ func (a *GroupAPIService) UpdateGroupExecute(r ApiUpdateGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1693,8 +1700,8 @@ func (a *GroupAPIService) UpdateGroupExecute(r ApiUpdateGroupRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

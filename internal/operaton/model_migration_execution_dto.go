@@ -21,7 +21,7 @@ var _ MappedNullable = &MigrationExecutionDto{}
 type MigrationExecutionDto struct {
 	MigrationPlan *MigrationPlanDto `json:"migrationPlan,omitempty"`
 	// A list of process instance ids to migrate.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
+	ProcessInstanceIds   []string                 `json:"processInstanceIds,omitempty"`
 	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
 	// A boolean value to control whether execution listeners should be invoked during migration.
 	SkipCustomListeners NullableBool `json:"skipCustomListeners,omitempty"`
@@ -175,6 +175,7 @@ func (o *MigrationExecutionDto) HasSkipCustomListeners() bool {
 func (o *MigrationExecutionDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *MigrationExecutionDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -217,6 +218,7 @@ func (o *MigrationExecutionDto) HasSkipIoMappings() bool {
 func (o *MigrationExecutionDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *MigrationExecutionDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -228,7 +230,7 @@ func (o *MigrationExecutionDto) UnsetSkipIoMappings() {
 }
 
 func (o MigrationExecutionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -290,5 +292,3 @@ func (v *NullableMigrationExecutionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

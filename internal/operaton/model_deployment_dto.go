@@ -116,6 +116,7 @@ func (o *DeploymentDto) HasId() bool {
 func (o *DeploymentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DeploymentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -158,6 +159,7 @@ func (o *DeploymentDto) HasTenantId() bool {
 func (o *DeploymentDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *DeploymentDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -200,6 +202,7 @@ func (o *DeploymentDto) HasDeploymentTime() bool {
 func (o *DeploymentDto) SetDeploymentTime(v time.Time) {
 	o.DeploymentTime.Set(&v)
 }
+
 // SetDeploymentTimeNil sets the value for DeploymentTime to be an explicit nil
 func (o *DeploymentDto) SetDeploymentTimeNil() {
 	o.DeploymentTime.Set(nil)
@@ -242,6 +245,7 @@ func (o *DeploymentDto) HasSource() bool {
 func (o *DeploymentDto) SetSource(v string) {
 	o.Source.Set(&v)
 }
+
 // SetSourceNil sets the value for Source to be an explicit nil
 func (o *DeploymentDto) SetSourceNil() {
 	o.Source.Set(nil)
@@ -284,6 +288,7 @@ func (o *DeploymentDto) HasName() bool {
 func (o *DeploymentDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *DeploymentDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -295,7 +300,7 @@ func (o *DeploymentDto) UnsetName() {
 }
 
 func (o DeploymentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -360,5 +365,3 @@ func (v *NullableDeploymentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

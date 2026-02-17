@@ -122,6 +122,7 @@ func (o *CommentDto) HasId() bool {
 func (o *CommentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *CommentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -164,6 +165,7 @@ func (o *CommentDto) HasUserId() bool {
 func (o *CommentDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *CommentDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -206,6 +208,7 @@ func (o *CommentDto) HasTaskId() bool {
 func (o *CommentDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *CommentDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -248,6 +251,7 @@ func (o *CommentDto) HasProcessInstanceId() bool {
 func (o *CommentDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *CommentDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -290,6 +294,7 @@ func (o *CommentDto) HasTime() bool {
 func (o *CommentDto) SetTime(v time.Time) {
 	o.Time.Set(&v)
 }
+
 // SetTimeNil sets the value for Time to be an explicit nil
 func (o *CommentDto) SetTimeNil() {
 	o.Time.Set(nil)
@@ -332,6 +337,7 @@ func (o *CommentDto) HasMessage() bool {
 func (o *CommentDto) SetMessage(v string) {
 	o.Message.Set(&v)
 }
+
 // SetMessageNil sets the value for Message to be an explicit nil
 func (o *CommentDto) SetMessageNil() {
 	o.Message.Set(nil)
@@ -374,6 +380,7 @@ func (o *CommentDto) HasRemovalTime() bool {
 func (o *CommentDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *CommentDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -416,6 +423,7 @@ func (o *CommentDto) HasRootProcessInstanceId() bool {
 func (o *CommentDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *CommentDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -427,7 +435,7 @@ func (o *CommentDto) UnsetRootProcessInstanceId() {
 }
 
 func (o CommentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -501,5 +509,3 @@ func (v *NullableCommentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

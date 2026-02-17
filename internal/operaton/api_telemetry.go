@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // TelemetryAPIService TelemetryAPI service
 type TelemetryAPIService service
 
 type ApiConfigureTelemetryRequest struct {
-	ctx context.Context
-	ApiService *TelemetryAPIService
+	ctx                       context.Context
+	ApiService                *TelemetryAPIService
 	telemetryConfigurationDto *TelemetryConfigurationDto
 }
 
@@ -42,15 +41,15 @@ ConfigureTelemetry Configure Telemetry
 
 Deprecated: The sending telemetry feature is removed. Please remove the endpoint usages as they are no longer needed.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiConfigureTelemetryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiConfigureTelemetryRequest
 
 Deprecated
 */
 func (a *TelemetryAPIService) ConfigureTelemetry(ctx context.Context) ApiConfigureTelemetryRequest {
 	return ApiConfigureTelemetryRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
@@ -58,9 +57,9 @@ func (a *TelemetryAPIService) ConfigureTelemetry(ctx context.Context) ApiConfigu
 // Deprecated
 func (a *TelemetryAPIService) ConfigureTelemetryExecute(r ApiConfigureTelemetryRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TelemetryAPIService.ConfigureTelemetry")
@@ -122,8 +121,8 @@ func (a *TelemetryAPIService) ConfigureTelemetryExecute(r ApiConfigureTelemetryR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -132,7 +131,7 @@ func (a *TelemetryAPIService) ConfigureTelemetryExecute(r ApiConfigureTelemetryR
 }
 
 type ApiGetTelemetryConfigurationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TelemetryAPIService
 }
 
@@ -145,24 +144,25 @@ GetTelemetryConfiguration Fetch Telemetry Configuration
 
 Fetches Telemetry Configuration.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTelemetryConfigurationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTelemetryConfigurationRequest
 */
 func (a *TelemetryAPIService) GetTelemetryConfiguration(ctx context.Context) ApiGetTelemetryConfigurationRequest {
 	return ApiGetTelemetryConfigurationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return TelemetryConfigurationDto
+//
+//	@return TelemetryConfigurationDto
 func (a *TelemetryAPIService) GetTelemetryConfigurationExecute(r ApiGetTelemetryConfigurationRequest) (*TelemetryConfigurationDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *TelemetryConfigurationDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TelemetryConfigurationDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TelemetryAPIService.GetTelemetryConfiguration")
@@ -222,8 +222,8 @@ func (a *TelemetryAPIService) GetTelemetryConfigurationExecute(r ApiGetTelemetry
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -241,7 +241,7 @@ func (a *TelemetryAPIService) GetTelemetryConfigurationExecute(r ApiGetTelemetry
 }
 
 type ApiGetTelemetryDataRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TelemetryAPIService
 }
 
@@ -254,27 +254,29 @@ GetTelemetryData Fetch Telemetry Data
 
 Deprecated: Always returns false. The sending telemetry feature is removed. Please remove the endpoint usages as they are no longer needed.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTelemetryDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTelemetryDataRequest
 
 Deprecated
 */
 func (a *TelemetryAPIService) GetTelemetryData(ctx context.Context) ApiGetTelemetryDataRequest {
 	return ApiGetTelemetryDataRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return TelemetryDataDto
+//
+//	@return TelemetryDataDto
+//
 // Deprecated
 func (a *TelemetryAPIService) GetTelemetryDataExecute(r ApiGetTelemetryDataRequest) (*TelemetryDataDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *TelemetryDataDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TelemetryDataDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TelemetryAPIService.GetTelemetryData")

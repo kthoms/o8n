@@ -74,6 +74,7 @@ func (o *ConditionQueryParameterDto) HasOperator() bool {
 func (o *ConditionQueryParameterDto) SetOperator(v string) {
 	o.Operator.Set(&v)
 }
+
 // SetOperatorNil sets the value for Operator to be an explicit nil
 func (o *ConditionQueryParameterDto) SetOperatorNil() {
 	o.Operator.Set(nil)
@@ -118,7 +119,7 @@ func (o *ConditionQueryParameterDto) SetValue(v interface{}) {
 }
 
 func (o ConditionQueryParameterDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -171,5 +172,3 @@ func (v *NullableConditionQueryParameterDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

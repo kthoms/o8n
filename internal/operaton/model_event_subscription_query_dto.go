@@ -90,6 +90,7 @@ func (o *EventSubscriptionQueryDto) HasEventSubscriptionId() bool {
 func (o *EventSubscriptionQueryDto) SetEventSubscriptionId(v string) {
 	o.EventSubscriptionId.Set(&v)
 }
+
 // SetEventSubscriptionIdNil sets the value for EventSubscriptionId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetEventSubscriptionIdNil() {
 	o.EventSubscriptionId.Set(nil)
@@ -132,6 +133,7 @@ func (o *EventSubscriptionQueryDto) HasEventName() bool {
 func (o *EventSubscriptionQueryDto) SetEventName(v string) {
 	o.EventName.Set(&v)
 }
+
 // SetEventNameNil sets the value for EventName to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetEventNameNil() {
 	o.EventName.Set(nil)
@@ -174,6 +176,7 @@ func (o *EventSubscriptionQueryDto) HasEventType() bool {
 func (o *EventSubscriptionQueryDto) SetEventType(v string) {
 	o.EventType.Set(&v)
 }
+
 // SetEventTypeNil sets the value for EventType to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetEventTypeNil() {
 	o.EventType.Set(nil)
@@ -216,6 +219,7 @@ func (o *EventSubscriptionQueryDto) HasExecutionId() bool {
 func (o *EventSubscriptionQueryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -258,6 +262,7 @@ func (o *EventSubscriptionQueryDto) HasProcessInstanceId() bool {
 func (o *EventSubscriptionQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -300,6 +305,7 @@ func (o *EventSubscriptionQueryDto) HasActivityId() bool {
 func (o *EventSubscriptionQueryDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -375,6 +381,7 @@ func (o *EventSubscriptionQueryDto) HasWithoutTenantId() bool {
 func (o *EventSubscriptionQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -417,6 +424,7 @@ func (o *EventSubscriptionQueryDto) HasIncludeEventSubscriptionsWithoutTenantId(
 func (o *EventSubscriptionQueryDto) SetIncludeEventSubscriptionsWithoutTenantId(v bool) {
 	o.IncludeEventSubscriptionsWithoutTenantId.Set(&v)
 }
+
 // SetIncludeEventSubscriptionsWithoutTenantIdNil sets the value for IncludeEventSubscriptionsWithoutTenantId to be an explicit nil
 func (o *EventSubscriptionQueryDto) SetIncludeEventSubscriptionsWithoutTenantIdNil() {
 	o.IncludeEventSubscriptionsWithoutTenantId.Set(nil)
@@ -461,7 +469,7 @@ func (o *EventSubscriptionQueryDto) SetSorting(v []EventSubscriptionQueryDtoSort
 }
 
 func (o EventSubscriptionQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -538,5 +546,3 @@ func (v *NullableEventSubscriptionQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

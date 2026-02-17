@@ -86,6 +86,7 @@ func (o *HistoricActivityStatisticsDto) HasId() bool {
 func (o *HistoricActivityStatisticsDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -128,6 +129,7 @@ func (o *HistoricActivityStatisticsDto) HasInstances() bool {
 func (o *HistoricActivityStatisticsDto) SetInstances(v int64) {
 	o.Instances.Set(&v)
 }
+
 // SetInstancesNil sets the value for Instances to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetInstancesNil() {
 	o.Instances.Set(nil)
@@ -170,6 +172,7 @@ func (o *HistoricActivityStatisticsDto) HasCanceled() bool {
 func (o *HistoricActivityStatisticsDto) SetCanceled(v int64) {
 	o.Canceled.Set(&v)
 }
+
 // SetCanceledNil sets the value for Canceled to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetCanceledNil() {
 	o.Canceled.Set(nil)
@@ -212,6 +215,7 @@ func (o *HistoricActivityStatisticsDto) HasFinished() bool {
 func (o *HistoricActivityStatisticsDto) SetFinished(v int64) {
 	o.Finished.Set(&v)
 }
+
 // SetFinishedNil sets the value for Finished to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetFinishedNil() {
 	o.Finished.Set(nil)
@@ -254,6 +258,7 @@ func (o *HistoricActivityStatisticsDto) HasCompleteScope() bool {
 func (o *HistoricActivityStatisticsDto) SetCompleteScope(v int64) {
 	o.CompleteScope.Set(&v)
 }
+
 // SetCompleteScopeNil sets the value for CompleteScope to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetCompleteScopeNil() {
 	o.CompleteScope.Set(nil)
@@ -296,6 +301,7 @@ func (o *HistoricActivityStatisticsDto) HasOpenIncidents() bool {
 func (o *HistoricActivityStatisticsDto) SetOpenIncidents(v int64) {
 	o.OpenIncidents.Set(&v)
 }
+
 // SetOpenIncidentsNil sets the value for OpenIncidents to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetOpenIncidentsNil() {
 	o.OpenIncidents.Set(nil)
@@ -338,6 +344,7 @@ func (o *HistoricActivityStatisticsDto) HasResolvedIncidents() bool {
 func (o *HistoricActivityStatisticsDto) SetResolvedIncidents(v int64) {
 	o.ResolvedIncidents.Set(&v)
 }
+
 // SetResolvedIncidentsNil sets the value for ResolvedIncidents to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetResolvedIncidentsNil() {
 	o.ResolvedIncidents.Set(nil)
@@ -380,6 +387,7 @@ func (o *HistoricActivityStatisticsDto) HasDeletedIncidents() bool {
 func (o *HistoricActivityStatisticsDto) SetDeletedIncidents(v int64) {
 	o.DeletedIncidents.Set(&v)
 }
+
 // SetDeletedIncidentsNil sets the value for DeletedIncidents to be an explicit nil
 func (o *HistoricActivityStatisticsDto) SetDeletedIncidentsNil() {
 	o.DeletedIncidents.Set(nil)
@@ -391,7 +399,7 @@ func (o *HistoricActivityStatisticsDto) UnsetDeletedIncidents() {
 }
 
 func (o HistoricActivityStatisticsDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -462,5 +470,3 @@ func (v *NullableHistoricActivityStatisticsDto) UnmarshalJSON(src []byte) error 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

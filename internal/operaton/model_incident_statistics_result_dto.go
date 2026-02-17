@@ -74,6 +74,7 @@ func (o *IncidentStatisticsResultDto) HasIncidentType() bool {
 func (o *IncidentStatisticsResultDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *IncidentStatisticsResultDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -116,6 +117,7 @@ func (o *IncidentStatisticsResultDto) HasIncidentCount() bool {
 func (o *IncidentStatisticsResultDto) SetIncidentCount(v int32) {
 	o.IncidentCount.Set(&v)
 }
+
 // SetIncidentCountNil sets the value for IncidentCount to be an explicit nil
 func (o *IncidentStatisticsResultDto) SetIncidentCountNil() {
 	o.IncidentCount.Set(nil)
@@ -127,7 +129,7 @@ func (o *IncidentStatisticsResultDto) UnsetIncidentCount() {
 }
 
 func (o IncidentStatisticsResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableIncidentStatisticsResultDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

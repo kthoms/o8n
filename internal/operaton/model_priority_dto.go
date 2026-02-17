@@ -72,6 +72,7 @@ func (o *PriorityDto) HasPriority() bool {
 func (o *PriorityDto) SetPriority(v int64) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *PriorityDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -83,7 +84,7 @@ func (o *PriorityDto) UnsetPriority() {
 }
 
 func (o PriorityDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullablePriorityDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

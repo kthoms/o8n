@@ -19,15 +19,14 @@ import (
 	"strings"
 )
 
-
 // ProcessInstanceCommentAPIService ProcessInstanceCommentAPI service
 type ProcessInstanceCommentAPIService service
 
 type ApiDeleteProcessInstanceCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceCommentAPIService
-	id string
-	commentId string
+	id         string
+	commentId  string
 }
 
 func (r ApiDeleteProcessInstanceCommentRequest) Execute() (*http.Response, error) {
@@ -39,26 +38,26 @@ DeleteProcessInstanceComment Delete
 
 Removes a comment from a process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance.
- @param commentId The id of the comment to be removed.
- @return ApiDeleteProcessInstanceCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance.
+	@param commentId The id of the comment to be removed.
+	@return ApiDeleteProcessInstanceCommentRequest
 */
 func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceComment(ctx context.Context, id string, commentId string) ApiDeleteProcessInstanceCommentRequest {
 	return ApiDeleteProcessInstanceCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		commentId: commentId,
+		ctx:        ctx,
+		id:         id,
+		commentId:  commentId,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentExecute(r ApiDeleteProcessInstanceCommentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceCommentAPIService.DeleteProcessInstanceComment")
@@ -120,8 +119,8 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -131,8 +130,8 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -141,9 +140,9 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentExecute(r
 }
 
 type ApiDeleteProcessInstanceCommentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceCommentAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteProcessInstanceCommentsRequest) Execute() (*http.Response, error) {
@@ -155,24 +154,24 @@ DeleteProcessInstanceComments Delete ProcessInstance Comments
 
 Deletes all comments of a process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance for which all comments are to be deleted.
- @return ApiDeleteProcessInstanceCommentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance for which all comments are to be deleted.
+	@return ApiDeleteProcessInstanceCommentsRequest
 */
 func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceComments(ctx context.Context, id string) ApiDeleteProcessInstanceCommentsRequest {
 	return ApiDeleteProcessInstanceCommentsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentsExecute(r ApiDeleteProcessInstanceCommentsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceCommentAPIService.DeleteProcessInstanceComments")
@@ -233,8 +232,8 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentsExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
@@ -244,8 +243,8 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentsExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -254,9 +253,9 @@ func (a *ProcessInstanceCommentAPIService) DeleteProcessInstanceCommentsExecute(
 }
 
 type ApiGetProcessInstanceCommentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceCommentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetProcessInstanceCommentsRequest) Execute() ([]CommentDto, *http.Response, error) {
@@ -268,26 +267,27 @@ GetProcessInstanceComments Get Process Instance Comments
 
 Gets the comments for a process instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance to retrieve the comments for.
- @return ApiGetProcessInstanceCommentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance to retrieve the comments for.
+	@return ApiGetProcessInstanceCommentsRequest
 */
 func (a *ProcessInstanceCommentAPIService) GetProcessInstanceComments(ctx context.Context, id string) ApiGetProcessInstanceCommentsRequest {
 	return ApiGetProcessInstanceCommentsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []CommentDto
+//
+//	@return []CommentDto
 func (a *ProcessInstanceCommentAPIService) GetProcessInstanceCommentsExecute(r ApiGetProcessInstanceCommentsRequest) ([]CommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CommentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceCommentAPIService.GetProcessInstanceComments")
@@ -348,8 +348,8 @@ func (a *ProcessInstanceCommentAPIService) GetProcessInstanceCommentsExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -367,9 +367,9 @@ func (a *ProcessInstanceCommentAPIService) GetProcessInstanceCommentsExecute(r A
 }
 
 type ApiUpdateProcessInstanceCommentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessInstanceCommentAPIService
-	id string
+	id         string
 	commentDto *CommentDto
 }
 
@@ -388,24 +388,24 @@ UpdateProcessInstanceComment Update
 
 Updates a Comment.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id associated of a process instance of a comment to be updated.
- @return ApiUpdateProcessInstanceCommentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id associated of a process instance of a comment to be updated.
+	@return ApiUpdateProcessInstanceCommentRequest
 */
 func (a *ProcessInstanceCommentAPIService) UpdateProcessInstanceComment(ctx context.Context, id string) ApiUpdateProcessInstanceCommentRequest {
 	return ApiUpdateProcessInstanceCommentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessInstanceCommentAPIService) UpdateProcessInstanceCommentExecute(r ApiUpdateProcessInstanceCommentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessInstanceCommentAPIService.UpdateProcessInstanceComment")
@@ -468,8 +468,8 @@ func (a *ProcessInstanceCommentAPIService) UpdateProcessInstanceCommentExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -479,8 +479,8 @@ func (a *ProcessInstanceCommentAPIService) UpdateProcessInstanceCommentExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

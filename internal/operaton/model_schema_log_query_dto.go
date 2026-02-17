@@ -21,7 +21,7 @@ var _ MappedNullable = &SchemaLogQueryDto{}
 type SchemaLogQueryDto struct {
 	// The version of the schema.
 	Version NullableString `json:"version,omitempty"`
-	// A JSON array of criteria to sort the result by. Each element of the array is                       a JSON object that specifies one ordering. The position in the array                       identifies the rank of an ordering, i.e., whether it is primary, secondary,                       etc. 
+	// A JSON array of criteria to sort the result by. Each element of the array is                       a JSON object that specifies one ordering. The position in the array                       identifies the rank of an ordering, i.e., whether it is primary, secondary,                       etc.
 	Sorting []SchemaLogQueryDtoSortingInner `json:"sorting,omitempty"`
 }
 
@@ -74,6 +74,7 @@ func (o *SchemaLogQueryDto) HasVersion() bool {
 func (o *SchemaLogQueryDto) SetVersion(v string) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *SchemaLogQueryDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -118,7 +119,7 @@ func (o *SchemaLogQueryDto) SetSorting(v []SchemaLogQueryDtoSortingInner) {
 }
 
 func (o SchemaLogQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -171,5 +172,3 @@ func (v *NullableSchemaLogQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

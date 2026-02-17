@@ -76,6 +76,7 @@ func (o *DeploymentResourceDto) HasId() bool {
 func (o *DeploymentResourceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DeploymentResourceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -118,6 +119,7 @@ func (o *DeploymentResourceDto) HasName() bool {
 func (o *DeploymentResourceDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *DeploymentResourceDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -160,6 +162,7 @@ func (o *DeploymentResourceDto) HasDeploymentId() bool {
 func (o *DeploymentResourceDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *DeploymentResourceDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -171,7 +174,7 @@ func (o *DeploymentResourceDto) UnsetDeploymentId() {
 }
 
 func (o DeploymentResourceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableDeploymentResourceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

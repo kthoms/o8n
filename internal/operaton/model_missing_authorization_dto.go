@@ -76,6 +76,7 @@ func (o *MissingAuthorizationDto) HasPermissionName() bool {
 func (o *MissingAuthorizationDto) SetPermissionName(v string) {
 	o.PermissionName.Set(&v)
 }
+
 // SetPermissionNameNil sets the value for PermissionName to be an explicit nil
 func (o *MissingAuthorizationDto) SetPermissionNameNil() {
 	o.PermissionName.Set(nil)
@@ -118,6 +119,7 @@ func (o *MissingAuthorizationDto) HasResourceName() bool {
 func (o *MissingAuthorizationDto) SetResourceName(v string) {
 	o.ResourceName.Set(&v)
 }
+
 // SetResourceNameNil sets the value for ResourceName to be an explicit nil
 func (o *MissingAuthorizationDto) SetResourceNameNil() {
 	o.ResourceName.Set(nil)
@@ -160,6 +162,7 @@ func (o *MissingAuthorizationDto) HasResourceId() bool {
 func (o *MissingAuthorizationDto) SetResourceId(v string) {
 	o.ResourceId.Set(&v)
 }
+
 // SetResourceIdNil sets the value for ResourceId to be an explicit nil
 func (o *MissingAuthorizationDto) SetResourceIdNil() {
 	o.ResourceId.Set(nil)
@@ -171,7 +174,7 @@ func (o *MissingAuthorizationDto) UnsetResourceId() {
 }
 
 func (o MissingAuthorizationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableMissingAuthorizationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

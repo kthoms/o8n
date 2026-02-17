@@ -74,6 +74,7 @@ func (o *HistoricActivityInstanceQueryDtoSortingInner) HasSortBy() bool {
 func (o *HistoricActivityInstanceQueryDtoSortingInner) SetSortBy(v string) {
 	o.SortBy.Set(&v)
 }
+
 // SetSortByNil sets the value for SortBy to be an explicit nil
 func (o *HistoricActivityInstanceQueryDtoSortingInner) SetSortByNil() {
 	o.SortBy.Set(nil)
@@ -116,6 +117,7 @@ func (o *HistoricActivityInstanceQueryDtoSortingInner) HasSortOrder() bool {
 func (o *HistoricActivityInstanceQueryDtoSortingInner) SetSortOrder(v string) {
 	o.SortOrder.Set(&v)
 }
+
 // SetSortOrderNil sets the value for SortOrder to be an explicit nil
 func (o *HistoricActivityInstanceQueryDtoSortingInner) SetSortOrderNil() {
 	o.SortOrder.Set(nil)
@@ -127,7 +129,7 @@ func (o *HistoricActivityInstanceQueryDtoSortingInner) UnsetSortOrder() {
 }
 
 func (o HistoricActivityInstanceQueryDtoSortingInner) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableHistoricActivityInstanceQueryDtoSortingInner) UnmarshalJSON(src
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

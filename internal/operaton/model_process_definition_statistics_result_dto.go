@@ -28,7 +28,7 @@ type ProcessDefinitionStatisticsResultDto struct {
 	// Each item in the resulting array is an object which contains `incidentType` and `incidentCount`. **Note**: Will be an empty array, if `incidents` or `incidentsForType` were excluded. Furthermore, the array will be also empty if no incidents were found.
 	Incidents []IncidentStatisticsResultDto `json:"incidents,omitempty"`
 	// The fully qualified class name of the data transfer object class. The class name might change in future releases.
-	Class NullableString `json:"@class,omitempty"`
+	Class      NullableString        `json:"@class,omitempty"`
 	Definition *ProcessDefinitionDto `json:"definition,omitempty"`
 }
 
@@ -81,6 +81,7 @@ func (o *ProcessDefinitionStatisticsResultDto) HasId() bool {
 func (o *ProcessDefinitionStatisticsResultDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ProcessDefinitionStatisticsResultDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -220,6 +221,7 @@ func (o *ProcessDefinitionStatisticsResultDto) HasClass() bool {
 func (o *ProcessDefinitionStatisticsResultDto) SetClass(v string) {
 	o.Class.Set(&v)
 }
+
 // SetClassNil sets the value for Class to be an explicit nil
 func (o *ProcessDefinitionStatisticsResultDto) SetClassNil() {
 	o.Class.Set(nil)
@@ -263,7 +265,7 @@ func (o *ProcessDefinitionStatisticsResultDto) SetDefinition(v ProcessDefinition
 }
 
 func (o ProcessDefinitionStatisticsResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -328,5 +330,3 @@ func (v *NullableProcessDefinitionStatisticsResultDto) UnmarshalJSON(src []byte)
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

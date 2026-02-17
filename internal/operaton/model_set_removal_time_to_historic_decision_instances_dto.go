@@ -27,7 +27,7 @@ type SetRemovalTimeToHistoricDecisionInstancesDto struct {
 	// The removal time is calculated based on the engine's configuration settings. Value may only be `true`, as `false` is the default behavior.  **Note:** Cannot be set in conjunction with `absoluteRemovalTime` or `clearedRemovalTime`.
 	CalculatedRemovalTime NullableBool `json:"calculatedRemovalTime,omitempty"`
 	// Sets the removal time to all historic decision instances in the hierarchy. Value may only be `true`, as `false` is the default behavior.
-	Hierarchical NullableBool `json:"hierarchical,omitempty"`
+	Hierarchical                  NullableBool                      `json:"hierarchical,omitempty"`
 	HistoricDecisionInstanceQuery *HistoricDecisionInstanceQueryDto `json:"historicDecisionInstanceQuery,omitempty"`
 	// The ids of the historic decision instances to set the removal time for.
 	HistoricDecisionInstanceIds []string `json:"historicDecisionInstanceIds,omitempty"`
@@ -82,6 +82,7 @@ func (o *SetRemovalTimeToHistoricDecisionInstancesDto) HasAbsoluteRemovalTime() 
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetAbsoluteRemovalTime(v time.Time) {
 	o.AbsoluteRemovalTime.Set(&v)
 }
+
 // SetAbsoluteRemovalTimeNil sets the value for AbsoluteRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetAbsoluteRemovalTimeNil() {
 	o.AbsoluteRemovalTime.Set(nil)
@@ -124,6 +125,7 @@ func (o *SetRemovalTimeToHistoricDecisionInstancesDto) HasClearedRemovalTime() b
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetClearedRemovalTime(v bool) {
 	o.ClearedRemovalTime.Set(&v)
 }
+
 // SetClearedRemovalTimeNil sets the value for ClearedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetClearedRemovalTimeNil() {
 	o.ClearedRemovalTime.Set(nil)
@@ -166,6 +168,7 @@ func (o *SetRemovalTimeToHistoricDecisionInstancesDto) HasCalculatedRemovalTime(
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetCalculatedRemovalTime(v bool) {
 	o.CalculatedRemovalTime.Set(&v)
 }
+
 // SetCalculatedRemovalTimeNil sets the value for CalculatedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetCalculatedRemovalTimeNil() {
 	o.CalculatedRemovalTime.Set(nil)
@@ -208,6 +211,7 @@ func (o *SetRemovalTimeToHistoricDecisionInstancesDto) HasHierarchical() bool {
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetHierarchical(v bool) {
 	o.Hierarchical.Set(&v)
 }
+
 // SetHierarchicalNil sets the value for Hierarchical to be an explicit nil
 func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetHierarchicalNil() {
 	o.Hierarchical.Set(nil)
@@ -284,7 +288,7 @@ func (o *SetRemovalTimeToHistoricDecisionInstancesDto) SetHistoricDecisionInstan
 }
 
 func (o SetRemovalTimeToHistoricDecisionInstancesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -349,5 +353,3 @@ func (v *NullableSetRemovalTimeToHistoricDecisionInstancesDto) UnmarshalJSON(src
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

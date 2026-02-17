@@ -74,6 +74,7 @@ func (o *DecisionRequirementsDefinitionXmlDto) HasId() bool {
 func (o *DecisionRequirementsDefinitionXmlDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DecisionRequirementsDefinitionXmlDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -116,6 +117,7 @@ func (o *DecisionRequirementsDefinitionXmlDto) HasDmnXml() bool {
 func (o *DecisionRequirementsDefinitionXmlDto) SetDmnXml(v string) {
 	o.DmnXml.Set(&v)
 }
+
 // SetDmnXmlNil sets the value for DmnXml to be an explicit nil
 func (o *DecisionRequirementsDefinitionXmlDto) SetDmnXmlNil() {
 	o.DmnXml.Set(nil)
@@ -127,7 +129,7 @@ func (o *DecisionRequirementsDefinitionXmlDto) UnsetDmnXml() {
 }
 
 func (o DecisionRequirementsDefinitionXmlDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableDecisionRequirementsDefinitionXmlDto) UnmarshalJSON(src []byte)
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -20,7 +20,7 @@ var _ MappedNullable = &DeleteHistoricProcessInstancesDto{}
 // DeleteHistoricProcessInstancesDto struct for DeleteHistoricProcessInstancesDto
 type DeleteHistoricProcessInstancesDto struct {
 	// A list historic process instance ids to delete.
-	HistoricProcessInstanceIds []string `json:"historicProcessInstanceIds,omitempty"`
+	HistoricProcessInstanceIds   []string                         `json:"historicProcessInstanceIds,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 	// A string with delete reason.
 	DeleteReason NullableString `json:"deleteReason,omitempty"`
@@ -142,6 +142,7 @@ func (o *DeleteHistoricProcessInstancesDto) HasDeleteReason() bool {
 func (o *DeleteHistoricProcessInstancesDto) SetDeleteReason(v string) {
 	o.DeleteReason.Set(&v)
 }
+
 // SetDeleteReasonNil sets the value for DeleteReason to be an explicit nil
 func (o *DeleteHistoricProcessInstancesDto) SetDeleteReasonNil() {
 	o.DeleteReason.Set(nil)
@@ -184,6 +185,7 @@ func (o *DeleteHistoricProcessInstancesDto) HasFailIfNotExists() bool {
 func (o *DeleteHistoricProcessInstancesDto) SetFailIfNotExists(v bool) {
 	o.FailIfNotExists.Set(&v)
 }
+
 // SetFailIfNotExistsNil sets the value for FailIfNotExists to be an explicit nil
 func (o *DeleteHistoricProcessInstancesDto) SetFailIfNotExistsNil() {
 	o.FailIfNotExists.Set(nil)
@@ -195,7 +197,7 @@ func (o *DeleteHistoricProcessInstancesDto) UnsetFailIfNotExists() {
 }
 
 func (o DeleteHistoricProcessInstancesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -254,5 +256,3 @@ func (v *NullableDeleteHistoricProcessInstancesDto) UnmarshalJSON(src []byte) er
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

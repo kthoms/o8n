@@ -80,6 +80,7 @@ func (o *ProblemDto) HasMessage() bool {
 func (o *ProblemDto) SetMessage(v string) {
 	o.Message.Set(&v)
 }
+
 // SetMessageNil sets the value for Message to be an explicit nil
 func (o *ProblemDto) SetMessageNil() {
 	o.Message.Set(nil)
@@ -122,6 +123,7 @@ func (o *ProblemDto) HasLine() bool {
 func (o *ProblemDto) SetLine(v int32) {
 	o.Line.Set(&v)
 }
+
 // SetLineNil sets the value for Line to be an explicit nil
 func (o *ProblemDto) SetLineNil() {
 	o.Line.Set(nil)
@@ -164,6 +166,7 @@ func (o *ProblemDto) HasColumn() bool {
 func (o *ProblemDto) SetColumn(v int32) {
 	o.Column.Set(&v)
 }
+
 // SetColumnNil sets the value for Column to be an explicit nil
 func (o *ProblemDto) SetColumnNil() {
 	o.Column.Set(nil)
@@ -206,6 +209,7 @@ func (o *ProblemDto) HasMainElementId() bool {
 func (o *ProblemDto) SetMainElementId(v string) {
 	o.MainElementId.Set(&v)
 }
+
 // SetMainElementIdNil sets the value for MainElementId to be an explicit nil
 func (o *ProblemDto) SetMainElementIdNil() {
 	o.MainElementId.Set(nil)
@@ -250,7 +254,7 @@ func (o *ProblemDto) SetElementIds(v []string) {
 }
 
 func (o ProblemDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -312,5 +316,3 @@ func (v *NullableProblemDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

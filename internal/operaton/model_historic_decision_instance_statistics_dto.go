@@ -74,6 +74,7 @@ func (o *HistoricDecisionInstanceStatisticsDto) HasDecisionDefinitionKey() bool 
 func (o *HistoricDecisionInstanceStatisticsDto) SetDecisionDefinitionKey(v string) {
 	o.DecisionDefinitionKey.Set(&v)
 }
+
 // SetDecisionDefinitionKeyNil sets the value for DecisionDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceStatisticsDto) SetDecisionDefinitionKeyNil() {
 	o.DecisionDefinitionKey.Set(nil)
@@ -116,6 +117,7 @@ func (o *HistoricDecisionInstanceStatisticsDto) HasEvaluations() bool {
 func (o *HistoricDecisionInstanceStatisticsDto) SetEvaluations(v int32) {
 	o.Evaluations.Set(&v)
 }
+
 // SetEvaluationsNil sets the value for Evaluations to be an explicit nil
 func (o *HistoricDecisionInstanceStatisticsDto) SetEvaluationsNil() {
 	o.Evaluations.Set(nil)
@@ -127,7 +129,7 @@ func (o *HistoricDecisionInstanceStatisticsDto) UnsetEvaluations() {
 }
 
 func (o HistoricDecisionInstanceStatisticsDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableHistoricDecisionInstanceStatisticsDto) UnmarshalJSON(src []byte
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

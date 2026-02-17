@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -107,6 +107,7 @@ func (o *MultipleProcessInstanceModificationInstructionDto) HasActivityId() bool
 func (o *MultipleProcessInstanceModificationInstructionDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *MultipleProcessInstanceModificationInstructionDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -149,6 +150,7 @@ func (o *MultipleProcessInstanceModificationInstructionDto) HasTransitionId() bo
 func (o *MultipleProcessInstanceModificationInstructionDto) SetTransitionId(v string) {
 	o.TransitionId.Set(&v)
 }
+
 // SetTransitionIdNil sets the value for TransitionId to be an explicit nil
 func (o *MultipleProcessInstanceModificationInstructionDto) SetTransitionIdNil() {
 	o.TransitionId.Set(nil)
@@ -191,6 +193,7 @@ func (o *MultipleProcessInstanceModificationInstructionDto) HasCancelCurrentActi
 func (o *MultipleProcessInstanceModificationInstructionDto) SetCancelCurrentActiveActivityInstances(v bool) {
 	o.CancelCurrentActiveActivityInstances.Set(&v)
 }
+
 // SetCancelCurrentActiveActivityInstancesNil sets the value for CancelCurrentActiveActivityInstances to be an explicit nil
 func (o *MultipleProcessInstanceModificationInstructionDto) SetCancelCurrentActiveActivityInstancesNil() {
 	o.CancelCurrentActiveActivityInstances.Set(nil)
@@ -202,7 +205,7 @@ func (o *MultipleProcessInstanceModificationInstructionDto) UnsetCancelCurrentAc
 }
 
 func (o MultipleProcessInstanceModificationInstructionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -237,10 +240,10 @@ func (o *MultipleProcessInstanceModificationInstructionDto) UnmarshalJSON(data [
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -296,5 +299,3 @@ func (v *NullableMultipleProcessInstanceModificationInstructionDto) UnmarshalJSO
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

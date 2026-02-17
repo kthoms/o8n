@@ -18,14 +18,13 @@ import (
 	"net/url"
 )
 
-
 // SignalAPIService SignalAPI service
 type SignalAPIService service
 
 type ApiThrowSignalRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *SignalAPIService
-	signalDto *SignalDto
+	signalDto  *SignalDto
 }
 
 func (r ApiThrowSignalRequest) SignalDto(signalDto SignalDto) ApiThrowSignalRequest {
@@ -46,22 +45,22 @@ method `RuntimeService#createSignalEvent()`. For more information about the sign
 behavior, see the [Signal Events](https://docs.operaton.org/manual/1.0/reference/bpmn20/events/signal-events/)
 section of the [BPMN 2.0 Implementation Reference](https://docs.operaton.org/manual/1.0/reference/bpmn20/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiThrowSignalRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiThrowSignalRequest
 */
 func (a *SignalAPIService) ThrowSignal(ctx context.Context) ApiThrowSignalRequest {
 	return ApiThrowSignalRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *SignalAPIService) ThrowSignalExecute(r ApiThrowSignalRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SignalAPIService.ThrowSignal")
@@ -123,8 +122,8 @@ func (a *SignalAPIService) ThrowSignalExecute(r ApiThrowSignalRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -134,8 +133,8 @@ func (a *SignalAPIService) ThrowSignalExecute(r ApiThrowSignalRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -145,8 +144,8 @@ func (a *SignalAPIService) ThrowSignalExecute(r ApiThrowSignalRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

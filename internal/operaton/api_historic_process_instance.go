@@ -20,14 +20,13 @@ import (
 	"time"
 )
 
-
 // HistoricProcessInstanceAPIService HistoricProcessInstanceAPI service
 type HistoricProcessInstanceAPIService service
 
 type ApiDeleteHistoricProcessInstanceRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
-	id string
+	ctx             context.Context
+	ApiService      *HistoricProcessInstanceAPIService
+	id              string
 	failIfNotExists *bool
 }
 
@@ -46,24 +45,24 @@ DeleteHistoricProcessInstance Delete
 
 Deletes a process instance from the history by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic process instance to be deleted.
- @return ApiDeleteHistoricProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic process instance to be deleted.
+	@return ApiDeleteHistoricProcessInstanceRequest
 */
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstance(ctx context.Context, id string) ApiDeleteHistoricProcessInstanceRequest {
 	return ApiDeleteHistoricProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstanceExecute(r ApiDeleteHistoricProcessInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.DeleteHistoricProcessInstance")
@@ -127,8 +126,8 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstanceExecute
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -137,8 +136,8 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstanceExecute
 }
 
 type ApiDeleteHistoricProcessInstancesAsyncRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
+	ctx                               context.Context
+	ApiService                        *HistoricProcessInstanceAPIService
 	deleteHistoricProcessInstancesDto *DeleteHistoricProcessInstancesDto
 }
 
@@ -158,24 +157,25 @@ Delete multiple historic process instances asynchronously (batch).
 At least `historicProcessInstanceIds` or `historicProcessInstanceQuery` has to be provided.
 If both are provided then all instances matching query criterion and instances from the list will be deleted.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteHistoricProcessInstancesAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteHistoricProcessInstancesAsyncRequest
 */
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstancesAsync(ctx context.Context) ApiDeleteHistoricProcessInstancesAsyncRequest {
 	return ApiDeleteHistoricProcessInstancesAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstancesAsyncExecute(r ApiDeleteHistoricProcessInstancesAsyncRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.DeleteHistoricProcessInstancesAsync")
@@ -237,8 +237,8 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstancesAsyncE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -256,9 +256,9 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricProcessInstancesAsyncE
 }
 
 type ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricProcessInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest) Execute() (*http.Response, error) {
@@ -270,24 +270,24 @@ DeleteHistoricVariableInstancesOfHistoricProcessInstance Delete Variable Instanc
 
 Deletes all variables of a process instance from the history by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process instance for which all historic variables are to be deleted.
- @return ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process instance for which all historic variables are to be deleted.
+	@return ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest
 */
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricVariableInstancesOfHistoricProcessInstance(ctx context.Context, id string) ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest {
 	return ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *HistoricProcessInstanceAPIService) DeleteHistoricVariableInstancesOfHistoricProcessInstanceExecute(r ApiDeleteHistoricVariableInstancesOfHistoricProcessInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.DeleteHistoricVariableInstancesOfHistoricProcessInstance")
@@ -348,8 +348,8 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricVariableInstancesOfHis
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -358,9 +358,9 @@ func (a *HistoricProcessInstanceAPIService) DeleteHistoricVariableInstancesOfHis
 }
 
 type ApiGetHistoricProcessInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricProcessInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricProcessInstanceRequest) Execute() (*HistoricProcessInstanceDto, *http.Response, error) {
@@ -372,26 +372,27 @@ GetHistoricProcessInstance Get
 
 Retrieves a historic process instance by id, according to the `HistoricProcessInstance` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic process instance to be retrieved.
- @return ApiGetHistoricProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic process instance to be retrieved.
+	@return ApiGetHistoricProcessInstanceRequest
 */
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstance(ctx context.Context, id string) ApiGetHistoricProcessInstanceRequest {
 	return ApiGetHistoricProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricProcessInstanceDto
+//
+//	@return HistoricProcessInstanceDto
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceExecute(r ApiGetHistoricProcessInstanceRequest) (*HistoricProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricProcessInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.GetHistoricProcessInstance")
@@ -452,8 +453,8 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -471,14 +472,14 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceExecute(r 
 }
 
 type ApiGetHistoricProcessInstanceDurationReportRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
-	reportType *string
-	periodUnit *string
-	processDefinitionIdIn *string
+	ctx                    context.Context
+	ApiService             *HistoricProcessInstanceAPIService
+	reportType             *string
+	periodUnit             *string
+	processDefinitionIdIn  *string
 	processDefinitionKeyIn *string
-	startedBefore *time.Time
-	startedAfter *time.Time
+	startedBefore          *time.Time
+	startedAfter           *time.Time
 }
 
 // **Mandatory.** Specifies the type of the report to retrieve. To retrieve a report about the duration of process instances, the value must be set to &#x60;duration&#x60;.
@@ -529,24 +530,25 @@ These reports include the maximum, minimum and average duration of all completed
 
 **Note:** This only includes historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricProcessInstanceDurationReportRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricProcessInstanceDurationReportRequest
 */
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceDurationReport(ctx context.Context) ApiGetHistoricProcessInstanceDurationReportRequest {
 	return ApiGetHistoricProcessInstanceDurationReportRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []DurationReportResultDto
+//
+//	@return []DurationReportResultDto
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceDurationReportExecute(r ApiGetHistoricProcessInstanceDurationReportRequest) ([]DurationReportResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []DurationReportResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []DurationReportResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.GetHistoricProcessInstanceDurationReport")
@@ -626,8 +628,8 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceDurationRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -637,8 +639,8 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceDurationRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -656,63 +658,63 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstanceDurationRe
 }
 
 type ApiGetHistoricProcessInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	processInstanceId *string
-	processInstanceIds *string
-	processInstanceIdNotIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	processDefinitionKeyNotIn *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyIn *string
+	ctx                            context.Context
+	ApiService                     *HistoricProcessInstanceAPIService
+	sortBy                         *string
+	sortOrder                      *string
+	firstResult                    *int32
+	maxResults                     *int32
+	processInstanceId              *string
+	processInstanceIds             *string
+	processInstanceIdNotIn         *string
+	processDefinitionId            *string
+	processDefinitionKey           *string
+	processDefinitionKeyIn         *string
+	processDefinitionName          *string
+	processDefinitionNameLike      *string
+	processDefinitionKeyNotIn      *string
+	processInstanceBusinessKey     *string
+	processInstanceBusinessKeyIn   *string
 	processInstanceBusinessKeyLike *string
-	rootProcessInstances *bool
-	rootProcessInstanceId *string
-	finished *bool
-	unfinished *bool
-	withJobsRetrying *bool
-	withIncidents *bool
-	withRootIncidents *bool
-	incidentIdIn *string
-	incidentType *string
-	incidentStatus *string
-	incidentMessage *string
-	incidentMessageLike *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	executedActivityAfter *time.Time
-	executedActivityBefore *time.Time
-	executedJobAfter *time.Time
-	executedJobBefore *time.Time
-	startedBy *string
-	superProcessInstanceId *string
-	subProcessInstanceId *string
-	superCaseInstanceId *string
-	subCaseInstanceId *string
-	caseInstanceId *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	activityIdIn *string
-	executedActivityIdIn *string
-	activeActivityIdIn *string
-	active *bool
-	suspended *bool
-	completed *bool
-	externallyTerminated *bool
-	internallyTerminated *bool
-	variables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
+	rootProcessInstances           *bool
+	rootProcessInstanceId          *string
+	finished                       *bool
+	unfinished                     *bool
+	withJobsRetrying               *bool
+	withIncidents                  *bool
+	withRootIncidents              *bool
+	incidentIdIn                   *string
+	incidentType                   *string
+	incidentStatus                 *string
+	incidentMessage                *string
+	incidentMessageLike            *string
+	startedBefore                  *time.Time
+	startedAfter                   *time.Time
+	finishedBefore                 *time.Time
+	finishedAfter                  *time.Time
+	executedActivityAfter          *time.Time
+	executedActivityBefore         *time.Time
+	executedJobAfter               *time.Time
+	executedJobBefore              *time.Time
+	startedBy                      *string
+	superProcessInstanceId         *string
+	subProcessInstanceId           *string
+	superCaseInstanceId            *string
+	subCaseInstanceId              *string
+	caseInstanceId                 *string
+	tenantIdIn                     *string
+	withoutTenantId                *bool
+	activityIdIn                   *string
+	executedActivityIdIn           *string
+	activeActivityIdIn             *string
+	active                         *bool
+	suspended                      *bool
+	completed                      *bool
+	externallyTerminated           *bool
+	internallyTerminated           *bool
+	variables                      *string
+	variableNamesIgnoreCase        *bool
+	variableValuesIgnoreCase       *bool
 }
 
 // Sort the results lexicographically by a given criterion. Must be used in conjunction with the sortOrder parameter.
@@ -1027,7 +1029,7 @@ func (r ApiGetHistoricProcessInstancesRequest) InternallyTerminated(internallyTe
 	return r
 }
 
-// Only include process instances that have/had variables with certain values. Variable filtering expressions are comma-separated and are structured as follows: A valid parameter value has the form &#x60;key_operator_value&#x60;. &#x60;key&#x60; is the variable name, &#x60;operator&#x60; is the comparison operator to be used and &#x60;value&#x60; the variable value.  **Note:** Values are always treated as String objects on server side.  Valid operator values are: &#x60;eq&#x60; - equal to; &#x60;neq&#x60; - not equal to; &#x60;gt&#x60; - greater than; &#x60;gteq&#x60; - greater than or equal to; &#x60;lt&#x60; - lower than; &#x60;lteq&#x60; - lower than or equal to; &#x60;like&#x60;.  Key and value may not contain underscore or comma characters. 
+// Only include process instances that have/had variables with certain values. Variable filtering expressions are comma-separated and are structured as follows: A valid parameter value has the form &#x60;key_operator_value&#x60;. &#x60;key&#x60; is the variable name, &#x60;operator&#x60; is the comparison operator to be used and &#x60;value&#x60; the variable value.  **Note:** Values are always treated as String objects on server side.  Valid operator values are: &#x60;eq&#x60; - equal to; &#x60;neq&#x60; - not equal to; &#x60;gt&#x60; - greater than; &#x60;gteq&#x60; - greater than or equal to; &#x60;lt&#x60; - lower than; &#x60;lteq&#x60; - lower than or equal to; &#x60;like&#x60;.  Key and value may not contain underscore or comma characters.
 func (r ApiGetHistoricProcessInstancesRequest) Variables(variables string) ApiGetHistoricProcessInstancesRequest {
 	r.variables = &variables
 	return r
@@ -1056,24 +1058,25 @@ Queries for historic process instances that fulfill the given parameters.
 The size of the result set can be retrieved by using the
 [Get Process Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/process-instance/get-process-instance-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricProcessInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricProcessInstancesRequest
 */
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstances(ctx context.Context) ApiGetHistoricProcessInstancesRequest {
 	return ApiGetHistoricProcessInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricProcessInstanceDto
+//
+//	@return []HistoricProcessInstanceDto
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesExecute(r ApiGetHistoricProcessInstancesRequest) ([]HistoricProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricProcessInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.GetHistoricProcessInstances")
@@ -1298,8 +1301,8 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1317,59 +1320,59 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesExecute(r
 }
 
 type ApiGetHistoricProcessInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
-	processInstanceId *string
-	processInstanceIds *string
-	processInstanceIdNotIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	processDefinitionKeyNotIn *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyIn *string
+	ctx                            context.Context
+	ApiService                     *HistoricProcessInstanceAPIService
+	processInstanceId              *string
+	processInstanceIds             *string
+	processInstanceIdNotIn         *string
+	processDefinitionId            *string
+	processDefinitionKey           *string
+	processDefinitionKeyIn         *string
+	processDefinitionName          *string
+	processDefinitionNameLike      *string
+	processDefinitionKeyNotIn      *string
+	processInstanceBusinessKey     *string
+	processInstanceBusinessKeyIn   *string
 	processInstanceBusinessKeyLike *string
-	rootProcessInstances *bool
-	rootProcessInstanceId *string
-	finished *bool
-	unfinished *bool
-	withJobsRetrying *bool
-	withIncidents *bool
-	withRootIncidents *bool
-	incidentIdIn *string
-	incidentType *string
-	incidentStatus *string
-	incidentMessage *string
-	incidentMessageLike *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	executedActivityAfter *time.Time
-	executedActivityBefore *time.Time
-	executedJobAfter *time.Time
-	executedJobBefore *time.Time
-	startedBy *string
-	superProcessInstanceId *string
-	subProcessInstanceId *string
-	superCaseInstanceId *string
-	subCaseInstanceId *string
-	caseInstanceId *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	activityIdIn *string
-	executedActivityIdIn *string
-	activeActivityIdIn *string
-	active *bool
-	suspended *bool
-	completed *bool
-	externallyTerminated *bool
-	internallyTerminated *bool
-	variables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
+	rootProcessInstances           *bool
+	rootProcessInstanceId          *string
+	finished                       *bool
+	unfinished                     *bool
+	withJobsRetrying               *bool
+	withIncidents                  *bool
+	withRootIncidents              *bool
+	incidentIdIn                   *string
+	incidentType                   *string
+	incidentStatus                 *string
+	incidentMessage                *string
+	incidentMessageLike            *string
+	startedBefore                  *time.Time
+	startedAfter                   *time.Time
+	finishedBefore                 *time.Time
+	finishedAfter                  *time.Time
+	executedActivityAfter          *time.Time
+	executedActivityBefore         *time.Time
+	executedJobAfter               *time.Time
+	executedJobBefore              *time.Time
+	startedBy                      *string
+	superProcessInstanceId         *string
+	subProcessInstanceId           *string
+	superCaseInstanceId            *string
+	subCaseInstanceId              *string
+	caseInstanceId                 *string
+	tenantIdIn                     *string
+	withoutTenantId                *bool
+	activityIdIn                   *string
+	executedActivityIdIn           *string
+	activeActivityIdIn             *string
+	active                         *bool
+	suspended                      *bool
+	completed                      *bool
+	externallyTerminated           *bool
+	internallyTerminated           *bool
+	variables                      *string
+	variableNamesIgnoreCase        *bool
+	variableValuesIgnoreCase       *bool
 }
 
 // Filter by process instance id.
@@ -1660,7 +1663,7 @@ func (r ApiGetHistoricProcessInstancesCountRequest) InternallyTerminated(interna
 	return r
 }
 
-// Only include process instances that have/had variables with certain values. Variable filtering expressions are comma-separated and are structured as follows: A valid parameter value has the form &#x60;key_operator_value&#x60;. &#x60;key&#x60; is the variable name, &#x60;operator&#x60; is the comparison operator to be used and &#x60;value&#x60; the variable value.  **Note:** Values are always treated as String objects on server side.  Valid operator values are: &#x60;eq&#x60; - equal to; &#x60;neq&#x60; - not equal to; &#x60;gt&#x60; - greater than; &#x60;gteq&#x60; - greater than or equal to; &#x60;lt&#x60; - lower than; &#x60;lteq&#x60; - lower than or equal to; &#x60;like&#x60;.  Key and value may not contain underscore or comma characters. 
+// Only include process instances that have/had variables with certain values. Variable filtering expressions are comma-separated and are structured as follows: A valid parameter value has the form &#x60;key_operator_value&#x60;. &#x60;key&#x60; is the variable name, &#x60;operator&#x60; is the comparison operator to be used and &#x60;value&#x60; the variable value.  **Note:** Values are always treated as String objects on server side.  Valid operator values are: &#x60;eq&#x60; - equal to; &#x60;neq&#x60; - not equal to; &#x60;gt&#x60; - greater than; &#x60;gteq&#x60; - greater than or equal to; &#x60;lt&#x60; - lower than; &#x60;lteq&#x60; - lower than or equal to; &#x60;like&#x60;.  Key and value may not contain underscore or comma characters.
 func (r ApiGetHistoricProcessInstancesCountRequest) Variables(variables string) ApiGetHistoricProcessInstancesCountRequest {
 	r.variables = &variables
 	return r
@@ -1688,24 +1691,25 @@ GetHistoricProcessInstancesCount Get List Count
 Queries for the number of historic process instances that fulfill the given parameters.
 Takes the same parameters as the [Get Process Instances](https://docs.operaton.org/manual/1.0/reference/rest/history/process-instance/get-process-instance-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricProcessInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricProcessInstancesCountRequest
 */
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesCount(ctx context.Context) ApiGetHistoricProcessInstancesCountRequest {
 	return ApiGetHistoricProcessInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesCountExecute(r ApiGetHistoricProcessInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.GetHistoricProcessInstancesCount")
@@ -1918,8 +1922,8 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesCountExec
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1937,10 +1941,10 @@ func (a *HistoricProcessInstanceAPIService) GetHistoricProcessInstancesCountExec
 }
 
 type ApiQueryHistoricProcessInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                             context.Context
+	ApiService                      *HistoricProcessInstanceAPIService
+	firstResult                     *int32
+	maxResults                      *int32
 	historicProcessInstanceQueryDto *HistoricProcessInstanceQueryDto
 }
 
@@ -1973,24 +1977,25 @@ This method is slightly more powerful than the
 [Get Process Instance](https://docs.operaton.org/manual/1.0/reference/rest/history/process-instance/get-process-instance-query/)
 because it allows filtering by multiple process variables of types `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricProcessInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricProcessInstancesRequest
 */
 func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstances(ctx context.Context) ApiQueryHistoricProcessInstancesRequest {
 	return ApiQueryHistoricProcessInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricProcessInstanceDto
+//
+//	@return []HistoricProcessInstanceDto
 func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesExecute(r ApiQueryHistoricProcessInstancesRequest) ([]HistoricProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.QueryHistoricProcessInstances")
@@ -2058,8 +2063,8 @@ func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2077,8 +2082,8 @@ func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesExecute
 }
 
 type ApiQueryHistoricProcessInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
+	ctx                             context.Context
+	ApiService                      *HistoricProcessInstanceAPIService
 	historicProcessInstanceQueryDto *HistoricProcessInstanceQueryDto
 }
 
@@ -2098,24 +2103,25 @@ Queries for the number of historic process instances that fulfill the given para
 This method takes the same message body as the [Get Process Instances (POST)](https://docs.operaton.org/manual/1.0/reference/rest/history/process-instance/get-process-instance-query/) method and
 therefore it is slightly more powerful than the [Get Process Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/process-instance/post-process-instance-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricProcessInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricProcessInstancesCountRequest
 */
 func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesCount(ctx context.Context) ApiQueryHistoricProcessInstancesCountRequest {
 	return ApiQueryHistoricProcessInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesCountExecute(r ApiQueryHistoricProcessInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.QueryHistoricProcessInstancesCount")
@@ -2177,8 +2183,8 @@ func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesCountEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2196,8 +2202,8 @@ func (a *HistoricProcessInstanceAPIService) QueryHistoricProcessInstancesCountEx
 }
 
 type ApiSetRemovalTimeAsyncRequest struct {
-	ctx context.Context
-	ApiService *HistoricProcessInstanceAPIService
+	ctx                                         context.Context
+	ApiService                                  *HistoricProcessInstanceAPIService
 	setRemovalTimeToHistoricProcessInstancesDto *SetRemovalTimeToHistoricProcessInstancesDto
 }
 
@@ -2218,24 +2224,25 @@ Sets the removal time to multiple historic process instances asynchronously (bat
 At least `historicProcessInstanceIds` or `historicProcessInstanceQuery` has to be provided.
 If both are provided, all instances matching query criterion and instances from the list will be updated with a removal time.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRemovalTimeAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRemovalTimeAsyncRequest
 */
 func (a *HistoricProcessInstanceAPIService) SetRemovalTimeAsync(ctx context.Context) ApiSetRemovalTimeAsyncRequest {
 	return ApiSetRemovalTimeAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *HistoricProcessInstanceAPIService) SetRemovalTimeAsyncExecute(r ApiSetRemovalTimeAsyncRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricProcessInstanceAPIService.SetRemovalTimeAsync")
@@ -2297,8 +2304,8 @@ func (a *HistoricProcessInstanceAPIService) SetRemovalTimeAsyncExecute(r ApiSetR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -74,6 +74,7 @@ func (o *JobDefinitionPriorityDto) HasPriority() bool {
 func (o *JobDefinitionPriorityDto) SetPriority(v int64) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *JobDefinitionPriorityDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -116,6 +117,7 @@ func (o *JobDefinitionPriorityDto) HasIncludeJobs() bool {
 func (o *JobDefinitionPriorityDto) SetIncludeJobs(v bool) {
 	o.IncludeJobs.Set(&v)
 }
+
 // SetIncludeJobsNil sets the value for IncludeJobs to be an explicit nil
 func (o *JobDefinitionPriorityDto) SetIncludeJobsNil() {
 	o.IncludeJobs.Set(nil)
@@ -127,7 +129,7 @@ func (o *JobDefinitionPriorityDto) UnsetIncludeJobs() {
 }
 
 func (o JobDefinitionPriorityDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableJobDefinitionPriorityDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

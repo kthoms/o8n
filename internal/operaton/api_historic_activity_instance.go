@@ -20,14 +20,13 @@ import (
 	"time"
 )
 
-
 // HistoricActivityInstanceAPIService HistoricActivityInstanceAPI service
 type HistoricActivityInstanceAPIService service
 
 type ApiGetHistoricActivityInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricActivityInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricActivityInstanceRequest) Execute() (*HistoricActivityInstanceDto, *http.Response, error) {
@@ -39,26 +38,27 @@ GetHistoricActivityInstance Get
 
 Retrieves a historic activity instance by id, according to the `HistoricActivityInstance` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic activity instance to be retrieved.
- @return ApiGetHistoricActivityInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic activity instance to be retrieved.
+	@return ApiGetHistoricActivityInstanceRequest
 */
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstance(ctx context.Context, id string) ApiGetHistoricActivityInstanceRequest {
 	return ApiGetHistoricActivityInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricActivityInstanceDto
+//
+//	@return HistoricActivityInstanceDto
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstanceExecute(r ApiGetHistoricActivityInstanceRequest) (*HistoricActivityInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricActivityInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricActivityInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricActivityInstanceAPIService.GetHistoricActivityInstance")
@@ -119,8 +119,8 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstanceExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -138,30 +138,30 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstanceExecute(
 }
 
 type ApiGetHistoricActivityInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricActivityInstanceAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	activityInstanceId *string
-	processInstanceId *string
+	ctx                 context.Context
+	ApiService          *HistoricActivityInstanceAPIService
+	sortBy              *string
+	sortOrder           *string
+	firstResult         *int32
+	maxResults          *int32
+	activityInstanceId  *string
+	processInstanceId   *string
 	processDefinitionId *string
-	executionId *string
-	activityId *string
-	activityName *string
-	activityType *string
-	taskAssignee *string
-	finished *bool
-	unfinished *bool
-	canceled *bool
-	completeScope *bool
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	tenantIdIn *string
-	withoutTenantId *bool
+	executionId         *string
+	activityId          *string
+	activityName        *string
+	activityType        *string
+	taskAssignee        *string
+	finished            *bool
+	unfinished          *bool
+	canceled            *bool
+	completeScope       *bool
+	startedBefore       *time.Time
+	startedAfter        *time.Time
+	finishedBefore      *time.Time
+	finishedAfter       *time.Time
+	tenantIdIn          *string
+	withoutTenantId     *bool
 }
 
 // Sort the results lexicographically by a given criterion. Must be used in conjunction with the sortOrder parameter.
@@ -307,24 +307,25 @@ Queries for historic activity instances that fulfill the given parameters.
 The size of the result set can be retrieved by using the
 [Get Historic Activity Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/activity-instance/get-activity-instance-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricActivityInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricActivityInstancesRequest
 */
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstances(ctx context.Context) ApiGetHistoricActivityInstancesRequest {
 	return ApiGetHistoricActivityInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricActivityInstanceDto
+//
+//	@return []HistoricActivityInstanceDto
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesExecute(r ApiGetHistoricActivityInstancesRequest) ([]HistoricActivityInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricActivityInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricActivityInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricActivityInstanceAPIService.GetHistoricActivityInstances")
@@ -450,8 +451,8 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -469,26 +470,26 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesExecute
 }
 
 type ApiGetHistoricActivityInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricActivityInstanceAPIService
-	activityInstanceId *string
-	processInstanceId *string
+	ctx                 context.Context
+	ApiService          *HistoricActivityInstanceAPIService
+	activityInstanceId  *string
+	processInstanceId   *string
 	processDefinitionId *string
-	executionId *string
-	activityId *string
-	activityName *string
-	activityType *string
-	taskAssignee *string
-	finished *bool
-	unfinished *bool
-	canceled *bool
-	completeScope *bool
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	tenantIdIn *string
-	withoutTenantId *bool
+	executionId         *string
+	activityId          *string
+	activityName        *string
+	activityType        *string
+	taskAssignee        *string
+	finished            *bool
+	unfinished          *bool
+	canceled            *bool
+	completeScope       *bool
+	startedBefore       *time.Time
+	startedAfter        *time.Time
+	finishedBefore      *time.Time
+	finishedAfter       *time.Time
+	tenantIdIn          *string
+	withoutTenantId     *bool
 }
 
 // Filter by activity instance id.
@@ -609,24 +610,25 @@ GetHistoricActivityInstancesCount Get List Count
 Queries for the number of historic activity instances that fulfill the given parameters.
 Takes the same parameters as the [Get Historic Activity Instance](https://docs.operaton.org/manual/1.0/reference/rest/history/activity-instance/get-activity-instance-query/)  method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricActivityInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricActivityInstancesCountRequest
 */
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesCount(ctx context.Context) ApiGetHistoricActivityInstancesCountRequest {
 	return ApiGetHistoricActivityInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesCountExecute(r ApiGetHistoricActivityInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricActivityInstanceAPIService.GetHistoricActivityInstancesCount")
@@ -740,8 +742,8 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesCountEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -759,10 +761,10 @@ func (a *HistoricActivityInstanceAPIService) GetHistoricActivityInstancesCountEx
 }
 
 type ApiQueryHistoricActivityInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricActivityInstanceAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                              context.Context
+	ApiService                       *HistoricActivityInstanceAPIService
+	firstResult                      *int32
+	maxResults                       *int32
 	historicActivityInstanceQueryDto *HistoricActivityInstanceQueryDto
 }
 
@@ -794,24 +796,25 @@ Queries for historic activity instances that fulfill the given parameters.
 The size of the result set can be retrieved by using the
 [Get Historic Activity Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/activity-instance/get-activity-instance-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricActivityInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricActivityInstancesRequest
 */
 func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstances(ctx context.Context) ApiQueryHistoricActivityInstancesRequest {
 	return ApiQueryHistoricActivityInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricActivityInstanceDto
+//
+//	@return []HistoricActivityInstanceDto
 func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesExecute(r ApiQueryHistoricActivityInstancesRequest) ([]HistoricActivityInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricActivityInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricActivityInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricActivityInstanceAPIService.QueryHistoricActivityInstances")
@@ -879,8 +882,8 @@ func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -898,8 +901,8 @@ func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesExecu
 }
 
 type ApiQueryHistoricActivityInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricActivityInstanceAPIService
+	ctx                              context.Context
+	ApiService                       *HistoricActivityInstanceAPIService
 	historicActivityInstanceQueryDto *HistoricActivityInstanceQueryDto
 }
 
@@ -917,24 +920,25 @@ QueryHistoricActivityInstancesCount Get List Count (POST)
 
 Queries for the number of historic activity instances that fulfill the given parameters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricActivityInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricActivityInstancesCountRequest
 */
 func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesCount(ctx context.Context) ApiQueryHistoricActivityInstancesCountRequest {
 	return ApiQueryHistoricActivityInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesCountExecute(r ApiQueryHistoricActivityInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricActivityInstanceAPIService.QueryHistoricActivityInstancesCount")
@@ -996,8 +1000,8 @@ func (a *HistoricActivityInstanceAPIService) QueryHistoricActivityInstancesCount
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

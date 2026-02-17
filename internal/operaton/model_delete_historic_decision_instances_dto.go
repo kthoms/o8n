@@ -20,7 +20,7 @@ var _ MappedNullable = &DeleteHistoricDecisionInstancesDto{}
 // DeleteHistoricDecisionInstancesDto struct for DeleteHistoricDecisionInstancesDto
 type DeleteHistoricDecisionInstancesDto struct {
 	// A list of historic decision instance ids to delete.
-	HistoricDecisionInstanceIds []string `json:"historicDecisionInstanceIds,omitempty"`
+	HistoricDecisionInstanceIds   []string                          `json:"historicDecisionInstanceIds,omitempty"`
 	HistoricDecisionInstanceQuery *HistoricDecisionInstanceQueryDto `json:"historicDecisionInstanceQuery,omitempty"`
 	// A string with delete reason.
 	DeleteReason NullableString `json:"deleteReason,omitempty"`
@@ -140,6 +140,7 @@ func (o *DeleteHistoricDecisionInstancesDto) HasDeleteReason() bool {
 func (o *DeleteHistoricDecisionInstancesDto) SetDeleteReason(v string) {
 	o.DeleteReason.Set(&v)
 }
+
 // SetDeleteReasonNil sets the value for DeleteReason to be an explicit nil
 func (o *DeleteHistoricDecisionInstancesDto) SetDeleteReasonNil() {
 	o.DeleteReason.Set(nil)
@@ -151,7 +152,7 @@ func (o *DeleteHistoricDecisionInstancesDto) UnsetDeleteReason() {
 }
 
 func (o DeleteHistoricDecisionInstancesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -207,5 +208,3 @@ func (v *NullableDeleteHistoricDecisionInstancesDto) UnmarshalJSON(src []byte) e
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -26,10 +26,10 @@ type ModificationDto struct {
 	// Skip execution of [input/output variable mappings](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/#input-output-variable-mapping) for activities that are started or ended as part of this request.
 	SkipIoMappings NullableBool `json:"skipIoMappings,omitempty"`
 	// A list of process instance ids to modify.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
-	// An array of modification instructions. The instructions are executed in the order they are in. 
+	// An array of modification instructions. The instructions are executed in the order they are in.
 	Instructions []MultipleProcessInstanceModificationInstructionDto `json:"instructions,omitempty"`
 	// An arbitrary text annotation set by a user for auditing reasons.
 	Annotation NullableString `json:"annotation,omitempty"`
@@ -84,6 +84,7 @@ func (o *ModificationDto) HasProcessDefinitionId() bool {
 func (o *ModificationDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ModificationDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -126,6 +127,7 @@ func (o *ModificationDto) HasSkipCustomListeners() bool {
 func (o *ModificationDto) SetSkipCustomListeners(v bool) {
 	o.SkipCustomListeners.Set(&v)
 }
+
 // SetSkipCustomListenersNil sets the value for SkipCustomListeners to be an explicit nil
 func (o *ModificationDto) SetSkipCustomListenersNil() {
 	o.SkipCustomListeners.Set(nil)
@@ -168,6 +170,7 @@ func (o *ModificationDto) HasSkipIoMappings() bool {
 func (o *ModificationDto) SetSkipIoMappings(v bool) {
 	o.SkipIoMappings.Set(&v)
 }
+
 // SetSkipIoMappingsNil sets the value for SkipIoMappings to be an explicit nil
 func (o *ModificationDto) SetSkipIoMappingsNil() {
 	o.SkipIoMappings.Set(nil)
@@ -340,6 +343,7 @@ func (o *ModificationDto) HasAnnotation() bool {
 func (o *ModificationDto) SetAnnotation(v string) {
 	o.Annotation.Set(&v)
 }
+
 // SetAnnotationNil sets the value for Annotation to be an explicit nil
 func (o *ModificationDto) SetAnnotationNil() {
 	o.Annotation.Set(nil)
@@ -351,7 +355,7 @@ func (o *ModificationDto) UnsetAnnotation() {
 }
 
 func (o ModificationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -422,5 +426,3 @@ func (v *NullableModificationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

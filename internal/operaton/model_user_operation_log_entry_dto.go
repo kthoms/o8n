@@ -123,6 +123,7 @@ func (o *UserOperationLogEntryDto) HasId() bool {
 func (o *UserOperationLogEntryDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *UserOperationLogEntryDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -165,6 +166,7 @@ func (o *UserOperationLogEntryDto) HasUserId() bool {
 func (o *UserOperationLogEntryDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -207,6 +209,7 @@ func (o *UserOperationLogEntryDto) HasTimestamp() bool {
 func (o *UserOperationLogEntryDto) SetTimestamp(v time.Time) {
 	o.Timestamp.Set(&v)
 }
+
 // SetTimestampNil sets the value for Timestamp to be an explicit nil
 func (o *UserOperationLogEntryDto) SetTimestampNil() {
 	o.Timestamp.Set(nil)
@@ -249,6 +252,7 @@ func (o *UserOperationLogEntryDto) HasOperationId() bool {
 func (o *UserOperationLogEntryDto) SetOperationId(v string) {
 	o.OperationId.Set(&v)
 }
+
 // SetOperationIdNil sets the value for OperationId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetOperationIdNil() {
 	o.OperationId.Set(nil)
@@ -291,6 +295,7 @@ func (o *UserOperationLogEntryDto) HasOperationType() bool {
 func (o *UserOperationLogEntryDto) SetOperationType(v string) {
 	o.OperationType.Set(&v)
 }
+
 // SetOperationTypeNil sets the value for OperationType to be an explicit nil
 func (o *UserOperationLogEntryDto) SetOperationTypeNil() {
 	o.OperationType.Set(nil)
@@ -333,6 +338,7 @@ func (o *UserOperationLogEntryDto) HasEntityType() bool {
 func (o *UserOperationLogEntryDto) SetEntityType(v string) {
 	o.EntityType.Set(&v)
 }
+
 // SetEntityTypeNil sets the value for EntityType to be an explicit nil
 func (o *UserOperationLogEntryDto) SetEntityTypeNil() {
 	o.EntityType.Set(nil)
@@ -375,6 +381,7 @@ func (o *UserOperationLogEntryDto) HasCategory() bool {
 func (o *UserOperationLogEntryDto) SetCategory(v string) {
 	o.Category.Set(&v)
 }
+
 // SetCategoryNil sets the value for Category to be an explicit nil
 func (o *UserOperationLogEntryDto) SetCategoryNil() {
 	o.Category.Set(nil)
@@ -417,6 +424,7 @@ func (o *UserOperationLogEntryDto) HasAnnotation() bool {
 func (o *UserOperationLogEntryDto) SetAnnotation(v string) {
 	o.Annotation.Set(&v)
 }
+
 // SetAnnotationNil sets the value for Annotation to be an explicit nil
 func (o *UserOperationLogEntryDto) SetAnnotationNil() {
 	o.Annotation.Set(nil)
@@ -459,6 +467,7 @@ func (o *UserOperationLogEntryDto) HasProperty() bool {
 func (o *UserOperationLogEntryDto) SetProperty(v string) {
 	o.Property.Set(&v)
 }
+
 // SetPropertyNil sets the value for Property to be an explicit nil
 func (o *UserOperationLogEntryDto) SetPropertyNil() {
 	o.Property.Set(nil)
@@ -501,6 +510,7 @@ func (o *UserOperationLogEntryDto) HasOrgValue() bool {
 func (o *UserOperationLogEntryDto) SetOrgValue(v string) {
 	o.OrgValue.Set(&v)
 }
+
 // SetOrgValueNil sets the value for OrgValue to be an explicit nil
 func (o *UserOperationLogEntryDto) SetOrgValueNil() {
 	o.OrgValue.Set(nil)
@@ -543,6 +553,7 @@ func (o *UserOperationLogEntryDto) HasNewValue() bool {
 func (o *UserOperationLogEntryDto) SetNewValue(v string) {
 	o.NewValue.Set(&v)
 }
+
 // SetNewValueNil sets the value for NewValue to be an explicit nil
 func (o *UserOperationLogEntryDto) SetNewValueNil() {
 	o.NewValue.Set(nil)
@@ -585,6 +596,7 @@ func (o *UserOperationLogEntryDto) HasDeploymentId() bool {
 func (o *UserOperationLogEntryDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -627,6 +639,7 @@ func (o *UserOperationLogEntryDto) HasProcessDefinitionId() bool {
 func (o *UserOperationLogEntryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -669,6 +682,7 @@ func (o *UserOperationLogEntryDto) HasProcessDefinitionKey() bool {
 func (o *UserOperationLogEntryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *UserOperationLogEntryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -711,6 +725,7 @@ func (o *UserOperationLogEntryDto) HasProcessInstanceId() bool {
 func (o *UserOperationLogEntryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -753,6 +768,7 @@ func (o *UserOperationLogEntryDto) HasExecutionId() bool {
 func (o *UserOperationLogEntryDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -795,6 +811,7 @@ func (o *UserOperationLogEntryDto) HasCaseDefinitionId() bool {
 func (o *UserOperationLogEntryDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -837,6 +854,7 @@ func (o *UserOperationLogEntryDto) HasCaseInstanceId() bool {
 func (o *UserOperationLogEntryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -879,6 +897,7 @@ func (o *UserOperationLogEntryDto) HasCaseExecutionId() bool {
 func (o *UserOperationLogEntryDto) SetCaseExecutionId(v string) {
 	o.CaseExecutionId.Set(&v)
 }
+
 // SetCaseExecutionIdNil sets the value for CaseExecutionId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetCaseExecutionIdNil() {
 	o.CaseExecutionId.Set(nil)
@@ -921,6 +940,7 @@ func (o *UserOperationLogEntryDto) HasTaskId() bool {
 func (o *UserOperationLogEntryDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -963,6 +983,7 @@ func (o *UserOperationLogEntryDto) HasExternalTaskId() bool {
 func (o *UserOperationLogEntryDto) SetExternalTaskId(v string) {
 	o.ExternalTaskId.Set(&v)
 }
+
 // SetExternalTaskIdNil sets the value for ExternalTaskId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetExternalTaskIdNil() {
 	o.ExternalTaskId.Set(nil)
@@ -1005,6 +1026,7 @@ func (o *UserOperationLogEntryDto) HasBatchId() bool {
 func (o *UserOperationLogEntryDto) SetBatchId(v string) {
 	o.BatchId.Set(&v)
 }
+
 // SetBatchIdNil sets the value for BatchId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetBatchIdNil() {
 	o.BatchId.Set(nil)
@@ -1047,6 +1069,7 @@ func (o *UserOperationLogEntryDto) HasJobId() bool {
 func (o *UserOperationLogEntryDto) SetJobId(v string) {
 	o.JobId.Set(&v)
 }
+
 // SetJobIdNil sets the value for JobId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetJobIdNil() {
 	o.JobId.Set(nil)
@@ -1089,6 +1112,7 @@ func (o *UserOperationLogEntryDto) HasJobDefinitionId() bool {
 func (o *UserOperationLogEntryDto) SetJobDefinitionId(v string) {
 	o.JobDefinitionId.Set(&v)
 }
+
 // SetJobDefinitionIdNil sets the value for JobDefinitionId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetJobDefinitionIdNil() {
 	o.JobDefinitionId.Set(nil)
@@ -1131,6 +1155,7 @@ func (o *UserOperationLogEntryDto) HasRemovalTime() bool {
 func (o *UserOperationLogEntryDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *UserOperationLogEntryDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -1173,6 +1198,7 @@ func (o *UserOperationLogEntryDto) HasRootProcessInstanceId() bool {
 func (o *UserOperationLogEntryDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *UserOperationLogEntryDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -1184,7 +1210,7 @@ func (o *UserOperationLogEntryDto) UnsetRootProcessInstanceId() {
 }
 
 func (o UserOperationLogEntryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1309,5 +1335,3 @@ func (v *NullableUserOperationLogEntryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

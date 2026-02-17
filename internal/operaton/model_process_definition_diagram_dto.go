@@ -74,6 +74,7 @@ func (o *ProcessDefinitionDiagramDto) HasId() bool {
 func (o *ProcessDefinitionDiagramDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ProcessDefinitionDiagramDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -116,6 +117,7 @@ func (o *ProcessDefinitionDiagramDto) HasBpmn20Xml() bool {
 func (o *ProcessDefinitionDiagramDto) SetBpmn20Xml(v string) {
 	o.Bpmn20Xml.Set(&v)
 }
+
 // SetBpmn20XmlNil sets the value for Bpmn20Xml to be an explicit nil
 func (o *ProcessDefinitionDiagramDto) SetBpmn20XmlNil() {
 	o.Bpmn20Xml.Set(nil)
@@ -127,7 +129,7 @@ func (o *ProcessDefinitionDiagramDto) UnsetBpmn20Xml() {
 }
 
 func (o ProcessDefinitionDiagramDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableProcessDefinitionDiagramDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -30,8 +30,8 @@ type ProcessInstanceSuspensionStateDto struct {
 	// Only activate or suspend process instances of a process definition which belongs to no tenant. Value may only be true, as false is the default behavior.  **Note**: This parameter can be used only with combination of `suspended`, `processDefinitionKey`, and `processDefinitionTenantId`.
 	ProcessDefinitionWithoutTenantId NullableBool `json:"processDefinitionWithoutTenantId,omitempty"`
 	// A list of process instance ids which defines a group of process instances which will be activated or suspended by the operation.  **Note**: This parameter can be used only with combination of `suspended`, `processInstanceQuery`, and `historicProcessInstanceQuery`.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 }
 
@@ -84,6 +84,7 @@ func (o *ProcessInstanceSuspensionStateDto) HasSuspended() bool {
 func (o *ProcessInstanceSuspensionStateDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ProcessInstanceSuspensionStateDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -126,6 +127,7 @@ func (o *ProcessInstanceSuspensionStateDto) HasProcessDefinitionId() bool {
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -168,6 +170,7 @@ func (o *ProcessInstanceSuspensionStateDto) HasProcessDefinitionKey() bool {
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -210,6 +213,7 @@ func (o *ProcessInstanceSuspensionStateDto) HasProcessDefinitionTenantId() bool 
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionTenantId(v string) {
 	o.ProcessDefinitionTenantId.Set(&v)
 }
+
 // SetProcessDefinitionTenantIdNil sets the value for ProcessDefinitionTenantId to be an explicit nil
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionTenantIdNil() {
 	o.ProcessDefinitionTenantId.Set(nil)
@@ -252,6 +256,7 @@ func (o *ProcessInstanceSuspensionStateDto) HasProcessDefinitionWithoutTenantId(
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionWithoutTenantId(v bool) {
 	o.ProcessDefinitionWithoutTenantId.Set(&v)
 }
+
 // SetProcessDefinitionWithoutTenantIdNil sets the value for ProcessDefinitionWithoutTenantId to be an explicit nil
 func (o *ProcessInstanceSuspensionStateDto) SetProcessDefinitionWithoutTenantIdNil() {
 	o.ProcessDefinitionWithoutTenantId.Set(nil)
@@ -360,7 +365,7 @@ func (o *ProcessInstanceSuspensionStateDto) SetHistoricProcessInstanceQuery(v Hi
 }
 
 func (o ProcessInstanceSuspensionStateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -431,5 +436,3 @@ func (v *NullableProcessInstanceSuspensionStateDto) UnmarshalJSON(src []byte) er
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

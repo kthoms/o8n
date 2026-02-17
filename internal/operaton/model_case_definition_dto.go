@@ -88,6 +88,7 @@ func (o *CaseDefinitionDto) HasId() bool {
 func (o *CaseDefinitionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *CaseDefinitionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -130,6 +131,7 @@ func (o *CaseDefinitionDto) HasKey() bool {
 func (o *CaseDefinitionDto) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *CaseDefinitionDto) SetKeyNil() {
 	o.Key.Set(nil)
@@ -172,6 +174,7 @@ func (o *CaseDefinitionDto) HasCategory() bool {
 func (o *CaseDefinitionDto) SetCategory(v string) {
 	o.Category.Set(&v)
 }
+
 // SetCategoryNil sets the value for Category to be an explicit nil
 func (o *CaseDefinitionDto) SetCategoryNil() {
 	o.Category.Set(nil)
@@ -214,6 +217,7 @@ func (o *CaseDefinitionDto) HasName() bool {
 func (o *CaseDefinitionDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *CaseDefinitionDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -256,6 +260,7 @@ func (o *CaseDefinitionDto) HasVersion() bool {
 func (o *CaseDefinitionDto) SetVersion(v int32) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *CaseDefinitionDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -298,6 +303,7 @@ func (o *CaseDefinitionDto) HasResource() bool {
 func (o *CaseDefinitionDto) SetResource(v string) {
 	o.Resource.Set(&v)
 }
+
 // SetResourceNil sets the value for Resource to be an explicit nil
 func (o *CaseDefinitionDto) SetResourceNil() {
 	o.Resource.Set(nil)
@@ -340,6 +346,7 @@ func (o *CaseDefinitionDto) HasDeploymentId() bool {
 func (o *CaseDefinitionDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *CaseDefinitionDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -382,6 +389,7 @@ func (o *CaseDefinitionDto) HasTenantId() bool {
 func (o *CaseDefinitionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *CaseDefinitionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -424,6 +432,7 @@ func (o *CaseDefinitionDto) HasHistoryTimeToLive() bool {
 func (o *CaseDefinitionDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *CaseDefinitionDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -435,7 +444,7 @@ func (o *CaseDefinitionDto) UnsetHistoryTimeToLive() {
 }
 
 func (o CaseDefinitionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -509,5 +518,3 @@ func (v *NullableCaseDefinitionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

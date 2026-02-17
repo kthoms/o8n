@@ -16,23 +16,22 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // TaskAttachmentAPIService TaskAttachmentAPI service
 type TaskAttachmentAPIService service
 
 type ApiAddAttachmentRequest struct {
-	ctx context.Context
-	ApiService *TaskAttachmentAPIService
-	id string
-	attachmentName *string
+	ctx                   context.Context
+	ApiService            *TaskAttachmentAPIService
+	id                    string
+	attachmentName        *string
 	attachmentDescription *string
-	attachmentType *string
-	url *string
-	content *os.File
+	attachmentType        *string
+	url                   *string
+	content               *os.File
 }
 
 // The name of the attachment.
@@ -74,26 +73,27 @@ AddAttachment Create
 
 Creates an attachment for a task.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to add the attachment to.
- @return ApiAddAttachmentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to add the attachment to.
+	@return ApiAddAttachmentRequest
 */
 func (a *TaskAttachmentAPIService) AddAttachment(ctx context.Context, id string) ApiAddAttachmentRequest {
 	return ApiAddAttachmentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return AttachmentDto
+//
+//	@return AttachmentDto
 func (a *TaskAttachmentAPIService) AddAttachmentExecute(r ApiAddAttachmentRequest) (*AttachmentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AttachmentDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AttachmentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAttachmentAPIService.AddAttachment")
@@ -138,8 +138,8 @@ func (a *TaskAttachmentAPIService) AddAttachmentExecute(r ApiAddAttachmentReques
 		parameterAddToHeaderOrQuery(localVarFormParams, "url", r.url, "")
 	}
 	var contentLocalVarFormFileName string
-	var contentLocalVarFileName     string
-	var contentLocalVarFileBytes    []byte
+	var contentLocalVarFileName string
+	var contentLocalVarFileBytes []byte
 
 	contentLocalVarFormFileName = "content"
 	contentLocalVarFile := r.content
@@ -181,8 +181,8 @@ func (a *TaskAttachmentAPIService) AddAttachmentExecute(r ApiAddAttachmentReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -192,8 +192,8 @@ func (a *TaskAttachmentAPIService) AddAttachmentExecute(r ApiAddAttachmentReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -211,9 +211,9 @@ func (a *TaskAttachmentAPIService) AddAttachmentExecute(r ApiAddAttachmentReques
 }
 
 type ApiDeleteAttachmentRequest struct {
-	ctx context.Context
-	ApiService *TaskAttachmentAPIService
-	id string
+	ctx          context.Context
+	ApiService   *TaskAttachmentAPIService
+	id           string
 	attachmentId string
 }
 
@@ -226,16 +226,16 @@ DeleteAttachment Delete
 
 Removes an attachment from a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task.
- @param attachmentId The id of the attachment to be removed.
- @return ApiDeleteAttachmentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task.
+	@param attachmentId The id of the attachment to be removed.
+	@return ApiDeleteAttachmentRequest
 */
 func (a *TaskAttachmentAPIService) DeleteAttachment(ctx context.Context, id string, attachmentId string) ApiDeleteAttachmentRequest {
 	return ApiDeleteAttachmentRequest{
-		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ApiService:   a,
+		ctx:          ctx,
+		id:           id,
 		attachmentId: attachmentId,
 	}
 }
@@ -243,9 +243,9 @@ func (a *TaskAttachmentAPIService) DeleteAttachment(ctx context.Context, id stri
 // Execute executes the request
 func (a *TaskAttachmentAPIService) DeleteAttachmentExecute(r ApiDeleteAttachmentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAttachmentAPIService.DeleteAttachment")
@@ -307,8 +307,8 @@ func (a *TaskAttachmentAPIService) DeleteAttachmentExecute(r ApiDeleteAttachment
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -318,8 +318,8 @@ func (a *TaskAttachmentAPIService) DeleteAttachmentExecute(r ApiDeleteAttachment
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -328,9 +328,9 @@ func (a *TaskAttachmentAPIService) DeleteAttachmentExecute(r ApiDeleteAttachment
 }
 
 type ApiGetAttachmentRequest struct {
-	ctx context.Context
-	ApiService *TaskAttachmentAPIService
-	id string
+	ctx          context.Context
+	ApiService   *TaskAttachmentAPIService
+	id           string
 	attachmentId string
 }
 
@@ -343,28 +343,29 @@ GetAttachment Get
 
 Retrieves a task attachment by task id and attachment id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task.
- @param attachmentId The id of the attachment to be retrieved.
- @return ApiGetAttachmentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task.
+	@param attachmentId The id of the attachment to be retrieved.
+	@return ApiGetAttachmentRequest
 */
 func (a *TaskAttachmentAPIService) GetAttachment(ctx context.Context, id string, attachmentId string) ApiGetAttachmentRequest {
 	return ApiGetAttachmentRequest{
-		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ApiService:   a,
+		ctx:          ctx,
+		id:           id,
 		attachmentId: attachmentId,
 	}
 }
 
 // Execute executes the request
-//  @return AttachmentDto
+//
+//	@return AttachmentDto
 func (a *TaskAttachmentAPIService) GetAttachmentExecute(r ApiGetAttachmentRequest) (*AttachmentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AttachmentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AttachmentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAttachmentAPIService.GetAttachment")
@@ -426,8 +427,8 @@ func (a *TaskAttachmentAPIService) GetAttachmentExecute(r ApiGetAttachmentReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -445,9 +446,9 @@ func (a *TaskAttachmentAPIService) GetAttachmentExecute(r ApiGetAttachmentReques
 }
 
 type ApiGetAttachmentDataRequest struct {
-	ctx context.Context
-	ApiService *TaskAttachmentAPIService
-	id string
+	ctx          context.Context
+	ApiService   *TaskAttachmentAPIService
+	id           string
 	attachmentId string
 }
 
@@ -460,28 +461,29 @@ GetAttachmentData Get (Binary)
 
 Retrieves the binary content of a task attachment by task id and attachment id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task.
- @param attachmentId The id of the attachment to be retrieved.
- @return ApiGetAttachmentDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task.
+	@param attachmentId The id of the attachment to be retrieved.
+	@return ApiGetAttachmentDataRequest
 */
 func (a *TaskAttachmentAPIService) GetAttachmentData(ctx context.Context, id string, attachmentId string) ApiGetAttachmentDataRequest {
 	return ApiGetAttachmentDataRequest{
-		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ApiService:   a,
+		ctx:          ctx,
+		id:           id,
 		attachmentId: attachmentId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *TaskAttachmentAPIService) GetAttachmentDataExecute(r ApiGetAttachmentDataRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAttachmentAPIService.GetAttachmentData")
@@ -543,8 +545,8 @@ func (a *TaskAttachmentAPIService) GetAttachmentDataExecute(r ApiGetAttachmentDa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -562,9 +564,9 @@ func (a *TaskAttachmentAPIService) GetAttachmentDataExecute(r ApiGetAttachmentDa
 }
 
 type ApiGetAttachmentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAttachmentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetAttachmentsRequest) Execute() ([]AttachmentDto, *http.Response, error) {
@@ -576,26 +578,27 @@ GetAttachments Get List
 
 Gets the attachments for a task.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the attachments for.
- @return ApiGetAttachmentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the attachments for.
+	@return ApiGetAttachmentsRequest
 */
 func (a *TaskAttachmentAPIService) GetAttachments(ctx context.Context, id string) ApiGetAttachmentsRequest {
 	return ApiGetAttachmentsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []AttachmentDto
+//
+//	@return []AttachmentDto
 func (a *TaskAttachmentAPIService) GetAttachmentsExecute(r ApiGetAttachmentsRequest) ([]AttachmentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []AttachmentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []AttachmentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAttachmentAPIService.GetAttachments")
@@ -656,8 +659,8 @@ func (a *TaskAttachmentAPIService) GetAttachmentsExecute(r ApiGetAttachmentsRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

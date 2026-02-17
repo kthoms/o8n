@@ -76,6 +76,7 @@ func (o *ExceptionDto) HasType() bool {
 func (o *ExceptionDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *ExceptionDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -118,6 +119,7 @@ func (o *ExceptionDto) HasMessage() bool {
 func (o *ExceptionDto) SetMessage(v string) {
 	o.Message.Set(&v)
 }
+
 // SetMessageNil sets the value for Message to be an explicit nil
 func (o *ExceptionDto) SetMessageNil() {
 	o.Message.Set(nil)
@@ -161,7 +163,7 @@ func (o *ExceptionDto) SetCode(v float32) {
 }
 
 func (o ExceptionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -217,5 +219,3 @@ func (v *NullableExceptionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

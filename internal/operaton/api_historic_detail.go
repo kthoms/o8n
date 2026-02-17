@@ -16,42 +16,41 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
-	"os"
 )
-
 
 // HistoricDetailAPIService HistoricDetailAPI service
 type HistoricDetailAPIService service
 
 type ApiGetHistoricDetailsRequest struct {
-	ctx context.Context
-	ApiService *HistoricDetailAPIService
-	processInstanceId *string
+	ctx                 context.Context
+	ApiService          *HistoricDetailAPIService
+	processInstanceId   *string
 	processInstanceIdIn *string
-	executionId *string
-	taskId *string
-	activityInstanceId *string
-	caseInstanceId *string
-	caseExecutionId *string
-	variableInstanceId *string
-	variableTypeIn *string
-	variableNameLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	userOperationId *string
-	formFields *bool
-	variableUpdates *bool
-	excludeTaskDetails *bool
-	initial *bool
-	occurredBefore *time.Time
-	occurredAfter *time.Time
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	deserializeValues *bool
+	executionId         *string
+	taskId              *string
+	activityInstanceId  *string
+	caseInstanceId      *string
+	caseExecutionId     *string
+	variableInstanceId  *string
+	variableTypeIn      *string
+	variableNameLike    *string
+	tenantIdIn          *string
+	withoutTenantId     *bool
+	userOperationId     *string
+	formFields          *bool
+	variableUpdates     *bool
+	excludeTaskDetails  *bool
+	initial             *bool
+	occurredBefore      *time.Time
+	occurredAfter       *time.Time
+	sortBy              *string
+	sortOrder           *string
+	firstResult         *int32
+	maxResults          *int32
+	deserializeValues   *bool
 }
 
 // Filter by process instance id.
@@ -209,24 +208,25 @@ Queries for historic details that fulfill the given parameters.
 The size of the result set can be retrieved by using the
 [Get Historic Detail Count](https://docs.operaton.org/manual/1.0/reference/rest/history/detail/get-detail-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricDetailsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricDetailsRequest
 */
 func (a *HistoricDetailAPIService) GetHistoricDetails(ctx context.Context) ApiGetHistoricDetailsRequest {
 	return ApiGetHistoricDetailsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricDetailDto
+//
+//	@return []HistoricDetailDto
 func (a *HistoricDetailAPIService) GetHistoricDetailsExecute(r ApiGetHistoricDetailsRequest) ([]HistoricDetailDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricDetailDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricDetailDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDetailAPIService.GetHistoricDetails")
@@ -358,8 +358,8 @@ func (a *HistoricDetailAPIService) GetHistoricDetailsExecute(r ApiGetHistoricDet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -377,27 +377,27 @@ func (a *HistoricDetailAPIService) GetHistoricDetailsExecute(r ApiGetHistoricDet
 }
 
 type ApiGetHistoricDetailsCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricDetailAPIService
-	processInstanceId *string
+	ctx                 context.Context
+	ApiService          *HistoricDetailAPIService
+	processInstanceId   *string
 	processInstanceIdIn *string
-	executionId *string
-	taskId *string
-	activityInstanceId *string
-	caseInstanceId *string
-	caseExecutionId *string
-	variableInstanceId *string
-	variableTypeIn *string
-	variableNameLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	userOperationId *string
-	formFields *bool
-	variableUpdates *bool
-	excludeTaskDetails *bool
-	initial *bool
-	occurredBefore *time.Time
-	occurredAfter *time.Time
+	executionId         *string
+	taskId              *string
+	activityInstanceId  *string
+	caseInstanceId      *string
+	caseExecutionId     *string
+	variableInstanceId  *string
+	variableTypeIn      *string
+	variableNameLike    *string
+	tenantIdIn          *string
+	withoutTenantId     *bool
+	userOperationId     *string
+	formFields          *bool
+	variableUpdates     *bool
+	excludeTaskDetails  *bool
+	initial             *bool
+	occurredBefore      *time.Time
+	occurredAfter       *time.Time
 }
 
 // Filter by process instance id.
@@ -526,24 +526,25 @@ Takes the same parameters as the [Get Historic
 Details](https://docs.operaton.org/manual/1.0/reference/rest/history/detail/get-detail-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricDetailsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricDetailsCountRequest
 */
 func (a *HistoricDetailAPIService) GetHistoricDetailsCount(ctx context.Context) ApiGetHistoricDetailsCountRequest {
 	return ApiGetHistoricDetailsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricDetailAPIService) GetHistoricDetailsCountExecute(r ApiGetHistoricDetailsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDetailAPIService.GetHistoricDetailsCount")
@@ -660,8 +661,8 @@ func (a *HistoricDetailAPIService) GetHistoricDetailsCountExecute(r ApiGetHistor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -679,9 +680,9 @@ func (a *HistoricDetailAPIService) GetHistoricDetailsCountExecute(r ApiGetHistor
 }
 
 type ApiHistoricDetailRequest struct {
-	ctx context.Context
-	ApiService *HistoricDetailAPIService
-	id string
+	ctx              context.Context
+	ApiService       *HistoricDetailAPIService
+	id               string
 	deserializeValue *bool
 }
 
@@ -700,26 +701,27 @@ HistoricDetail Get Historic Detail
 
 Retrieves a historic detail by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the detail.
- @return ApiHistoricDetailRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the detail.
+	@return ApiHistoricDetailRequest
 */
 func (a *HistoricDetailAPIService) HistoricDetail(ctx context.Context, id string) ApiHistoricDetailRequest {
 	return ApiHistoricDetailRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricDetailDto
+//
+//	@return HistoricDetailDto
 func (a *HistoricDetailAPIService) HistoricDetailExecute(r ApiHistoricDetailRequest) (*HistoricDetailDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricDetailDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricDetailDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDetailAPIService.HistoricDetail")
@@ -783,8 +785,8 @@ func (a *HistoricDetailAPIService) HistoricDetailExecute(r ApiHistoricDetailRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -802,9 +804,9 @@ func (a *HistoricDetailAPIService) HistoricDetailExecute(r ApiHistoricDetailRequ
 }
 
 type ApiHistoricDetailBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricDetailAPIService
-	id string
+	id         string
 }
 
 func (r ApiHistoricDetailBinaryRequest) Execute() (*os.File, *http.Response, error) {
@@ -817,26 +819,27 @@ HistoricDetailBinary Get Historic Detail (Binary)
 Retrieves the content of a historic variable update by id. Applicable for byte
 array and file variables.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic variable update.
- @return ApiHistoricDetailBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic variable update.
+	@return ApiHistoricDetailBinaryRequest
 */
 func (a *HistoricDetailAPIService) HistoricDetailBinary(ctx context.Context, id string) ApiHistoricDetailBinaryRequest {
 	return ApiHistoricDetailBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *HistoricDetailAPIService) HistoricDetailBinaryExecute(r ApiHistoricDetailBinaryRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDetailAPIService.HistoricDetailBinary")
@@ -897,8 +900,8 @@ func (a *HistoricDetailAPIService) HistoricDetailBinaryExecute(r ApiHistoricDeta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -908,8 +911,8 @@ func (a *HistoricDetailAPIService) HistoricDetailBinaryExecute(r ApiHistoricDeta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -927,11 +930,11 @@ func (a *HistoricDetailAPIService) HistoricDetailBinaryExecute(r ApiHistoricDeta
 }
 
 type ApiQueryHistoricDetailsRequest struct {
-	ctx context.Context
-	ApiService *HistoricDetailAPIService
-	firstResult *int32
-	maxResults *int32
-	deserializeValues *bool
+	ctx                    context.Context
+	ApiService             *HistoricDetailAPIService
+	firstResult            *int32
+	maxResults             *int32
+	deserializeValues      *bool
 	historicDetailQueryDto *HistoricDetailQueryDto
 }
 
@@ -971,24 +974,25 @@ method because it allows sorting by multiple parameters. The size of the result 
 using the [Get Historic Detail Count](https://docs.operaton.org/manual/1.0/reference/rest/history/detail/get-detail-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricDetailsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricDetailsRequest
 */
 func (a *HistoricDetailAPIService) QueryHistoricDetails(ctx context.Context) ApiQueryHistoricDetailsRequest {
 	return ApiQueryHistoricDetailsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricDetailDto
+//
+//	@return []HistoricDetailDto
 func (a *HistoricDetailAPIService) QueryHistoricDetailsExecute(r ApiQueryHistoricDetailsRequest) ([]HistoricDetailDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricDetailDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricDetailDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDetailAPIService.QueryHistoricDetails")
@@ -1059,8 +1063,8 @@ func (a *HistoricDetailAPIService) QueryHistoricDetailsExecute(r ApiQueryHistori
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

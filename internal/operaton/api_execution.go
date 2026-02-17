@@ -16,18 +16,17 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // ExecutionAPIService ExecutionAPI service
 type ExecutionAPIService service
 
 type ApiCreateIncidentRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
+	ctx               context.Context
+	ApiService        *ExecutionAPIService
+	id                string
 	createIncidentDto *CreateIncidentDto
 }
 
@@ -45,26 +44,27 @@ CreateIncident Create Incident
 
 Creates a custom incident with given properties.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to create a new incident for.
- @return ApiCreateIncidentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to create a new incident for.
+	@return ApiCreateIncidentRequest
 */
 func (a *ExecutionAPIService) CreateIncident(ctx context.Context, id string) ApiCreateIncidentRequest {
 	return ApiCreateIncidentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return IncidentDto
+//
+//	@return IncidentDto
 func (a *ExecutionAPIService) CreateIncidentExecute(r ApiCreateIncidentRequest) (*IncidentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *IncidentDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IncidentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.CreateIncident")
@@ -127,8 +127,8 @@ func (a *ExecutionAPIService) CreateIncidentExecute(r ApiCreateIncidentRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -146,10 +146,10 @@ func (a *ExecutionAPIService) CreateIncidentExecute(r ApiCreateIncidentRequest) 
 }
 
 type ApiDeleteLocalExecutionVariableRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExecutionAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiDeleteLocalExecutionVariableRequest) Execute() (*http.Response, error) {
@@ -162,26 +162,26 @@ DeleteLocalExecutionVariable Delete Local Execution Variable
 Deletes a variable in the context of a given execution by id. Deletion does not
 propagate upwards in the execution hierarchy.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to delete the variable from.
- @param varName The name of the variable to delete.
- @return ApiDeleteLocalExecutionVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to delete the variable from.
+	@param varName The name of the variable to delete.
+	@return ApiDeleteLocalExecutionVariableRequest
 */
 func (a *ExecutionAPIService) DeleteLocalExecutionVariable(ctx context.Context, id string, varName string) ApiDeleteLocalExecutionVariableRequest {
 	return ApiDeleteLocalExecutionVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ExecutionAPIService) DeleteLocalExecutionVariableExecute(r ApiDeleteLocalExecutionVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.DeleteLocalExecutionVariable")
@@ -243,9 +243,9 @@ func (a *ExecutionAPIService) DeleteLocalExecutionVariableExecute(r ApiDeleteLoc
 }
 
 type ApiGetExecutionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExecutionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetExecutionRequest) Execute() (*ExecutionDto, *http.Response, error) {
@@ -258,26 +258,27 @@ GetExecution Get Execution
 Retrieves an execution by id, according to the `Execution` interface in the
 engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to be retrieved.
- @return ApiGetExecutionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to be retrieved.
+	@return ApiGetExecutionRequest
 */
 func (a *ExecutionAPIService) GetExecution(ctx context.Context, id string) ApiGetExecutionRequest {
 	return ApiGetExecutionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ExecutionDto
+//
+//	@return ExecutionDto
 func (a *ExecutionAPIService) GetExecutionExecute(r ApiGetExecutionRequest) (*ExecutionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ExecutionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ExecutionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetExecution")
@@ -338,8 +339,8 @@ func (a *ExecutionAPIService) GetExecutionExecute(r ApiGetExecutionRequest) (*Ex
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -357,30 +358,30 @@ func (a *ExecutionAPIService) GetExecutionExecute(r ApiGetExecutionRequest) (*Ex
 }
 
 type ApiGetExecutionsRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	businessKey *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processInstanceId *string
-	activityId *string
-	signalEventSubscriptionName *string
+	ctx                          context.Context
+	ApiService                   *ExecutionAPIService
+	businessKey                  *string
+	processDefinitionId          *string
+	processDefinitionKey         *string
+	processInstanceId            *string
+	activityId                   *string
+	signalEventSubscriptionName  *string
 	messageEventSubscriptionName *string
-	active *bool
-	suspended *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	variables *string
-	processVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	active                       *bool
+	suspended                    *bool
+	incidentId                   *string
+	incidentType                 *string
+	incidentMessage              *string
+	incidentMessageLike          *string
+	tenantIdIn                   *string
+	variables                    *string
+	processVariables             *string
+	variableNamesIgnoreCase      *bool
+	variableValuesIgnoreCase     *bool
+	sortBy                       *string
+	sortOrder                    *string
+	firstResult                  *int32
+	maxResults                   *int32
 }
 
 // Filter by the business key of the process instances the executions belong to.
@@ -529,24 +530,25 @@ The size of the result set can be retrieved by using the [Get
 Execution Count](https://docs.operaton.org/manual/1.0/reference/rest/execution/get-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetExecutionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetExecutionsRequest
 */
 func (a *ExecutionAPIService) GetExecutions(ctx context.Context) ApiGetExecutionsRequest {
 	return ApiGetExecutionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ExecutionDto
+//
+//	@return []ExecutionDto
 func (a *ExecutionAPIService) GetExecutionsExecute(r ApiGetExecutionsRequest) ([]ExecutionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ExecutionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ExecutionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetExecutions")
@@ -672,8 +674,8 @@ func (a *ExecutionAPIService) GetExecutionsExecute(r ApiGetExecutionsRequest) ([
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -691,26 +693,26 @@ func (a *ExecutionAPIService) GetExecutionsExecute(r ApiGetExecutionsRequest) ([
 }
 
 type ApiGetExecutionsCountRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	businessKey *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processInstanceId *string
-	activityId *string
-	signalEventSubscriptionName *string
+	ctx                          context.Context
+	ApiService                   *ExecutionAPIService
+	businessKey                  *string
+	processDefinitionId          *string
+	processDefinitionKey         *string
+	processInstanceId            *string
+	activityId                   *string
+	signalEventSubscriptionName  *string
 	messageEventSubscriptionName *string
-	active *bool
-	suspended *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	variables *string
-	processVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
+	active                       *bool
+	suspended                    *bool
+	incidentId                   *string
+	incidentType                 *string
+	incidentMessage              *string
+	incidentMessageLike          *string
+	tenantIdIn                   *string
+	variables                    *string
+	processVariables             *string
+	variableNamesIgnoreCase      *bool
+	variableValuesIgnoreCase     *bool
 }
 
 // Filter by the business key of the process instances the executions belong to.
@@ -832,24 +834,25 @@ Queries for the number of executions that fulfill given parameters.
 Takes the same parameters as the [Get
 Executions](https://docs.operaton.org/manual/1.0/reference/rest/execution/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetExecutionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetExecutionsCountRequest
 */
 func (a *ExecutionAPIService) GetExecutionsCount(ctx context.Context) ApiGetExecutionsCountRequest {
 	return ApiGetExecutionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ExecutionAPIService) GetExecutionsCountExecute(r ApiGetExecutionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetExecutionsCount")
@@ -963,8 +966,8 @@ func (a *ExecutionAPIService) GetExecutionsCountExecute(r ApiGetExecutionsCountR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -982,10 +985,10 @@ func (a *ExecutionAPIService) GetExecutionsCountExecute(r ApiGetExecutionsCountR
 }
 
 type ApiGetLocalExecutionVariableRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *ExecutionAPIService
+	id               string
+	varName          string
 	deserializeValue *bool
 }
 
@@ -1005,28 +1008,29 @@ GetLocalExecutionVariable Get Local Execution Variable
 Retrieves a variable from the context of a given execution by id. Does not traverse
 the parent execution hierarchy.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to retrieve the variable from.
- @param varName The name of the variable to get.
- @return ApiGetLocalExecutionVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to retrieve the variable from.
+	@param varName The name of the variable to get.
+	@return ApiGetLocalExecutionVariableRequest
 */
 func (a *ExecutionAPIService) GetLocalExecutionVariable(ctx context.Context, id string, varName string) ApiGetLocalExecutionVariableRequest {
 	return ApiGetLocalExecutionVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return VariableValueDto
+//
+//	@return VariableValueDto
 func (a *ExecutionAPIService) GetLocalExecutionVariableExecute(r ApiGetLocalExecutionVariableRequest) (*VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetLocalExecutionVariable")
@@ -1091,8 +1095,8 @@ func (a *ExecutionAPIService) GetLocalExecutionVariableExecute(r ApiGetLocalExec
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1110,10 +1114,10 @@ func (a *ExecutionAPIService) GetLocalExecutionVariableExecute(r ApiGetLocalExec
 }
 
 type ApiGetLocalExecutionVariableBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExecutionAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiGetLocalExecutionVariableBinaryRequest) Execute() (*os.File, *http.Response, error) {
@@ -1127,28 +1131,29 @@ Retrieves a binary variable from the context of a given execution by id. Does no
 traverse the parent execution hierarchy. Applicable for byte array and
 file variables.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to retrieve the variable from.
- @param varName The name of the variable to get.
- @return ApiGetLocalExecutionVariableBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to retrieve the variable from.
+	@param varName The name of the variable to get.
+	@return ApiGetLocalExecutionVariableBinaryRequest
 */
 func (a *ExecutionAPIService) GetLocalExecutionVariableBinary(ctx context.Context, id string, varName string) ApiGetLocalExecutionVariableBinaryRequest {
 	return ApiGetLocalExecutionVariableBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ExecutionAPIService) GetLocalExecutionVariableBinaryExecute(r ApiGetLocalExecutionVariableBinaryRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetLocalExecutionVariableBinary")
@@ -1210,8 +1215,8 @@ func (a *ExecutionAPIService) GetLocalExecutionVariableBinaryExecute(r ApiGetLoc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1221,8 +1226,8 @@ func (a *ExecutionAPIService) GetLocalExecutionVariableBinaryExecute(r ApiGetLoc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1240,9 +1245,9 @@ func (a *ExecutionAPIService) GetLocalExecutionVariableBinaryExecute(r ApiGetLoc
 }
 
 type ApiGetLocalExecutionVariablesRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
+	ctx               context.Context
+	ApiService        *ExecutionAPIService
+	id                string
 	deserializeValues *bool
 }
 
@@ -1261,26 +1266,27 @@ GetLocalExecutionVariables Get Local Execution Variables
 
 Retrieves all variables of a given execution by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to retrieve the variables from.
- @return ApiGetLocalExecutionVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to retrieve the variables from.
+	@return ApiGetLocalExecutionVariablesRequest
 */
 func (a *ExecutionAPIService) GetLocalExecutionVariables(ctx context.Context, id string) ApiGetLocalExecutionVariablesRequest {
 	return ApiGetLocalExecutionVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *ExecutionAPIService) GetLocalExecutionVariablesExecute(r ApiGetLocalExecutionVariablesRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetLocalExecutionVariables")
@@ -1344,8 +1350,8 @@ func (a *ExecutionAPIService) GetLocalExecutionVariablesExecute(r ApiGetLocalExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1363,9 +1369,9 @@ func (a *ExecutionAPIService) GetLocalExecutionVariablesExecute(r ApiGetLocalExe
 }
 
 type ApiGetMessageEventSubscriptionRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
+	ctx         context.Context
+	ApiService  *ExecutionAPIService
+	id          string
 	messageName string
 }
 
@@ -1379,28 +1385,29 @@ GetMessageEventSubscription Get Message Event Subscription
 Retrieves a message event subscription for a given execution by id and a message
 name.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution that holds the subscription.
- @param messageName The name of the message that the subscription corresponds to.
- @return ApiGetMessageEventSubscriptionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution that holds the subscription.
+	@param messageName The name of the message that the subscription corresponds to.
+	@return ApiGetMessageEventSubscriptionRequest
 */
 func (a *ExecutionAPIService) GetMessageEventSubscription(ctx context.Context, id string, messageName string) ApiGetMessageEventSubscriptionRequest {
 	return ApiGetMessageEventSubscriptionRequest{
-		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ApiService:  a,
+		ctx:         ctx,
+		id:          id,
 		messageName: messageName,
 	}
 }
 
 // Execute executes the request
-//  @return EventSubscriptionDto
+//
+//	@return EventSubscriptionDto
 func (a *ExecutionAPIService) GetMessageEventSubscriptionExecute(r ApiGetMessageEventSubscriptionRequest) (*EventSubscriptionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *EventSubscriptionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *EventSubscriptionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.GetMessageEventSubscription")
@@ -1462,8 +1469,8 @@ func (a *ExecutionAPIService) GetMessageEventSubscriptionExecute(r ApiGetMessage
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1481,9 +1488,9 @@ func (a *ExecutionAPIService) GetMessageEventSubscriptionExecute(r ApiGetMessage
 }
 
 type ApiModifyLocalExecutionVariablesRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
+	ctx               context.Context
+	ApiService        *ExecutionAPIService
+	id                string
 	patchVariablesDto *PatchVariablesDto
 }
 
@@ -1504,24 +1511,24 @@ do not propagate upwards in the execution hierarchy.
 Updates precede deletions. So, if a variable is updated AND deleted,
 the deletion overrides the update.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to set variables for.
- @return ApiModifyLocalExecutionVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to set variables for.
+	@return ApiModifyLocalExecutionVariablesRequest
 */
 func (a *ExecutionAPIService) ModifyLocalExecutionVariables(ctx context.Context, id string) ApiModifyLocalExecutionVariablesRequest {
 	return ApiModifyLocalExecutionVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExecutionAPIService) ModifyLocalExecutionVariablesExecute(r ApiModifyLocalExecutionVariablesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.ModifyLocalExecutionVariables")
@@ -1584,8 +1591,8 @@ func (a *ExecutionAPIService) ModifyLocalExecutionVariablesExecute(r ApiModifyLo
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1595,8 +1602,8 @@ func (a *ExecutionAPIService) ModifyLocalExecutionVariablesExecute(r ApiModifyLo
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1605,10 +1612,10 @@ func (a *ExecutionAPIService) ModifyLocalExecutionVariablesExecute(r ApiModifyLo
 }
 
 type ApiPutLocalExecutionVariableRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *ExecutionAPIService
+	id               string
+	varName          string
 	variableValueDto *VariableValueDto
 }
 
@@ -1627,26 +1634,26 @@ PutLocalExecutionVariable Put Local Execution Variable
 Sets a variable in the context of a given execution by id. Update does not
 propagate upwards in the execution hierarchy.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to set the variable for.
- @param varName The name of the variable to set.
- @return ApiPutLocalExecutionVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to set the variable for.
+	@param varName The name of the variable to set.
+	@return ApiPutLocalExecutionVariableRequest
 */
 func (a *ExecutionAPIService) PutLocalExecutionVariable(ctx context.Context, id string, varName string) ApiPutLocalExecutionVariableRequest {
 	return ApiPutLocalExecutionVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ExecutionAPIService) PutLocalExecutionVariableExecute(r ApiPutLocalExecutionVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.PutLocalExecutionVariable")
@@ -1710,8 +1717,8 @@ func (a *ExecutionAPIService) PutLocalExecutionVariableExecute(r ApiPutLocalExec
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1720,10 +1727,10 @@ func (a *ExecutionAPIService) PutLocalExecutionVariableExecute(r ApiPutLocalExec
 }
 
 type ApiQueryExecutionsRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx               context.Context
+	ApiService        *ExecutionAPIService
+	firstResult       *int32
+	maxResults        *int32
 	executionQueryDto *ExecutionQueryDto
 }
 
@@ -1758,24 +1765,25 @@ because it allows
 to filter by multiple instance and execution variables of types
 `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryExecutionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryExecutionsRequest
 */
 func (a *ExecutionAPIService) QueryExecutions(ctx context.Context) ApiQueryExecutionsRequest {
 	return ApiQueryExecutionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ExecutionDto
+//
+//	@return []ExecutionDto
 func (a *ExecutionAPIService) QueryExecutionsExecute(r ApiQueryExecutionsRequest) ([]ExecutionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ExecutionDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ExecutionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.QueryExecutions")
@@ -1843,8 +1851,8 @@ func (a *ExecutionAPIService) QueryExecutionsExecute(r ApiQueryExecutionsRequest
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1862,8 +1870,8 @@ func (a *ExecutionAPIService) QueryExecutionsExecute(r ApiQueryExecutionsRequest
 }
 
 type ApiQueryExecutionsCountRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
+	ctx               context.Context
+	ApiService        *ExecutionAPIService
 	executionQueryDto *ExecutionQueryDto
 }
 
@@ -1885,24 +1893,25 @@ POST](https://docs.operaton.org/manual/1.0/reference/rest/execution/post-query/)
 therefore it is slightly more powerful than the [Get Execution
 Count](https://docs.operaton.org/manual/1.0/reference/rest/execution/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryExecutionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryExecutionsCountRequest
 */
 func (a *ExecutionAPIService) QueryExecutionsCount(ctx context.Context) ApiQueryExecutionsCountRequest {
 	return ApiQueryExecutionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ExecutionAPIService) QueryExecutionsCountExecute(r ApiQueryExecutionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.QueryExecutionsCount")
@@ -1964,8 +1973,8 @@ func (a *ExecutionAPIService) QueryExecutionsCountExecute(r ApiQueryExecutionsCo
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1983,12 +1992,12 @@ func (a *ExecutionAPIService) QueryExecutionsCountExecute(r ApiQueryExecutionsCo
 }
 
 type ApiSetLocalExecutionVariableBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExecutionAPIService
-	id string
-	varName string
-	data *os.File
-	valueType *string
+	id         string
+	varName    string
+	data       *os.File
+	valueType  *string
 }
 
 // The binary data to be set. For File variables, this multipart can contain the filename, binary value and MIME type of the file variable to be set Only the filename is mandatory.
@@ -2013,26 +2022,26 @@ SetLocalExecutionVariableBinary Post Local Execution Variable (Binary)
 Sets the serialized value for a binary variable or the binary value for a file
 variable in the context of a given execution by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to set the variable for.
- @param varName The name of the variable to set.
- @return ApiSetLocalExecutionVariableBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to set the variable for.
+	@param varName The name of the variable to set.
+	@return ApiSetLocalExecutionVariableBinaryRequest
 */
 func (a *ExecutionAPIService) SetLocalExecutionVariableBinary(ctx context.Context, id string, varName string) ApiSetLocalExecutionVariableBinaryRequest {
 	return ApiSetLocalExecutionVariableBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *ExecutionAPIService) SetLocalExecutionVariableBinaryExecute(r ApiSetLocalExecutionVariableBinaryRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.SetLocalExecutionVariableBinary")
@@ -2066,8 +2075,8 @@ func (a *ExecutionAPIService) SetLocalExecutionVariableBinaryExecute(r ApiSetLoc
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	var dataLocalVarFormFileName string
-	var dataLocalVarFileName     string
-	var dataLocalVarFileBytes    []byte
+	var dataLocalVarFileName string
+	var dataLocalVarFileBytes []byte
 
 	dataLocalVarFormFileName = "data"
 	dataLocalVarFile := r.data
@@ -2112,8 +2121,8 @@ func (a *ExecutionAPIService) SetLocalExecutionVariableBinaryExecute(r ApiSetLoc
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2122,9 +2131,9 @@ func (a *ExecutionAPIService) SetLocalExecutionVariableBinaryExecute(r ApiSetLoc
 }
 
 type ApiSignalExecutionRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
+	ctx                 context.Context
+	ApiService          *ExecutionAPIService
+	id                  string
 	executionTriggerDto *ExecutionTriggerDto
 }
 
@@ -2143,24 +2152,24 @@ SignalExecution Trigger Execution
 Signals an execution by id. Can for example be used to explicitly skip user tasks
 or signal asynchronous continuations.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to signal.
- @return ApiSignalExecutionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to signal.
+	@return ApiSignalExecutionRequest
 */
 func (a *ExecutionAPIService) SignalExecution(ctx context.Context, id string) ApiSignalExecutionRequest {
 	return ApiSignalExecutionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExecutionAPIService) SignalExecutionExecute(r ApiSignalExecutionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.SignalExecution")
@@ -2223,8 +2232,8 @@ func (a *ExecutionAPIService) SignalExecutionExecute(r ApiSignalExecutionRequest
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2233,10 +2242,10 @@ func (a *ExecutionAPIService) SignalExecutionExecute(r ApiSignalExecutionRequest
 }
 
 type ApiTriggerEventRequest struct {
-	ctx context.Context
-	ApiService *ExecutionAPIService
-	id string
-	messageName string
+	ctx                 context.Context
+	ApiService          *ExecutionAPIService
+	id                  string
+	messageName         string
 	executionTriggerDto *ExecutionTriggerDto
 }
 
@@ -2256,16 +2265,16 @@ Delivers a message to a specific execution by id, to trigger an existing message
 event subscription. Inject process variables as the message's
 payload.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the execution to submit the message to.
- @param messageName The name of the message that the addressed subscription corresponds to.
- @return ApiTriggerEventRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the execution to submit the message to.
+	@param messageName The name of the message that the addressed subscription corresponds to.
+	@return ApiTriggerEventRequest
 */
 func (a *ExecutionAPIService) TriggerEvent(ctx context.Context, id string, messageName string) ApiTriggerEventRequest {
 	return ApiTriggerEventRequest{
-		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ApiService:  a,
+		ctx:         ctx,
+		id:          id,
 		messageName: messageName,
 	}
 }
@@ -2273,9 +2282,9 @@ func (a *ExecutionAPIService) TriggerEvent(ctx context.Context, id string, messa
 // Execute executes the request
 func (a *ExecutionAPIService) TriggerEventExecute(r ApiTriggerEventRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExecutionAPIService.TriggerEvent")
@@ -2339,8 +2348,8 @@ func (a *ExecutionAPIService) TriggerEventExecute(r ApiTriggerEventRequest) (*ht
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -2350,8 +2359,8 @@ func (a *ExecutionAPIService) TriggerEventExecute(r ApiTriggerEventRequest) (*ht
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

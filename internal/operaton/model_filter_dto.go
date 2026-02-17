@@ -84,6 +84,7 @@ func (o *FilterDto) HasId() bool {
 func (o *FilterDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *FilterDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -126,6 +127,7 @@ func (o *FilterDto) HasResourceType() bool {
 func (o *FilterDto) SetResourceType(v string) {
 	o.ResourceType.Set(&v)
 }
+
 // SetResourceTypeNil sets the value for ResourceType to be an explicit nil
 func (o *FilterDto) SetResourceTypeNil() {
 	o.ResourceType.Set(nil)
@@ -168,6 +170,7 @@ func (o *FilterDto) HasName() bool {
 func (o *FilterDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *FilterDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -210,6 +213,7 @@ func (o *FilterDto) HasOwner() bool {
 func (o *FilterDto) SetOwner(v string) {
 	o.Owner.Set(&v)
 }
+
 // SetOwnerNil sets the value for Owner to be an explicit nil
 func (o *FilterDto) SetOwnerNil() {
 	o.Owner.Set(nil)
@@ -316,6 +320,7 @@ func (o *FilterDto) HasItemCount() bool {
 func (o *FilterDto) SetItemCount(v int64) {
 	o.ItemCount.Set(&v)
 }
+
 // SetItemCountNil sets the value for ItemCount to be an explicit nil
 func (o *FilterDto) SetItemCountNil() {
 	o.ItemCount.Set(nil)
@@ -327,7 +332,7 @@ func (o *FilterDto) UnsetItemCount() {
 }
 
 func (o FilterDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -395,5 +400,3 @@ func (v *NullableFilterDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

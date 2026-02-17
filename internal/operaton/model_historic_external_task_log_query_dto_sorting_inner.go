@@ -74,6 +74,7 @@ func (o *HistoricExternalTaskLogQueryDtoSortingInner) HasSortBy() bool {
 func (o *HistoricExternalTaskLogQueryDtoSortingInner) SetSortBy(v string) {
 	o.SortBy.Set(&v)
 }
+
 // SetSortByNil sets the value for SortBy to be an explicit nil
 func (o *HistoricExternalTaskLogQueryDtoSortingInner) SetSortByNil() {
 	o.SortBy.Set(nil)
@@ -116,6 +117,7 @@ func (o *HistoricExternalTaskLogQueryDtoSortingInner) HasSortOrder() bool {
 func (o *HistoricExternalTaskLogQueryDtoSortingInner) SetSortOrder(v string) {
 	o.SortOrder.Set(&v)
 }
+
 // SetSortOrderNil sets the value for SortOrder to be an explicit nil
 func (o *HistoricExternalTaskLogQueryDtoSortingInner) SetSortOrderNil() {
 	o.SortOrder.Set(nil)
@@ -127,7 +129,7 @@ func (o *HistoricExternalTaskLogQueryDtoSortingInner) UnsetSortOrder() {
 }
 
 func (o HistoricExternalTaskLogQueryDtoSortingInner) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableHistoricExternalTaskLogQueryDtoSortingInner) UnmarshalJSON(src 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

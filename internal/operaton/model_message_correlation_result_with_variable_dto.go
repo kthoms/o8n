@@ -20,10 +20,10 @@ var _ MappedNullable = &MessageCorrelationResultWithVariableDto{}
 // MessageCorrelationResultWithVariableDto The `processInstance` property only has a value if the resultType is set to `ProcessDefinition`. The processInstance with the properties as described in the [get single instance](https://docs.operaton.org/manual/1.0/reference/rest/process-instance/get/) method.  The `execution` property only has a value if the resultType is set to `Execution`. The execution with the properties as described in the [get single execution](https://docs.operaton.org/manual/1.0/reference/rest/execution/get/) method.
 type MessageCorrelationResultWithVariableDto struct {
 	// Indicates if the message was correlated to a message start event or an  intermediate message catching event. In the first case, the resultType is  `ProcessDefinition` and otherwise `Execution`.
-	ResultType NullableString `json:"resultType,omitempty"`
+	ResultType      NullableString      `json:"resultType,omitempty"`
 	ProcessInstance *ProcessInstanceDto `json:"processInstance,omitempty"`
-	Execution *ExecutionDto `json:"execution,omitempty"`
-	// This property is returned if the `variablesInResultEnabled` is set to `true`. Contains a list of the process variables. 
+	Execution       *ExecutionDto       `json:"execution,omitempty"`
+	// This property is returned if the `variablesInResultEnabled` is set to `true`. Contains a list of the process variables.
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
 }
 
@@ -76,6 +76,7 @@ func (o *MessageCorrelationResultWithVariableDto) HasResultType() bool {
 func (o *MessageCorrelationResultWithVariableDto) SetResultType(v string) {
 	o.ResultType.Set(&v)
 }
+
 // SetResultTypeNil sets the value for ResultType to be an explicit nil
 func (o *MessageCorrelationResultWithVariableDto) SetResultTypeNil() {
 	o.ResultType.Set(nil)
@@ -184,7 +185,7 @@ func (o *MessageCorrelationResultWithVariableDto) SetVariables(v map[string]Vari
 }
 
 func (o MessageCorrelationResultWithVariableDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -243,5 +244,3 @@ func (v *NullableMessageCorrelationResultWithVariableDto) UnmarshalJSON(src []by
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

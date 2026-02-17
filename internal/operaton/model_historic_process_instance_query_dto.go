@@ -116,7 +116,7 @@ type HistoricProcessInstanceQueryDto struct {
 	ExternallyTerminated NullableBool `json:"externallyTerminated,omitempty"`
 	// Restrict to instances that are internallyTerminated.
 	InternallyTerminated NullableBool `json:"internallyTerminated,omitempty"`
-	// A JSON array to only include process instances that have/had variables with certain values. The array consists of objects with the three properties `name`, `operator` and `value`. `name` (`String`) is the variable name, `operator` (`String`) is the comparison operator to be used and `value` the variable value.  Value may be `String`, `Number` or `Boolean`.  Valid operator values are: `eq` - equal to; `neq` - not equal to; `gt` - greater than; `gteq` - greater than or equal to; `lt` - lower than; `lteq` - lower than or equal to; `like`. 
+	// A JSON array to only include process instances that have/had variables with certain values. The array consists of objects with the three properties `name`, `operator` and `value`. `name` (`String`) is the variable name, `operator` (`String`) is the comparison operator to be used and `value` the variable value.  Value may be `String`, `Number` or `Boolean`.  Valid operator values are: `eq` - equal to; `neq` - not equal to; `gt` - greater than; `gteq` - greater than or equal to; `lt` - lower than; `lteq` - lower than or equal to; `like`.
 	Variables []VariableQueryParameterDto `json:"variables,omitempty"`
 	// Match all variable names provided in variables case-insensitively. If set to `true` variableName and variablename are treated as equal.
 	VariableNamesIgnoreCase NullableBool `json:"variableNamesIgnoreCase,omitempty"`
@@ -177,6 +177,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -285,6 +286,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessDefinitionId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -327,6 +329,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessDefinitionKey() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -402,6 +405,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessDefinitionName() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionName(v string) {
 	o.ProcessDefinitionName.Set(&v)
 }
+
 // SetProcessDefinitionNameNil sets the value for ProcessDefinitionName to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionNameNil() {
 	o.ProcessDefinitionName.Set(nil)
@@ -444,6 +448,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessDefinitionNameLike() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionNameLike(v string) {
 	o.ProcessDefinitionNameLike.Set(&v)
 }
+
 // SetProcessDefinitionNameLikeNil sets the value for ProcessDefinitionNameLike to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessDefinitionNameLikeNil() {
 	o.ProcessDefinitionNameLike.Set(nil)
@@ -519,6 +524,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessInstanceBusinessKey() bool {
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceBusinessKey(v string) {
 	o.ProcessInstanceBusinessKey.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyNil sets the value for ProcessInstanceBusinessKey to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceBusinessKeyNil() {
 	o.ProcessInstanceBusinessKey.Set(nil)
@@ -594,6 +600,7 @@ func (o *HistoricProcessInstanceQueryDto) HasProcessInstanceBusinessKeyLike() bo
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceBusinessKeyLike(v string) {
 	o.ProcessInstanceBusinessKeyLike.Set(&v)
 }
+
 // SetProcessInstanceBusinessKeyLikeNil sets the value for ProcessInstanceBusinessKeyLike to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetProcessInstanceBusinessKeyLikeNil() {
 	o.ProcessInstanceBusinessKeyLike.Set(nil)
@@ -636,6 +643,7 @@ func (o *HistoricProcessInstanceQueryDto) HasRootProcessInstances() bool {
 func (o *HistoricProcessInstanceQueryDto) SetRootProcessInstances(v bool) {
 	o.RootProcessInstances.Set(&v)
 }
+
 // SetRootProcessInstancesNil sets the value for RootProcessInstances to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetRootProcessInstancesNil() {
 	o.RootProcessInstances.Set(nil)
@@ -678,6 +686,7 @@ func (o *HistoricProcessInstanceQueryDto) HasRootProcessInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -720,6 +729,7 @@ func (o *HistoricProcessInstanceQueryDto) HasFinished() bool {
 func (o *HistoricProcessInstanceQueryDto) SetFinished(v bool) {
 	o.Finished.Set(&v)
 }
+
 // SetFinishedNil sets the value for Finished to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetFinishedNil() {
 	o.Finished.Set(nil)
@@ -762,6 +772,7 @@ func (o *HistoricProcessInstanceQueryDto) HasUnfinished() bool {
 func (o *HistoricProcessInstanceQueryDto) SetUnfinished(v bool) {
 	o.Unfinished.Set(&v)
 }
+
 // SetUnfinishedNil sets the value for Unfinished to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetUnfinishedNil() {
 	o.Unfinished.Set(nil)
@@ -804,6 +815,7 @@ func (o *HistoricProcessInstanceQueryDto) HasWithJobsRetrying() bool {
 func (o *HistoricProcessInstanceQueryDto) SetWithJobsRetrying(v bool) {
 	o.WithJobsRetrying.Set(&v)
 }
+
 // SetWithJobsRetryingNil sets the value for WithJobsRetrying to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetWithJobsRetryingNil() {
 	o.WithJobsRetrying.Set(nil)
@@ -846,6 +858,7 @@ func (o *HistoricProcessInstanceQueryDto) HasWithIncidents() bool {
 func (o *HistoricProcessInstanceQueryDto) SetWithIncidents(v bool) {
 	o.WithIncidents.Set(&v)
 }
+
 // SetWithIncidentsNil sets the value for WithIncidents to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetWithIncidentsNil() {
 	o.WithIncidents.Set(nil)
@@ -888,6 +901,7 @@ func (o *HistoricProcessInstanceQueryDto) HasWithRootIncidents() bool {
 func (o *HistoricProcessInstanceQueryDto) SetWithRootIncidents(v bool) {
 	o.WithRootIncidents.Set(&v)
 }
+
 // SetWithRootIncidentsNil sets the value for WithRootIncidents to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetWithRootIncidentsNil() {
 	o.WithRootIncidents.Set(nil)
@@ -963,6 +977,7 @@ func (o *HistoricProcessInstanceQueryDto) HasIncidentType() bool {
 func (o *HistoricProcessInstanceQueryDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -1005,6 +1020,7 @@ func (o *HistoricProcessInstanceQueryDto) HasIncidentStatus() bool {
 func (o *HistoricProcessInstanceQueryDto) SetIncidentStatus(v string) {
 	o.IncidentStatus.Set(&v)
 }
+
 // SetIncidentStatusNil sets the value for IncidentStatus to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetIncidentStatusNil() {
 	o.IncidentStatus.Set(nil)
@@ -1047,6 +1063,7 @@ func (o *HistoricProcessInstanceQueryDto) HasIncidentMessage() bool {
 func (o *HistoricProcessInstanceQueryDto) SetIncidentMessage(v string) {
 	o.IncidentMessage.Set(&v)
 }
+
 // SetIncidentMessageNil sets the value for IncidentMessage to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetIncidentMessageNil() {
 	o.IncidentMessage.Set(nil)
@@ -1089,6 +1106,7 @@ func (o *HistoricProcessInstanceQueryDto) HasIncidentMessageLike() bool {
 func (o *HistoricProcessInstanceQueryDto) SetIncidentMessageLike(v string) {
 	o.IncidentMessageLike.Set(&v)
 }
+
 // SetIncidentMessageLikeNil sets the value for IncidentMessageLike to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetIncidentMessageLikeNil() {
 	o.IncidentMessageLike.Set(nil)
@@ -1131,6 +1149,7 @@ func (o *HistoricProcessInstanceQueryDto) HasStartedBefore() bool {
 func (o *HistoricProcessInstanceQueryDto) SetStartedBefore(v time.Time) {
 	o.StartedBefore.Set(&v)
 }
+
 // SetStartedBeforeNil sets the value for StartedBefore to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetStartedBeforeNil() {
 	o.StartedBefore.Set(nil)
@@ -1173,6 +1192,7 @@ func (o *HistoricProcessInstanceQueryDto) HasStartedAfter() bool {
 func (o *HistoricProcessInstanceQueryDto) SetStartedAfter(v time.Time) {
 	o.StartedAfter.Set(&v)
 }
+
 // SetStartedAfterNil sets the value for StartedAfter to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetStartedAfterNil() {
 	o.StartedAfter.Set(nil)
@@ -1215,6 +1235,7 @@ func (o *HistoricProcessInstanceQueryDto) HasFinishedBefore() bool {
 func (o *HistoricProcessInstanceQueryDto) SetFinishedBefore(v time.Time) {
 	o.FinishedBefore.Set(&v)
 }
+
 // SetFinishedBeforeNil sets the value for FinishedBefore to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetFinishedBeforeNil() {
 	o.FinishedBefore.Set(nil)
@@ -1257,6 +1278,7 @@ func (o *HistoricProcessInstanceQueryDto) HasFinishedAfter() bool {
 func (o *HistoricProcessInstanceQueryDto) SetFinishedAfter(v time.Time) {
 	o.FinishedAfter.Set(&v)
 }
+
 // SetFinishedAfterNil sets the value for FinishedAfter to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetFinishedAfterNil() {
 	o.FinishedAfter.Set(nil)
@@ -1299,6 +1321,7 @@ func (o *HistoricProcessInstanceQueryDto) HasExecutedActivityAfter() bool {
 func (o *HistoricProcessInstanceQueryDto) SetExecutedActivityAfter(v time.Time) {
 	o.ExecutedActivityAfter.Set(&v)
 }
+
 // SetExecutedActivityAfterNil sets the value for ExecutedActivityAfter to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetExecutedActivityAfterNil() {
 	o.ExecutedActivityAfter.Set(nil)
@@ -1341,6 +1364,7 @@ func (o *HistoricProcessInstanceQueryDto) HasExecutedActivityBefore() bool {
 func (o *HistoricProcessInstanceQueryDto) SetExecutedActivityBefore(v time.Time) {
 	o.ExecutedActivityBefore.Set(&v)
 }
+
 // SetExecutedActivityBeforeNil sets the value for ExecutedActivityBefore to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetExecutedActivityBeforeNil() {
 	o.ExecutedActivityBefore.Set(nil)
@@ -1383,6 +1407,7 @@ func (o *HistoricProcessInstanceQueryDto) HasExecutedJobAfter() bool {
 func (o *HistoricProcessInstanceQueryDto) SetExecutedJobAfter(v time.Time) {
 	o.ExecutedJobAfter.Set(&v)
 }
+
 // SetExecutedJobAfterNil sets the value for ExecutedJobAfter to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetExecutedJobAfterNil() {
 	o.ExecutedJobAfter.Set(nil)
@@ -1425,6 +1450,7 @@ func (o *HistoricProcessInstanceQueryDto) HasExecutedJobBefore() bool {
 func (o *HistoricProcessInstanceQueryDto) SetExecutedJobBefore(v time.Time) {
 	o.ExecutedJobBefore.Set(&v)
 }
+
 // SetExecutedJobBeforeNil sets the value for ExecutedJobBefore to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetExecutedJobBeforeNil() {
 	o.ExecutedJobBefore.Set(nil)
@@ -1467,6 +1493,7 @@ func (o *HistoricProcessInstanceQueryDto) HasStartedBy() bool {
 func (o *HistoricProcessInstanceQueryDto) SetStartedBy(v string) {
 	o.StartedBy.Set(&v)
 }
+
 // SetStartedByNil sets the value for StartedBy to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetStartedByNil() {
 	o.StartedBy.Set(nil)
@@ -1509,6 +1536,7 @@ func (o *HistoricProcessInstanceQueryDto) HasSuperProcessInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetSuperProcessInstanceId(v string) {
 	o.SuperProcessInstanceId.Set(&v)
 }
+
 // SetSuperProcessInstanceIdNil sets the value for SuperProcessInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetSuperProcessInstanceIdNil() {
 	o.SuperProcessInstanceId.Set(nil)
@@ -1551,6 +1579,7 @@ func (o *HistoricProcessInstanceQueryDto) HasSubProcessInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetSubProcessInstanceId(v string) {
 	o.SubProcessInstanceId.Set(&v)
 }
+
 // SetSubProcessInstanceIdNil sets the value for SubProcessInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetSubProcessInstanceIdNil() {
 	o.SubProcessInstanceId.Set(nil)
@@ -1593,6 +1622,7 @@ func (o *HistoricProcessInstanceQueryDto) HasSuperCaseInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetSuperCaseInstanceId(v string) {
 	o.SuperCaseInstanceId.Set(&v)
 }
+
 // SetSuperCaseInstanceIdNil sets the value for SuperCaseInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetSuperCaseInstanceIdNil() {
 	o.SuperCaseInstanceId.Set(nil)
@@ -1635,6 +1665,7 @@ func (o *HistoricProcessInstanceQueryDto) HasSubCaseInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetSubCaseInstanceId(v string) {
 	o.SubCaseInstanceId.Set(&v)
 }
+
 // SetSubCaseInstanceIdNil sets the value for SubCaseInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetSubCaseInstanceIdNil() {
 	o.SubCaseInstanceId.Set(nil)
@@ -1677,6 +1708,7 @@ func (o *HistoricProcessInstanceQueryDto) HasCaseInstanceId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -1752,6 +1784,7 @@ func (o *HistoricProcessInstanceQueryDto) HasWithoutTenantId() bool {
 func (o *HistoricProcessInstanceQueryDto) SetWithoutTenantId(v bool) {
 	o.WithoutTenantId.Set(&v)
 }
+
 // SetWithoutTenantIdNil sets the value for WithoutTenantId to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetWithoutTenantIdNil() {
 	o.WithoutTenantId.Set(nil)
@@ -1893,6 +1926,7 @@ func (o *HistoricProcessInstanceQueryDto) HasActive() bool {
 func (o *HistoricProcessInstanceQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -1935,6 +1969,7 @@ func (o *HistoricProcessInstanceQueryDto) HasSuspended() bool {
 func (o *HistoricProcessInstanceQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -1977,6 +2012,7 @@ func (o *HistoricProcessInstanceQueryDto) HasCompleted() bool {
 func (o *HistoricProcessInstanceQueryDto) SetCompleted(v bool) {
 	o.Completed.Set(&v)
 }
+
 // SetCompletedNil sets the value for Completed to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetCompletedNil() {
 	o.Completed.Set(nil)
@@ -2019,6 +2055,7 @@ func (o *HistoricProcessInstanceQueryDto) HasExternallyTerminated() bool {
 func (o *HistoricProcessInstanceQueryDto) SetExternallyTerminated(v bool) {
 	o.ExternallyTerminated.Set(&v)
 }
+
 // SetExternallyTerminatedNil sets the value for ExternallyTerminated to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetExternallyTerminatedNil() {
 	o.ExternallyTerminated.Set(nil)
@@ -2061,6 +2098,7 @@ func (o *HistoricProcessInstanceQueryDto) HasInternallyTerminated() bool {
 func (o *HistoricProcessInstanceQueryDto) SetInternallyTerminated(v bool) {
 	o.InternallyTerminated.Set(&v)
 }
+
 // SetInternallyTerminatedNil sets the value for InternallyTerminated to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetInternallyTerminatedNil() {
 	o.InternallyTerminated.Set(nil)
@@ -2136,6 +2174,7 @@ func (o *HistoricProcessInstanceQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *HistoricProcessInstanceQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -2178,6 +2217,7 @@ func (o *HistoricProcessInstanceQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *HistoricProcessInstanceQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *HistoricProcessInstanceQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -2255,7 +2295,7 @@ func (o *HistoricProcessInstanceQueryDto) SetSorting(v []HistoricProcessInstance
 }
 
 func (o HistoricProcessInstanceQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -2461,5 +2501,3 @@ func (v *NullableHistoricProcessInstanceQueryDto) UnmarshalJSON(src []byte) erro
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

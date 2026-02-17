@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // HistoricBatchAPIService HistoricBatchAPI service
 type HistoricBatchAPIService service
 
 type ApiDeleteHistoricBatchRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricBatchAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteHistoricBatchRequest) Execute() (*http.Response, error) {
@@ -38,24 +37,24 @@ DeleteHistoricBatch Delete Historic Batch
 
 Deletes a historic batch by id, including related historic job logs.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the batch to be deleted.
- @return ApiDeleteHistoricBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the batch to be deleted.
+	@return ApiDeleteHistoricBatchRequest
 */
 func (a *HistoricBatchAPIService) DeleteHistoricBatch(ctx context.Context, id string) ApiDeleteHistoricBatchRequest {
 	return ApiDeleteHistoricBatchRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *HistoricBatchAPIService) DeleteHistoricBatchExecute(r ApiDeleteHistoricBatchRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.DeleteHistoricBatch")
@@ -116,8 +115,8 @@ func (a *HistoricBatchAPIService) DeleteHistoricBatchExecute(r ApiDeleteHistoric
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -126,12 +125,12 @@ func (a *HistoricBatchAPIService) DeleteHistoricBatchExecute(r ApiDeleteHistoric
 }
 
 type ApiGetCleanableHistoricBatchesReportRequest struct {
-	ctx context.Context
-	ApiService *HistoricBatchAPIService
-	sortBy *string
-	sortOrder *string
+	ctx         context.Context
+	ApiService  *HistoricBatchAPIService
+	sortBy      *string
+	sortOrder   *string
 	firstResult *int32
-	maxResults *int32
+	maxResults  *int32
 }
 
 // Sort the results lexicographically by a given criterion. Must be used in conjunction with the sortOrder parameter.
@@ -180,25 +179,25 @@ The history time to live for batch operations does not support [Multi-Tenancy](h
 The report will return an information for all batch operations (for all tenants) if you have permissions
 to see the history.
 
-
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricBatchesReportRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricBatchesReportRequest
 */
 func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReport(ctx context.Context) ApiGetCleanableHistoricBatchesReportRequest {
 	return ApiGetCleanableHistoricBatchesReportRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []CleanableHistoricBatchReportResultDto
+//
+//	@return []CleanableHistoricBatchReportResultDto
 func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportExecute(r ApiGetCleanableHistoricBatchesReportRequest) ([]CleanableHistoricBatchReportResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CleanableHistoricBatchReportResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CleanableHistoricBatchReportResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.GetCleanableHistoricBatchesReport")
@@ -270,8 +269,8 @@ func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -289,7 +288,7 @@ func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportExecute(r Api
 }
 
 type ApiGetCleanableHistoricBatchesReportCountRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricBatchAPIService
 }
 
@@ -308,24 +307,25 @@ Takes the same parameters as the
 [Get Cleanable Batch Report](https://docs.operaton.org/manual/1.0/reference/rest/history/batch/get-cleanable-batch-report/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetCleanableHistoricBatchesReportCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetCleanableHistoricBatchesReportCountRequest
 */
 func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportCount(ctx context.Context) ApiGetCleanableHistoricBatchesReportCountRequest {
 	return ApiGetCleanableHistoricBatchesReportCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportCountExecute(r ApiGetCleanableHistoricBatchesReportCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.GetCleanableHistoricBatchesReportCount")
@@ -385,8 +385,8 @@ func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportCountExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -404,9 +404,9 @@ func (a *HistoricBatchAPIService) GetCleanableHistoricBatchesReportCountExecute(
 }
 
 type ApiGetHistoricBatchRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricBatchAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricBatchRequest) Execute() (*HistoricBatchDto, *http.Response, error) {
@@ -419,26 +419,27 @@ GetHistoricBatch Get Historic Batch
 Retrieves a historic batch by id, according to the `HistoricBatch` interface in the
 engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic batch to be retrieved.
- @return ApiGetHistoricBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic batch to be retrieved.
+	@return ApiGetHistoricBatchRequest
 */
 func (a *HistoricBatchAPIService) GetHistoricBatch(ctx context.Context, id string) ApiGetHistoricBatchRequest {
 	return ApiGetHistoricBatchRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricBatchDto
+//
+//	@return HistoricBatchDto
 func (a *HistoricBatchAPIService) GetHistoricBatchExecute(r ApiGetHistoricBatchRequest) (*HistoricBatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricBatchDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricBatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.GetHistoricBatch")
@@ -499,8 +500,8 @@ func (a *HistoricBatchAPIService) GetHistoricBatchExecute(r ApiGetHistoricBatchR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -518,17 +519,17 @@ func (a *HistoricBatchAPIService) GetHistoricBatchExecute(r ApiGetHistoricBatchR
 }
 
 type ApiGetHistoricBatchesRequest struct {
-	ctx context.Context
-	ApiService *HistoricBatchAPIService
-	batchId *string
-	type_ *string
-	completed *bool
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *HistoricBatchAPIService
+	batchId         *string
+	type_           *string
+	completed       *bool
+	tenantIdIn      *string
 	withoutTenantId *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy          *string
+	sortOrder       *string
+	firstResult     *int32
+	maxResults      *int32
 }
 
 // Filter by batch id.
@@ -543,7 +544,7 @@ func (r ApiGetHistoricBatchesRequest) Type_(type_ string) ApiGetHistoricBatchesR
 	return r
 }
 
-//  Filter completed or not completed batches. If the value is &#x60;true&#x60;, only completed batches, i.e., end time is set, are returned. Otherwise, if the value is &#x60;false&#x60;, only running batches, i.e., end time is null, are returned.
+// Filter completed or not completed batches. If the value is &#x60;true&#x60;, only completed batches, i.e., end time is set, are returned. Otherwise, if the value is &#x60;false&#x60;, only running batches, i.e., end time is null, are returned.
 func (r ApiGetHistoricBatchesRequest) Completed(completed bool) ApiGetHistoricBatchesRequest {
 	r.completed = &completed
 	return r
@@ -598,24 +599,25 @@ size of the result set can be retrieved by using the
 [Get Historic Batch Count](https://docs.operaton.org/manual/1.0/reference/rest/history/batch/get-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricBatchesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricBatchesRequest
 */
 func (a *HistoricBatchAPIService) GetHistoricBatches(ctx context.Context) ApiGetHistoricBatchesRequest {
 	return ApiGetHistoricBatchesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricBatchDto
+//
+//	@return []HistoricBatchDto
 func (a *HistoricBatchAPIService) GetHistoricBatchesExecute(r ApiGetHistoricBatchesRequest) ([]HistoricBatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricBatchDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricBatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.GetHistoricBatches")
@@ -702,8 +704,8 @@ func (a *HistoricBatchAPIService) GetHistoricBatchesExecute(r ApiGetHistoricBatc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -721,12 +723,12 @@ func (a *HistoricBatchAPIService) GetHistoricBatchesExecute(r ApiGetHistoricBatc
 }
 
 type ApiGetHistoricBatchesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricBatchAPIService
-	batchId *string
-	type_ *string
-	completed *bool
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *HistoricBatchAPIService
+	batchId         *string
+	type_           *string
+	completed       *bool
+	tenantIdIn      *string
 	withoutTenantId *bool
 }
 
@@ -742,7 +744,7 @@ func (r ApiGetHistoricBatchesCountRequest) Type_(type_ string) ApiGetHistoricBat
 	return r
 }
 
-//  Filter completed or not completed batches. If the value is &#x60;true&#x60;, only completed batches, i.e., end time is set, are returned. Otherwise, if the value is &#x60;false&#x60;, only running batches, i.e., end time is null, are returned.
+// Filter completed or not completed batches. If the value is &#x60;true&#x60;, only completed batches, i.e., end time is set, are returned. Otherwise, if the value is &#x60;false&#x60;, only running batches, i.e., end time is null, are returned.
 func (r ApiGetHistoricBatchesCountRequest) Completed(completed bool) ApiGetHistoricBatchesCountRequest {
 	r.completed = &completed
 	return r
@@ -772,24 +774,25 @@ Takes the same filtering parameters as the
 [Get Historic Batches](https://docs.operaton.org/manual/1.0/reference/rest/history/batch/get-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricBatchesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricBatchesCountRequest
 */
 func (a *HistoricBatchAPIService) GetHistoricBatchesCount(ctx context.Context) ApiGetHistoricBatchesCountRequest {
 	return ApiGetHistoricBatchesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricBatchAPIService) GetHistoricBatchesCountExecute(r ApiGetHistoricBatchesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.GetHistoricBatchesCount")
@@ -864,8 +867,8 @@ func (a *HistoricBatchAPIService) GetHistoricBatchesCountExecute(r ApiGetHistori
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -883,8 +886,8 @@ func (a *HistoricBatchAPIService) GetHistoricBatchesCountExecute(r ApiGetHistori
 }
 
 type ApiSetRemovalTimeAsyncHistoricBatchRequest struct {
-	ctx context.Context
-	ApiService *HistoricBatchAPIService
+	ctx                                context.Context
+	ApiService                         *HistoricBatchAPIService
 	setRemovalTimeToHistoricBatchesDto *SetRemovalTimeToHistoricBatchesDto
 }
 
@@ -907,24 +910,25 @@ provided. If both are provided,
 all instances matching query criterion and instances from the list
 will be updated with a removal time.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRemovalTimeAsyncHistoricBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRemovalTimeAsyncHistoricBatchRequest
 */
 func (a *HistoricBatchAPIService) SetRemovalTimeAsyncHistoricBatch(ctx context.Context) ApiSetRemovalTimeAsyncHistoricBatchRequest {
 	return ApiSetRemovalTimeAsyncHistoricBatchRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *HistoricBatchAPIService) SetRemovalTimeAsyncHistoricBatchExecute(r ApiSetRemovalTimeAsyncHistoricBatchRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricBatchAPIService.SetRemovalTimeAsyncHistoricBatch")
@@ -986,8 +990,8 @@ func (a *HistoricBatchAPIService) SetRemovalTimeAsyncHistoricBatchExecute(r ApiS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

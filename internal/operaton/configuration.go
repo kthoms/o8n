@@ -65,9 +65,9 @@ type ServerVariable struct {
 
 // ServerConfiguration stores the information about a server
 type ServerConfiguration struct {
-	URL string
+	URL         string
 	Description string
-	Variables map[string]ServerVariable
+	Variables   map[string]ServerVariable
 }
 
 // ServerConfigurations stores multiple ServerConfiguration items
@@ -88,63 +88,62 @@ type Configuration struct {
 // NewConfiguration returns a new Configuration object
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
-		DefaultHeader:    make(map[string]string),
-		UserAgent:        "OpenAPI-Generator/1.0.0/go",
-		Debug:            false,
-		Servers:          ServerConfigurations{
+		DefaultHeader: make(map[string]string),
+		UserAgent:     "OpenAPI-Generator/1.0.0/go",
+		Debug:         false,
+		Servers: ServerConfigurations{
 			{
-				URL: "http://{host}:{port}/{contextPath}",
+				URL:         "http://{host}:{port}/{contextPath}",
 				Description: "The API server for the default process engine",
 				Variables: map[string]ServerVariable{
 					"host": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "localhost",
 					},
 					"port": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "8080",
 					},
 					"contextPath": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "engine-rest",
 					},
 				},
 			},
 			{
-				URL: "http://{host}:{port}/{contextPath}/engine/{engineName}",
+				URL:         "http://{host}:{port}/{contextPath}/engine/{engineName}",
 				Description: "The API server for a named process engine",
 				Variables: map[string]ServerVariable{
 					"host": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "localhost",
 					},
 					"port": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "8080",
 					},
 					"contextPath": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "engine-rest",
 					},
 					"engineName": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "default",
 					},
 				},
 			},
 			{
-				URL: "{url}",
+				URL:         "{url}",
 				Description: "The API server with a custom url",
 				Variables: map[string]ServerVariable{
 					"url": ServerVariable{
-						Description: "No description provided",
+						Description:  "No description provided",
 						DefaultValue: "",
 					},
 				},
 			},
 		},
-		OperationServers: map[string]ServerConfigurations{
-		},
+		OperationServers: map[string]ServerConfigurations{},
 	}
 	return cfg
 }

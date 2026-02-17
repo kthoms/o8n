@@ -24,7 +24,7 @@ type TelemetryProductDto struct {
 	// The version of the process engine (i.e., 7.X.Y).
 	Version NullableString `json:"version,omitempty"`
 	// The edition of the product (i.e., either community or enterprise).
-	Edition NullableString `json:"edition,omitempty"`
+	Edition   NullableString         `json:"edition,omitempty"`
 	Internals *TelemetryInternalsDto `json:"internals,omitempty"`
 }
 
@@ -77,6 +77,7 @@ func (o *TelemetryProductDto) HasName() bool {
 func (o *TelemetryProductDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *TelemetryProductDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -119,6 +120,7 @@ func (o *TelemetryProductDto) HasVersion() bool {
 func (o *TelemetryProductDto) SetVersion(v string) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *TelemetryProductDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -161,6 +163,7 @@ func (o *TelemetryProductDto) HasEdition() bool {
 func (o *TelemetryProductDto) SetEdition(v string) {
 	o.Edition.Set(&v)
 }
+
 // SetEditionNil sets the value for Edition to be an explicit nil
 func (o *TelemetryProductDto) SetEditionNil() {
 	o.Edition.Set(nil)
@@ -204,7 +207,7 @@ func (o *TelemetryProductDto) SetInternals(v TelemetryInternalsDto) {
 }
 
 func (o TelemetryProductDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -263,5 +266,3 @@ func (v *NullableTelemetryProductDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

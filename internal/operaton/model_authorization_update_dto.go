@@ -113,6 +113,7 @@ func (o *AuthorizationUpdateDto) HasUserId() bool {
 func (o *AuthorizationUpdateDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *AuthorizationUpdateDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -155,6 +156,7 @@ func (o *AuthorizationUpdateDto) HasGroupId() bool {
 func (o *AuthorizationUpdateDto) SetGroupId(v string) {
 	o.GroupId.Set(&v)
 }
+
 // SetGroupIdNil sets the value for GroupId to be an explicit nil
 func (o *AuthorizationUpdateDto) SetGroupIdNil() {
 	o.GroupId.Set(nil)
@@ -197,6 +199,7 @@ func (o *AuthorizationUpdateDto) HasResourceType() bool {
 func (o *AuthorizationUpdateDto) SetResourceType(v int32) {
 	o.ResourceType.Set(&v)
 }
+
 // SetResourceTypeNil sets the value for ResourceType to be an explicit nil
 func (o *AuthorizationUpdateDto) SetResourceTypeNil() {
 	o.ResourceType.Set(nil)
@@ -239,6 +242,7 @@ func (o *AuthorizationUpdateDto) HasResourceId() bool {
 func (o *AuthorizationUpdateDto) SetResourceId(v string) {
 	o.ResourceId.Set(&v)
 }
+
 // SetResourceIdNil sets the value for ResourceId to be an explicit nil
 func (o *AuthorizationUpdateDto) SetResourceIdNil() {
 	o.ResourceId.Set(nil)
@@ -250,7 +254,7 @@ func (o *AuthorizationUpdateDto) UnsetResourceId() {
 }
 
 func (o AuthorizationUpdateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -312,5 +316,3 @@ func (v *NullableAuthorizationUpdateDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

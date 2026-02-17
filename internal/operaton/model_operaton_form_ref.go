@@ -76,6 +76,7 @@ func (o *OperatonFormRef) HasKey() bool {
 func (o *OperatonFormRef) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *OperatonFormRef) SetKeyNil() {
 	o.Key.Set(nil)
@@ -118,6 +119,7 @@ func (o *OperatonFormRef) HasBinding() bool {
 func (o *OperatonFormRef) SetBinding(v string) {
 	o.Binding.Set(&v)
 }
+
 // SetBindingNil sets the value for Binding to be an explicit nil
 func (o *OperatonFormRef) SetBindingNil() {
 	o.Binding.Set(nil)
@@ -160,6 +162,7 @@ func (o *OperatonFormRef) HasVersion() bool {
 func (o *OperatonFormRef) SetVersion(v int32) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *OperatonFormRef) SetVersionNil() {
 	o.Version.Set(nil)
@@ -171,7 +174,7 @@ func (o *OperatonFormRef) UnsetVersion() {
 }
 
 func (o OperatonFormRef) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableOperatonFormRef) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

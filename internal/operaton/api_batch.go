@@ -20,15 +20,14 @@ import (
 	"time"
 )
 
-
 // BatchAPIService BatchAPI service
 type BatchAPIService service
 
 type ApiDeleteBatchRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *BatchAPIService
-	id string
-	cascade *bool
+	id         string
+	cascade    *bool
 }
 
 // &#x60;true&#x60;, if the historic batch and historic job logs for this batch should also be deleted.
@@ -47,24 +46,24 @@ DeleteBatch Delete
 Deletes a batch by id, including all related jobs and job definitions.
 Optionally also deletes the batch history.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the batch to be deleted.
- @return ApiDeleteBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the batch to be deleted.
+	@return ApiDeleteBatchRequest
 */
 func (a *BatchAPIService) DeleteBatch(ctx context.Context, id string) ApiDeleteBatchRequest {
 	return ApiDeleteBatchRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *BatchAPIService) DeleteBatchExecute(r ApiDeleteBatchRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.DeleteBatch")
@@ -128,8 +127,8 @@ func (a *BatchAPIService) DeleteBatchExecute(r ApiDeleteBatchRequest) (*http.Res
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -138,9 +137,9 @@ func (a *BatchAPIService) DeleteBatchExecute(r ApiDeleteBatchRequest) (*http.Res
 }
 
 type ApiGetBatchRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *BatchAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetBatchRequest) Execute() (*BatchDto, *http.Response, error) {
@@ -152,26 +151,27 @@ GetBatch Get
 
 Retrieves a batch by id, according to the Batch interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the batch to be retrieved.
- @return ApiGetBatchRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the batch to be retrieved.
+	@return ApiGetBatchRequest
 */
 func (a *BatchAPIService) GetBatch(ctx context.Context, id string) ApiGetBatchRequest {
 	return ApiGetBatchRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *BatchAPIService) GetBatchExecute(r ApiGetBatchRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.GetBatch")
@@ -232,8 +232,8 @@ func (a *BatchAPIService) GetBatchExecute(r ApiGetBatchRequest) (*BatchDto, *htt
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -251,21 +251,21 @@ func (a *BatchAPIService) GetBatchExecute(r ApiGetBatchRequest) (*BatchDto, *htt
 }
 
 type ApiGetBatchStatisticsRequest struct {
-	ctx context.Context
-	ApiService *BatchAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	batchId *string
-	type_ *string
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *BatchAPIService
+	sortBy          *string
+	sortOrder       *string
+	firstResult     *int32
+	maxResults      *int32
+	batchId         *string
+	type_           *string
+	tenantIdIn      *string
 	withoutTenantId *bool
-	suspended *bool
-	createdBy *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	withFailures *bool
+	suspended       *bool
+	createdBy       *string
+	startedBefore   *time.Time
+	startedAfter    *time.Time
+	withFailures    *bool
 	withoutFailures *bool
 }
 
@@ -362,27 +362,28 @@ GetBatchStatistics Get Statistics
 
 Queries for batch statistics that fulfill given parameters.
 Parameters may be the properties of batches, such as the id or type.
-The size of the result set can be retrieved by using the 
+The size of the result set can be retrieved by using the
 [Get Batch Statistics Count](https://docs.operaton.org/manual/1.0/reference/rest/batch/get-statistics-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetBatchStatisticsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetBatchStatisticsRequest
 */
 func (a *BatchAPIService) GetBatchStatistics(ctx context.Context) ApiGetBatchStatisticsRequest {
 	return ApiGetBatchStatisticsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []BatchStatisticsDto
+//
+//	@return []BatchStatisticsDto
 func (a *BatchAPIService) GetBatchStatisticsExecute(r ApiGetBatchStatisticsRequest) ([]BatchStatisticsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []BatchStatisticsDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []BatchStatisticsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.GetBatchStatistics")
@@ -484,8 +485,8 @@ func (a *BatchAPIService) GetBatchStatisticsExecute(r ApiGetBatchStatisticsReque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -503,17 +504,17 @@ func (a *BatchAPIService) GetBatchStatisticsExecute(r ApiGetBatchStatisticsReque
 }
 
 type ApiGetBatchStatisticsCountRequest struct {
-	ctx context.Context
-	ApiService *BatchAPIService
-	batchId *string
-	type_ *string
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *BatchAPIService
+	batchId         *string
+	type_           *string
+	tenantIdIn      *string
 	withoutTenantId *bool
-	suspended *bool
-	createdBy *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	withFailures *bool
+	suspended       *bool
+	createdBy       *string
+	startedBefore   *time.Time
+	startedAfter    *time.Time
+	withFailures    *bool
 	withoutFailures *bool
 }
 
@@ -588,24 +589,25 @@ Requests the number of batch statistics that fulfill the query criteria.
 Takes the same filtering parameters as the
 [Get Batch Statistics](https://docs.operaton.org/manual/1.0/reference/rest/batch/get-statistics-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetBatchStatisticsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetBatchStatisticsCountRequest
 */
 func (a *BatchAPIService) GetBatchStatisticsCount(ctx context.Context) ApiGetBatchStatisticsCountRequest {
 	return ApiGetBatchStatisticsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *BatchAPIService) GetBatchStatisticsCountExecute(r ApiGetBatchStatisticsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.GetBatchStatisticsCount")
@@ -695,8 +697,8 @@ func (a *BatchAPIService) GetBatchStatisticsCountExecute(r ApiGetBatchStatistics
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -714,21 +716,21 @@ func (a *BatchAPIService) GetBatchStatisticsCountExecute(r ApiGetBatchStatistics
 }
 
 type ApiGetBatchesRequest struct {
-	ctx context.Context
-	ApiService *BatchAPIService
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	batchId *string
-	type_ *string
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *BatchAPIService
+	sortBy          *string
+	sortOrder       *string
+	firstResult     *int32
+	maxResults      *int32
+	batchId         *string
+	type_           *string
+	tenantIdIn      *string
 	withoutTenantId *bool
-	suspended *bool
-	createdBy *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	withFailures *bool
+	suspended       *bool
+	createdBy       *string
+	startedBefore   *time.Time
+	startedAfter    *time.Time
+	withFailures    *bool
 	withoutFailures *bool
 }
 
@@ -827,24 +829,25 @@ Queries for batches that fulfill given parameters. Parameters may be the propert
 The size of the result set can be retrieved by using the
 [Get Batch Count](https://docs.operaton.org/manual/1.0/reference/rest/batch/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetBatchesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetBatchesRequest
 */
 func (a *BatchAPIService) GetBatches(ctx context.Context) ApiGetBatchesRequest {
 	return ApiGetBatchesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []BatchDto
+//
+//	@return []BatchDto
 func (a *BatchAPIService) GetBatchesExecute(r ApiGetBatchesRequest) ([]BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []BatchDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.GetBatches")
@@ -946,8 +949,8 @@ func (a *BatchAPIService) GetBatchesExecute(r ApiGetBatchesRequest) ([]BatchDto,
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -965,17 +968,17 @@ func (a *BatchAPIService) GetBatchesExecute(r ApiGetBatchesRequest) ([]BatchDto,
 }
 
 type ApiGetBatchesCountRequest struct {
-	ctx context.Context
-	ApiService *BatchAPIService
-	batchId *string
-	type_ *string
-	tenantIdIn *string
+	ctx             context.Context
+	ApiService      *BatchAPIService
+	batchId         *string
+	type_           *string
+	tenantIdIn      *string
 	withoutTenantId *bool
-	suspended *bool
-	createdBy *string
-	startedBefore *time.Time
-	startedAfter *time.Time
-	withFailures *bool
+	suspended       *bool
+	createdBy       *string
+	startedBefore   *time.Time
+	startedAfter    *time.Time
+	withFailures    *bool
 	withoutFailures *bool
 }
 
@@ -1049,24 +1052,25 @@ GetBatchesCount Get List Count
 Requests the number of batches that fulfill the query criteria.
 Takes the same filtering parameters as the [Get Batches](https://docs.operaton.org/manual/1.0/reference/rest/batch/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetBatchesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetBatchesCountRequest
 */
 func (a *BatchAPIService) GetBatchesCount(ctx context.Context) ApiGetBatchesCountRequest {
 	return ApiGetBatchesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *BatchAPIService) GetBatchesCountExecute(r ApiGetBatchesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.GetBatchesCount")
@@ -1156,8 +1160,8 @@ func (a *BatchAPIService) GetBatchesCountExecute(r ApiGetBatchesCountRequest) (*
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1175,9 +1179,9 @@ func (a *BatchAPIService) GetBatchesCountExecute(r ApiGetBatchesCountRequest) (*
 }
 
 type ApiUpdateBatchSuspensionStateRequest struct {
-	ctx context.Context
-	ApiService *BatchAPIService
-	id string
+	ctx                context.Context
+	ApiService         *BatchAPIService
+	id                 string
 	suspensionStateDto *SuspensionStateDto
 }
 
@@ -1195,24 +1199,24 @@ UpdateBatchSuspensionState Activate/Suspend
 
 Activates or suspends a batch by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the batch to activate or suspend.
- @return ApiUpdateBatchSuspensionStateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the batch to activate or suspend.
+	@return ApiUpdateBatchSuspensionStateRequest
 */
 func (a *BatchAPIService) UpdateBatchSuspensionState(ctx context.Context, id string) ApiUpdateBatchSuspensionStateRequest {
 	return ApiUpdateBatchSuspensionStateRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *BatchAPIService) UpdateBatchSuspensionStateExecute(r ApiUpdateBatchSuspensionStateRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "BatchAPIService.UpdateBatchSuspensionState")
@@ -1275,8 +1279,8 @@ func (a *BatchAPIService) UpdateBatchSuspensionStateExecute(r ApiUpdateBatchSusp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // ModificationAPIService ModificationAPI service
 type ModificationAPIService service
 
 type ApiExecuteModificationRequest struct {
-	ctx context.Context
-	ApiService *ModificationAPIService
+	ctx             context.Context
+	ApiService      *ModificationAPIService
 	modificationDto *ModificationDto
 }
 
@@ -51,22 +50,22 @@ asynchronous execution of a modification, please refer to the related
 section of the
 [user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-migration.md#executing-a-migration-plan).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiExecuteModificationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiExecuteModificationRequest
 */
 func (a *ModificationAPIService) ExecuteModification(ctx context.Context) ApiExecuteModificationRequest {
 	return ApiExecuteModificationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *ModificationAPIService) ExecuteModificationExecute(r ApiExecuteModificationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ModificationAPIService.ExecuteModification")
@@ -128,8 +127,8 @@ func (a *ModificationAPIService) ExecuteModificationExecute(r ApiExecuteModifica
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -138,8 +137,8 @@ func (a *ModificationAPIService) ExecuteModificationExecute(r ApiExecuteModifica
 }
 
 type ApiExecuteModificationAsyncRequest struct {
-	ctx context.Context
-	ApiService *ModificationAPIService
+	ctx             context.Context
+	ApiService      *ModificationAPIService
 	modificationDto *ModificationDto
 }
 
@@ -164,24 +163,25 @@ asynchronous execution of a modification, please refer to the related
 section of the
 [user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-migration.md#executing-a-migration-plan).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiExecuteModificationAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiExecuteModificationAsyncRequest
 */
 func (a *ModificationAPIService) ExecuteModificationAsync(ctx context.Context) ApiExecuteModificationAsyncRequest {
 	return ApiExecuteModificationAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ModificationAPIService) ExecuteModificationAsyncExecute(r ApiExecuteModificationAsyncRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ModificationAPIService.ExecuteModificationAsync")
@@ -243,8 +243,8 @@ func (a *ModificationAPIService) ExecuteModificationAsyncExecute(r ApiExecuteMod
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

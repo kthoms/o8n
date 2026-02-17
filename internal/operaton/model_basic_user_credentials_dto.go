@@ -74,6 +74,7 @@ func (o *BasicUserCredentialsDto) HasUsername() bool {
 func (o *BasicUserCredentialsDto) SetUsername(v string) {
 	o.Username.Set(&v)
 }
+
 // SetUsernameNil sets the value for Username to be an explicit nil
 func (o *BasicUserCredentialsDto) SetUsernameNil() {
 	o.Username.Set(nil)
@@ -116,6 +117,7 @@ func (o *BasicUserCredentialsDto) HasPassword() bool {
 func (o *BasicUserCredentialsDto) SetPassword(v string) {
 	o.Password.Set(&v)
 }
+
 // SetPasswordNil sets the value for Password to be an explicit nil
 func (o *BasicUserCredentialsDto) SetPasswordNil() {
 	o.Password.Set(nil)
@@ -127,7 +129,7 @@ func (o *BasicUserCredentialsDto) UnsetPassword() {
 }
 
 func (o BasicUserCredentialsDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableBasicUserCredentialsDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

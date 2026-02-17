@@ -86,6 +86,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasProcessDefinitionId
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -128,6 +129,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasProcessDefinitionKe
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -170,6 +172,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasProcessDefinitionNa
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionName(v string) {
 	o.ProcessDefinitionName.Set(&v)
 }
+
 // SetProcessDefinitionNameNil sets the value for ProcessDefinitionName to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionNameNil() {
 	o.ProcessDefinitionName.Set(nil)
@@ -212,6 +215,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasProcessDefinitionVe
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionVersion(v int32) {
 	o.ProcessDefinitionVersion.Set(&v)
 }
+
 // SetProcessDefinitionVersionNil sets the value for ProcessDefinitionVersion to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetProcessDefinitionVersionNil() {
 	o.ProcessDefinitionVersion.Set(nil)
@@ -254,6 +258,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasHistoryTimeToLive()
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -296,6 +301,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasFinishedProcessInst
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetFinishedProcessInstanceCount(v int64) {
 	o.FinishedProcessInstanceCount.Set(&v)
 }
+
 // SetFinishedProcessInstanceCountNil sets the value for FinishedProcessInstanceCount to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetFinishedProcessInstanceCountNil() {
 	o.FinishedProcessInstanceCount.Set(nil)
@@ -338,6 +344,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasCleanableProcessIns
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetCleanableProcessInstanceCount(v int64) {
 	o.CleanableProcessInstanceCount.Set(&v)
 }
+
 // SetCleanableProcessInstanceCountNil sets the value for CleanableProcessInstanceCount to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetCleanableProcessInstanceCountNil() {
 	o.CleanableProcessInstanceCount.Set(nil)
@@ -380,6 +387,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) HasTenantId() bool {
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *CleanableHistoricProcessInstanceReportResultDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -391,7 +399,7 @@ func (o *CleanableHistoricProcessInstanceReportResultDto) UnsetTenantId() {
 }
 
 func (o CleanableHistoricProcessInstanceReportResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -462,5 +470,3 @@ func (v *NullableCleanableHistoricProcessInstanceReportResultDto) UnmarshalJSON(
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -105,6 +105,7 @@ func (o *BatchStatisticsDto) HasId() bool {
 func (o *BatchStatisticsDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *BatchStatisticsDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -147,6 +148,7 @@ func (o *BatchStatisticsDto) HasType() bool {
 func (o *BatchStatisticsDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *BatchStatisticsDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -189,6 +191,7 @@ func (o *BatchStatisticsDto) HasTotalJobs() bool {
 func (o *BatchStatisticsDto) SetTotalJobs(v int32) {
 	o.TotalJobs.Set(&v)
 }
+
 // SetTotalJobsNil sets the value for TotalJobs to be an explicit nil
 func (o *BatchStatisticsDto) SetTotalJobsNil() {
 	o.TotalJobs.Set(nil)
@@ -231,6 +234,7 @@ func (o *BatchStatisticsDto) HasJobsCreated() bool {
 func (o *BatchStatisticsDto) SetJobsCreated(v int32) {
 	o.JobsCreated.Set(&v)
 }
+
 // SetJobsCreatedNil sets the value for JobsCreated to be an explicit nil
 func (o *BatchStatisticsDto) SetJobsCreatedNil() {
 	o.JobsCreated.Set(nil)
@@ -273,6 +277,7 @@ func (o *BatchStatisticsDto) HasBatchJobsPerSeed() bool {
 func (o *BatchStatisticsDto) SetBatchJobsPerSeed(v int32) {
 	o.BatchJobsPerSeed.Set(&v)
 }
+
 // SetBatchJobsPerSeedNil sets the value for BatchJobsPerSeed to be an explicit nil
 func (o *BatchStatisticsDto) SetBatchJobsPerSeedNil() {
 	o.BatchJobsPerSeed.Set(nil)
@@ -315,6 +320,7 @@ func (o *BatchStatisticsDto) HasInvocationsPerBatchJob() bool {
 func (o *BatchStatisticsDto) SetInvocationsPerBatchJob(v int32) {
 	o.InvocationsPerBatchJob.Set(&v)
 }
+
 // SetInvocationsPerBatchJobNil sets the value for InvocationsPerBatchJob to be an explicit nil
 func (o *BatchStatisticsDto) SetInvocationsPerBatchJobNil() {
 	o.InvocationsPerBatchJob.Set(nil)
@@ -357,6 +363,7 @@ func (o *BatchStatisticsDto) HasSeedJobDefinitionId() bool {
 func (o *BatchStatisticsDto) SetSeedJobDefinitionId(v string) {
 	o.SeedJobDefinitionId.Set(&v)
 }
+
 // SetSeedJobDefinitionIdNil sets the value for SeedJobDefinitionId to be an explicit nil
 func (o *BatchStatisticsDto) SetSeedJobDefinitionIdNil() {
 	o.SeedJobDefinitionId.Set(nil)
@@ -399,6 +406,7 @@ func (o *BatchStatisticsDto) HasMonitorJobDefinitionId() bool {
 func (o *BatchStatisticsDto) SetMonitorJobDefinitionId(v string) {
 	o.MonitorJobDefinitionId.Set(&v)
 }
+
 // SetMonitorJobDefinitionIdNil sets the value for MonitorJobDefinitionId to be an explicit nil
 func (o *BatchStatisticsDto) SetMonitorJobDefinitionIdNil() {
 	o.MonitorJobDefinitionId.Set(nil)
@@ -441,6 +449,7 @@ func (o *BatchStatisticsDto) HasBatchJobDefinitionId() bool {
 func (o *BatchStatisticsDto) SetBatchJobDefinitionId(v string) {
 	o.BatchJobDefinitionId.Set(&v)
 }
+
 // SetBatchJobDefinitionIdNil sets the value for BatchJobDefinitionId to be an explicit nil
 func (o *BatchStatisticsDto) SetBatchJobDefinitionIdNil() {
 	o.BatchJobDefinitionId.Set(nil)
@@ -483,6 +492,7 @@ func (o *BatchStatisticsDto) HasSuspended() bool {
 func (o *BatchStatisticsDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *BatchStatisticsDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -525,6 +535,7 @@ func (o *BatchStatisticsDto) HasTenantId() bool {
 func (o *BatchStatisticsDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *BatchStatisticsDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -567,6 +578,7 @@ func (o *BatchStatisticsDto) HasCreateUserId() bool {
 func (o *BatchStatisticsDto) SetCreateUserId(v string) {
 	o.CreateUserId.Set(&v)
 }
+
 // SetCreateUserIdNil sets the value for CreateUserId to be an explicit nil
 func (o *BatchStatisticsDto) SetCreateUserIdNil() {
 	o.CreateUserId.Set(nil)
@@ -609,6 +621,7 @@ func (o *BatchStatisticsDto) HasStartTime() bool {
 func (o *BatchStatisticsDto) SetStartTime(v time.Time) {
 	o.StartTime.Set(&v)
 }
+
 // SetStartTimeNil sets the value for StartTime to be an explicit nil
 func (o *BatchStatisticsDto) SetStartTimeNil() {
 	o.StartTime.Set(nil)
@@ -651,6 +664,7 @@ func (o *BatchStatisticsDto) HasExecutionStartTime() bool {
 func (o *BatchStatisticsDto) SetExecutionStartTime(v time.Time) {
 	o.ExecutionStartTime.Set(&v)
 }
+
 // SetExecutionStartTimeNil sets the value for ExecutionStartTime to be an explicit nil
 func (o *BatchStatisticsDto) SetExecutionStartTimeNil() {
 	o.ExecutionStartTime.Set(nil)
@@ -693,6 +707,7 @@ func (o *BatchStatisticsDto) HasRemainingJobs() bool {
 func (o *BatchStatisticsDto) SetRemainingJobs(v int32) {
 	o.RemainingJobs.Set(&v)
 }
+
 // SetRemainingJobsNil sets the value for RemainingJobs to be an explicit nil
 func (o *BatchStatisticsDto) SetRemainingJobsNil() {
 	o.RemainingJobs.Set(nil)
@@ -735,6 +750,7 @@ func (o *BatchStatisticsDto) HasCompletedJobs() bool {
 func (o *BatchStatisticsDto) SetCompletedJobs(v int32) {
 	o.CompletedJobs.Set(&v)
 }
+
 // SetCompletedJobsNil sets the value for CompletedJobs to be an explicit nil
 func (o *BatchStatisticsDto) SetCompletedJobsNil() {
 	o.CompletedJobs.Set(nil)
@@ -777,6 +793,7 @@ func (o *BatchStatisticsDto) HasFailedJobs() bool {
 func (o *BatchStatisticsDto) SetFailedJobs(v int32) {
 	o.FailedJobs.Set(&v)
 }
+
 // SetFailedJobsNil sets the value for FailedJobs to be an explicit nil
 func (o *BatchStatisticsDto) SetFailedJobsNil() {
 	o.FailedJobs.Set(nil)
@@ -788,7 +805,7 @@ func (o *BatchStatisticsDto) UnsetFailedJobs() {
 }
 
 func (o BatchStatisticsDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -886,5 +903,3 @@ func (v *NullableBatchStatisticsDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

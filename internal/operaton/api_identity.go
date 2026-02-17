@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // IdentityAPIService IdentityAPI service
 type IdentityAPIService service
 
 type ApiCheckPasswordRequest struct {
-	ctx context.Context
-	ApiService *IdentityAPIService
+	ctx                      context.Context
+	ApiService               *IdentityAPIService
 	passwordPolicyRequestDto *PasswordPolicyRequestDto
 }
 
@@ -46,24 +45,25 @@ end point. More information on password policies in Operaton can be found in the
 [user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/password-policy/) and in
 the [security instructions](https://docs.operaton.org/manual/1.0/user-guide/security/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCheckPasswordRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCheckPasswordRequest
 */
 func (a *IdentityAPIService) CheckPassword(ctx context.Context) ApiCheckPasswordRequest {
 	return ApiCheckPasswordRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CheckPasswordPolicyResultDto
+//
+//	@return CheckPasswordPolicyResultDto
 func (a *IdentityAPIService) CheckPasswordExecute(r ApiCheckPasswordRequest) (*CheckPasswordPolicyResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CheckPasswordPolicyResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CheckPasswordPolicyResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IdentityAPIService.CheckPassword")
@@ -125,8 +125,8 @@ func (a *IdentityAPIService) CheckPasswordExecute(r ApiCheckPasswordRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -144,9 +144,9 @@ func (a *IdentityAPIService) CheckPasswordExecute(r ApiCheckPasswordRequest) (*C
 }
 
 type ApiGetGroupInfoRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *IdentityAPIService
-	userId *string
+	userId     *string
 }
 
 // The id of the user to get the groups for.
@@ -165,24 +165,25 @@ GetGroupInfo Get a User's Groups
 Gets the groups of a user by id and includes all users that share a group with the
 given user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetGroupInfoRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetGroupInfoRequest
 */
 func (a *IdentityAPIService) GetGroupInfo(ctx context.Context) ApiGetGroupInfoRequest {
 	return ApiGetGroupInfoRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return IdentityServiceGroupInfoDto
+//
+//	@return IdentityServiceGroupInfoDto
 func (a *IdentityAPIService) GetGroupInfoExecute(r ApiGetGroupInfoRequest) (*IdentityServiceGroupInfoDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *IdentityServiceGroupInfoDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IdentityServiceGroupInfoDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IdentityAPIService.GetGroupInfo")
@@ -246,8 +247,8 @@ func (a *IdentityAPIService) GetGroupInfoExecute(r ApiGetGroupInfoRequest) (*Ide
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -265,7 +266,7 @@ func (a *IdentityAPIService) GetGroupInfoExecute(r ApiGetGroupInfoRequest) (*Ide
 }
 
 type ApiGetPasswordPolicyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *IdentityAPIService
 }
 
@@ -282,24 +283,25 @@ list of policy rules. More information on password policies in Operaton can be f
 [user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/password-policy/) and in
 the [security instructions](https://docs.operaton.org/manual/1.0/user-guide/security/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetPasswordPolicyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetPasswordPolicyRequest
 */
 func (a *IdentityAPIService) GetPasswordPolicy(ctx context.Context) ApiGetPasswordPolicyRequest {
 	return ApiGetPasswordPolicyRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return PasswordPolicyDto
+//
+//	@return PasswordPolicyDto
 func (a *IdentityAPIService) GetPasswordPolicyExecute(r ApiGetPasswordPolicyRequest) (*PasswordPolicyDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *PasswordPolicyDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *PasswordPolicyDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IdentityAPIService.GetPasswordPolicy")
@@ -359,8 +361,8 @@ func (a *IdentityAPIService) GetPasswordPolicyExecute(r ApiGetPasswordPolicyRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -378,8 +380,8 @@ func (a *IdentityAPIService) GetPasswordPolicyExecute(r ApiGetPasswordPolicyRequ
 }
 
 type ApiVerifyUserRequest struct {
-	ctx context.Context
-	ApiService *IdentityAPIService
+	ctx                     context.Context
+	ApiService              *IdentityAPIService
 	basicUserCredentialsDto *BasicUserCredentialsDto
 }
 
@@ -397,24 +399,25 @@ VerifyUser Verify User
 
 Verifies that user credentials are valid.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiVerifyUserRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiVerifyUserRequest
 */
 func (a *IdentityAPIService) VerifyUser(ctx context.Context) ApiVerifyUserRequest {
 	return ApiVerifyUserRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return AuthenticationResult
+//
+//	@return AuthenticationResult
 func (a *IdentityAPIService) VerifyUserExecute(r ApiVerifyUserRequest) (*AuthenticationResult, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AuthenticationResult
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AuthenticationResult
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IdentityAPIService.VerifyUser")
@@ -476,8 +479,8 @@ func (a *IdentityAPIService) VerifyUserExecute(r ApiVerifyUserRequest) (*Authent
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

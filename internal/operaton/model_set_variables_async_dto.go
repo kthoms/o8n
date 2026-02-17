@@ -20,8 +20,8 @@ var _ MappedNullable = &SetVariablesAsyncDto{}
 // SetVariablesAsyncDto struct for SetVariablesAsyncDto
 type SetVariablesAsyncDto struct {
 	// A list of process instance ids that define a group of process instances to which the operation will set variables.  Please note that if `processInstanceIds`, `processInstanceQuery` and `historicProcessInstanceQuery` are defined, the resulting operation will be performed on the union of these sets.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 	// A variables the operation will set in the root scope of the process instances.
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
@@ -175,7 +175,7 @@ func (o *SetVariablesAsyncDto) SetVariables(v map[string]VariableValueDto) {
 }
 
 func (o SetVariablesAsyncDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -234,5 +234,3 @@ func (v *NullableSetVariablesAsyncDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

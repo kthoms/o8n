@@ -81,6 +81,7 @@ func (o *SetRemovalTimeToHistoricBatchesDto) HasAbsoluteRemovalTime() bool {
 func (o *SetRemovalTimeToHistoricBatchesDto) SetAbsoluteRemovalTime(v time.Time) {
 	o.AbsoluteRemovalTime.Set(&v)
 }
+
 // SetAbsoluteRemovalTimeNil sets the value for AbsoluteRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricBatchesDto) SetAbsoluteRemovalTimeNil() {
 	o.AbsoluteRemovalTime.Set(nil)
@@ -123,6 +124,7 @@ func (o *SetRemovalTimeToHistoricBatchesDto) HasClearedRemovalTime() bool {
 func (o *SetRemovalTimeToHistoricBatchesDto) SetClearedRemovalTime(v bool) {
 	o.ClearedRemovalTime.Set(&v)
 }
+
 // SetClearedRemovalTimeNil sets the value for ClearedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricBatchesDto) SetClearedRemovalTimeNil() {
 	o.ClearedRemovalTime.Set(nil)
@@ -165,6 +167,7 @@ func (o *SetRemovalTimeToHistoricBatchesDto) HasCalculatedRemovalTime() bool {
 func (o *SetRemovalTimeToHistoricBatchesDto) SetCalculatedRemovalTime(v bool) {
 	o.CalculatedRemovalTime.Set(&v)
 }
+
 // SetCalculatedRemovalTimeNil sets the value for CalculatedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricBatchesDto) SetCalculatedRemovalTimeNil() {
 	o.CalculatedRemovalTime.Set(nil)
@@ -242,7 +245,7 @@ func (o *SetRemovalTimeToHistoricBatchesDto) SetHistoricBatchIds(v []string) {
 }
 
 func (o SetRemovalTimeToHistoricBatchesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -304,5 +307,3 @@ func (v *NullableSetRemovalTimeToHistoricBatchesDto) UnmarshalJSON(src []byte) e
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

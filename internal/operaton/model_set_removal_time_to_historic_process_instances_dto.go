@@ -27,7 +27,7 @@ type SetRemovalTimeToHistoricProcessInstancesDto struct {
 	// The removal time is calculated based on the engine's configuration settings. Value may only be `true`, as `false` is the default behavior.  **Note:** Cannot be set in conjunction with `absoluteRemovalTime` or `clearedRemovalTime`.
 	CalculatedRemovalTime NullableBool `json:"calculatedRemovalTime,omitempty"`
 	// The id of the process instance.
-	HistoricProcessInstanceIds []string `json:"historicProcessInstanceIds,omitempty"`
+	HistoricProcessInstanceIds   []string                         `json:"historicProcessInstanceIds,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 	// Sets the removal time to all historic process instances in the hierarchy. Value may only be `true`, as `false` is the default behavior.
 	Hierarchical NullableBool `json:"hierarchical,omitempty"`
@@ -86,6 +86,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasAbsoluteRemovalTime() b
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetAbsoluteRemovalTime(v time.Time) {
 	o.AbsoluteRemovalTime.Set(&v)
 }
+
 // SetAbsoluteRemovalTimeNil sets the value for AbsoluteRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetAbsoluteRemovalTimeNil() {
 	o.AbsoluteRemovalTime.Set(nil)
@@ -128,6 +129,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasClearedRemovalTime() bo
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetClearedRemovalTime(v bool) {
 	o.ClearedRemovalTime.Set(&v)
 }
+
 // SetClearedRemovalTimeNil sets the value for ClearedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetClearedRemovalTimeNil() {
 	o.ClearedRemovalTime.Set(nil)
@@ -170,6 +172,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasCalculatedRemovalTime()
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetCalculatedRemovalTime(v bool) {
 	o.CalculatedRemovalTime.Set(&v)
 }
+
 // SetCalculatedRemovalTimeNil sets the value for CalculatedRemovalTime to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetCalculatedRemovalTimeNil() {
 	o.CalculatedRemovalTime.Set(nil)
@@ -277,6 +280,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasHierarchical() bool {
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetHierarchical(v bool) {
 	o.Hierarchical.Set(&v)
 }
+
 // SetHierarchicalNil sets the value for Hierarchical to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetHierarchicalNil() {
 	o.Hierarchical.Set(nil)
@@ -319,6 +323,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasUpdateInChunks() bool {
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetUpdateInChunks(v bool) {
 	o.UpdateInChunks.Set(&v)
 }
+
 // SetUpdateInChunksNil sets the value for UpdateInChunks to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetUpdateInChunksNil() {
 	o.UpdateInChunks.Set(nil)
@@ -361,6 +366,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) HasUpdateChunkSize() bool 
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetUpdateChunkSize(v int32) {
 	o.UpdateChunkSize.Set(&v)
 }
+
 // SetUpdateChunkSizeNil sets the value for UpdateChunkSize to be an explicit nil
 func (o *SetRemovalTimeToHistoricProcessInstancesDto) SetUpdateChunkSizeNil() {
 	o.UpdateChunkSize.Set(nil)
@@ -372,7 +378,7 @@ func (o *SetRemovalTimeToHistoricProcessInstancesDto) UnsetUpdateChunkSize() {
 }
 
 func (o SetRemovalTimeToHistoricProcessInstancesDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -443,5 +449,3 @@ func (v *NullableSetRemovalTimeToHistoricProcessInstancesDto) UnmarshalJSON(src 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -20,13 +20,12 @@ import (
 	"time"
 )
 
-
 // HistoricDecisionInstanceAPIService HistoricDecisionInstanceAPI service
 type HistoricDecisionInstanceAPIService service
 
 type ApiDeleteAsyncRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionInstanceAPIService
+	ctx                                context.Context
+	ApiService                         *HistoricDecisionInstanceAPIService
 	deleteHistoricDecisionInstancesDto *DeleteHistoricDecisionInstancesDto
 }
 
@@ -43,28 +42,29 @@ func (r ApiDeleteAsyncRequest) Execute() (*BatchDto, *http.Response, error) {
 DeleteAsync Delete Async (POST)
 
 Delete multiple historic decision instances asynchronously (batch).
-At least `historicDecisionInstanceIds` or `historicDecisionInstanceQuery` 
-has to be provided. If both are provided then all instances matching query 
+At least `historicDecisionInstanceIds` or `historicDecisionInstanceQuery`
+has to be provided. If both are provided then all instances matching query
 criterion and instances from the list will be deleted.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiDeleteAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiDeleteAsyncRequest
 */
 func (a *HistoricDecisionInstanceAPIService) DeleteAsync(ctx context.Context) ApiDeleteAsyncRequest {
 	return ApiDeleteAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *HistoricDecisionInstanceAPIService) DeleteAsyncExecute(r ApiDeleteAsyncRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionInstanceAPIService.DeleteAsync")
@@ -126,8 +126,8 @@ func (a *HistoricDecisionInstanceAPIService) DeleteAsyncExecute(r ApiDeleteAsync
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -145,12 +145,12 @@ func (a *HistoricDecisionInstanceAPIService) DeleteAsyncExecute(r ApiDeleteAsync
 }
 
 type ApiGetHistoricDecisionInstanceRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionInstanceAPIService
-	id string
-	includeInputs *bool
-	includeOutputs *bool
-	disableBinaryFetching *bool
+	ctx                                context.Context
+	ApiService                         *HistoricDecisionInstanceAPIService
+	id                                 string
+	includeInputs                      *bool
+	includeOutputs                     *bool
+	disableBinaryFetching              *bool
 	disableCustomObjectDeserialization *bool
 }
 
@@ -185,29 +185,30 @@ func (r ApiGetHistoricDecisionInstanceRequest) Execute() (*HistoricDecisionInsta
 /*
 GetHistoricDecisionInstance Get Historic Decision Instance
 
-Retrieves a historic decision instance by id, according to the 
+Retrieves a historic decision instance by id, according to the
 `HistoricDecisionInstance` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the historic decision instance to be retrieved.
- @return ApiGetHistoricDecisionInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the historic decision instance to be retrieved.
+	@return ApiGetHistoricDecisionInstanceRequest
 */
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstance(ctx context.Context, id string) ApiGetHistoricDecisionInstanceRequest {
 	return ApiGetHistoricDecisionInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricDecisionInstanceDto
+//
+//	@return HistoricDecisionInstanceDto
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstanceExecute(r ApiGetHistoricDecisionInstanceRequest) (*HistoricDecisionInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricDecisionInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricDecisionInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionInstanceAPIService.GetHistoricDecisionInstance")
@@ -280,8 +281,8 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstanceExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -299,41 +300,41 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstanceExecute(
 }
 
 type ApiGetHistoricDecisionInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionInstanceAPIService
-	decisionInstanceId *string
-	decisionInstanceIdIn *string
-	decisionDefinitionId *string
-	decisionDefinitionIdIn *string
-	decisionDefinitionKey *string
-	decisionDefinitionKeyIn *string
-	decisionDefinitionName *string
-	decisionDefinitionNameLike *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processInstanceId *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseInstanceId *string
-	activityIdIn *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	evaluatedBefore *time.Time
-	evaluatedAfter *time.Time
-	userId *string
-	rootDecisionInstanceId *string
-	rootDecisionInstancesOnly *bool
-	decisionRequirementsDefinitionId *string
-	decisionRequirementsDefinitionKey *string
-	includeInputs *bool
-	includeOutputs *bool
-	disableBinaryFetching *bool
+	ctx                                context.Context
+	ApiService                         *HistoricDecisionInstanceAPIService
+	decisionInstanceId                 *string
+	decisionInstanceIdIn               *string
+	decisionDefinitionId               *string
+	decisionDefinitionIdIn             *string
+	decisionDefinitionKey              *string
+	decisionDefinitionKeyIn            *string
+	decisionDefinitionName             *string
+	decisionDefinitionNameLike         *string
+	processDefinitionId                *string
+	processDefinitionKey               *string
+	processInstanceId                  *string
+	caseDefinitionId                   *string
+	caseDefinitionKey                  *string
+	caseInstanceId                     *string
+	activityIdIn                       *string
+	activityInstanceIdIn               *string
+	tenantIdIn                         *string
+	withoutTenantId                    *bool
+	evaluatedBefore                    *time.Time
+	evaluatedAfter                     *time.Time
+	userId                             *string
+	rootDecisionInstanceId             *string
+	rootDecisionInstancesOnly          *bool
+	decisionRequirementsDefinitionId   *string
+	decisionRequirementsDefinitionKey  *string
+	includeInputs                      *bool
+	includeOutputs                     *bool
+	disableBinaryFetching              *bool
 	disableCustomObjectDeserialization *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy                             *string
+	sortOrder                          *string
+	firstResult                        *int32
+	maxResults                         *int32
 }
 
 // Filter by decision instance id.
@@ -541,29 +542,30 @@ func (r ApiGetHistoricDecisionInstancesRequest) Execute() ([]HistoricDecisionIns
 /*
 GetHistoricDecisionInstances Get Historic Decision Instances
 
-Queries for historic decision instances that fulfill the given parameters. 
-The size of the result set can be retrieved by using the 
-[Get Historic Decision Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-instance/get-decision-instance-query-count/) 
+Queries for historic decision instances that fulfill the given parameters.
+The size of the result set can be retrieved by using the
+[Get Historic Decision Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-instance/get-decision-instance-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricDecisionInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricDecisionInstancesRequest
 */
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstances(ctx context.Context) ApiGetHistoricDecisionInstancesRequest {
 	return ApiGetHistoricDecisionInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricDecisionInstanceDto
+//
+//	@return []HistoricDecisionInstanceDto
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesExecute(r ApiGetHistoricDecisionInstancesRequest) ([]HistoricDecisionInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricDecisionInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricDecisionInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionInstanceAPIService.GetHistoricDecisionInstances")
@@ -722,8 +724,8 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -741,32 +743,32 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesExecute
 }
 
 type ApiGetHistoricDecisionInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionInstanceAPIService
-	decisionInstanceId *string
-	decisionInstanceIdIn *string
-	decisionDefinitionId *string
-	decisionDefinitionIdIn *string
-	decisionDefinitionKey *string
-	decisionDefinitionKeyIn *string
-	decisionDefinitionName *string
-	decisionDefinitionNameLike *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processInstanceId *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseInstanceId *string
-	activityIdIn *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	evaluatedBefore *time.Time
-	evaluatedAfter *time.Time
-	userId *string
-	rootDecisionInstanceId *string
-	rootDecisionInstancesOnly *bool
-	decisionRequirementsDefinitionId *string
+	ctx                               context.Context
+	ApiService                        *HistoricDecisionInstanceAPIService
+	decisionInstanceId                *string
+	decisionInstanceIdIn              *string
+	decisionDefinitionId              *string
+	decisionDefinitionIdIn            *string
+	decisionDefinitionKey             *string
+	decisionDefinitionKeyIn           *string
+	decisionDefinitionName            *string
+	decisionDefinitionNameLike        *string
+	processDefinitionId               *string
+	processDefinitionKey              *string
+	processInstanceId                 *string
+	caseDefinitionId                  *string
+	caseDefinitionKey                 *string
+	caseInstanceId                    *string
+	activityIdIn                      *string
+	activityInstanceIdIn              *string
+	tenantIdIn                        *string
+	withoutTenantId                   *bool
+	evaluatedBefore                   *time.Time
+	evaluatedAfter                    *time.Time
+	userId                            *string
+	rootDecisionInstanceId            *string
+	rootDecisionInstancesOnly         *bool
+	decisionRequirementsDefinitionId  *string
 	decisionRequirementsDefinitionKey *string
 }
 
@@ -927,29 +929,30 @@ func (r ApiGetHistoricDecisionInstancesCountRequest) Execute() (*CountResultDto,
 /*
 GetHistoricDecisionInstancesCount Get Historic Decision Instance Count
 
-Queries for the number of historic decision instances that fulfill the given parameters. 
-Takes the same parameters as the 
-[Get Historic Decision Instances](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-instance/get-decision-instance-query/) 
+Queries for the number of historic decision instances that fulfill the given parameters.
+Takes the same parameters as the
+[Get Historic Decision Instances](https://docs.operaton.org/manual/1.0/reference/rest/history/decision-instance/get-decision-instance-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricDecisionInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricDecisionInstancesCountRequest
 */
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesCount(ctx context.Context) ApiGetHistoricDecisionInstancesCountRequest {
 	return ApiGetHistoricDecisionInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesCountExecute(r ApiGetHistoricDecisionInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionInstanceAPIService.GetHistoricDecisionInstancesCount")
@@ -1084,8 +1087,8 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesCountEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1103,8 +1106,8 @@ func (a *HistoricDecisionInstanceAPIService) GetHistoricDecisionInstancesCountEx
 }
 
 type ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest struct {
-	ctx context.Context
-	ApiService *HistoricDecisionInstanceAPIService
+	ctx                                          context.Context
+	ApiService                                   *HistoricDecisionInstanceAPIService
 	setRemovalTimeToHistoricDecisionInstancesDto *SetRemovalTimeToHistoricDecisionInstancesDto
 }
 
@@ -1128,24 +1131,25 @@ At least `historicDecisionInstanceIds` or
 provided, all instances matching query criterion and instances from the list
 will be updated with a removal time.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest
 */
 func (a *HistoricDecisionInstanceAPIService) SetRemovalTimeAsyncHistoricDecisionInstance(ctx context.Context) ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest {
 	return ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *HistoricDecisionInstanceAPIService) SetRemovalTimeAsyncHistoricDecisionInstanceExecute(r ApiSetRemovalTimeAsyncHistoricDecisionInstanceRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricDecisionInstanceAPIService.SetRemovalTimeAsyncHistoricDecisionInstance")
@@ -1207,8 +1211,8 @@ func (a *HistoricDecisionInstanceAPIService) SetRemovalTimeAsyncHistoricDecision
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

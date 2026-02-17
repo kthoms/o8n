@@ -86,6 +86,7 @@ func (o *DecisionRequirementsDefinitionDto) HasId() bool {
 func (o *DecisionRequirementsDefinitionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -128,6 +129,7 @@ func (o *DecisionRequirementsDefinitionDto) HasKey() bool {
 func (o *DecisionRequirementsDefinitionDto) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetKeyNil() {
 	o.Key.Set(nil)
@@ -170,6 +172,7 @@ func (o *DecisionRequirementsDefinitionDto) HasName() bool {
 func (o *DecisionRequirementsDefinitionDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -212,6 +215,7 @@ func (o *DecisionRequirementsDefinitionDto) HasCategory() bool {
 func (o *DecisionRequirementsDefinitionDto) SetCategory(v string) {
 	o.Category.Set(&v)
 }
+
 // SetCategoryNil sets the value for Category to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetCategoryNil() {
 	o.Category.Set(nil)
@@ -254,6 +258,7 @@ func (o *DecisionRequirementsDefinitionDto) HasVersion() bool {
 func (o *DecisionRequirementsDefinitionDto) SetVersion(v int32) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -296,6 +301,7 @@ func (o *DecisionRequirementsDefinitionDto) HasResource() bool {
 func (o *DecisionRequirementsDefinitionDto) SetResource(v string) {
 	o.Resource.Set(&v)
 }
+
 // SetResourceNil sets the value for Resource to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetResourceNil() {
 	o.Resource.Set(nil)
@@ -338,6 +344,7 @@ func (o *DecisionRequirementsDefinitionDto) HasDeploymentId() bool {
 func (o *DecisionRequirementsDefinitionDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -380,6 +387,7 @@ func (o *DecisionRequirementsDefinitionDto) HasTenantId() bool {
 func (o *DecisionRequirementsDefinitionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *DecisionRequirementsDefinitionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -391,7 +399,7 @@ func (o *DecisionRequirementsDefinitionDto) UnsetTenantId() {
 }
 
 func (o DecisionRequirementsDefinitionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -462,5 +470,3 @@ func (v *NullableDecisionRequirementsDefinitionDto) UnmarshalJSON(src []byte) er
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

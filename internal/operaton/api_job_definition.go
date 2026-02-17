@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // JobDefinitionAPIService JobDefinitionAPI service
 type JobDefinitionAPIService service
 
 type ApiGetJobDefinitionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *JobDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetJobDefinitionRequest) Execute() (*JobDefinitionDto, *http.Response, error) {
@@ -38,26 +37,27 @@ GetJobDefinition Get Job Definition
 
 Retrieves a job definition by id, according to the `JobDefinition` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the job definition to be retrieved.
- @return ApiGetJobDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the job definition to be retrieved.
+	@return ApiGetJobDefinitionRequest
 */
 func (a *JobDefinitionAPIService) GetJobDefinition(ctx context.Context, id string) ApiGetJobDefinitionRequest {
 	return ApiGetJobDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return JobDefinitionDto
+//
+//	@return JobDefinitionDto
 func (a *JobDefinitionAPIService) GetJobDefinitionExecute(r ApiGetJobDefinitionRequest) (*JobDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *JobDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *JobDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.GetJobDefinition")
@@ -118,8 +118,8 @@ func (a *JobDefinitionAPIService) GetJobDefinitionExecute(r ApiGetJobDefinitionR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -137,24 +137,24 @@ func (a *JobDefinitionAPIService) GetJobDefinitionExecute(r ApiGetJobDefinitionR
 }
 
 type ApiGetJobDefinitionsRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
-	jobDefinitionId *string
-	activityIdIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	jobType *string
-	jobConfiguration *string
-	active *bool
-	suspended *bool
-	withOverridingJobPriority *bool
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                  context.Context
+	ApiService                           *JobDefinitionAPIService
+	jobDefinitionId                      *string
+	activityIdIn                         *string
+	processDefinitionId                  *string
+	processDefinitionKey                 *string
+	jobType                              *string
+	jobConfiguration                     *string
+	active                               *bool
+	suspended                            *bool
+	withOverridingJobPriority            *bool
+	tenantIdIn                           *string
+	withoutTenantId                      *bool
 	includeJobDefinitionsWithoutTenantId *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy                               *string
+	sortOrder                            *string
+	firstResult                          *int32
+	maxResults                           *int32
 }
 
 // Filter by job definition id.
@@ -265,24 +265,25 @@ The size of the result set can be retrieved by using the
 [Get Job Definition Count](https://docs.operaton.org/manual/1.0/reference/rest/job-definition/get-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetJobDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetJobDefinitionsRequest
 */
 func (a *JobDefinitionAPIService) GetJobDefinitions(ctx context.Context) ApiGetJobDefinitionsRequest {
 	return ApiGetJobDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []JobDefinitionDto
+//
+//	@return []JobDefinitionDto
 func (a *JobDefinitionAPIService) GetJobDefinitionsExecute(r ApiGetJobDefinitionsRequest) ([]JobDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []JobDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []JobDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.GetJobDefinitions")
@@ -390,8 +391,8 @@ func (a *JobDefinitionAPIService) GetJobDefinitionsExecute(r ApiGetJobDefinition
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -409,19 +410,19 @@ func (a *JobDefinitionAPIService) GetJobDefinitionsExecute(r ApiGetJobDefinition
 }
 
 type ApiGetJobDefinitionsCountRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
-	jobDefinitionId *string
-	activityIdIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	jobType *string
-	jobConfiguration *string
-	active *bool
-	suspended *bool
-	withOverridingJobPriority *bool
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                  context.Context
+	ApiService                           *JobDefinitionAPIService
+	jobDefinitionId                      *string
+	activityIdIn                         *string
+	processDefinitionId                  *string
+	processDefinitionKey                 *string
+	jobType                              *string
+	jobConfiguration                     *string
+	active                               *bool
+	suspended                            *bool
+	withOverridingJobPriority            *bool
+	tenantIdIn                           *string
+	withoutTenantId                      *bool
 	includeJobDefinitionsWithoutTenantId *bool
 }
 
@@ -509,24 +510,25 @@ Takes the same parameters as the
 [Get Job Definitions](https://docs.operaton.org/manual/1.0/reference/rest/job-definition/get-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetJobDefinitionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetJobDefinitionsCountRequest
 */
 func (a *JobDefinitionAPIService) GetJobDefinitionsCount(ctx context.Context) ApiGetJobDefinitionsCountRequest {
 	return ApiGetJobDefinitionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *JobDefinitionAPIService) GetJobDefinitionsCountExecute(r ApiGetJobDefinitionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.GetJobDefinitionsCount")
@@ -622,8 +624,8 @@ func (a *JobDefinitionAPIService) GetJobDefinitionsCountExecute(r ApiGetJobDefin
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -641,10 +643,10 @@ func (a *JobDefinitionAPIService) GetJobDefinitionsCountExecute(r ApiGetJobDefin
 }
 
 type ApiQueryJobDefinitionsRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                   context.Context
+	ApiService            *JobDefinitionAPIService
+	firstResult           *int32
+	maxResults            *int32
 	jobDefinitionQueryDto *JobDefinitionQueryDto
 }
 
@@ -678,24 +680,25 @@ more powerful than the
 method because it allows filtering by multiple job definitions of
 types `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryJobDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryJobDefinitionsRequest
 */
 func (a *JobDefinitionAPIService) QueryJobDefinitions(ctx context.Context) ApiQueryJobDefinitionsRequest {
 	return ApiQueryJobDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []JobDefinitionDto
+//
+//	@return []JobDefinitionDto
 func (a *JobDefinitionAPIService) QueryJobDefinitionsExecute(r ApiQueryJobDefinitionsRequest) ([]JobDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []JobDefinitionDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []JobDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.QueryJobDefinitions")
@@ -763,8 +766,8 @@ func (a *JobDefinitionAPIService) QueryJobDefinitionsExecute(r ApiQueryJobDefini
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -782,8 +785,8 @@ func (a *JobDefinitionAPIService) QueryJobDefinitionsExecute(r ApiQueryJobDefini
 }
 
 type ApiQueryJobDefinitionsCountRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
+	ctx                   context.Context
+	ApiService            *JobDefinitionAPIService
 	jobDefinitionQueryDto *JobDefinitionQueryDto
 }
 
@@ -806,24 +809,25 @@ method and therefore it is slightly more powerful than the
 [Get Job Definition Count](https://docs.operaton.org/manual/1.0/reference/rest/job-definition/get-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryJobDefinitionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryJobDefinitionsCountRequest
 */
 func (a *JobDefinitionAPIService) QueryJobDefinitionsCount(ctx context.Context) ApiQueryJobDefinitionsCountRequest {
 	return ApiQueryJobDefinitionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *JobDefinitionAPIService) QueryJobDefinitionsCountExecute(r ApiQueryJobDefinitionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.QueryJobDefinitionsCount")
@@ -885,8 +889,8 @@ func (a *JobDefinitionAPIService) QueryJobDefinitionsCountExecute(r ApiQueryJobD
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -904,9 +908,9 @@ func (a *JobDefinitionAPIService) QueryJobDefinitionsCountExecute(r ApiQueryJobD
 }
 
 type ApiSetJobPriorityJobDefinitionRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
-	id string
+	ctx                      context.Context
+	ApiService               *JobDefinitionAPIService
+	id                       string
 	jobDefinitionPriorityDto *JobDefinitionPriorityDto
 }
 
@@ -930,24 +934,24 @@ on its definition's priority any longer. See the
 [user guide on job prioritization](https://docs.operaton.org/manual/1.0/user-guide/process-engine/the-job-executor/#set-job-definition-priorities-via-managementservice-api)
 for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the job definition to be updated.
- @return ApiSetJobPriorityJobDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the job definition to be updated.
+	@return ApiSetJobPriorityJobDefinitionRequest
 */
 func (a *JobDefinitionAPIService) SetJobPriorityJobDefinition(ctx context.Context, id string) ApiSetJobPriorityJobDefinitionRequest {
 	return ApiSetJobPriorityJobDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *JobDefinitionAPIService) SetJobPriorityJobDefinitionExecute(r ApiSetJobPriorityJobDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.SetJobPriorityJobDefinition")
@@ -1010,8 +1014,8 @@ func (a *JobDefinitionAPIService) SetJobPriorityJobDefinitionExecute(r ApiSetJob
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1021,8 +1025,8 @@ func (a *JobDefinitionAPIService) SetJobPriorityJobDefinitionExecute(r ApiSetJob
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1031,9 +1035,9 @@ func (a *JobDefinitionAPIService) SetJobPriorityJobDefinitionExecute(r ApiSetJob
 }
 
 type ApiSetJobRetriesJobDefinitionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *JobDefinitionAPIService
-	id string
+	id         string
 	retriesDto *RetriesDto
 }
 
@@ -1052,24 +1056,24 @@ SetJobRetriesJobDefinition Set Job Retries By Job Definition Id
 Sets the number of retries of all **failed** jobs associated with the given job
 definition id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the job definition to be updated.
- @return ApiSetJobRetriesJobDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the job definition to be updated.
+	@return ApiSetJobRetriesJobDefinitionRequest
 */
 func (a *JobDefinitionAPIService) SetJobRetriesJobDefinition(ctx context.Context, id string) ApiSetJobRetriesJobDefinitionRequest {
 	return ApiSetJobRetriesJobDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *JobDefinitionAPIService) SetJobRetriesJobDefinitionExecute(r ApiSetJobRetriesJobDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.SetJobRetriesJobDefinition")
@@ -1132,8 +1136,8 @@ func (a *JobDefinitionAPIService) SetJobRetriesJobDefinitionExecute(r ApiSetJobR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1142,9 +1146,9 @@ func (a *JobDefinitionAPIService) SetJobRetriesJobDefinitionExecute(r ApiSetJobR
 }
 
 type ApiUpdateSuspensionStateJobDefinitionRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
-	id string
+	ctx                             context.Context
+	ApiService                      *JobDefinitionAPIService
+	id                              string
 	jobDefinitionSuspensionStateDto *JobDefinitionSuspensionStateDto
 }
 
@@ -1162,24 +1166,24 @@ UpdateSuspensionStateJobDefinition Activate/Suspend Job Definition By Id
 
 Activates or suspends a given job definition by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the job definition to activate or suspend.
- @return ApiUpdateSuspensionStateJobDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the job definition to activate or suspend.
+	@return ApiUpdateSuspensionStateJobDefinitionRequest
 */
 func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinition(ctx context.Context, id string) ApiUpdateSuspensionStateJobDefinitionRequest {
 	return ApiUpdateSuspensionStateJobDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitionExecute(r ApiUpdateSuspensionStateJobDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.UpdateSuspensionStateJobDefinition")
@@ -1242,8 +1246,8 @@ func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitionExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1252,8 +1256,8 @@ func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitionExecute(r Ap
 }
 
 type ApiUpdateSuspensionStateJobDefinitionsRequest struct {
-	ctx context.Context
-	ApiService *JobDefinitionAPIService
+	ctx                              context.Context
+	ApiService                       *JobDefinitionAPIService
 	jobDefinitionsSuspensionStateDto *JobDefinitionsSuspensionStateDto
 }
 
@@ -1271,22 +1275,22 @@ UpdateSuspensionStateJobDefinitions Activate/Suspend Job Definitions
 
 Activates or suspends job definitions with the given process definition id or process definition key.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUpdateSuspensionStateJobDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiUpdateSuspensionStateJobDefinitionsRequest
 */
 func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitions(ctx context.Context) ApiUpdateSuspensionStateJobDefinitionsRequest {
 	return ApiUpdateSuspensionStateJobDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitionsExecute(r ApiUpdateSuspensionStateJobDefinitionsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "JobDefinitionAPIService.UpdateSuspensionStateJobDefinitions")
@@ -1348,8 +1352,8 @@ func (a *JobDefinitionAPIService) UpdateSuspensionStateJobDefinitionsExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

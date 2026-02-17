@@ -111,6 +111,7 @@ func (o *TriggerVariableValueDto) HasType() bool {
 func (o *TriggerVariableValueDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *TriggerVariableValueDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -185,6 +186,7 @@ func (o *TriggerVariableValueDto) HasLocal() bool {
 func (o *TriggerVariableValueDto) SetLocal(v bool) {
 	o.Local.Set(&v)
 }
+
 // SetLocalNil sets the value for Local to be an explicit nil
 func (o *TriggerVariableValueDto) SetLocalNil() {
 	o.Local.Set(nil)
@@ -196,7 +198,7 @@ func (o *TriggerVariableValueDto) UnsetLocal() {
 }
 
 func (o TriggerVariableValueDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -255,5 +257,3 @@ func (v *NullableTriggerVariableValueDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

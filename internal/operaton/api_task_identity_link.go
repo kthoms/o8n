@@ -19,14 +19,13 @@ import (
 	"strings"
 )
 
-
 // TaskIdentityLinkAPIService TaskIdentityLinkAPI service
 type TaskIdentityLinkAPIService service
 
 type ApiAddIdentityLinkRequest struct {
-	ctx context.Context
-	ApiService *TaskIdentityLinkAPIService
-	id string
+	ctx             context.Context
+	ApiService      *TaskIdentityLinkAPIService
+	id              string
 	identityLinkDto *IdentityLinkDto
 }
 
@@ -45,24 +44,24 @@ AddIdentityLink Add
 Adds an identity link to a task by id. Can be used to link any user or group to a task
 and specify a relation.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to add a link to.
- @return ApiAddIdentityLinkRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to add a link to.
+	@return ApiAddIdentityLinkRequest
 */
 func (a *TaskIdentityLinkAPIService) AddIdentityLink(ctx context.Context, id string) ApiAddIdentityLinkRequest {
 	return ApiAddIdentityLinkRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskIdentityLinkAPIService) AddIdentityLinkExecute(r ApiAddIdentityLinkRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskIdentityLinkAPIService.AddIdentityLink")
@@ -125,8 +124,8 @@ func (a *TaskIdentityLinkAPIService) AddIdentityLinkExecute(r ApiAddIdentityLink
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -135,9 +134,9 @@ func (a *TaskIdentityLinkAPIService) AddIdentityLinkExecute(r ApiAddIdentityLink
 }
 
 type ApiDeleteIdentityLinkRequest struct {
-	ctx context.Context
-	ApiService *TaskIdentityLinkAPIService
-	id string
+	ctx             context.Context
+	ApiService      *TaskIdentityLinkAPIService
+	id              string
 	identityLinkDto *IdentityLinkDto
 }
 
@@ -155,24 +154,24 @@ DeleteIdentityLink Delete
 
 Removes an identity link from a task by id
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to remove a link from.
- @return ApiDeleteIdentityLinkRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to remove a link from.
+	@return ApiDeleteIdentityLinkRequest
 */
 func (a *TaskIdentityLinkAPIService) DeleteIdentityLink(ctx context.Context, id string) ApiDeleteIdentityLinkRequest {
 	return ApiDeleteIdentityLinkRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskIdentityLinkAPIService) DeleteIdentityLinkExecute(r ApiDeleteIdentityLinkRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskIdentityLinkAPIService.DeleteIdentityLink")
@@ -235,8 +234,8 @@ func (a *TaskIdentityLinkAPIService) DeleteIdentityLinkExecute(r ApiDeleteIdenti
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -245,10 +244,10 @@ func (a *TaskIdentityLinkAPIService) DeleteIdentityLinkExecute(r ApiDeleteIdenti
 }
 
 type ApiGetIdentityLinksRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskIdentityLinkAPIService
-	id string
-	type_ *string
+	id         string
+	type_      *string
 }
 
 // Filter by the type of links to include.
@@ -267,26 +266,27 @@ GetIdentityLinks Get List
 Gets the identity links for a task by id, which are the users and groups that are in
 *some* relation to it (including assignee and owner).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the identity links for.
- @return ApiGetIdentityLinksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the identity links for.
+	@return ApiGetIdentityLinksRequest
 */
 func (a *TaskIdentityLinkAPIService) GetIdentityLinks(ctx context.Context, id string) ApiGetIdentityLinksRequest {
 	return ApiGetIdentityLinksRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []IdentityLinkDto
+//
+//	@return []IdentityLinkDto
 func (a *TaskIdentityLinkAPIService) GetIdentityLinksExecute(r ApiGetIdentityLinksRequest) ([]IdentityLinkDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []IdentityLinkDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []IdentityLinkDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskIdentityLinkAPIService.GetIdentityLinks")
@@ -350,8 +350,8 @@ func (a *TaskIdentityLinkAPIService) GetIdentityLinksExecute(r ApiGetIdentityLin
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

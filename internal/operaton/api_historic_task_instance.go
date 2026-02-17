@@ -19,18 +19,17 @@ import (
 	"time"
 )
 
-
 // HistoricTaskInstanceAPIService HistoricTaskInstanceAPI service
 type HistoricTaskInstanceAPIService service
 
 type ApiGetHistoricTaskInstanceReportRequest struct {
-	ctx context.Context
-	ApiService *HistoricTaskInstanceAPIService
-	reportType *string
-	periodUnit *string
+	ctx             context.Context
+	ApiService      *HistoricTaskInstanceAPIService
+	reportType      *string
+	periodUnit      *string
 	completedBefore *time.Time
-	completedAfter *time.Time
-	groupBy *string
+	completedAfter  *time.Time
+	groupBy         *string
 }
 
 // **Mandatory.** Specifies the kind of the report to execute. To retrieve a report about the duration of process instances the value must be set to &#x60;duration&#x60;. For a report of the completed tasks in a specific timespan the value must be set to &#x60;count&#x60;.
@@ -77,24 +76,25 @@ definition name and the count of how many tasks were completed for the specified
 period. When the report type is set to `duration`, the report contains a minimum, maximum and
 average duration value of all completed task instances in a given period.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricTaskInstanceReportRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricTaskInstanceReportRequest
 */
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstanceReport(ctx context.Context) ApiGetHistoricTaskInstanceReportRequest {
 	return ApiGetHistoricTaskInstanceReportRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricTaskInstanceReportResultDto
+//
+//	@return []HistoricTaskInstanceReportResultDto
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstanceReportExecute(r ApiGetHistoricTaskInstanceReportRequest) ([]HistoricTaskInstanceReportResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricTaskInstanceReportResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricTaskInstanceReportResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricTaskInstanceAPIService.GetHistoricTaskInstanceReport")
@@ -169,8 +169,8 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstanceReportExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -188,71 +188,71 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstanceReportExecute(r 
 }
 
 type ApiGetHistoricTaskInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricTaskInstanceAPIService
-	taskId *string
-	taskParentTaskId *string
-	processInstanceId *string
-	rootProcessInstanceId *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyIn *string
+	ctx                            context.Context
+	ApiService                     *HistoricTaskInstanceAPIService
+	taskId                         *string
+	taskParentTaskId               *string
+	processInstanceId              *string
+	rootProcessInstanceId          *string
+	processInstanceBusinessKey     *string
+	processInstanceBusinessKeyIn   *string
 	processInstanceBusinessKeyLike *string
-	executionId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionName *string
-	caseInstanceId *string
-	caseExecutionId *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseDefinitionName *string
-	activityInstanceIdIn *string
-	taskName *string
-	taskNameLike *string
-	taskDescription *string
-	taskDescriptionLike *string
-	taskDefinitionKey *string
-	taskDefinitionKeyIn *string
-	taskDeleteReason *string
-	taskDeleteReasonLike *string
-	taskAssignee *string
-	taskAssigneeLike *string
-	taskOwner *string
-	taskOwnerLike *string
-	taskPriority *int32
-	assigned *bool
-	unassigned *bool
-	finished *bool
-	unfinished *bool
-	processFinished *bool
-	processUnfinished *bool
-	taskDueDate *time.Time
-	taskDueDateBefore *time.Time
-	taskDueDateAfter *time.Time
-	withoutTaskDueDate *bool
-	taskFollowUpDate *time.Time
-	taskFollowUpDateBefore *time.Time
-	taskFollowUpDateAfter *time.Time
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	tenantIdIn *string
-	withoutTenantId *bool
-	taskVariables *string
-	processVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	taskInvolvedUser *string
-	taskInvolvedGroup *string
-	taskHadCandidateUser *string
-	taskHadCandidateGroup *string
-	withCandidateGroups *bool
-	withoutCandidateGroups *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	executionId                    *string
+	processDefinitionId            *string
+	processDefinitionKey           *string
+	processDefinitionName          *string
+	caseInstanceId                 *string
+	caseExecutionId                *string
+	caseDefinitionId               *string
+	caseDefinitionKey              *string
+	caseDefinitionName             *string
+	activityInstanceIdIn           *string
+	taskName                       *string
+	taskNameLike                   *string
+	taskDescription                *string
+	taskDescriptionLike            *string
+	taskDefinitionKey              *string
+	taskDefinitionKeyIn            *string
+	taskDeleteReason               *string
+	taskDeleteReasonLike           *string
+	taskAssignee                   *string
+	taskAssigneeLike               *string
+	taskOwner                      *string
+	taskOwnerLike                  *string
+	taskPriority                   *int32
+	assigned                       *bool
+	unassigned                     *bool
+	finished                       *bool
+	unfinished                     *bool
+	processFinished                *bool
+	processUnfinished              *bool
+	taskDueDate                    *time.Time
+	taskDueDateBefore              *time.Time
+	taskDueDateAfter               *time.Time
+	withoutTaskDueDate             *bool
+	taskFollowUpDate               *time.Time
+	taskFollowUpDateBefore         *time.Time
+	taskFollowUpDateAfter          *time.Time
+	startedBefore                  *time.Time
+	startedAfter                   *time.Time
+	finishedBefore                 *time.Time
+	finishedAfter                  *time.Time
+	tenantIdIn                     *string
+	withoutTenantId                *bool
+	taskVariables                  *string
+	processVariables               *string
+	variableNamesIgnoreCase        *bool
+	variableValuesIgnoreCase       *bool
+	taskInvolvedUser               *string
+	taskInvolvedGroup              *string
+	taskHadCandidateUser           *string
+	taskHadCandidateGroup          *string
+	withCandidateGroups            *bool
+	withoutCandidateGroups         *bool
+	sortBy                         *string
+	sortOrder                      *string
+	firstResult                    *int32
+	maxResults                     *int32
 }
 
 // Filter by task id.
@@ -645,24 +645,25 @@ set can be retrieved by using the
 [Get Task Count](https://docs.operaton.org/manual/1.0/reference/rest/history/task/get-task-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricTaskInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricTaskInstancesRequest
 */
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstances(ctx context.Context) ApiGetHistoricTaskInstancesRequest {
 	return ApiGetHistoricTaskInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricTaskInstanceDto
+//
+//	@return []HistoricTaskInstanceDto
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesExecute(r ApiGetHistoricTaskInstancesRequest) ([]HistoricTaskInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricTaskInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricTaskInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricTaskInstanceAPIService.GetHistoricTaskInstances")
@@ -911,8 +912,8 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -930,67 +931,67 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesExecute(r ApiGe
 }
 
 type ApiGetHistoricTaskInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricTaskInstanceAPIService
-	taskId *string
-	taskParentTaskId *string
-	processInstanceId *string
-	rootProcessInstanceId *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyIn *string
+	ctx                            context.Context
+	ApiService                     *HistoricTaskInstanceAPIService
+	taskId                         *string
+	taskParentTaskId               *string
+	processInstanceId              *string
+	rootProcessInstanceId          *string
+	processInstanceBusinessKey     *string
+	processInstanceBusinessKeyIn   *string
 	processInstanceBusinessKeyLike *string
-	executionId *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionName *string
-	caseInstanceId *string
-	caseExecutionId *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseDefinitionName *string
-	activityInstanceIdIn *string
-	taskName *string
-	taskNameLike *string
-	taskDescription *string
-	taskDescriptionLike *string
-	taskDefinitionKey *string
-	taskDefinitionKeyIn *string
-	taskDeleteReason *string
-	taskDeleteReasonLike *string
-	taskAssignee *string
-	taskAssigneeLike *string
-	taskOwner *string
-	taskOwnerLike *string
-	taskPriority *int32
-	assigned *bool
-	unassigned *bool
-	finished *bool
-	unfinished *bool
-	processFinished *bool
-	processUnfinished *bool
-	taskDueDate *time.Time
-	taskDueDateBefore *time.Time
-	taskDueDateAfter *time.Time
-	withoutTaskDueDate *bool
-	taskFollowUpDate *time.Time
-	taskFollowUpDateBefore *time.Time
-	taskFollowUpDateAfter *time.Time
-	startedBefore *time.Time
-	startedAfter *time.Time
-	finishedBefore *time.Time
-	finishedAfter *time.Time
-	tenantIdIn *string
-	withoutTenantId *bool
-	taskVariables *string
-	processVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	taskInvolvedUser *string
-	taskInvolvedGroup *string
-	taskHadCandidateUser *string
-	taskHadCandidateGroup *string
-	withCandidateGroups *bool
-	withoutCandidateGroups *bool
+	executionId                    *string
+	processDefinitionId            *string
+	processDefinitionKey           *string
+	processDefinitionName          *string
+	caseInstanceId                 *string
+	caseExecutionId                *string
+	caseDefinitionId               *string
+	caseDefinitionKey              *string
+	caseDefinitionName             *string
+	activityInstanceIdIn           *string
+	taskName                       *string
+	taskNameLike                   *string
+	taskDescription                *string
+	taskDescriptionLike            *string
+	taskDefinitionKey              *string
+	taskDefinitionKeyIn            *string
+	taskDeleteReason               *string
+	taskDeleteReasonLike           *string
+	taskAssignee                   *string
+	taskAssigneeLike               *string
+	taskOwner                      *string
+	taskOwnerLike                  *string
+	taskPriority                   *int32
+	assigned                       *bool
+	unassigned                     *bool
+	finished                       *bool
+	unfinished                     *bool
+	processFinished                *bool
+	processUnfinished              *bool
+	taskDueDate                    *time.Time
+	taskDueDateBefore              *time.Time
+	taskDueDateAfter               *time.Time
+	withoutTaskDueDate             *bool
+	taskFollowUpDate               *time.Time
+	taskFollowUpDateBefore         *time.Time
+	taskFollowUpDateAfter          *time.Time
+	startedBefore                  *time.Time
+	startedAfter                   *time.Time
+	finishedBefore                 *time.Time
+	finishedAfter                  *time.Time
+	tenantIdIn                     *string
+	withoutTenantId                *bool
+	taskVariables                  *string
+	processVariables               *string
+	variableNamesIgnoreCase        *bool
+	variableValuesIgnoreCase       *bool
+	taskInvolvedUser               *string
+	taskInvolvedGroup              *string
+	taskHadCandidateUser           *string
+	taskHadCandidateGroup          *string
+	withCandidateGroups            *bool
+	withoutCandidateGroups         *bool
 }
 
 // Filter by task id.
@@ -1359,24 +1360,25 @@ Takes the same parameters as the
 [Get Tasks (Historic)](https://docs.operaton.org/manual/1.0/reference/rest/history/task/get-task-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricTaskInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricTaskInstancesCountRequest
 */
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesCount(ctx context.Context) ApiGetHistoricTaskInstancesCountRequest {
 	return ApiGetHistoricTaskInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesCountExecute(r ApiGetHistoricTaskInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricTaskInstanceAPIService.GetHistoricTaskInstancesCount")
@@ -1613,8 +1615,8 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesCountExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1632,10 +1634,10 @@ func (a *HistoricTaskInstanceAPIService) GetHistoricTaskInstancesCountExecute(r 
 }
 
 type ApiQueryHistoricTaskInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricTaskInstanceAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                          context.Context
+	ApiService                   *HistoricTaskInstanceAPIService
+	firstResult                  *int32
+	maxResults                   *int32
 	historicTaskInstanceQueryDto *HistoricTaskInstanceQueryDto
 }
 
@@ -1670,24 +1672,25 @@ The size of the result set can be retrieved by using the
 [Get Task Count (POST)](https://docs.operaton.org/manual/1.0/reference/rest/history/task/post-task-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricTaskInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricTaskInstancesRequest
 */
 func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstances(ctx context.Context) ApiQueryHistoricTaskInstancesRequest {
 	return ApiQueryHistoricTaskInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricTaskInstanceDto
+//
+//	@return []HistoricTaskInstanceDto
 func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesExecute(r ApiQueryHistoricTaskInstancesRequest) ([]HistoricTaskInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricTaskInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricTaskInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricTaskInstanceAPIService.QueryHistoricTaskInstances")
@@ -1755,8 +1758,8 @@ func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1774,8 +1777,8 @@ func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesExecute(r Api
 }
 
 type ApiQueryHistoricTaskInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricTaskInstanceAPIService
+	ctx                          context.Context
+	ApiService                   *HistoricTaskInstanceAPIService
 	historicTaskInstanceQueryDto *HistoricTaskInstanceQueryDto
 }
 
@@ -1797,24 +1800,25 @@ method. Corresponds to the size of the result set of the
 [Get Tasks (Historic) (POST)](https://docs.operaton.org/manual/1.0/reference/rest/history/task/post-task-query/)
 method and takes the same parameters.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricTaskInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricTaskInstancesCountRequest
 */
 func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesCount(ctx context.Context) ApiQueryHistoricTaskInstancesCountRequest {
 	return ApiQueryHistoricTaskInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesCountExecute(r ApiQueryHistoricTaskInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricTaskInstanceAPIService.QueryHistoricTaskInstancesCount")
@@ -1876,8 +1880,8 @@ func (a *HistoricTaskInstanceAPIService) QueryHistoricTaskInstancesCountExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

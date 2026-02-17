@@ -21,15 +21,15 @@ var _ MappedNullable = &SetJobRetriesByProcessDto{}
 // SetJobRetriesByProcessDto struct for SetJobRetriesByProcessDto
 type SetJobRetriesByProcessDto struct {
 	// A list of job ids to set retries for.
-	JobIds []string `json:"jobIds,omitempty"`
+	JobIds   []string     `json:"jobIds,omitempty"`
 	JobQuery *JobQueryDto `json:"jobQuery,omitempty"`
 	// The due date to set for the job. A due date indicates when this job is ready for execution. Jobs with due dates in the past will be scheduled for execution.
 	DueDate NullableTime `json:"dueDate,omitempty"`
 	// The number of retries to set for the resource.  Must be >= 0. If this is 0, an incident is created and the task, or job, cannot be fetched, or acquired anymore unless the retries are increased again. Can not be null.
 	Retries NullableInt32 `json:"retries,omitempty"`
 	// A list of process instance ids to fetch jobs, for which retries will be set.
-	ProcessInstances []string `json:"processInstances,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstances             []string                         `json:"processInstances,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 }
 
@@ -147,6 +147,7 @@ func (o *SetJobRetriesByProcessDto) HasDueDate() bool {
 func (o *SetJobRetriesByProcessDto) SetDueDate(v time.Time) {
 	o.DueDate.Set(&v)
 }
+
 // SetDueDateNil sets the value for DueDate to be an explicit nil
 func (o *SetJobRetriesByProcessDto) SetDueDateNil() {
 	o.DueDate.Set(nil)
@@ -189,6 +190,7 @@ func (o *SetJobRetriesByProcessDto) HasRetries() bool {
 func (o *SetJobRetriesByProcessDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *SetJobRetriesByProcessDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -297,7 +299,7 @@ func (o *SetJobRetriesByProcessDto) SetHistoricProcessInstanceQuery(v HistoricPr
 }
 
 func (o SetJobRetriesByProcessDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -365,5 +367,3 @@ func (v *NullableSetJobRetriesByProcessDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

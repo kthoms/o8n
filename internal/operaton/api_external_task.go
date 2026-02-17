@@ -20,14 +20,13 @@ import (
 	"time"
 )
 
-
 // ExternalTaskAPIService ExternalTaskAPI service
 type ExternalTaskAPIService service
 
 type ApiCompleteExternalTaskResourceRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx                     context.Context
+	ApiService              *ExternalTaskAPIService
+	id                      string
 	completeExternalTaskDto *CompleteExternalTaskDto
 }
 
@@ -45,24 +44,24 @@ CompleteExternalTaskResource Complete
 
 Completes an external task by id and updates process variables.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to complete.
- @return ApiCompleteExternalTaskResourceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to complete.
+	@return ApiCompleteExternalTaskResourceRequest
 */
 func (a *ExternalTaskAPIService) CompleteExternalTaskResource(ctx context.Context, id string) ApiCompleteExternalTaskResourceRequest {
 	return ApiCompleteExternalTaskResourceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) CompleteExternalTaskResourceExecute(r ApiCompleteExternalTaskResourceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.CompleteExternalTaskResource")
@@ -125,8 +124,8 @@ func (a *ExternalTaskAPIService) CompleteExternalTaskResourceExecute(r ApiComple
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -136,8 +135,8 @@ func (a *ExternalTaskAPIService) CompleteExternalTaskResourceExecute(r ApiComple
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -147,8 +146,8 @@ func (a *ExternalTaskAPIService) CompleteExternalTaskResourceExecute(r ApiComple
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -157,9 +156,9 @@ func (a *ExternalTaskAPIService) CompleteExternalTaskResourceExecute(r ApiComple
 }
 
 type ApiExtendLockRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx                         context.Context
+	ApiService                  *ExternalTaskAPIService
+	id                          string
 	extendLockOnExternalTaskDto *ExtendLockOnExternalTaskDto
 }
 
@@ -177,24 +176,24 @@ ExtendLock Extend Lock
 
 Extends the timeout of the lock by a given amount of time.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task.
- @return ApiExtendLockRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task.
+	@return ApiExtendLockRequest
 */
 func (a *ExternalTaskAPIService) ExtendLock(ctx context.Context, id string) ApiExtendLockRequest {
 	return ApiExtendLockRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) ExtendLockExecute(r ApiExtendLockRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.ExtendLock")
@@ -257,8 +256,8 @@ func (a *ExternalTaskAPIService) ExtendLockExecute(r ApiExtendLockRequest) (*htt
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -268,8 +267,8 @@ func (a *ExternalTaskAPIService) ExtendLockExecute(r ApiExtendLockRequest) (*htt
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -278,8 +277,8 @@ func (a *ExternalTaskAPIService) ExtendLockExecute(r ApiExtendLockRequest) (*htt
 }
 
 type ApiFetchAndLockRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
+	ctx                   context.Context
+	ApiService            *ExternalTaskAPIService
 	fetchExternalTasksDto *FetchExternalTasksDto
 }
 
@@ -298,24 +297,25 @@ FetchAndLock Fetch and Lock
 Fetches and locks a specific number of external tasks for execution by a worker. Query can be restricted
 to specific task topics and for each task topic an individual lock time can be provided.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiFetchAndLockRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiFetchAndLockRequest
 */
 func (a *ExternalTaskAPIService) FetchAndLock(ctx context.Context) ApiFetchAndLockRequest {
 	return ApiFetchAndLockRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []LockedExternalTaskDto
+//
+//	@return []LockedExternalTaskDto
 func (a *ExternalTaskAPIService) FetchAndLockExecute(r ApiFetchAndLockRequest) ([]LockedExternalTaskDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []LockedExternalTaskDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []LockedExternalTaskDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.FetchAndLock")
@@ -377,8 +377,8 @@ func (a *ExternalTaskAPIService) FetchAndLockExecute(r ApiFetchAndLockRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -396,9 +396,9 @@ func (a *ExternalTaskAPIService) FetchAndLockExecute(r ApiFetchAndLockRequest) (
 }
 
 type ApiGetExternalTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExternalTaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetExternalTaskRequest) Execute() (*ExternalTaskDto, *http.Response, error) {
@@ -410,26 +410,27 @@ GetExternalTask Get
 
 Retrieves an external task by id, corresponding to the `ExternalTask` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task to be retrieved.
- @return ApiGetExternalTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task to be retrieved.
+	@return ApiGetExternalTaskRequest
 */
 func (a *ExternalTaskAPIService) GetExternalTask(ctx context.Context, id string) ApiGetExternalTaskRequest {
 	return ApiGetExternalTaskRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ExternalTaskDto
+//
+//	@return ExternalTaskDto
 func (a *ExternalTaskAPIService) GetExternalTaskExecute(r ApiGetExternalTaskRequest) (*ExternalTaskDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ExternalTaskDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ExternalTaskDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.GetExternalTask")
@@ -490,8 +491,8 @@ func (a *ExternalTaskAPIService) GetExternalTaskExecute(r ApiGetExternalTaskRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -509,9 +510,9 @@ func (a *ExternalTaskAPIService) GetExternalTaskExecute(r ApiGetExternalTaskRequ
 }
 
 type ApiGetExternalTaskErrorDetailsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExternalTaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetExternalTaskErrorDetailsRequest) Execute() (string, *http.Response, error) {
@@ -523,26 +524,27 @@ GetExternalTaskErrorDetails Get Error Details
 
 Retrieves the error details in the context of a running external task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task for which the error details should be retrieved.
- @return ApiGetExternalTaskErrorDetailsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task for which the error details should be retrieved.
+	@return ApiGetExternalTaskErrorDetailsRequest
 */
 func (a *ExternalTaskAPIService) GetExternalTaskErrorDetails(ctx context.Context, id string) ApiGetExternalTaskErrorDetailsRequest {
 	return ApiGetExternalTaskErrorDetailsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return string
+//
+//	@return string
 func (a *ExternalTaskAPIService) GetExternalTaskErrorDetailsExecute(r ApiGetExternalTaskErrorDetailsRequest) (string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.GetExternalTaskErrorDetails")
@@ -603,8 +605,8 @@ func (a *ExternalTaskAPIService) GetExternalTaskErrorDetailsExecute(r ApiGetExte
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -622,40 +624,40 @@ func (a *ExternalTaskAPIService) GetExternalTaskErrorDetailsExecute(r ApiGetExte
 }
 
 type ApiGetExternalTasksRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	externalTaskId *string
-	externalTaskIdIn *string
-	topicName *string
-	workerId *string
-	locked *bool
-	notLocked *bool
-	withRetriesLeft *bool
-	noRetriesLeft *bool
-	lockExpirationAfter *time.Time
-	lockExpirationBefore *time.Time
-	activityId *string
-	activityIdIn *string
-	executionId *string
-	processInstanceId *string
-	processInstanceIdIn *string
-	processDefinitionId *string
-	tenantIdIn *string
-	active *bool
-	suspended *bool
+	ctx                        context.Context
+	ApiService                 *ExternalTaskAPIService
+	externalTaskId             *string
+	externalTaskIdIn           *string
+	topicName                  *string
+	workerId                   *string
+	locked                     *bool
+	notLocked                  *bool
+	withRetriesLeft            *bool
+	noRetriesLeft              *bool
+	lockExpirationAfter        *time.Time
+	lockExpirationBefore       *time.Time
+	activityId                 *string
+	activityIdIn               *string
+	executionId                *string
+	processInstanceId          *string
+	processInstanceIdIn        *string
+	processDefinitionId        *string
+	tenantIdIn                 *string
+	active                     *bool
+	suspended                  *bool
 	priorityHigherThanOrEquals *int64
-	priorityLowerThanOrEquals *int64
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	processVariables *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	priorityLowerThanOrEquals  *int64
+	processDefinitionKey       *string
+	processDefinitionKeyIn     *string
+	processDefinitionName      *string
+	processDefinitionNameLike  *string
+	variableNamesIgnoreCase    *bool
+	variableValuesIgnoreCase   *bool
+	processVariables           *string
+	sortBy                     *string
+	sortOrder                  *string
+	firstResult                *int32
+	maxResults                 *int32
 }
 
 // Filter by an external task&#39;s id.
@@ -861,24 +863,25 @@ Queries for the external tasks that fulfill given parameters. Parameters may be 
 runtime properties of executions. The size of the result set can be retrieved by using the
 [Get External Task Count](https://docs.operaton.org/manual/1.0/reference/rest/external-task/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetExternalTasksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetExternalTasksRequest
 */
 func (a *ExternalTaskAPIService) GetExternalTasks(ctx context.Context) ApiGetExternalTasksRequest {
 	return ApiGetExternalTasksRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ExternalTaskDto
+//
+//	@return []ExternalTaskDto
 func (a *ExternalTaskAPIService) GetExternalTasksExecute(r ApiGetExternalTasksRequest) ([]ExternalTaskDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ExternalTaskDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ExternalTaskDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.GetExternalTasks")
@@ -1040,8 +1043,8 @@ func (a *ExternalTaskAPIService) GetExternalTasksExecute(r ApiGetExternalTasksRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1059,36 +1062,36 @@ func (a *ExternalTaskAPIService) GetExternalTasksExecute(r ApiGetExternalTasksRe
 }
 
 type ApiGetExternalTasksCountRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	externalTaskId *string
-	externalTaskIdIn *string
-	topicName *string
-	workerId *string
-	locked *bool
-	notLocked *bool
-	withRetriesLeft *bool
-	noRetriesLeft *bool
-	lockExpirationAfter *time.Time
-	lockExpirationBefore *time.Time
-	activityId *string
-	activityIdIn *string
-	executionId *string
-	processInstanceId *string
-	processInstanceIdIn *string
-	processDefinitionId *string
-	tenantIdIn *string
-	active *bool
-	suspended *bool
+	ctx                        context.Context
+	ApiService                 *ExternalTaskAPIService
+	externalTaskId             *string
+	externalTaskIdIn           *string
+	topicName                  *string
+	workerId                   *string
+	locked                     *bool
+	notLocked                  *bool
+	withRetriesLeft            *bool
+	noRetriesLeft              *bool
+	lockExpirationAfter        *time.Time
+	lockExpirationBefore       *time.Time
+	activityId                 *string
+	activityIdIn               *string
+	executionId                *string
+	processInstanceId          *string
+	processInstanceIdIn        *string
+	processDefinitionId        *string
+	tenantIdIn                 *string
+	active                     *bool
+	suspended                  *bool
 	priorityHigherThanOrEquals *int64
-	priorityLowerThanOrEquals *int64
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	processVariables *string
+	priorityLowerThanOrEquals  *int64
+	processDefinitionKey       *string
+	processDefinitionKeyIn     *string
+	processDefinitionName      *string
+	processDefinitionNameLike  *string
+	variableNamesIgnoreCase    *bool
+	variableValuesIgnoreCase   *bool
+	processVariables           *string
 }
 
 // Filter by an external task&#39;s id.
@@ -1269,24 +1272,25 @@ GetExternalTasksCount Get List Count
 Queries for the number of external tasks that fulfill given parameters. Takes the same parameters as the
 [Get External Tasks](https://docs.operaton.org/manual/1.0/reference/rest/external-task/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetExternalTasksCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetExternalTasksCountRequest
 */
 func (a *ExternalTaskAPIService) GetExternalTasksCount(ctx context.Context) ApiGetExternalTasksCountRequest {
 	return ApiGetExternalTasksCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ExternalTaskAPIService) GetExternalTasksCountExecute(r ApiGetExternalTasksCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.GetExternalTasksCount")
@@ -1436,8 +1440,8 @@ func (a *ExternalTaskAPIService) GetExternalTasksCountExecute(r ApiGetExternalTa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1455,11 +1459,11 @@ func (a *ExternalTaskAPIService) GetExternalTasksCountExecute(r ApiGetExternalTa
 }
 
 type ApiGetTopicNamesRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	withLockedTasks *bool
+	ctx               context.Context
+	ApiService        *ExternalTaskAPIService
+	withLockedTasks   *bool
 	withUnlockedTasks *bool
-	withRetriesLeft *bool
+	withRetriesLeft   *bool
 }
 
 // Only include external tasks that are currently locked (i.e., they have a lock time and it has not expired). Value may only be &#x60;true&#x60;, as &#x60;false&#x60; matches any external task.
@@ -1493,24 +1497,25 @@ that are unlocked. The parameters withLockedTasks and withUnlockedTasks are
 exclusive. Setting them both to true will return an empty list.
 Providing no parameters will return a list of all distinct topic names with external tasks.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTopicNamesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTopicNamesRequest
 */
 func (a *ExternalTaskAPIService) GetTopicNames(ctx context.Context) ApiGetTopicNamesRequest {
 	return ApiGetTopicNamesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []string
+//
+//	@return []string
 func (a *ExternalTaskAPIService) GetTopicNamesExecute(r ApiGetTopicNamesRequest) ([]string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.GetTopicNames")
@@ -1579,8 +1584,8 @@ func (a *ExternalTaskAPIService) GetTopicNamesExecute(r ApiGetTopicNamesRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1598,9 +1603,9 @@ func (a *ExternalTaskAPIService) GetTopicNamesExecute(r ApiGetTopicNamesRequest)
 }
 
 type ApiHandleExternalTaskBpmnErrorRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx                   context.Context
+	ApiService            *ExternalTaskAPIService
+	id                    string
 	externalTaskBpmnError *ExternalTaskBpmnError
 }
 
@@ -1619,24 +1624,24 @@ HandleExternalTaskBpmnError Handle BPMN Error
 Reports a business error in the context of a running external task by id. The error code must be specified
 to identify the BPMN error handler.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task in which context a BPMN error is reported.
- @return ApiHandleExternalTaskBpmnErrorRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task in which context a BPMN error is reported.
+	@return ApiHandleExternalTaskBpmnErrorRequest
 */
 func (a *ExternalTaskAPIService) HandleExternalTaskBpmnError(ctx context.Context, id string) ApiHandleExternalTaskBpmnErrorRequest {
 	return ApiHandleExternalTaskBpmnErrorRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) HandleExternalTaskBpmnErrorExecute(r ApiHandleExternalTaskBpmnErrorRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.HandleExternalTaskBpmnError")
@@ -1699,8 +1704,8 @@ func (a *ExternalTaskAPIService) HandleExternalTaskBpmnErrorExecute(r ApiHandleE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1710,8 +1715,8 @@ func (a *ExternalTaskAPIService) HandleExternalTaskBpmnErrorExecute(r ApiHandleE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1721,8 +1726,8 @@ func (a *ExternalTaskAPIService) HandleExternalTaskBpmnErrorExecute(r ApiHandleE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1731,9 +1736,9 @@ func (a *ExternalTaskAPIService) HandleExternalTaskBpmnErrorExecute(r ApiHandleE
 }
 
 type ApiHandleFailureRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx                    context.Context
+	ApiService             *ExternalTaskAPIService
+	id                     string
 	externalTaskFailureDto *ExternalTaskFailureDto
 }
 
@@ -1752,24 +1757,24 @@ HandleFailure Handle Failure
 Reports a failure to execute an external task by id. A number of retries and a timeout until the task can
 be retried can be specified. If retries are set to 0, an incident for this task is created.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task to report a failure for.
- @return ApiHandleFailureRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task to report a failure for.
+	@return ApiHandleFailureRequest
 */
 func (a *ExternalTaskAPIService) HandleFailure(ctx context.Context, id string) ApiHandleFailureRequest {
 	return ApiHandleFailureRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) HandleFailureExecute(r ApiHandleFailureRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.HandleFailure")
@@ -1832,8 +1837,8 @@ func (a *ExternalTaskAPIService) HandleFailureExecute(r ApiHandleFailureRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1843,8 +1848,8 @@ func (a *ExternalTaskAPIService) HandleFailureExecute(r ApiHandleFailureRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1854,8 +1859,8 @@ func (a *ExternalTaskAPIService) HandleFailureExecute(r ApiHandleFailureRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1864,9 +1869,9 @@ func (a *ExternalTaskAPIService) HandleFailureExecute(r ApiHandleFailureRequest)
 }
 
 type ApiLockRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx                 context.Context
+	ApiService          *ExternalTaskAPIService
+	id                  string
 	lockExternalTaskDto *LockExternalTaskDto
 }
 
@@ -1884,24 +1889,24 @@ Lock Method for Lock
 
 Lock an external task by a given id for a specified worker and amount of time.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task.
- @return ApiLockRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task.
+	@return ApiLockRequest
 */
 func (a *ExternalTaskAPIService) Lock(ctx context.Context, id string) ApiLockRequest {
 	return ApiLockRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) LockExecute(r ApiLockRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.Lock")
@@ -1964,8 +1969,8 @@ func (a *ExternalTaskAPIService) LockExecute(r ApiLockRequest) (*http.Response, 
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1975,8 +1980,8 @@ func (a *ExternalTaskAPIService) LockExecute(r ApiLockRequest) (*http.Response, 
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1985,10 +1990,10 @@ func (a *ExternalTaskAPIService) LockExecute(r ApiLockRequest) (*http.Response, 
 }
 
 type ApiQueryExternalTasksRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx                  context.Context
+	ApiService           *ExternalTaskAPIService
+	firstResult          *int32
+	maxResults           *int32
 	externalTaskQueryDto *ExternalTaskQueryDto
 }
 
@@ -2022,24 +2027,25 @@ This method is slightly more powerful than the
 [Get External Tasks](https://docs.operaton.org/manual/1.0/reference/rest/external-task/get-query/) method because it allows to
 specify a hierarchical result sorting.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryExternalTasksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryExternalTasksRequest
 */
 func (a *ExternalTaskAPIService) QueryExternalTasks(ctx context.Context) ApiQueryExternalTasksRequest {
 	return ApiQueryExternalTasksRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ExternalTaskDto
+//
+//	@return []ExternalTaskDto
 func (a *ExternalTaskAPIService) QueryExternalTasksExecute(r ApiQueryExternalTasksRequest) ([]ExternalTaskDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ExternalTaskDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ExternalTaskDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.QueryExternalTasks")
@@ -2107,8 +2113,8 @@ func (a *ExternalTaskAPIService) QueryExternalTasksExecute(r ApiQueryExternalTas
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2126,8 +2132,8 @@ func (a *ExternalTaskAPIService) QueryExternalTasksExecute(r ApiQueryExternalTas
 }
 
 type ApiQueryExternalTasksCountRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
+	ctx                  context.Context
+	ApiService           *ExternalTaskAPIService
 	externalTaskQueryDto *ExternalTaskQueryDto
 }
 
@@ -2146,24 +2152,25 @@ QueryExternalTasksCount Get List Count (POST)
 Queries for the number of external tasks that fulfill given parameters. This method takes the same message
 body as the [Get External Tasks (POST)](https://docs.operaton.org/manual/1.0/reference/rest/external-task/post-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryExternalTasksCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryExternalTasksCountRequest
 */
 func (a *ExternalTaskAPIService) QueryExternalTasksCount(ctx context.Context) ApiQueryExternalTasksCountRequest {
 	return ApiQueryExternalTasksCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ExternalTaskAPIService) QueryExternalTasksCountExecute(r ApiQueryExternalTasksCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.QueryExternalTasksCount")
@@ -2225,8 +2232,8 @@ func (a *ExternalTaskAPIService) QueryExternalTasksCountExecute(r ApiQueryExtern
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2244,9 +2251,9 @@ func (a *ExternalTaskAPIService) QueryExternalTasksCountExecute(r ApiQueryExtern
 }
 
 type ApiSetExternalTaskResourcePriorityRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
-	id string
+	ctx         context.Context
+	ApiService  *ExternalTaskAPIService
+	id          string
 	priorityDto *PriorityDto
 }
 
@@ -2264,24 +2271,24 @@ SetExternalTaskResourcePriority Set Priority
 
 Sets the priority of an existing external task by id. The default value of a priority is 0.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task to set the priority for.
- @return ApiSetExternalTaskResourcePriorityRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task to set the priority for.
+	@return ApiSetExternalTaskResourcePriorityRequest
 */
 func (a *ExternalTaskAPIService) SetExternalTaskResourcePriority(ctx context.Context, id string) ApiSetExternalTaskResourcePriorityRequest {
 	return ApiSetExternalTaskResourcePriorityRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) SetExternalTaskResourcePriorityExecute(r ApiSetExternalTaskResourcePriorityRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.SetExternalTaskResourcePriority")
@@ -2344,8 +2351,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskResourcePriorityExecute(r ApiSet
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2354,9 +2361,9 @@ func (a *ExternalTaskAPIService) SetExternalTaskResourcePriorityExecute(r ApiSet
 }
 
 type ApiSetExternalTaskResourceRetriesRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExternalTaskAPIService
-	id string
+	id         string
 	retriesDto *RetriesDto
 }
 
@@ -2372,27 +2379,27 @@ func (r ApiSetExternalTaskResourceRetriesRequest) Execute() (*http.Response, err
 /*
 SetExternalTaskResourceRetries Set Retries
 
-Sets the number of retries left to execute an external task by id. If retries are set to 0, an 
+Sets the number of retries left to execute an external task by id. If retries are set to 0, an
 incident is created.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task to set the number of retries for.
- @return ApiSetExternalTaskResourceRetriesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task to set the number of retries for.
+	@return ApiSetExternalTaskResourceRetriesRequest
 */
 func (a *ExternalTaskAPIService) SetExternalTaskResourceRetries(ctx context.Context, id string) ApiSetExternalTaskResourceRetriesRequest {
 	return ApiSetExternalTaskResourceRetriesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) SetExternalTaskResourceRetriesExecute(r ApiSetExternalTaskResourceRetriesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.SetExternalTaskResourceRetries")
@@ -2455,8 +2462,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskResourceRetriesExecute(r ApiSetE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2466,8 +2473,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskResourceRetriesExecute(r ApiSetE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2476,8 +2483,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskResourceRetriesExecute(r ApiSetE
 }
 
 type ApiSetExternalTaskRetriesRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
+	ctx                           context.Context
+	ApiService                    *ExternalTaskAPIService
 	setRetriesForExternalTasksDto *SetRetriesForExternalTasksDto
 }
 
@@ -2493,25 +2500,25 @@ func (r ApiSetExternalTaskRetriesRequest) Execute() (*http.Response, error) {
 /*
 SetExternalTaskRetries Set Retries Sync
 
-Sets the number of retries left to execute external tasks by id synchronously. If retries are set to 0, 
+Sets the number of retries left to execute external tasks by id synchronously. If retries are set to 0,
 an incident is created.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetExternalTaskRetriesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetExternalTaskRetriesRequest
 */
 func (a *ExternalTaskAPIService) SetExternalTaskRetries(ctx context.Context) ApiSetExternalTaskRetriesRequest {
 	return ApiSetExternalTaskRetriesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) SetExternalTaskRetriesExecute(r ApiSetExternalTaskRetriesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.SetExternalTaskRetries")
@@ -2573,8 +2580,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesExecute(r ApiSetExternalT
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2584,8 +2591,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesExecute(r ApiSetExternalT
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2594,8 +2601,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesExecute(r ApiSetExternalT
 }
 
 type ApiSetExternalTaskRetriesAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ExternalTaskAPIService
+	ctx                           context.Context
+	ApiService                    *ExternalTaskAPIService
 	setRetriesForExternalTasksDto *SetRetriesForExternalTasksDto
 }
 
@@ -2614,24 +2621,25 @@ SetExternalTaskRetriesAsyncOperation Set Retries Async
 Sets the number of retries left to execute external tasks by id asynchronously. If retries are set to 0,
 an incident is created.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiSetExternalTaskRetriesAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiSetExternalTaskRetriesAsyncOperationRequest
 */
 func (a *ExternalTaskAPIService) SetExternalTaskRetriesAsyncOperation(ctx context.Context) ApiSetExternalTaskRetriesAsyncOperationRequest {
 	return ApiSetExternalTaskRetriesAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ExternalTaskAPIService) SetExternalTaskRetriesAsyncOperationExecute(r ApiSetExternalTaskRetriesAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.SetExternalTaskRetriesAsyncOperation")
@@ -2693,8 +2701,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesAsyncOperationExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2704,8 +2712,8 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesAsyncOperationExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2723,9 +2731,9 @@ func (a *ExternalTaskAPIService) SetExternalTaskRetriesAsyncOperationExecute(r A
 }
 
 type ApiUnlockRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ExternalTaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiUnlockRequest) Execute() (*http.Response, error) {
@@ -2737,24 +2745,24 @@ Unlock Unlock
 
 Unlocks an external task by id. Clears the task's lock expiration time and worker id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the external task to unlock.
- @return ApiUnlockRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the external task to unlock.
+	@return ApiUnlockRequest
 */
 func (a *ExternalTaskAPIService) Unlock(ctx context.Context, id string) ApiUnlockRequest {
 	return ApiUnlockRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ExternalTaskAPIService) UnlockExecute(r ApiUnlockRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ExternalTaskAPIService.Unlock")
@@ -2815,8 +2823,8 @@ func (a *ExternalTaskAPIService) UnlockExecute(r ApiUnlockRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

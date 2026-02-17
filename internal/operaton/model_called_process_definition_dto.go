@@ -102,6 +102,7 @@ func (o *CalledProcessDefinitionDto) HasId() bool {
 func (o *CalledProcessDefinitionDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -144,6 +145,7 @@ func (o *CalledProcessDefinitionDto) HasKey() bool {
 func (o *CalledProcessDefinitionDto) SetKey(v string) {
 	o.Key.Set(&v)
 }
+
 // SetKeyNil sets the value for Key to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetKeyNil() {
 	o.Key.Set(nil)
@@ -186,6 +188,7 @@ func (o *CalledProcessDefinitionDto) HasCategory() bool {
 func (o *CalledProcessDefinitionDto) SetCategory(v string) {
 	o.Category.Set(&v)
 }
+
 // SetCategoryNil sets the value for Category to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetCategoryNil() {
 	o.Category.Set(nil)
@@ -228,6 +231,7 @@ func (o *CalledProcessDefinitionDto) HasDescription() bool {
 func (o *CalledProcessDefinitionDto) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -270,6 +274,7 @@ func (o *CalledProcessDefinitionDto) HasName() bool {
 func (o *CalledProcessDefinitionDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -312,6 +317,7 @@ func (o *CalledProcessDefinitionDto) HasVersion() bool {
 func (o *CalledProcessDefinitionDto) SetVersion(v int32) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -354,6 +360,7 @@ func (o *CalledProcessDefinitionDto) HasResource() bool {
 func (o *CalledProcessDefinitionDto) SetResource(v string) {
 	o.Resource.Set(&v)
 }
+
 // SetResourceNil sets the value for Resource to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetResourceNil() {
 	o.Resource.Set(nil)
@@ -396,6 +403,7 @@ func (o *CalledProcessDefinitionDto) HasDeploymentId() bool {
 func (o *CalledProcessDefinitionDto) SetDeploymentId(v string) {
 	o.DeploymentId.Set(&v)
 }
+
 // SetDeploymentIdNil sets the value for DeploymentId to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetDeploymentIdNil() {
 	o.DeploymentId.Set(nil)
@@ -438,6 +446,7 @@ func (o *CalledProcessDefinitionDto) HasDiagram() bool {
 func (o *CalledProcessDefinitionDto) SetDiagram(v string) {
 	o.Diagram.Set(&v)
 }
+
 // SetDiagramNil sets the value for Diagram to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetDiagramNil() {
 	o.Diagram.Set(nil)
@@ -480,6 +489,7 @@ func (o *CalledProcessDefinitionDto) HasSuspended() bool {
 func (o *CalledProcessDefinitionDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -522,6 +532,7 @@ func (o *CalledProcessDefinitionDto) HasTenantId() bool {
 func (o *CalledProcessDefinitionDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -564,6 +575,7 @@ func (o *CalledProcessDefinitionDto) HasVersionTag() bool {
 func (o *CalledProcessDefinitionDto) SetVersionTag(v string) {
 	o.VersionTag.Set(&v)
 }
+
 // SetVersionTagNil sets the value for VersionTag to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetVersionTagNil() {
 	o.VersionTag.Set(nil)
@@ -606,6 +618,7 @@ func (o *CalledProcessDefinitionDto) HasHistoryTimeToLive() bool {
 func (o *CalledProcessDefinitionDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -648,6 +661,7 @@ func (o *CalledProcessDefinitionDto) HasStartableInTasklist() bool {
 func (o *CalledProcessDefinitionDto) SetStartableInTasklist(v bool) {
 	o.StartableInTasklist.Set(&v)
 }
+
 // SetStartableInTasklistNil sets the value for StartableInTasklist to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetStartableInTasklistNil() {
 	o.StartableInTasklist.Set(nil)
@@ -723,6 +737,7 @@ func (o *CalledProcessDefinitionDto) HasCallingProcessDefinitionId() bool {
 func (o *CalledProcessDefinitionDto) SetCallingProcessDefinitionId(v string) {
 	o.CallingProcessDefinitionId.Set(&v)
 }
+
 // SetCallingProcessDefinitionIdNil sets the value for CallingProcessDefinitionId to be an explicit nil
 func (o *CalledProcessDefinitionDto) SetCallingProcessDefinitionIdNil() {
 	o.CallingProcessDefinitionId.Set(nil)
@@ -734,7 +749,7 @@ func (o *CalledProcessDefinitionDto) UnsetCallingProcessDefinitionId() {
 }
 
 func (o CalledProcessDefinitionDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -829,5 +844,3 @@ func (v *NullableCalledProcessDefinitionDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

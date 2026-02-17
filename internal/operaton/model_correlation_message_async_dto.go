@@ -22,8 +22,8 @@ type CorrelationMessageAsyncDto struct {
 	// The name of the message to correlate. Corresponds to the 'name' element of the message defined in BPMN 2.0 XML. Can be null to correlate by other criteria only.
 	MessageName NullableString `json:"messageName,omitempty"`
 	// A list of process instance ids that define a group of process instances to which the operation will correlate a message.  Please note that if `processInstanceIds`, `processInstanceQuery` and `historicProcessInstanceQuery` are defined, the resulting operation will be performed on the union of these sets.
-	ProcessInstanceIds []string `json:"processInstanceIds,omitempty"`
-	ProcessInstanceQuery *ProcessInstanceQueryDto `json:"processInstanceQuery,omitempty"`
+	ProcessInstanceIds           []string                         `json:"processInstanceIds,omitempty"`
+	ProcessInstanceQuery         *ProcessInstanceQueryDto         `json:"processInstanceQuery,omitempty"`
 	HistoricProcessInstanceQuery *HistoricProcessInstanceQueryDto `json:"historicProcessInstanceQuery,omitempty"`
 	// All variables the operation will set in the root scope of the process instances the message is correlated to.
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
@@ -78,6 +78,7 @@ func (o *CorrelationMessageAsyncDto) HasMessageName() bool {
 func (o *CorrelationMessageAsyncDto) SetMessageName(v string) {
 	o.MessageName.Set(&v)
 }
+
 // SetMessageNameNil sets the value for MessageName to be an explicit nil
 func (o *CorrelationMessageAsyncDto) SetMessageNameNil() {
 	o.MessageName.Set(nil)
@@ -219,7 +220,7 @@ func (o *CorrelationMessageAsyncDto) SetVariables(v map[string]VariableValueDto)
 }
 
 func (o CorrelationMessageAsyncDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -281,5 +282,3 @@ func (v *NullableCorrelationMessageAsyncDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

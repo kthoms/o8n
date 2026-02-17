@@ -19,7 +19,7 @@ var _ MappedNullable = &StartProcessInstanceFormDto{}
 
 // StartProcessInstanceFormDto struct for StartProcessInstanceFormDto
 type StartProcessInstanceFormDto struct {
-	// 
+	//
 	Variables map[string]VariableValueDto `json:"variables,omitempty"`
 	// The business key the process instance is to be initialized with. The business key uniquely identifies the process instance in the context of the given process definition.
 	BusinessKey NullableString `json:"businessKey,omitempty"`
@@ -107,6 +107,7 @@ func (o *StartProcessInstanceFormDto) HasBusinessKey() bool {
 func (o *StartProcessInstanceFormDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *StartProcessInstanceFormDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -118,7 +119,7 @@ func (o *StartProcessInstanceFormDto) UnsetBusinessKey() {
 }
 
 func (o StartProcessInstanceFormDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -171,5 +172,3 @@ func (v *NullableStartProcessInstanceFormDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

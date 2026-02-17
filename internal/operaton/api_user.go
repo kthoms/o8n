@@ -19,12 +19,11 @@ import (
 	"strings"
 )
 
-
 // UserAPIService UserAPI service
 type UserAPIService service
 
 type ApiAvailableOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
 }
 
@@ -42,24 +41,25 @@ If the user can perform an operation or not may depend on various things, includ
 authorizations to interact with this resource and the internal configuration of the process
 engine. `OPTIONS /user` returns available interactions on the resource.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAvailableOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiAvailableOperationsRequest
 */
 func (a *UserAPIService) AvailableOperations(ctx context.Context) ApiAvailableOperationsRequest {
 	return ApiAvailableOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *UserAPIService) AvailableOperationsExecute(r ApiAvailableOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.AvailableOperations")
@@ -128,9 +128,9 @@ func (a *UserAPIService) AvailableOperationsExecute(r ApiAvailableOperationsRequ
 }
 
 type ApiAvailableUserOperationsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableUserOperationsRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -147,26 +147,27 @@ If the user can perform an operation or not may depend on various things, includ
 authorizations to interact with this resource and the internal configuration of the process
 engine. `OPTIONS /user/{id}` returns available interactions on a resource instance.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user to be deleted.
- @return ApiAvailableUserOperationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user to be deleted.
+	@return ApiAvailableUserOperationsRequest
 */
 func (a *UserAPIService) AvailableUserOperations(ctx context.Context, id string) ApiAvailableUserOperationsRequest {
 	return ApiAvailableUserOperationsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *UserAPIService) AvailableUserOperationsExecute(r ApiAvailableUserOperationsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.AvailableUserOperations")
@@ -236,9 +237,9 @@ func (a *UserAPIService) AvailableUserOperationsExecute(r ApiAvailableUserOperat
 }
 
 type ApiCreateUserRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
-	userDto *UserDto
+	userDto    *UserDto
 }
 
 func (r ApiCreateUserRequest) UserDto(userDto UserDto) ApiCreateUserRequest {
@@ -255,22 +256,22 @@ CreateUser Create
 
 Create a new user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateUserRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateUserRequest
 */
 func (a *UserAPIService) CreateUser(ctx context.Context) ApiCreateUserRequest {
 	return ApiCreateUserRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *UserAPIService) CreateUserExecute(r ApiCreateUserRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.CreateUser")
@@ -332,9 +333,9 @@ func (a *UserAPIService) CreateUserExecute(r ApiCreateUserRequest) (*http.Respon
 }
 
 type ApiDeleteUserRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteUserRequest) Execute() (*http.Response, error) {
@@ -346,24 +347,24 @@ DeleteUser Delete
 
 Deletes a user by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user to be deleted.
- @return ApiDeleteUserRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user to be deleted.
+	@return ApiDeleteUserRequest
 */
 func (a *UserAPIService) DeleteUser(ctx context.Context, id string) ApiDeleteUserRequest {
 	return ApiDeleteUserRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *UserAPIService) DeleteUserExecute(r ApiDeleteUserRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.DeleteUser")
@@ -424,8 +425,8 @@ func (a *UserAPIService) DeleteUserExecute(r ApiDeleteUserRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -435,8 +436,8 @@ func (a *UserAPIService) DeleteUserExecute(r ApiDeleteUserRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -445,18 +446,18 @@ func (a *UserAPIService) DeleteUserExecute(r ApiDeleteUserRequest) (*http.Respon
 }
 
 type ApiGetUserCountRequest struct {
-	ctx context.Context
-	ApiService *UserAPIService
-	id *string
-	idIn *string
-	firstName *string
-	firstNameLike *string
-	lastName *string
-	lastNameLike *string
-	email *string
-	emailLike *string
-	memberOfGroup *string
-	memberOfTenant *string
+	ctx              context.Context
+	ApiService       *UserAPIService
+	id               *string
+	idIn             *string
+	firstName        *string
+	firstNameLike    *string
+	lastName         *string
+	lastNameLike     *string
+	email            *string
+	emailLike        *string
+	memberOfGroup    *string
+	memberOfTenant   *string
 	potentialStarter *string
 }
 
@@ -536,24 +537,25 @@ GetUserCount Get List Count
 Queries for the number of deployments that fulfill given parameters. Takes the same parameters as the
 [Get Users](https://docs.operaton.org/manual/1.0/reference/rest/user/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetUserCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUserCountRequest
 */
 func (a *UserAPIService) GetUserCount(ctx context.Context) ApiGetUserCountRequest {
 	return ApiGetUserCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *UserAPIService) GetUserCountExecute(r ApiGetUserCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUserCount")
@@ -646,8 +648,8 @@ func (a *UserAPIService) GetUserCountExecute(r ApiGetUserCountRequest) (*CountRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -665,9 +667,9 @@ func (a *UserAPIService) GetUserCountExecute(r ApiGetUserCountRequest) (*CountRe
 }
 
 type ApiGetUserProfileRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetUserProfileRequest) Execute() (*UserProfileDto, *http.Response, error) {
@@ -679,26 +681,27 @@ GetUserProfile Get Profile
 
 Retrieves a user's profile.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user to retrieve.
- @return ApiGetUserProfileRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user to retrieve.
+	@return ApiGetUserProfileRequest
 */
 func (a *UserAPIService) GetUserProfile(ctx context.Context, id string) ApiGetUserProfileRequest {
 	return ApiGetUserProfileRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return UserProfileDto
+//
+//	@return UserProfileDto
 func (a *UserAPIService) GetUserProfileExecute(r ApiGetUserProfileRequest) (*UserProfileDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *UserProfileDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *UserProfileDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUserProfile")
@@ -759,8 +762,8 @@ func (a *UserAPIService) GetUserProfileExecute(r ApiGetUserProfileRequest) (*Use
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -778,23 +781,23 @@ func (a *UserAPIService) GetUserProfileExecute(r ApiGetUserProfileRequest) (*Use
 }
 
 type ApiGetUsersRequest struct {
-	ctx context.Context
-	ApiService *UserAPIService
-	id *string
-	idIn *string
-	firstName *string
-	firstNameLike *string
-	lastName *string
-	lastNameLike *string
-	email *string
-	emailLike *string
-	memberOfGroup *string
-	memberOfTenant *string
+	ctx              context.Context
+	ApiService       *UserAPIService
+	id               *string
+	idIn             *string
+	firstName        *string
+	firstNameLike    *string
+	lastName         *string
+	lastNameLike     *string
+	email            *string
+	emailLike        *string
+	memberOfGroup    *string
+	memberOfTenant   *string
 	potentialStarter *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy           *string
+	sortOrder        *string
+	firstResult      *int32
+	maxResults       *int32
 }
 
 // Filter by user id
@@ -898,24 +901,25 @@ Query for a list of users using a list of parameters.
 The size of the result set can be retrieved by using the Get User Count method.
 [Get User Count](https://docs.operaton.org/manual/1.0/reference/rest/user/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetUsersRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetUsersRequest
 */
 func (a *UserAPIService) GetUsers(ctx context.Context) ApiGetUsersRequest {
 	return ApiGetUsersRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []UserProfileDto
+//
+//	@return []UserProfileDto
 func (a *UserAPIService) GetUsersExecute(r ApiGetUsersRequest) ([]UserProfileDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []UserProfileDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []UserProfileDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.GetUsers")
@@ -1020,8 +1024,8 @@ func (a *UserAPIService) GetUsersExecute(r ApiGetUsersRequest) ([]UserProfileDto
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1039,9 +1043,9 @@ func (a *UserAPIService) GetUsersExecute(r ApiGetUsersRequest) ([]UserProfileDto
 }
 
 type ApiUnlockUserRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *UserAPIService
-	id string
+	id         string
 }
 
 func (r ApiUnlockUserRequest) Execute() (*http.Response, error) {
@@ -1053,24 +1057,24 @@ UnlockUser Unlock User
 
 Unlocks a user by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user to be unlocked.
- @return ApiUnlockUserRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user to be unlocked.
+	@return ApiUnlockUserRequest
 */
 func (a *UserAPIService) UnlockUser(ctx context.Context, id string) ApiUnlockUserRequest {
 	return ApiUnlockUserRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *UserAPIService) UnlockUserExecute(r ApiUnlockUserRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.UnlockUser")
@@ -1131,8 +1135,8 @@ func (a *UserAPIService) UnlockUserExecute(r ApiUnlockUserRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1142,8 +1146,8 @@ func (a *UserAPIService) UnlockUserExecute(r ApiUnlockUserRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1152,9 +1156,9 @@ func (a *UserAPIService) UnlockUserExecute(r ApiUnlockUserRequest) (*http.Respon
 }
 
 type ApiUpdateCredentialsRequest struct {
-	ctx context.Context
-	ApiService *UserAPIService
-	id string
+	ctx                context.Context
+	ApiService         *UserAPIService
+	id                 string
 	userCredentialsDto *UserCredentialsDto
 }
 
@@ -1172,24 +1176,24 @@ UpdateCredentials Update Credentials
 
 Updates a user's credentials (password)
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user to be updated.
- @return ApiUpdateCredentialsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user to be updated.
+	@return ApiUpdateCredentialsRequest
 */
 func (a *UserAPIService) UpdateCredentials(ctx context.Context, id string) ApiUpdateCredentialsRequest {
 	return ApiUpdateCredentialsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.UpdateCredentials")
@@ -1252,8 +1256,8 @@ func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
@@ -1263,8 +1267,8 @@ func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1274,8 +1278,8 @@ func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1285,8 +1289,8 @@ func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1295,9 +1299,9 @@ func (a *UserAPIService) UpdateCredentialsExecute(r ApiUpdateCredentialsRequest)
 }
 
 type ApiUpdateProfileRequest struct {
-	ctx context.Context
-	ApiService *UserAPIService
-	id string
+	ctx            context.Context
+	ApiService     *UserAPIService
+	id             string
 	userProfileDto *UserProfileDto
 }
 
@@ -1315,24 +1319,24 @@ UpdateProfile Update User Profile
 
 Updates the profile information of an already existing user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the user.
- @return ApiUpdateProfileRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the user.
+	@return ApiUpdateProfileRequest
 */
 func (a *UserAPIService) UpdateProfile(ctx context.Context, id string) ApiUpdateProfileRequest {
 	return ApiUpdateProfileRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *UserAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "UserAPIService.UpdateProfile")
@@ -1395,8 +1399,8 @@ func (a *UserAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1406,8 +1410,8 @@ func (a *UserAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1417,8 +1421,8 @@ func (a *UserAPIService) UpdateProfileExecute(r ApiUpdateProfileRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

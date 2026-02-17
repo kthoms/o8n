@@ -19,12 +19,11 @@ import (
 	"strings"
 )
 
-
 // AuthorizationAPIService AuthorizationAPI service
 type AuthorizationAPIService service
 
 type ApiAvailableOperationsAuthorizationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *AuthorizationAPIService
 }
 
@@ -40,24 +39,25 @@ authenticated user can perform on the `/authorization` resource. Whether the use
 or not may depend on various factors, including the users authorizations to interact with this
 resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAvailableOperationsAuthorizationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiAvailableOperationsAuthorizationRequest
 */
 func (a *AuthorizationAPIService) AvailableOperationsAuthorization(ctx context.Context) ApiAvailableOperationsAuthorizationRequest {
 	return ApiAvailableOperationsAuthorizationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *AuthorizationAPIService) AvailableOperationsAuthorizationExecute(r ApiAvailableOperationsAuthorizationRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.AvailableOperationsAuthorization")
@@ -126,9 +126,9 @@ func (a *AuthorizationAPIService) AvailableOperationsAuthorizationExecute(r ApiA
 }
 
 type ApiAvailableOperationsAuthorizationInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *AuthorizationAPIService
-	id string
+	id         string
 }
 
 func (r ApiAvailableOperationsAuthorizationInstanceRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -143,26 +143,27 @@ authenticated user can perform on a given instance of the `/authorization` resou
 Whether the user can perform an operation or not may depend on various factors, including the users
 authorizations to interact with this resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the authorization to be retrieved.
- @return ApiAvailableOperationsAuthorizationInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the authorization to be retrieved.
+	@return ApiAvailableOperationsAuthorizationInstanceRequest
 */
 func (a *AuthorizationAPIService) AvailableOperationsAuthorizationInstance(ctx context.Context, id string) ApiAvailableOperationsAuthorizationInstanceRequest {
 	return ApiAvailableOperationsAuthorizationInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *AuthorizationAPIService) AvailableOperationsAuthorizationInstanceExecute(r ApiAvailableOperationsAuthorizationInstanceRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.AvailableOperationsAuthorizationInstance")
@@ -232,8 +233,8 @@ func (a *AuthorizationAPIService) AvailableOperationsAuthorizationInstanceExecut
 }
 
 type ApiCreateAuthorizationRequest struct {
-	ctx context.Context
-	ApiService *AuthorizationAPIService
+	ctx                    context.Context
+	ApiService             *AuthorizationAPIService
 	authorizationCreateDto *AuthorizationCreateDto
 }
 
@@ -251,24 +252,25 @@ CreateAuthorization Create a New Authorization
 
 Creates a new authorization.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateAuthorizationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateAuthorizationRequest
 */
 func (a *AuthorizationAPIService) CreateAuthorization(ctx context.Context) ApiCreateAuthorizationRequest {
 	return ApiCreateAuthorizationRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return AuthorizationDto
+//
+//	@return AuthorizationDto
 func (a *AuthorizationAPIService) CreateAuthorizationExecute(r ApiCreateAuthorizationRequest) (*AuthorizationDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AuthorizationDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AuthorizationDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.CreateAuthorization")
@@ -330,8 +332,8 @@ func (a *AuthorizationAPIService) CreateAuthorizationExecute(r ApiCreateAuthoriz
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -341,8 +343,8 @@ func (a *AuthorizationAPIService) CreateAuthorizationExecute(r ApiCreateAuthoriz
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -352,8 +354,8 @@ func (a *AuthorizationAPIService) CreateAuthorizationExecute(r ApiCreateAuthoriz
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -371,9 +373,9 @@ func (a *AuthorizationAPIService) CreateAuthorizationExecute(r ApiCreateAuthoriz
 }
 
 type ApiDeleteAuthorizationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *AuthorizationAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteAuthorizationRequest) Execute() (*http.Response, error) {
@@ -385,24 +387,24 @@ DeleteAuthorization Delete Authorization
 
 Deletes an authorization by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the authorization to be deleted.
- @return ApiDeleteAuthorizationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the authorization to be deleted.
+	@return ApiDeleteAuthorizationRequest
 */
 func (a *AuthorizationAPIService) DeleteAuthorization(ctx context.Context, id string) ApiDeleteAuthorizationRequest {
 	return ApiDeleteAuthorizationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *AuthorizationAPIService) DeleteAuthorizationExecute(r ApiDeleteAuthorizationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.DeleteAuthorization")
@@ -463,8 +465,8 @@ func (a *AuthorizationAPIService) DeleteAuthorizationExecute(r ApiDeleteAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -474,8 +476,8 @@ func (a *AuthorizationAPIService) DeleteAuthorizationExecute(r ApiDeleteAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -484,9 +486,9 @@ func (a *AuthorizationAPIService) DeleteAuthorizationExecute(r ApiDeleteAuthoriz
 }
 
 type ApiGetAuthorizationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *AuthorizationAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetAuthorizationRequest) Execute() (*AuthorizationDto, *http.Response, error) {
@@ -498,26 +500,27 @@ GetAuthorization Get Authorization
 
 Retrieves an authorization by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the authorization to be retrieved.
- @return ApiGetAuthorizationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the authorization to be retrieved.
+	@return ApiGetAuthorizationRequest
 */
 func (a *AuthorizationAPIService) GetAuthorization(ctx context.Context, id string) ApiGetAuthorizationRequest {
 	return ApiGetAuthorizationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return AuthorizationDto
+//
+//	@return AuthorizationDto
 func (a *AuthorizationAPIService) GetAuthorizationExecute(r ApiGetAuthorizationRequest) (*AuthorizationDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AuthorizationDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AuthorizationDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.GetAuthorization")
@@ -578,8 +581,8 @@ func (a *AuthorizationAPIService) GetAuthorizationExecute(r ApiGetAuthorizationR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -597,14 +600,14 @@ func (a *AuthorizationAPIService) GetAuthorizationExecute(r ApiGetAuthorizationR
 }
 
 type ApiGetAuthorizationCountRequest struct {
-	ctx context.Context
-	ApiService *AuthorizationAPIService
-	id *string
-	type_ *int32
-	userIdIn *string
-	groupIdIn *string
+	ctx          context.Context
+	ApiService   *AuthorizationAPIService
+	id           *string
+	type_        *int32
+	userIdIn     *string
+	groupIdIn    *string
 	resourceType *int32
-	resourceId *string
+	resourceId   *string
 }
 
 // Filter by the id of the authorization.
@@ -652,24 +655,25 @@ GetAuthorizationCount Get Authorization Count
 
 Queries for authorizations using a list of parameters and retrieves the count.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetAuthorizationCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetAuthorizationCountRequest
 */
 func (a *AuthorizationAPIService) GetAuthorizationCount(ctx context.Context) ApiGetAuthorizationCountRequest {
 	return ApiGetAuthorizationCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *AuthorizationAPIService) GetAuthorizationCountExecute(r ApiGetAuthorizationCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.GetAuthorizationCount")
@@ -747,8 +751,8 @@ func (a *AuthorizationAPIService) GetAuthorizationCountExecute(r ApiGetAuthoriza
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -766,13 +770,13 @@ func (a *AuthorizationAPIService) GetAuthorizationCountExecute(r ApiGetAuthoriza
 }
 
 type ApiIsUserAuthorizedRequest struct {
-	ctx context.Context
-	ApiService *AuthorizationAPIService
+	ctx            context.Context
+	ApiService     *AuthorizationAPIService
 	permissionName *string
-	resourceName *string
-	resourceType *int32
-	resourceId *string
-	userId *string
+	resourceName   *string
+	resourceType   *int32
+	resourceId     *string
+	userId         *string
 }
 
 // String value representing the permission name to check for.
@@ -814,24 +818,25 @@ IsUserAuthorized Perform an Authorization Check
 
 Performs an authorization check for the currently authenticated user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiIsUserAuthorizedRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiIsUserAuthorizedRequest
 */
 func (a *AuthorizationAPIService) IsUserAuthorized(ctx context.Context) ApiIsUserAuthorizedRequest {
 	return ApiIsUserAuthorizedRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return AuthorizationCheckResultDto
+//
+//	@return AuthorizationCheckResultDto
 func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedRequest) (*AuthorizationCheckResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *AuthorizationCheckResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *AuthorizationCheckResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.IsUserAuthorized")
@@ -909,8 +914,8 @@ func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 401 {
@@ -920,8 +925,8 @@ func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -931,8 +936,8 @@ func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -942,8 +947,8 @@ func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -961,18 +966,18 @@ func (a *AuthorizationAPIService) IsUserAuthorizedExecute(r ApiIsUserAuthorizedR
 }
 
 type ApiQueryAuthorizationsRequest struct {
-	ctx context.Context
-	ApiService *AuthorizationAPIService
-	id *string
-	type_ *int32
-	userIdIn *string
-	groupIdIn *string
+	ctx          context.Context
+	ApiService   *AuthorizationAPIService
+	id           *string
+	type_        *int32
+	userIdIn     *string
+	groupIdIn    *string
 	resourceType *int32
-	resourceId *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	resourceId   *string
+	sortBy       *string
+	sortOrder    *string
+	firstResult  *int32
+	maxResults   *int32
 }
 
 // Filter by the id of the authorization.
@@ -1046,24 +1051,25 @@ Queries for a list of authorizations using a list of parameters.
 The size of the result set can be retrieved by using the
 [Get Authorization Count](https://docs.operaton.org/manual/1.0/reference/rest/authorization/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryAuthorizationsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryAuthorizationsRequest
 */
 func (a *AuthorizationAPIService) QueryAuthorizations(ctx context.Context) ApiQueryAuthorizationsRequest {
 	return ApiQueryAuthorizationsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []AuthorizationDto
+//
+//	@return []AuthorizationDto
 func (a *AuthorizationAPIService) QueryAuthorizationsExecute(r ApiQueryAuthorizationsRequest) ([]AuthorizationDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []AuthorizationDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []AuthorizationDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.QueryAuthorizations")
@@ -1153,8 +1159,8 @@ func (a *AuthorizationAPIService) QueryAuthorizationsExecute(r ApiQueryAuthoriza
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1172,9 +1178,9 @@ func (a *AuthorizationAPIService) QueryAuthorizationsExecute(r ApiQueryAuthoriza
 }
 
 type ApiUpdateAuthorizationRequest struct {
-	ctx context.Context
-	ApiService *AuthorizationAPIService
-	id string
+	ctx                    context.Context
+	ApiService             *AuthorizationAPIService
+	id                     string
 	authorizationUpdateDto *AuthorizationUpdateDto
 }
 
@@ -1192,24 +1198,24 @@ UpdateAuthorization Update an Authorization
 
 Updates an authorization by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the authorization to be updated.
- @return ApiUpdateAuthorizationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the authorization to be updated.
+	@return ApiUpdateAuthorizationRequest
 */
 func (a *AuthorizationAPIService) UpdateAuthorization(ctx context.Context, id string) ApiUpdateAuthorizationRequest {
 	return ApiUpdateAuthorizationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *AuthorizationAPIService) UpdateAuthorizationExecute(r ApiUpdateAuthorizationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AuthorizationAPIService.UpdateAuthorization")
@@ -1272,8 +1278,8 @@ func (a *AuthorizationAPIService) UpdateAuthorizationExecute(r ApiUpdateAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1283,8 +1289,8 @@ func (a *AuthorizationAPIService) UpdateAuthorizationExecute(r ApiUpdateAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1294,8 +1300,8 @@ func (a *AuthorizationAPIService) UpdateAuthorizationExecute(r ApiUpdateAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -1305,8 +1311,8 @@ func (a *AuthorizationAPIService) UpdateAuthorizationExecute(r ApiUpdateAuthoriz
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

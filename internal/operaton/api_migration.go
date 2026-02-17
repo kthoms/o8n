@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // MigrationAPIService MigrationAPI service
 type MigrationAPIService service
 
 type ApiExecuteMigrationPlanRequest struct {
-	ctx context.Context
-	ApiService *MigrationAPIService
+	ctx                   context.Context
+	ApiService            *MigrationAPIService
 	migrationExecutionDto *MigrationExecutionDto
 }
 
@@ -49,22 +48,22 @@ For more information about the difference between synchronous and asynchronous
 execution of a migration plan, please refer to the related section of
 [the user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-migration/#executing-a-migration-plan).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiExecuteMigrationPlanRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiExecuteMigrationPlanRequest
 */
 func (a *MigrationAPIService) ExecuteMigrationPlan(ctx context.Context) ApiExecuteMigrationPlanRequest {
 	return ApiExecuteMigrationPlanRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *MigrationAPIService) ExecuteMigrationPlanExecute(r ApiExecuteMigrationPlanRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MigrationAPIService.ExecuteMigrationPlan")
@@ -126,8 +125,8 @@ func (a *MigrationAPIService) ExecuteMigrationPlanExecute(r ApiExecuteMigrationP
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -136,8 +135,8 @@ func (a *MigrationAPIService) ExecuteMigrationPlanExecute(r ApiExecuteMigrationP
 }
 
 type ApiExecuteMigrationPlanAsyncRequest struct {
-	ctx context.Context
-	ApiService *MigrationAPIService
+	ctx                   context.Context
+	ApiService            *MigrationAPIService
 	migrationExecutionDto *MigrationExecutionDto
 }
 
@@ -162,24 +161,25 @@ For more information about the difference between synchronous and asynchronous
 execution of a migration plan, please refer to the related section of
 [the user guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-migration/#executing-a-migration-plan).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiExecuteMigrationPlanAsyncRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiExecuteMigrationPlanAsyncRequest
 */
 func (a *MigrationAPIService) ExecuteMigrationPlanAsync(ctx context.Context) ApiExecuteMigrationPlanAsyncRequest {
 	return ApiExecuteMigrationPlanAsyncRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *MigrationAPIService) ExecuteMigrationPlanAsyncExecute(r ApiExecuteMigrationPlanAsyncRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MigrationAPIService.ExecuteMigrationPlanAsync")
@@ -241,8 +241,8 @@ func (a *MigrationAPIService) ExecuteMigrationPlanAsyncExecute(r ApiExecuteMigra
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -260,8 +260,8 @@ func (a *MigrationAPIService) ExecuteMigrationPlanAsyncExecute(r ApiExecuteMigra
 }
 
 type ApiGenerateMigrationPlanRequest struct {
-	ctx context.Context
-	ApiService *MigrationAPIService
+	ctx                        context.Context
+	ApiService                 *MigrationAPIService
 	migrationPlanGenerationDto *MigrationPlanGenerationDto
 }
 
@@ -282,24 +282,25 @@ plan contains migration instructions which map equal activities
 between the
 two process definitions.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGenerateMigrationPlanRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGenerateMigrationPlanRequest
 */
 func (a *MigrationAPIService) GenerateMigrationPlan(ctx context.Context) ApiGenerateMigrationPlanRequest {
 	return ApiGenerateMigrationPlanRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return MigrationPlanDto
+//
+//	@return MigrationPlanDto
 func (a *MigrationAPIService) GenerateMigrationPlanExecute(r ApiGenerateMigrationPlanRequest) (*MigrationPlanDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *MigrationPlanDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *MigrationPlanDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MigrationAPIService.GenerateMigrationPlan")
@@ -361,8 +362,8 @@ func (a *MigrationAPIService) GenerateMigrationPlanExecute(r ApiGenerateMigratio
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -380,8 +381,8 @@ func (a *MigrationAPIService) GenerateMigrationPlanExecute(r ApiGenerateMigratio
 }
 
 type ApiValidateMigrationPlanRequest struct {
-	ctx context.Context
-	ApiService *MigrationAPIService
+	ctx              context.Context
+	ApiService       *MigrationAPIService
 	migrationPlanDto *MigrationPlanDto
 }
 
@@ -402,24 +403,25 @@ corresponds to the
 [creation time validation](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-migration/#creation-time-validation)
 described in the user guide.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiValidateMigrationPlanRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiValidateMigrationPlanRequest
 */
 func (a *MigrationAPIService) ValidateMigrationPlan(ctx context.Context) ApiValidateMigrationPlanRequest {
 	return ApiValidateMigrationPlanRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return MigrationPlanReportDto
+//
+//	@return MigrationPlanReportDto
 func (a *MigrationAPIService) ValidateMigrationPlanExecute(r ApiValidateMigrationPlanRequest) (*MigrationPlanReportDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *MigrationPlanReportDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *MigrationPlanReportDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MigrationAPIService.ValidateMigrationPlan")
@@ -481,8 +483,8 @@ func (a *MigrationAPIService) ValidateMigrationPlanExecute(r ApiValidateMigratio
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

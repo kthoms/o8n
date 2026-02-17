@@ -80,6 +80,7 @@ func (o *ActivityStatisticsResultDto) HasId() bool {
 func (o *ActivityStatisticsResultDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *ActivityStatisticsResultDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -219,6 +220,7 @@ func (o *ActivityStatisticsResultDto) HasClass() bool {
 func (o *ActivityStatisticsResultDto) SetClass(v string) {
 	o.Class.Set(&v)
 }
+
 // SetClassNil sets the value for Class to be an explicit nil
 func (o *ActivityStatisticsResultDto) SetClassNil() {
 	o.Class.Set(nil)
@@ -230,7 +232,7 @@ func (o *ActivityStatisticsResultDto) UnsetClass() {
 }
 
 func (o ActivityStatisticsResultDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -292,5 +294,3 @@ func (v *NullableActivityStatisticsResultDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

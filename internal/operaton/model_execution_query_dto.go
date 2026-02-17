@@ -108,6 +108,7 @@ func (o *ExecutionQueryDto) HasBusinessKey() bool {
 func (o *ExecutionQueryDto) SetBusinessKey(v string) {
 	o.BusinessKey.Set(&v)
 }
+
 // SetBusinessKeyNil sets the value for BusinessKey to be an explicit nil
 func (o *ExecutionQueryDto) SetBusinessKeyNil() {
 	o.BusinessKey.Set(nil)
@@ -150,6 +151,7 @@ func (o *ExecutionQueryDto) HasProcessDefinitionId() bool {
 func (o *ExecutionQueryDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ExecutionQueryDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -192,6 +194,7 @@ func (o *ExecutionQueryDto) HasProcessDefinitionKey() bool {
 func (o *ExecutionQueryDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *ExecutionQueryDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -234,6 +237,7 @@ func (o *ExecutionQueryDto) HasProcessInstanceId() bool {
 func (o *ExecutionQueryDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *ExecutionQueryDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -276,6 +280,7 @@ func (o *ExecutionQueryDto) HasActivityId() bool {
 func (o *ExecutionQueryDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *ExecutionQueryDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -318,6 +323,7 @@ func (o *ExecutionQueryDto) HasSignalEventSubscriptionName() bool {
 func (o *ExecutionQueryDto) SetSignalEventSubscriptionName(v string) {
 	o.SignalEventSubscriptionName.Set(&v)
 }
+
 // SetSignalEventSubscriptionNameNil sets the value for SignalEventSubscriptionName to be an explicit nil
 func (o *ExecutionQueryDto) SetSignalEventSubscriptionNameNil() {
 	o.SignalEventSubscriptionName.Set(nil)
@@ -360,6 +366,7 @@ func (o *ExecutionQueryDto) HasMessageEventSubscriptionName() bool {
 func (o *ExecutionQueryDto) SetMessageEventSubscriptionName(v string) {
 	o.MessageEventSubscriptionName.Set(&v)
 }
+
 // SetMessageEventSubscriptionNameNil sets the value for MessageEventSubscriptionName to be an explicit nil
 func (o *ExecutionQueryDto) SetMessageEventSubscriptionNameNil() {
 	o.MessageEventSubscriptionName.Set(nil)
@@ -402,6 +409,7 @@ func (o *ExecutionQueryDto) HasActive() bool {
 func (o *ExecutionQueryDto) SetActive(v bool) {
 	o.Active.Set(&v)
 }
+
 // SetActiveNil sets the value for Active to be an explicit nil
 func (o *ExecutionQueryDto) SetActiveNil() {
 	o.Active.Set(nil)
@@ -444,6 +452,7 @@ func (o *ExecutionQueryDto) HasSuspended() bool {
 func (o *ExecutionQueryDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ExecutionQueryDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -486,6 +495,7 @@ func (o *ExecutionQueryDto) HasIncidentId() bool {
 func (o *ExecutionQueryDto) SetIncidentId(v string) {
 	o.IncidentId.Set(&v)
 }
+
 // SetIncidentIdNil sets the value for IncidentId to be an explicit nil
 func (o *ExecutionQueryDto) SetIncidentIdNil() {
 	o.IncidentId.Set(nil)
@@ -528,6 +538,7 @@ func (o *ExecutionQueryDto) HasIncidentType() bool {
 func (o *ExecutionQueryDto) SetIncidentType(v string) {
 	o.IncidentType.Set(&v)
 }
+
 // SetIncidentTypeNil sets the value for IncidentType to be an explicit nil
 func (o *ExecutionQueryDto) SetIncidentTypeNil() {
 	o.IncidentType.Set(nil)
@@ -570,6 +581,7 @@ func (o *ExecutionQueryDto) HasIncidentMessage() bool {
 func (o *ExecutionQueryDto) SetIncidentMessage(v string) {
 	o.IncidentMessage.Set(&v)
 }
+
 // SetIncidentMessageNil sets the value for IncidentMessage to be an explicit nil
 func (o *ExecutionQueryDto) SetIncidentMessageNil() {
 	o.IncidentMessage.Set(nil)
@@ -612,6 +624,7 @@ func (o *ExecutionQueryDto) HasIncidentMessageLike() bool {
 func (o *ExecutionQueryDto) SetIncidentMessageLike(v string) {
 	o.IncidentMessageLike.Set(&v)
 }
+
 // SetIncidentMessageLikeNil sets the value for IncidentMessageLike to be an explicit nil
 func (o *ExecutionQueryDto) SetIncidentMessageLikeNil() {
 	o.IncidentMessageLike.Set(nil)
@@ -753,6 +766,7 @@ func (o *ExecutionQueryDto) HasVariableNamesIgnoreCase() bool {
 func (o *ExecutionQueryDto) SetVariableNamesIgnoreCase(v bool) {
 	o.VariableNamesIgnoreCase.Set(&v)
 }
+
 // SetVariableNamesIgnoreCaseNil sets the value for VariableNamesIgnoreCase to be an explicit nil
 func (o *ExecutionQueryDto) SetVariableNamesIgnoreCaseNil() {
 	o.VariableNamesIgnoreCase.Set(nil)
@@ -795,6 +809,7 @@ func (o *ExecutionQueryDto) HasVariableValuesIgnoreCase() bool {
 func (o *ExecutionQueryDto) SetVariableValuesIgnoreCase(v bool) {
 	o.VariableValuesIgnoreCase.Set(&v)
 }
+
 // SetVariableValuesIgnoreCaseNil sets the value for VariableValuesIgnoreCase to be an explicit nil
 func (o *ExecutionQueryDto) SetVariableValuesIgnoreCaseNil() {
 	o.VariableValuesIgnoreCase.Set(nil)
@@ -839,7 +854,7 @@ func (o *ExecutionQueryDto) SetSorting(v []ExecutionQueryDtoSortingInner) {
 }
 
 func (o ExecutionQueryDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -943,5 +958,3 @@ func (v *NullableExecutionQueryDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

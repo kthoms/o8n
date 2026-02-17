@@ -99,6 +99,7 @@ func (o *BatchDto) HasId() bool {
 func (o *BatchDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *BatchDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -141,6 +142,7 @@ func (o *BatchDto) HasType() bool {
 func (o *BatchDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *BatchDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -183,6 +185,7 @@ func (o *BatchDto) HasTotalJobs() bool {
 func (o *BatchDto) SetTotalJobs(v int32) {
 	o.TotalJobs.Set(&v)
 }
+
 // SetTotalJobsNil sets the value for TotalJobs to be an explicit nil
 func (o *BatchDto) SetTotalJobsNil() {
 	o.TotalJobs.Set(nil)
@@ -225,6 +228,7 @@ func (o *BatchDto) HasJobsCreated() bool {
 func (o *BatchDto) SetJobsCreated(v int32) {
 	o.JobsCreated.Set(&v)
 }
+
 // SetJobsCreatedNil sets the value for JobsCreated to be an explicit nil
 func (o *BatchDto) SetJobsCreatedNil() {
 	o.JobsCreated.Set(nil)
@@ -267,6 +271,7 @@ func (o *BatchDto) HasBatchJobsPerSeed() bool {
 func (o *BatchDto) SetBatchJobsPerSeed(v int32) {
 	o.BatchJobsPerSeed.Set(&v)
 }
+
 // SetBatchJobsPerSeedNil sets the value for BatchJobsPerSeed to be an explicit nil
 func (o *BatchDto) SetBatchJobsPerSeedNil() {
 	o.BatchJobsPerSeed.Set(nil)
@@ -309,6 +314,7 @@ func (o *BatchDto) HasInvocationsPerBatchJob() bool {
 func (o *BatchDto) SetInvocationsPerBatchJob(v int32) {
 	o.InvocationsPerBatchJob.Set(&v)
 }
+
 // SetInvocationsPerBatchJobNil sets the value for InvocationsPerBatchJob to be an explicit nil
 func (o *BatchDto) SetInvocationsPerBatchJobNil() {
 	o.InvocationsPerBatchJob.Set(nil)
@@ -351,6 +357,7 @@ func (o *BatchDto) HasSeedJobDefinitionId() bool {
 func (o *BatchDto) SetSeedJobDefinitionId(v string) {
 	o.SeedJobDefinitionId.Set(&v)
 }
+
 // SetSeedJobDefinitionIdNil sets the value for SeedJobDefinitionId to be an explicit nil
 func (o *BatchDto) SetSeedJobDefinitionIdNil() {
 	o.SeedJobDefinitionId.Set(nil)
@@ -393,6 +400,7 @@ func (o *BatchDto) HasMonitorJobDefinitionId() bool {
 func (o *BatchDto) SetMonitorJobDefinitionId(v string) {
 	o.MonitorJobDefinitionId.Set(&v)
 }
+
 // SetMonitorJobDefinitionIdNil sets the value for MonitorJobDefinitionId to be an explicit nil
 func (o *BatchDto) SetMonitorJobDefinitionIdNil() {
 	o.MonitorJobDefinitionId.Set(nil)
@@ -435,6 +443,7 @@ func (o *BatchDto) HasBatchJobDefinitionId() bool {
 func (o *BatchDto) SetBatchJobDefinitionId(v string) {
 	o.BatchJobDefinitionId.Set(&v)
 }
+
 // SetBatchJobDefinitionIdNil sets the value for BatchJobDefinitionId to be an explicit nil
 func (o *BatchDto) SetBatchJobDefinitionIdNil() {
 	o.BatchJobDefinitionId.Set(nil)
@@ -477,6 +486,7 @@ func (o *BatchDto) HasSuspended() bool {
 func (o *BatchDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *BatchDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -519,6 +529,7 @@ func (o *BatchDto) HasTenantId() bool {
 func (o *BatchDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *BatchDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -561,6 +572,7 @@ func (o *BatchDto) HasCreateUserId() bool {
 func (o *BatchDto) SetCreateUserId(v string) {
 	o.CreateUserId.Set(&v)
 }
+
 // SetCreateUserIdNil sets the value for CreateUserId to be an explicit nil
 func (o *BatchDto) SetCreateUserIdNil() {
 	o.CreateUserId.Set(nil)
@@ -603,6 +615,7 @@ func (o *BatchDto) HasStartTime() bool {
 func (o *BatchDto) SetStartTime(v time.Time) {
 	o.StartTime.Set(&v)
 }
+
 // SetStartTimeNil sets the value for StartTime to be an explicit nil
 func (o *BatchDto) SetStartTimeNil() {
 	o.StartTime.Set(nil)
@@ -645,6 +658,7 @@ func (o *BatchDto) HasExecutionStartTime() bool {
 func (o *BatchDto) SetExecutionStartTime(v time.Time) {
 	o.ExecutionStartTime.Set(&v)
 }
+
 // SetExecutionStartTimeNil sets the value for ExecutionStartTime to be an explicit nil
 func (o *BatchDto) SetExecutionStartTimeNil() {
 	o.ExecutionStartTime.Set(nil)
@@ -656,7 +670,7 @@ func (o *BatchDto) UnsetExecutionStartTime() {
 }
 
 func (o BatchDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -745,5 +759,3 @@ func (v *NullableBatchDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -18,26 +18,25 @@ import (
 	"net/url"
 )
 
-
 // EventSubscriptionAPIService EventSubscriptionAPI service
 type EventSubscriptionAPIService service
 
 type ApiGetEventSubscriptionsRequest struct {
-	ctx context.Context
-	ApiService *EventSubscriptionAPIService
-	eventSubscriptionId *string
-	eventName *string
-	eventType *string
-	executionId *string
-	processInstanceId *string
-	activityId *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                      context.Context
+	ApiService                               *EventSubscriptionAPIService
+	eventSubscriptionId                      *string
+	eventName                                *string
+	eventType                                *string
+	executionId                              *string
+	processInstanceId                        *string
+	activityId                               *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
 	includeEventSubscriptionsWithoutTenantId *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	sortBy                                   *string
+	sortOrder                                *string
+	firstResult                              *int32
+	maxResults                               *int32
 }
 
 // Only select subscription with the given id.
@@ -129,24 +128,25 @@ Queries for event subscriptions that fulfill given parameters.
 The size of the result set can be retrieved by using the
 [Get Event Subscriptions count](https://docs.operaton.org/manual/1.0/reference/rest/event-subscription/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetEventSubscriptionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetEventSubscriptionsRequest
 */
 func (a *EventSubscriptionAPIService) GetEventSubscriptions(ctx context.Context) ApiGetEventSubscriptionsRequest {
 	return ApiGetEventSubscriptionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []EventSubscriptionDto
+//
+//	@return []EventSubscriptionDto
 func (a *EventSubscriptionAPIService) GetEventSubscriptionsExecute(r ApiGetEventSubscriptionsRequest) ([]EventSubscriptionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []EventSubscriptionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []EventSubscriptionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventSubscriptionAPIService.GetEventSubscriptions")
@@ -245,8 +245,8 @@ func (a *EventSubscriptionAPIService) GetEventSubscriptionsExecute(r ApiGetEvent
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -264,16 +264,16 @@ func (a *EventSubscriptionAPIService) GetEventSubscriptionsExecute(r ApiGetEvent
 }
 
 type ApiGetEventSubscriptionsCountRequest struct {
-	ctx context.Context
-	ApiService *EventSubscriptionAPIService
-	eventSubscriptionId *string
-	eventName *string
-	eventType *string
-	executionId *string
-	processInstanceId *string
-	activityId *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                      context.Context
+	ApiService                               *EventSubscriptionAPIService
+	eventSubscriptionId                      *string
+	eventName                                *string
+	eventType                                *string
+	executionId                              *string
+	processInstanceId                        *string
+	activityId                               *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
 	includeEventSubscriptionsWithoutTenantId *bool
 }
 
@@ -342,24 +342,25 @@ Queries for the number of event subscriptions that fulfill given parameters.
 Takes the same parameters as the
 [Get Event Subscriptions](https://docs.operaton.org/manual/1.0/reference/rest/event-subscription/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetEventSubscriptionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetEventSubscriptionsCountRequest
 */
 func (a *EventSubscriptionAPIService) GetEventSubscriptionsCount(ctx context.Context) ApiGetEventSubscriptionsCountRequest {
 	return ApiGetEventSubscriptionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *EventSubscriptionAPIService) GetEventSubscriptionsCountExecute(r ApiGetEventSubscriptionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "EventSubscriptionAPIService.GetEventSubscriptionsCount")
@@ -446,8 +447,8 @@ func (a *EventSubscriptionAPIService) GetEventSubscriptionsCountExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -16,25 +16,24 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 	"time"
-	"os"
 )
-
 
 // DeploymentAPIService DeploymentAPI service
 type DeploymentAPIService service
 
 type ApiCreateDeploymentRequest struct {
-	ctx context.Context
-	ApiService *DeploymentAPIService
-	tenantId *string
-	deploymentSource *string
-	deployChangedOnly *bool
+	ctx                      context.Context
+	ApiService               *DeploymentAPIService
+	tenantId                 *string
+	deploymentSource         *string
+	deployChangedOnly        *bool
 	enableDuplicateFiltering *bool
-	deploymentName *string
+	deploymentName           *string
 	deploymentActivationTime *time.Time
-	data *os.File
+	data                     *os.File
 }
 
 // The tenant id for the deployment to be created.
@@ -93,24 +92,25 @@ Creates a deployment.
 Deployments can contain custom code in form of scripts or EL expressions to customize process behavior.
 This may be abused for remote execution of arbitrary code.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateDeploymentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateDeploymentRequest
 */
 func (a *DeploymentAPIService) CreateDeployment(ctx context.Context) ApiCreateDeploymentRequest {
 	return ApiCreateDeploymentRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return DeploymentWithDefinitionsDto
+//
+//	@return DeploymentWithDefinitionsDto
 func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequest) (*DeploymentWithDefinitionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DeploymentWithDefinitionsDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DeploymentWithDefinitionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.CreateDeployment")
@@ -160,8 +160,8 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 		parameterAddToHeaderOrQuery(localVarFormParams, "deployment-activation-time", r.deploymentActivationTime, "")
 	}
 	var dataLocalVarFormFileName string
-	var dataLocalVarFileName     string
-	var dataLocalVarFileBytes    []byte
+	var dataLocalVarFileName string
+	var dataLocalVarFileBytes []byte
 
 	dataLocalVarFormFileName = "data"
 	dataLocalVarFile := r.data
@@ -203,8 +203,8 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -222,12 +222,12 @@ func (a *DeploymentAPIService) CreateDeploymentExecute(r ApiCreateDeploymentRequ
 }
 
 type ApiDeleteDeploymentRequest struct {
-	ctx context.Context
-	ApiService *DeploymentAPIService
-	id string
-	cascade *bool
+	ctx                 context.Context
+	ApiService          *DeploymentAPIService
+	id                  string
+	cascade             *bool
 	skipCustomListeners *bool
-	skipIoMappings *bool
+	skipIoMappings      *bool
 }
 
 // &#x60;true&#x60;, if all process instances, historic process instances and jobs for this deployment should be deleted.
@@ -257,24 +257,24 @@ DeleteDeployment Delete
 
 Deletes a deployment by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment to be deleted.
- @return ApiDeleteDeploymentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment to be deleted.
+	@return ApiDeleteDeploymentRequest
 */
 func (a *DeploymentAPIService) DeleteDeployment(ctx context.Context, id string) ApiDeleteDeploymentRequest {
 	return ApiDeleteDeploymentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.DeleteDeployment")
@@ -353,8 +353,8 @@ func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequ
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -363,9 +363,9 @@ func (a *DeploymentAPIService) DeleteDeploymentExecute(r ApiDeleteDeploymentRequ
 }
 
 type ApiGetDeploymentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DeploymentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDeploymentRequest) Execute() (*DeploymentDto, *http.Response, error) {
@@ -377,26 +377,27 @@ GetDeployment Get
 
 Retrieves a deployment by id, according to the `Deployment` interface of the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment.
- @return ApiGetDeploymentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment.
+	@return ApiGetDeploymentRequest
 */
 func (a *DeploymentAPIService) GetDeployment(ctx context.Context, id string) ApiGetDeploymentRequest {
 	return ApiGetDeploymentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return DeploymentDto
+//
+//	@return DeploymentDto
 func (a *DeploymentAPIService) GetDeploymentExecute(r ApiGetDeploymentRequest) (*DeploymentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DeploymentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DeploymentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeployment")
@@ -457,8 +458,8 @@ func (a *DeploymentAPIService) GetDeploymentExecute(r ApiGetDeploymentRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -476,9 +477,9 @@ func (a *DeploymentAPIService) GetDeploymentExecute(r ApiGetDeploymentRequest) (
 }
 
 type ApiGetDeploymentResourceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DeploymentAPIService
-	id string
+	id         string
 	resourceId string
 }
 
@@ -491,28 +492,29 @@ GetDeploymentResource Get Resource
 
 Retrieves a deployment resource by resource id for the given deployment.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment
- @param resourceId The id of the deployment resource
- @return ApiGetDeploymentResourceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment
+	@param resourceId The id of the deployment resource
+	@return ApiGetDeploymentResourceRequest
 */
 func (a *DeploymentAPIService) GetDeploymentResource(ctx context.Context, id string, resourceId string) ApiGetDeploymentResourceRequest {
 	return ApiGetDeploymentResourceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 		resourceId: resourceId,
 	}
 }
 
 // Execute executes the request
-//  @return DeploymentResourceDto
+//
+//	@return DeploymentResourceDto
 func (a *DeploymentAPIService) GetDeploymentResourceExecute(r ApiGetDeploymentResourceRequest) (*DeploymentResourceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DeploymentResourceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DeploymentResourceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeploymentResource")
@@ -574,8 +576,8 @@ func (a *DeploymentAPIService) GetDeploymentResourceExecute(r ApiGetDeploymentRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -593,9 +595,9 @@ func (a *DeploymentAPIService) GetDeploymentResourceExecute(r ApiGetDeploymentRe
 }
 
 type ApiGetDeploymentResourceDataRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DeploymentAPIService
-	id string
+	id         string
 	resourceId string
 }
 
@@ -608,28 +610,29 @@ GetDeploymentResourceData Get Resource (Binary)
 
 Retrieves the binary content of a deployment resource for the given deployment by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment.
- @param resourceId The id of the deployment resource.
- @return ApiGetDeploymentResourceDataRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment.
+	@param resourceId The id of the deployment resource.
+	@return ApiGetDeploymentResourceDataRequest
 */
 func (a *DeploymentAPIService) GetDeploymentResourceData(ctx context.Context, id string, resourceId string) ApiGetDeploymentResourceDataRequest {
 	return ApiGetDeploymentResourceDataRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 		resourceId: resourceId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *DeploymentAPIService) GetDeploymentResourceDataExecute(r ApiGetDeploymentResourceDataRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeploymentResourceData")
@@ -691,8 +694,8 @@ func (a *DeploymentAPIService) GetDeploymentResourceDataExecute(r ApiGetDeployme
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -710,9 +713,9 @@ func (a *DeploymentAPIService) GetDeploymentResourceDataExecute(r ApiGetDeployme
 }
 
 type ApiGetDeploymentResourcesRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DeploymentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDeploymentResourcesRequest) Execute() ([]DeploymentResourceDto, *http.Response, error) {
@@ -724,26 +727,27 @@ GetDeploymentResources Get Resources
 
 Retrieves all deployment resources of a given deployment.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment to retrieve the deployment resources for.
- @return ApiGetDeploymentResourcesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment to retrieve the deployment resources for.
+	@return ApiGetDeploymentResourcesRequest
 */
 func (a *DeploymentAPIService) GetDeploymentResources(ctx context.Context, id string) ApiGetDeploymentResourcesRequest {
 	return ApiGetDeploymentResourcesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []DeploymentResourceDto
+//
+//	@return []DeploymentResourceDto
 func (a *DeploymentAPIService) GetDeploymentResourcesExecute(r ApiGetDeploymentResourcesRequest) ([]DeploymentResourceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []DeploymentResourceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []DeploymentResourceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeploymentResources")
@@ -804,8 +808,8 @@ func (a *DeploymentAPIService) GetDeploymentResourcesExecute(r ApiGetDeploymentR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -823,22 +827,22 @@ func (a *DeploymentAPIService) GetDeploymentResourcesExecute(r ApiGetDeploymentR
 }
 
 type ApiGetDeploymentsRequest struct {
-	ctx context.Context
-	ApiService *DeploymentAPIService
-	id *string
-	name *string
-	nameLike *string
-	source *string
-	withoutSource *bool
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                               context.Context
+	ApiService                        *DeploymentAPIService
+	id                                *string
+	name                              *string
+	nameLike                          *string
+	source                            *string
+	withoutSource                     *bool
+	tenantIdIn                        *string
+	withoutTenantId                   *bool
 	includeDeploymentsWithoutTenantId *bool
-	after *time.Time
-	before *time.Time
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	after                             *time.Time
+	before                            *time.Time
+	sortBy                            *string
+	sortOrder                         *string
+	firstResult                       *int32
+	maxResults                        *int32
 }
 
 // Filter by deployment id
@@ -936,24 +940,25 @@ Queries for deployments that fulfill given parameters. Parameters may be the pro
 such as the id or name or a range of the deployment time. The size of the result set can be retrieved by
 using the [Get Deployment count](https://docs.operaton.org/manual/1.0/reference/rest/deployment/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetDeploymentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetDeploymentsRequest
 */
 func (a *DeploymentAPIService) GetDeployments(ctx context.Context) ApiGetDeploymentsRequest {
 	return ApiGetDeploymentsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []DeploymentDto
+//
+//	@return []DeploymentDto
 func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest) ([]DeploymentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []DeploymentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []DeploymentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeployments")
@@ -1064,8 +1069,8 @@ func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest)
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1083,18 +1088,18 @@ func (a *DeploymentAPIService) GetDeploymentsExecute(r ApiGetDeploymentsRequest)
 }
 
 type ApiGetDeploymentsCountRequest struct {
-	ctx context.Context
-	ApiService *DeploymentAPIService
-	id *string
-	name *string
-	nameLike *string
-	source *string
-	withoutSource *bool
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                               context.Context
+	ApiService                        *DeploymentAPIService
+	id                                *string
+	name                              *string
+	nameLike                          *string
+	source                            *string
+	withoutSource                     *bool
+	tenantIdIn                        *string
+	withoutTenantId                   *bool
 	includeDeploymentsWithoutTenantId *bool
-	after *time.Time
-	before *time.Time
+	after                             *time.Time
+	before                            *time.Time
 }
 
 // Filter by deployment id
@@ -1167,24 +1172,25 @@ GetDeploymentsCount Get List Count
 Queries for the number of deployments that fulfill given parameters. Takes the same parameters as the
 [Get Deployments](https://docs.operaton.org/manual/1.0/reference/rest/deployment/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetDeploymentsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetDeploymentsCountRequest
 */
 func (a *DeploymentAPIService) GetDeploymentsCount(ctx context.Context) ApiGetDeploymentsCountRequest {
 	return ApiGetDeploymentsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *DeploymentAPIService) GetDeploymentsCountExecute(r ApiGetDeploymentsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetDeploymentsCount")
@@ -1283,8 +1289,8 @@ func (a *DeploymentAPIService) GetDeploymentsCountExecute(r ApiGetDeploymentsCou
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1302,7 +1308,7 @@ func (a *DeploymentAPIService) GetDeploymentsCountExecute(r ApiGetDeploymentsCou
 }
 
 type ApiGetRegisteredDeploymentsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *DeploymentAPIService
 }
 
@@ -1315,24 +1321,25 @@ GetRegisteredDeployments Get Registered Deployments
 
 Queries the registered deployment IDs for the current application.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetRegisteredDeploymentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetRegisteredDeploymentsRequest
 */
 func (a *DeploymentAPIService) GetRegisteredDeployments(ctx context.Context) ApiGetRegisteredDeploymentsRequest {
 	return ApiGetRegisteredDeploymentsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []string
+//
+//	@return []string
 func (a *DeploymentAPIService) GetRegisteredDeploymentsExecute(r ApiGetRegisteredDeploymentsRequest) ([]string, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []string
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.GetRegisteredDeployments")
@@ -1401,9 +1408,9 @@ func (a *DeploymentAPIService) GetRegisteredDeploymentsExecute(r ApiGetRegistere
 }
 
 type ApiRedeployRequest struct {
-	ctx context.Context
-	ApiService *DeploymentAPIService
-	id string
+	ctx             context.Context
+	ApiService      *DeploymentAPIService
+	id              string
 	redeploymentDto *RedeploymentDto
 }
 
@@ -1430,26 +1437,27 @@ process behavior. This may be abused for remote execution of arbitrary code. See
 [security considerations for custom code](https://docs.operaton.org/manual/1.0/user-guide/process-engine/securing-custom-code/) in
 the user guide for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the deployment to re-deploy.
- @return ApiRedeployRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the deployment to re-deploy.
+	@return ApiRedeployRequest
 */
 func (a *DeploymentAPIService) Redeploy(ctx context.Context, id string) ApiRedeployRequest {
 	return ApiRedeployRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return DeploymentWithDefinitionsDto
+//
+//	@return DeploymentWithDefinitionsDto
 func (a *DeploymentAPIService) RedeployExecute(r ApiRedeployRequest) (*DeploymentWithDefinitionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *DeploymentWithDefinitionsDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *DeploymentWithDefinitionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DeploymentAPIService.Redeploy")
@@ -1512,8 +1520,8 @@ func (a *DeploymentAPIService) RedeployExecute(r ApiRedeployRequest) (*Deploymen
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

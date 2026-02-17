@@ -77,6 +77,7 @@ func (o *AbstractSetRemovalTimeDto) HasAbsoluteRemovalTime() bool {
 func (o *AbstractSetRemovalTimeDto) SetAbsoluteRemovalTime(v time.Time) {
 	o.AbsoluteRemovalTime.Set(&v)
 }
+
 // SetAbsoluteRemovalTimeNil sets the value for AbsoluteRemovalTime to be an explicit nil
 func (o *AbstractSetRemovalTimeDto) SetAbsoluteRemovalTimeNil() {
 	o.AbsoluteRemovalTime.Set(nil)
@@ -119,6 +120,7 @@ func (o *AbstractSetRemovalTimeDto) HasClearedRemovalTime() bool {
 func (o *AbstractSetRemovalTimeDto) SetClearedRemovalTime(v bool) {
 	o.ClearedRemovalTime.Set(&v)
 }
+
 // SetClearedRemovalTimeNil sets the value for ClearedRemovalTime to be an explicit nil
 func (o *AbstractSetRemovalTimeDto) SetClearedRemovalTimeNil() {
 	o.ClearedRemovalTime.Set(nil)
@@ -161,6 +163,7 @@ func (o *AbstractSetRemovalTimeDto) HasCalculatedRemovalTime() bool {
 func (o *AbstractSetRemovalTimeDto) SetCalculatedRemovalTime(v bool) {
 	o.CalculatedRemovalTime.Set(&v)
 }
+
 // SetCalculatedRemovalTimeNil sets the value for CalculatedRemovalTime to be an explicit nil
 func (o *AbstractSetRemovalTimeDto) SetCalculatedRemovalTimeNil() {
 	o.CalculatedRemovalTime.Set(nil)
@@ -172,7 +175,7 @@ func (o *AbstractSetRemovalTimeDto) UnsetCalculatedRemovalTime() {
 }
 
 func (o AbstractSetRemovalTimeDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -228,5 +231,3 @@ func (v *NullableAbstractSetRemovalTimeDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -76,6 +76,7 @@ func (o *AtomLink) HasRel() bool {
 func (o *AtomLink) SetRel(v string) {
 	o.Rel.Set(&v)
 }
+
 // SetRelNil sets the value for Rel to be an explicit nil
 func (o *AtomLink) SetRelNil() {
 	o.Rel.Set(nil)
@@ -118,6 +119,7 @@ func (o *AtomLink) HasHref() bool {
 func (o *AtomLink) SetHref(v string) {
 	o.Href.Set(&v)
 }
+
 // SetHrefNil sets the value for Href to be an explicit nil
 func (o *AtomLink) SetHrefNil() {
 	o.Href.Set(nil)
@@ -160,6 +162,7 @@ func (o *AtomLink) HasMethod() bool {
 func (o *AtomLink) SetMethod(v string) {
 	o.Method.Set(&v)
 }
+
 // SetMethodNil sets the value for Method to be an explicit nil
 func (o *AtomLink) SetMethodNil() {
 	o.Method.Set(nil)
@@ -171,7 +174,7 @@ func (o *AtomLink) UnsetMethod() {
 }
 
 func (o AtomLink) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -227,5 +230,3 @@ func (v *NullableAtomLink) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

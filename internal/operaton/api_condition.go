@@ -18,13 +18,12 @@ import (
 	"net/url"
 )
 
-
 // ConditionAPIService ConditionAPI service
 type ConditionAPIService service
 
 type ApiEvaluateConditionRequest struct {
-	ctx context.Context
-	ApiService *ConditionAPIService
+	ctx                    context.Context
+	ApiService             *ConditionAPIService
 	evaluationConditionDto *EvaluationConditionDto
 }
 
@@ -40,29 +39,30 @@ func (r ApiEvaluateConditionRequest) Execute() ([]ProcessInstanceDto, *http.Resp
 /*
 EvaluateCondition Evaluate
 
-Triggers evaluation of conditions for conditional start event(s). 
-Internally this maps to the engines condition evaluation builder method ConditionEvaluationBuilder#evaluateStartConditions(). 
+Triggers evaluation of conditions for conditional start event(s).
+Internally this maps to the engines condition evaluation builder method ConditionEvaluationBuilder#evaluateStartConditions().
 For more information see the [Conditional Start Events](https://docs.operaton.org/manual/1.0/reference/bpmn20/events/conditional-events/#conditional-start-event)
 section of the [BPMN 2.0 Implementation Reference](https://docs.operaton.org/manual/1.0/reference/bpmn20/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiEvaluateConditionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiEvaluateConditionRequest
 */
 func (a *ConditionAPIService) EvaluateCondition(ctx context.Context) ApiEvaluateConditionRequest {
 	return ApiEvaluateConditionRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessInstanceDto
+//
+//	@return []ProcessInstanceDto
 func (a *ConditionAPIService) EvaluateConditionExecute(r ApiEvaluateConditionRequest) ([]ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ConditionAPIService.EvaluateCondition")
@@ -124,8 +124,8 @@ func (a *ConditionAPIService) EvaluateConditionExecute(r ApiEvaluateConditionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -135,8 +135,8 @@ func (a *ConditionAPIService) EvaluateConditionExecute(r ApiEvaluateConditionReq
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

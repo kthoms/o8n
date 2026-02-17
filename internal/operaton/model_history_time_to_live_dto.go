@@ -72,6 +72,7 @@ func (o *HistoryTimeToLiveDto) HasHistoryTimeToLive() bool {
 func (o *HistoryTimeToLiveDto) SetHistoryTimeToLive(v int32) {
 	o.HistoryTimeToLive.Set(&v)
 }
+
 // SetHistoryTimeToLiveNil sets the value for HistoryTimeToLive to be an explicit nil
 func (o *HistoryTimeToLiveDto) SetHistoryTimeToLiveNil() {
 	o.HistoryTimeToLive.Set(nil)
@@ -83,7 +84,7 @@ func (o *HistoryTimeToLiveDto) UnsetHistoryTimeToLive() {
 }
 
 func (o HistoryTimeToLiveDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -133,5 +134,3 @@ func (v *NullableHistoryTimeToLiveDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

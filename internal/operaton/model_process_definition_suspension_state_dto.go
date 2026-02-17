@@ -81,6 +81,7 @@ func (o *ProcessDefinitionSuspensionStateDto) HasSuspended() bool {
 func (o *ProcessDefinitionSuspensionStateDto) SetSuspended(v bool) {
 	o.Suspended.Set(&v)
 }
+
 // SetSuspendedNil sets the value for Suspended to be an explicit nil
 func (o *ProcessDefinitionSuspensionStateDto) SetSuspendedNil() {
 	o.Suspended.Set(nil)
@@ -123,6 +124,7 @@ func (o *ProcessDefinitionSuspensionStateDto) HasProcessDefinitionId() bool {
 func (o *ProcessDefinitionSuspensionStateDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *ProcessDefinitionSuspensionStateDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -165,6 +167,7 @@ func (o *ProcessDefinitionSuspensionStateDto) HasProcessDefinitionKey() bool {
 func (o *ProcessDefinitionSuspensionStateDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *ProcessDefinitionSuspensionStateDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -207,6 +210,7 @@ func (o *ProcessDefinitionSuspensionStateDto) HasIncludeProcessInstances() bool 
 func (o *ProcessDefinitionSuspensionStateDto) SetIncludeProcessInstances(v bool) {
 	o.IncludeProcessInstances.Set(&v)
 }
+
 // SetIncludeProcessInstancesNil sets the value for IncludeProcessInstances to be an explicit nil
 func (o *ProcessDefinitionSuspensionStateDto) SetIncludeProcessInstancesNil() {
 	o.IncludeProcessInstances.Set(nil)
@@ -249,6 +253,7 @@ func (o *ProcessDefinitionSuspensionStateDto) HasExecutionDate() bool {
 func (o *ProcessDefinitionSuspensionStateDto) SetExecutionDate(v time.Time) {
 	o.ExecutionDate.Set(&v)
 }
+
 // SetExecutionDateNil sets the value for ExecutionDate to be an explicit nil
 func (o *ProcessDefinitionSuspensionStateDto) SetExecutionDateNil() {
 	o.ExecutionDate.Set(nil)
@@ -260,7 +265,7 @@ func (o *ProcessDefinitionSuspensionStateDto) UnsetExecutionDate() {
 }
 
 func (o ProcessDefinitionSuspensionStateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -322,5 +327,3 @@ func (v *NullableProcessDefinitionSuspensionStateDto) UnmarshalJSON(src []byte) 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

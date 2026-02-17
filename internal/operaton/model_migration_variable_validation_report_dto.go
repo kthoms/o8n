@@ -111,6 +111,7 @@ func (o *MigrationVariableValidationReportDto) HasType() bool {
 func (o *MigrationVariableValidationReportDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *MigrationVariableValidationReportDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -187,7 +188,7 @@ func (o *MigrationVariableValidationReportDto) SetFailures(v []string) {
 }
 
 func (o MigrationVariableValidationReportDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -246,5 +247,3 @@ func (v *NullableMigrationVariableValidationReportDto) UnmarshalJSON(src []byte)
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

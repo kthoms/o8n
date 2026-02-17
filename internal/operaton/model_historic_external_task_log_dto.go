@@ -113,6 +113,7 @@ func (o *HistoricExternalTaskLogDto) HasId() bool {
 func (o *HistoricExternalTaskLogDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -155,6 +156,7 @@ func (o *HistoricExternalTaskLogDto) HasExternalTaskId() bool {
 func (o *HistoricExternalTaskLogDto) SetExternalTaskId(v string) {
 	o.ExternalTaskId.Set(&v)
 }
+
 // SetExternalTaskIdNil sets the value for ExternalTaskId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetExternalTaskIdNil() {
 	o.ExternalTaskId.Set(nil)
@@ -197,6 +199,7 @@ func (o *HistoricExternalTaskLogDto) HasTimestamp() bool {
 func (o *HistoricExternalTaskLogDto) SetTimestamp(v time.Time) {
 	o.Timestamp.Set(&v)
 }
+
 // SetTimestampNil sets the value for Timestamp to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetTimestampNil() {
 	o.Timestamp.Set(nil)
@@ -239,6 +242,7 @@ func (o *HistoricExternalTaskLogDto) HasTopicName() bool {
 func (o *HistoricExternalTaskLogDto) SetTopicName(v string) {
 	o.TopicName.Set(&v)
 }
+
 // SetTopicNameNil sets the value for TopicName to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetTopicNameNil() {
 	o.TopicName.Set(nil)
@@ -281,6 +285,7 @@ func (o *HistoricExternalTaskLogDto) HasWorkerId() bool {
 func (o *HistoricExternalTaskLogDto) SetWorkerId(v string) {
 	o.WorkerId.Set(&v)
 }
+
 // SetWorkerIdNil sets the value for WorkerId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetWorkerIdNil() {
 	o.WorkerId.Set(nil)
@@ -323,6 +328,7 @@ func (o *HistoricExternalTaskLogDto) HasRetries() bool {
 func (o *HistoricExternalTaskLogDto) SetRetries(v int32) {
 	o.Retries.Set(&v)
 }
+
 // SetRetriesNil sets the value for Retries to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetRetriesNil() {
 	o.Retries.Set(nil)
@@ -365,6 +371,7 @@ func (o *HistoricExternalTaskLogDto) HasPriority() bool {
 func (o *HistoricExternalTaskLogDto) SetPriority(v int64) {
 	o.Priority.Set(&v)
 }
+
 // SetPriorityNil sets the value for Priority to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetPriorityNil() {
 	o.Priority.Set(nil)
@@ -407,6 +414,7 @@ func (o *HistoricExternalTaskLogDto) HasErrorMessage() bool {
 func (o *HistoricExternalTaskLogDto) SetErrorMessage(v string) {
 	o.ErrorMessage.Set(&v)
 }
+
 // SetErrorMessageNil sets the value for ErrorMessage to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetErrorMessageNil() {
 	o.ErrorMessage.Set(nil)
@@ -449,6 +457,7 @@ func (o *HistoricExternalTaskLogDto) HasActivityId() bool {
 func (o *HistoricExternalTaskLogDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -491,6 +500,7 @@ func (o *HistoricExternalTaskLogDto) HasActivityInstanceId() bool {
 func (o *HistoricExternalTaskLogDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -533,6 +543,7 @@ func (o *HistoricExternalTaskLogDto) HasExecutionId() bool {
 func (o *HistoricExternalTaskLogDto) SetExecutionId(v string) {
 	o.ExecutionId.Set(&v)
 }
+
 // SetExecutionIdNil sets the value for ExecutionId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetExecutionIdNil() {
 	o.ExecutionId.Set(nil)
@@ -575,6 +586,7 @@ func (o *HistoricExternalTaskLogDto) HasProcessInstanceId() bool {
 func (o *HistoricExternalTaskLogDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -617,6 +629,7 @@ func (o *HistoricExternalTaskLogDto) HasProcessDefinitionId() bool {
 func (o *HistoricExternalTaskLogDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -659,6 +672,7 @@ func (o *HistoricExternalTaskLogDto) HasProcessDefinitionKey() bool {
 func (o *HistoricExternalTaskLogDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -701,6 +715,7 @@ func (o *HistoricExternalTaskLogDto) HasTenantId() bool {
 func (o *HistoricExternalTaskLogDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -743,6 +758,7 @@ func (o *HistoricExternalTaskLogDto) HasCreationLog() bool {
 func (o *HistoricExternalTaskLogDto) SetCreationLog(v bool) {
 	o.CreationLog.Set(&v)
 }
+
 // SetCreationLogNil sets the value for CreationLog to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetCreationLogNil() {
 	o.CreationLog.Set(nil)
@@ -785,6 +801,7 @@ func (o *HistoricExternalTaskLogDto) HasFailureLog() bool {
 func (o *HistoricExternalTaskLogDto) SetFailureLog(v bool) {
 	o.FailureLog.Set(&v)
 }
+
 // SetFailureLogNil sets the value for FailureLog to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetFailureLogNil() {
 	o.FailureLog.Set(nil)
@@ -827,6 +844,7 @@ func (o *HistoricExternalTaskLogDto) HasSuccessLog() bool {
 func (o *HistoricExternalTaskLogDto) SetSuccessLog(v bool) {
 	o.SuccessLog.Set(&v)
 }
+
 // SetSuccessLogNil sets the value for SuccessLog to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetSuccessLogNil() {
 	o.SuccessLog.Set(nil)
@@ -869,6 +887,7 @@ func (o *HistoricExternalTaskLogDto) HasDeletionLog() bool {
 func (o *HistoricExternalTaskLogDto) SetDeletionLog(v bool) {
 	o.DeletionLog.Set(&v)
 }
+
 // SetDeletionLogNil sets the value for DeletionLog to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetDeletionLogNil() {
 	o.DeletionLog.Set(nil)
@@ -911,6 +930,7 @@ func (o *HistoricExternalTaskLogDto) HasRemovalTime() bool {
 func (o *HistoricExternalTaskLogDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -953,6 +973,7 @@ func (o *HistoricExternalTaskLogDto) HasRootProcessInstanceId() bool {
 func (o *HistoricExternalTaskLogDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricExternalTaskLogDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -964,7 +985,7 @@ func (o *HistoricExternalTaskLogDto) UnsetRootProcessInstanceId() {
 }
 
 func (o HistoricExternalTaskLogDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1074,5 +1095,3 @@ func (v *NullableHistoricExternalTaskLogDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

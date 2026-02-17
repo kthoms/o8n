@@ -16,22 +16,21 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 	"time"
 )
-
 
 // ProcessDefinitionAPIService ProcessDefinitionAPI service
 type ProcessDefinitionAPIService service
 
 type ApiDeleteProcessDefinitionRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
-	cascade *bool
+	ctx                 context.Context
+	ApiService          *ProcessDefinitionAPIService
+	id                  string
+	cascade             *bool
 	skipCustomListeners *bool
-	skipIoMappings *bool
+	skipIoMappings      *bool
 }
 
 // &#x60;true&#x60;, if all process instances, historic process instances and jobs for this process definition should be deleted.
@@ -61,24 +60,24 @@ DeleteProcessDefinition Delete
 
 Deletes a process definition by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to be deleted.
- @return ApiDeleteProcessDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to be deleted.
+	@return ApiDeleteProcessDefinitionRequest
 */
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinition(ctx context.Context, id string) ApiDeleteProcessDefinitionRequest {
 	return ApiDeleteProcessDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionExecute(r ApiDeleteProcessDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.DeleteProcessDefinition")
@@ -154,8 +153,8 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionExecute(r ApiDelete
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -164,12 +163,12 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionExecute(r ApiDelete
 }
 
 type ApiDeleteProcessDefinitionsByKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	cascade *bool
+	ctx                 context.Context
+	ApiService          *ProcessDefinitionAPIService
+	key                 string
+	cascade             *bool
 	skipCustomListeners *bool
-	skipIoMappings *bool
+	skipIoMappings      *bool
 }
 
 // &#x60;true&#x60;, if all process instances, historic process instances and jobs for this process definition should be deleted.
@@ -199,24 +198,24 @@ DeleteProcessDefinitionsByKey Delete By Key
 
 Deletes process definitions by a given key which belong to no tenant id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definitions to be deleted.
- @return ApiDeleteProcessDefinitionsByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definitions to be deleted.
+	@return ApiDeleteProcessDefinitionsByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKey(ctx context.Context, key string) ApiDeleteProcessDefinitionsByKeyRequest {
 	return ApiDeleteProcessDefinitionsByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyExecute(r ApiDeleteProcessDefinitionsByKeyRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.DeleteProcessDefinitionsByKey")
@@ -292,8 +291,8 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyExecute(r Api
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -303,8 +302,8 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyExecute(r Api
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -313,13 +312,13 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyExecute(r Api
 }
 
 type ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
-	cascade *bool
+	ctx                 context.Context
+	ApiService          *ProcessDefinitionAPIService
+	key                 string
+	tenantId            string
+	cascade             *bool
 	skipCustomListeners *bool
-	skipIoMappings *bool
+	skipIoMappings      *bool
 }
 
 // &#x60;true&#x60;, if all process instances, historic process instances and jobs for this process definition should be deleted.
@@ -349,26 +348,26 @@ DeleteProcessDefinitionsByKeyAndTenantId Delete By Key
 
 Deletes process definitions by a given key and which belong to a tenant id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definitions to be deleted.
- @param tenantId The id of the tenant the process definitions belong to.
- @return ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definitions to be deleted.
+	@param tenantId The id of the tenant the process definitions belong to.
+	@return ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest {
 	return ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyAndTenantIdExecute(r ApiDeleteProcessDefinitionsByKeyAndTenantIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.DeleteProcessDefinitionsByKeyAndTenantId")
@@ -445,8 +444,8 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyAndTenantIdEx
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -456,8 +455,8 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyAndTenantIdEx
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -466,11 +465,11 @@ func (a *ProcessDefinitionAPIService) DeleteProcessDefinitionsByKeyAndTenantIdEx
 }
 
 type ApiGetActivityStatisticsRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
-	failedJobs *bool
-	incidents *bool
+	ctx              context.Context
+	ApiService       *ProcessDefinitionAPIService
+	id               string
+	failedJobs       *bool
+	incidents        *bool
 	incidentsForType *string
 }
 
@@ -504,26 +503,27 @@ These statistics include the number of running activity instances, optionally th
 and also optionally the number of incidents either grouped by incident types or for a specific incident type.
 **Note**: This does not include historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition.
- @return ApiGetActivityStatisticsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition.
+	@return ApiGetActivityStatisticsRequest
 */
 func (a *ProcessDefinitionAPIService) GetActivityStatistics(ctx context.Context, id string) ApiGetActivityStatisticsRequest {
 	return ApiGetActivityStatisticsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []ActivityStatisticsResultDto
+//
+//	@return []ActivityStatisticsResultDto
 func (a *ProcessDefinitionAPIService) GetActivityStatisticsExecute(r ApiGetActivityStatisticsRequest) ([]ActivityStatisticsResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ActivityStatisticsResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ActivityStatisticsResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetActivityStatistics")
@@ -593,8 +593,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsExecute(r ApiGetActiv
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -604,8 +604,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsExecute(r ApiGetActiv
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -623,11 +623,11 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsExecute(r ApiGetActiv
 }
 
 type ApiGetActivityStatisticsByProcessDefinitionKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	failedJobs *bool
-	incidents *bool
+	ctx              context.Context
+	ApiService       *ProcessDefinitionAPIService
+	key              string
+	failedJobs       *bool
+	incidents        *bool
 	incidentsForType *string
 }
 
@@ -663,26 +663,27 @@ and also optionally the number of incidents either grouped by incident types or
 for a specific incident type.
 **Note**: This does not include historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiGetActivityStatisticsByProcessDefinitionKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiGetActivityStatisticsByProcessDefinitionKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKey(ctx context.Context, key string) ApiGetActivityStatisticsByProcessDefinitionKeyRequest {
 	return ApiGetActivityStatisticsByProcessDefinitionKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return []ActivityStatisticsResultDto
+//
+//	@return []ActivityStatisticsResultDto
 func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKeyExecute(r ApiGetActivityStatisticsByProcessDefinitionKeyRequest) ([]ActivityStatisticsResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ActivityStatisticsResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ActivityStatisticsResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetActivityStatisticsByProcessDefinitionKey")
@@ -752,8 +753,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -763,8 +764,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -782,12 +783,12 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 }
 
 type ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
-	failedJobs *bool
-	incidents *bool
+	ctx              context.Context
+	ApiService       *ProcessDefinitionAPIService
+	key              string
+	tenantId         string
+	failedJobs       *bool
+	incidents        *bool
 	incidentsForType *string
 }
 
@@ -823,28 +824,29 @@ and also optionally the number of incidents either grouped by incident types or
 for a specific incident type.
 **Note**: This does not include historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest {
 	return ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return []ActivityStatisticsResultDto
+//
+//	@return []ActivityStatisticsResultDto
 func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKeyAndTenantIdExecute(r ApiGetActivityStatisticsByProcessDefinitionKeyAndTenantIdRequest) ([]ActivityStatisticsResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ActivityStatisticsResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ActivityStatisticsResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetActivityStatisticsByProcessDefinitionKeyAndTenantId")
@@ -915,8 +917,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -926,8 +928,8 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -945,9 +947,9 @@ func (a *ProcessDefinitionAPIService) GetActivityStatisticsByProcessDefinitionKe
 }
 
 type ApiGetDeployedStartFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDeployedStartFormRequest) Execute() (*os.File, *http.Response, error) {
@@ -960,26 +962,27 @@ GetDeployedStartForm Get Deployed Start Form
 Retrieves the deployed form that can be referenced from a start event.
 For further information please refer to [User Guide](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#embedded-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to get the deployed start form for.
- @return ApiGetDeployedStartFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to get the deployed start form for.
+	@return ApiGetDeployedStartFormRequest
 */
 func (a *ProcessDefinitionAPIService) GetDeployedStartForm(ctx context.Context, id string) ApiGetDeployedStartFormRequest {
 	return ApiGetDeployedStartFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetDeployedStartFormExecute(r ApiGetDeployedStartFormRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetDeployedStartForm")
@@ -1040,8 +1043,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormExecute(r ApiGetDeploy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1051,8 +1054,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormExecute(r ApiGetDeploy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1062,8 +1065,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormExecute(r ApiGetDeploy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1081,9 +1084,9 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormExecute(r ApiGetDeploy
 }
 
 type ApiGetDeployedStartFormByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetDeployedStartFormByKeyRequest) Execute() (*os.File, *http.Response, error) {
@@ -1096,26 +1099,27 @@ GetDeployedStartFormByKey Get Deployed Start Form
 Retrieves the deployed form that can be referenced from a start event.
 For further information please refer to [User Guide](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#embedded-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiGetDeployedStartFormByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiGetDeployedStartFormByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKey(ctx context.Context, key string) ApiGetDeployedStartFormByKeyRequest {
 	return ApiGetDeployedStartFormByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyExecute(r ApiGetDeployedStartFormByKeyRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetDeployedStartFormByKey")
@@ -1176,8 +1180,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyExecute(r ApiGetD
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1187,8 +1191,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyExecute(r ApiGetD
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1198,8 +1202,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyExecute(r ApiGetD
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1217,10 +1221,10 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyExecute(r ApiGetD
 }
 
 type ApiGetDeployedStartFormByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetDeployedStartFormByKeyAndTenantIdRequest) Execute() (*os.File, *http.Response, error) {
@@ -1233,28 +1237,29 @@ GetDeployedStartFormByKeyAndTenantId Get Deployed Start Form
 Retrieves the deployed form that can be referenced from a start event.
 For further information please refer to [User Guide](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#embedded-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definitions belong to.
- @return ApiGetDeployedStartFormByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definitions belong to.
+	@return ApiGetDeployedStartFormByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetDeployedStartFormByKeyAndTenantIdRequest {
 	return ApiGetDeployedStartFormByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantIdExecute(r ApiGetDeployedStartFormByKeyAndTenantIdRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetDeployedStartFormByKeyAndTenantId")
@@ -1316,8 +1321,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1327,8 +1332,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1338,8 +1343,8 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1357,10 +1362,10 @@ func (a *ProcessDefinitionAPIService) GetDeployedStartFormByKeyAndTenantIdExecut
 }
 
 type ApiGetLatestProcessDefinitionByTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetLatestProcessDefinitionByTenantIdRequest) Execute() (*ProcessDefinitionDto, *http.Response, error) {
@@ -1373,28 +1378,29 @@ GetLatestProcessDefinitionByTenantId Get
 Retrieves the latest version of the process definition for tenant according to
 the `ProcessDefinition` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetLatestProcessDefinitionByTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetLatestProcessDefinitionByTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetLatestProcessDefinitionByTenantId(ctx context.Context, key string, tenantId string) ApiGetLatestProcessDefinitionByTenantIdRequest {
 	return ApiGetLatestProcessDefinitionByTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDto
+//
+//	@return ProcessDefinitionDto
 func (a *ProcessDefinitionAPIService) GetLatestProcessDefinitionByTenantIdExecute(r ApiGetLatestProcessDefinitionByTenantIdRequest) (*ProcessDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetLatestProcessDefinitionByTenantId")
@@ -1456,8 +1462,8 @@ func (a *ProcessDefinitionAPIService) GetLatestProcessDefinitionByTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1475,9 +1481,9 @@ func (a *ProcessDefinitionAPIService) GetLatestProcessDefinitionByTenantIdExecut
 }
 
 type ApiGetProcessDefinitionRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetProcessDefinitionRequest) Execute() (*ProcessDefinitionDto, *http.Response, error) {
@@ -1489,26 +1495,27 @@ GetProcessDefinition Get
 
 Retrieves a process definition according to the `ProcessDefinition` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to be retrieved.
- @return ApiGetProcessDefinitionRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to be retrieved.
+	@return ApiGetProcessDefinitionRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinition(ctx context.Context, id string) ApiGetProcessDefinitionRequest {
 	return ApiGetProcessDefinitionRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDto
+//
+//	@return ProcessDefinitionDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionExecute(r ApiGetProcessDefinitionRequest) (*ProcessDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinition")
@@ -1569,8 +1576,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionExecute(r ApiGetProces
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1588,9 +1595,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionExecute(r ApiGetProces
 }
 
 type ApiGetProcessDefinitionBpmn20XmlRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetProcessDefinitionBpmn20XmlRequest) Execute() (*ProcessDefinitionDiagramDto, *http.Response, error) {
@@ -1602,26 +1609,27 @@ GetProcessDefinitionBpmn20Xml Get XML
 
 Retrieves the BPMN 2.0 XML of a process definition.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition.
- @return ApiGetProcessDefinitionBpmn20XmlRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition.
+	@return ApiGetProcessDefinitionBpmn20XmlRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20Xml(ctx context.Context, id string) ApiGetProcessDefinitionBpmn20XmlRequest {
 	return ApiGetProcessDefinitionBpmn20XmlRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDiagramDto
+//
+//	@return ProcessDefinitionDiagramDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlExecute(r ApiGetProcessDefinitionBpmn20XmlRequest) (*ProcessDefinitionDiagramDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDiagramDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDiagramDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionBpmn20Xml")
@@ -1682,8 +1690,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1693,8 +1701,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1704,8 +1712,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1723,9 +1731,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlExecute(r Api
 }
 
 type ApiGetProcessDefinitionBpmn20XmlByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetProcessDefinitionBpmn20XmlByKeyRequest) Execute() (*ProcessDefinitionDiagramDto, *http.Response, error) {
@@ -1737,26 +1745,27 @@ GetProcessDefinitionBpmn20XmlByKey Get XML
 
 Retrieves latest version the BPMN 2.0 XML of a process definition.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) whose XML should be retrieved.
- @return ApiGetProcessDefinitionBpmn20XmlByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) whose XML should be retrieved.
+	@return ApiGetProcessDefinitionBpmn20XmlByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKey(ctx context.Context, key string) ApiGetProcessDefinitionBpmn20XmlByKeyRequest {
 	return ApiGetProcessDefinitionBpmn20XmlByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDiagramDto
+//
+//	@return ProcessDefinitionDiagramDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyExecute(r ApiGetProcessDefinitionBpmn20XmlByKeyRequest) (*ProcessDefinitionDiagramDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDiagramDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDiagramDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionBpmn20XmlByKey")
@@ -1817,8 +1826,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1828,8 +1837,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1847,10 +1856,10 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyExecute(
 }
 
 type ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest) Execute() (*ProcessDefinitionDiagramDto, *http.Response, error) {
@@ -1863,28 +1872,29 @@ GetProcessDefinitionBpmn20XmlByKeyAndTenantId Get XML
 Retrieves latest version the BPMN 2.0 XML of a process definition.
 Returns the XML for the latest version of the process definition for tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) whose XML should be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) whose XML should be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest {
 	return ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDiagramDto
+//
+//	@return ProcessDefinitionDiagramDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyAndTenantIdExecute(r ApiGetProcessDefinitionBpmn20XmlByKeyAndTenantIdRequest) (*ProcessDefinitionDiagramDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDiagramDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDiagramDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionBpmn20XmlByKeyAndTenantId")
@@ -1946,8 +1956,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyAndTenan
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1957,8 +1967,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyAndTenan
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1976,9 +1986,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionBpmn20XmlByKeyAndTenan
 }
 
 type ApiGetProcessDefinitionByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetProcessDefinitionByKeyRequest) Execute() (*ProcessDefinitionDto, *http.Response, error) {
@@ -1990,26 +2000,27 @@ GetProcessDefinitionByKey Get
 
 Retrieves the latest version of the process definition which belongs to no tenant according to the `ProcessDefinition` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiGetProcessDefinitionByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiGetProcessDefinitionByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionByKey(ctx context.Context, key string) ApiGetProcessDefinitionByKeyRequest {
 	return ApiGetProcessDefinitionByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessDefinitionDto
+//
+//	@return ProcessDefinitionDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionByKeyExecute(r ApiGetProcessDefinitionByKeyRequest) (*ProcessDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionByKey")
@@ -2070,8 +2081,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionByKeyExecute(r ApiGetP
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2089,9 +2100,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionByKeyExecute(r ApiGetP
 }
 
 type ApiGetProcessDefinitionDiagramRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetProcessDefinitionDiagramRequest) Execute() (*os.File, *http.Response, error) {
@@ -2108,26 +2119,27 @@ as the process definition, the deployed image will be returned by the Get Diagra
 Example: `someProcess.bpmn` and `someProcess.png`.
 Supported file extentions for the image are: `svg`, `png`, `jpg`, and `gif`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition.
- @return ApiGetProcessDefinitionDiagramRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition.
+	@return ApiGetProcessDefinitionDiagramRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagram(ctx context.Context, id string) ApiGetProcessDefinitionDiagramRequest {
 	return ApiGetProcessDefinitionDiagramRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramExecute(r ApiGetProcessDefinitionDiagramRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionDiagram")
@@ -2188,8 +2200,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramExecute(r ApiGe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2207,9 +2219,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramExecute(r ApiGe
 }
 
 type ApiGetProcessDefinitionDiagramByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetProcessDefinitionDiagramByKeyRequest) Execute() (*os.File, *http.Response, error) {
@@ -2226,26 +2238,27 @@ as the process definition, the deployed image will be returned by the Get Diagra
 Example: `someProcess.bpmn` and `someProcess.png`.
 Supported file extentions for the image are: `svg`, `png`, `jpg`, and `gif`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition.
- @return ApiGetProcessDefinitionDiagramByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition.
+	@return ApiGetProcessDefinitionDiagramByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKey(ctx context.Context, key string) ApiGetProcessDefinitionDiagramByKeyRequest {
 	return ApiGetProcessDefinitionDiagramByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyExecute(r ApiGetProcessDefinitionDiagramByKeyRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionDiagramByKey")
@@ -2306,8 +2319,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2325,10 +2338,10 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyExecute(r 
 }
 
 type ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest) Execute() (*os.File, *http.Response, error) {
@@ -2345,28 +2358,29 @@ as the process definition, the deployed image will be returned by the Get Diagra
 Example: `someProcess.bpmn` and `someProcess.png`.
 Supported file extentions for the image are: `svg`, `png`, `jpg`, and `gif`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest {
 	return ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyAndTenantIdExecute(r ApiGetProcessDefinitionDiagramByKeyAndTenantIdRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionDiagramByKeyAndTenantId")
@@ -2428,8 +2442,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyAndTenantI
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2447,12 +2461,12 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionDiagramByKeyAndTenantI
 }
 
 type ApiGetProcessDefinitionStatisticsRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	failedJobs *bool
-	incidents *bool
+	ctx              context.Context
+	ApiService       *ProcessDefinitionAPIService
+	failedJobs       *bool
+	incidents        *bool
 	incidentsForType *string
-	rootIncidents *bool
+	rootIncidents    *bool
 }
 
 // Whether to include the number of failed jobs in the result or not. Valid values are &#x60;true&#x60; or &#x60;false&#x60;.
@@ -2492,24 +2506,25 @@ and also optionally the number of incidents either grouped by incident types or
 for a specific incident type.
 **Note**: This does not include historic data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessDefinitionStatisticsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessDefinitionStatisticsRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionStatistics(ctx context.Context) ApiGetProcessDefinitionStatisticsRequest {
 	return ApiGetProcessDefinitionStatisticsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessDefinitionStatisticsResultDto
+//
+//	@return []ProcessDefinitionStatisticsResultDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionStatisticsExecute(r ApiGetProcessDefinitionStatisticsRequest) ([]ProcessDefinitionStatisticsResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessDefinitionStatisticsResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessDefinitionStatisticsResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionStatistics")
@@ -2581,8 +2596,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionStatisticsExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2600,44 +2615,44 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionStatisticsExecute(r Ap
 }
 
 type ApiGetProcessDefinitionsRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	processDefinitionId *string
-	processDefinitionIdIn *string
-	name *string
-	nameLike *string
-	deploymentId *string
-	deployedAfter *time.Time
-	deployedAt *time.Time
-	key *string
-	keysIn *string
-	keyLike *string
-	category *string
-	categoryLike *string
-	version *int32
-	latestVersion *bool
-	resourceName *string
-	resourceNameLike *string
-	startableBy *string
-	active *bool
-	suspended *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                      context.Context
+	ApiService                               *ProcessDefinitionAPIService
+	processDefinitionId                      *string
+	processDefinitionIdIn                    *string
+	name                                     *string
+	nameLike                                 *string
+	deploymentId                             *string
+	deployedAfter                            *time.Time
+	deployedAt                               *time.Time
+	key                                      *string
+	keysIn                                   *string
+	keyLike                                  *string
+	category                                 *string
+	categoryLike                             *string
+	version                                  *int32
+	latestVersion                            *bool
+	resourceName                             *string
+	resourceNameLike                         *string
+	startableBy                              *string
+	active                                   *bool
+	suspended                                *bool
+	incidentId                               *string
+	incidentType                             *string
+	incidentMessage                          *string
+	incidentMessageLike                      *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
 	includeProcessDefinitionsWithoutTenantId *bool
-	versionTag *string
-	versionTagLike *string
-	withoutVersionTag *bool
-	startableInTasklist *bool
-	notStartableInTasklist *bool
-	startablePermissionCheck *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	versionTag                               *string
+	versionTagLike                           *string
+	withoutVersionTag                        *bool
+	startableInTasklist                      *bool
+	notStartableInTasklist                   *bool
+	startablePermissionCheck                 *bool
+	sortBy                                   *string
+	sortOrder                                *string
+	firstResult                              *int32
+	maxResults                               *int32
 }
 
 // Filter by process definition id.
@@ -2863,28 +2878,29 @@ func (r ApiGetProcessDefinitionsRequest) Execute() ([]ProcessDefinitionDto, *htt
 /*
 GetProcessDefinitions Get List
 
-Queries for process definitions that fulfill given parameters. Parameters may be the properties of 
+Queries for process definitions that fulfill given parameters. Parameters may be the properties of
 process definitions, such as the name, key or version. The size of the result set can be retrieved
 by using the [Get Definition Count](https://docs.operaton.org/manual/1.0/reference/rest/process-definition/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessDefinitionsRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitions(ctx context.Context) ApiGetProcessDefinitionsRequest {
 	return ApiGetProcessDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []ProcessDefinitionDto
+//
+//	@return []ProcessDefinitionDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionsExecute(r ApiGetProcessDefinitionsRequest) ([]ProcessDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []ProcessDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []ProcessDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitions")
@@ -3052,8 +3068,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionsExecute(r ApiGetProce
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3071,40 +3087,40 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionsExecute(r ApiGetProce
 }
 
 type ApiGetProcessDefinitionsCountRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	processDefinitionId *string
-	processDefinitionIdIn *string
-	name *string
-	nameLike *string
-	deploymentId *string
-	deployedAfter *time.Time
-	deployedAt *time.Time
-	key *string
-	keysIn *string
-	keyLike *string
-	category *string
-	categoryLike *string
-	version *int32
-	latestVersion *bool
-	resourceName *string
-	resourceNameLike *string
-	startableBy *string
-	active *bool
-	suspended *bool
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	tenantIdIn *string
-	withoutTenantId *bool
+	ctx                                      context.Context
+	ApiService                               *ProcessDefinitionAPIService
+	processDefinitionId                      *string
+	processDefinitionIdIn                    *string
+	name                                     *string
+	nameLike                                 *string
+	deploymentId                             *string
+	deployedAfter                            *time.Time
+	deployedAt                               *time.Time
+	key                                      *string
+	keysIn                                   *string
+	keyLike                                  *string
+	category                                 *string
+	categoryLike                             *string
+	version                                  *int32
+	latestVersion                            *bool
+	resourceName                             *string
+	resourceNameLike                         *string
+	startableBy                              *string
+	active                                   *bool
+	suspended                                *bool
+	incidentId                               *string
+	incidentType                             *string
+	incidentMessage                          *string
+	incidentMessageLike                      *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
 	includeProcessDefinitionsWithoutTenantId *bool
-	versionTag *string
-	versionTagLike *string
-	withoutVersionTag *bool
-	startableInTasklist *bool
-	notStartableInTasklist *bool
-	startablePermissionCheck *bool
+	versionTag                               *string
+	versionTagLike                           *string
+	withoutVersionTag                        *bool
+	startableInTasklist                      *bool
+	notStartableInTasklist                   *bool
+	startablePermissionCheck                 *bool
 }
 
 // Filter by process definition id.
@@ -3309,24 +3325,25 @@ GetProcessDefinitionsCount Get List Count
 Requests the number of process definitions that fulfill the query criteria.
 Takes the same filtering parameters as the [Get Definitions](https://docs.operaton.org/manual/1.0/reference/rest/process-definition/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetProcessDefinitionsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetProcessDefinitionsCountRequest
 */
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionsCount(ctx context.Context) ApiGetProcessDefinitionsCountRequest {
 	return ApiGetProcessDefinitionsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *ProcessDefinitionAPIService) GetProcessDefinitionsCountExecute(r ApiGetProcessDefinitionsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetProcessDefinitionsCount")
@@ -3482,8 +3499,8 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionsCountExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3501,9 +3518,9 @@ func (a *ProcessDefinitionAPIService) GetProcessDefinitionsCountExecute(r ApiGet
 }
 
 type ApiGetRenderedStartFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetRenderedStartFormRequest) Execute() (*os.File, *http.Response, error) {
@@ -3517,26 +3534,27 @@ Retrieves the rendered form for a process definition.
 This method can be used to get the HTML rendering of a
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to get the rendered start form for.
- @return ApiGetRenderedStartFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to get the rendered start form for.
+	@return ApiGetRenderedStartFormRequest
 */
 func (a *ProcessDefinitionAPIService) GetRenderedStartForm(ctx context.Context, id string) ApiGetRenderedStartFormRequest {
 	return ApiGetRenderedStartFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetRenderedStartFormExecute(r ApiGetRenderedStartFormRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetRenderedStartForm")
@@ -3597,8 +3615,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormExecute(r ApiGetRender
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3608,8 +3626,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormExecute(r ApiGetRender
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3627,9 +3645,9 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormExecute(r ApiGetRender
 }
 
 type ApiGetRenderedStartFormByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetRenderedStartFormByKeyRequest) Execute() (*os.File, *http.Response, error) {
@@ -3643,26 +3661,27 @@ Retrieves  the rendered form for the latest version of the process definition wh
 This method can be used to get the HTML rendering of a
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiGetRenderedStartFormByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiGetRenderedStartFormByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKey(ctx context.Context, key string) ApiGetRenderedStartFormByKeyRequest {
 	return ApiGetRenderedStartFormByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyExecute(r ApiGetRenderedStartFormByKeyRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetRenderedStartFormByKey")
@@ -3723,8 +3742,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyExecute(r ApiGetR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3734,8 +3753,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyExecute(r ApiGetR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3753,10 +3772,10 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyExecute(r ApiGetR
 }
 
 type ApiGetRenderedStartFormByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetRenderedStartFormByKeyAndTenantIdRequest) Execute() (*os.File, *http.Response, error) {
@@ -3770,28 +3789,29 @@ Retrieves  the rendered form for the latest version of the process definition fo
 This method can be used to get the HTML rendering of a
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetRenderedStartFormByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetRenderedStartFormByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetRenderedStartFormByKeyAndTenantIdRequest {
 	return ApiGetRenderedStartFormByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyAndTenantIdExecute(r ApiGetRenderedStartFormByKeyAndTenantIdRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetRenderedStartFormByKeyAndTenantId")
@@ -3853,8 +3873,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3864,8 +3884,8 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3883,9 +3903,9 @@ func (a *ProcessDefinitionAPIService) GetRenderedStartFormByKeyAndTenantIdExecut
 }
 
 type ApiGetStartFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetStartFormRequest) Execute() (*FormDto, *http.Response, error) {
@@ -3898,26 +3918,27 @@ GetStartForm Get Start Form Key
 Retrieves the key of the start form for a process definition.
 The form key corresponds to the `FormData#formKey` property in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to get the start form key for.
- @return ApiGetStartFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to get the start form key for.
+	@return ApiGetStartFormRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartForm(ctx context.Context, id string) ApiGetStartFormRequest {
 	return ApiGetStartFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return FormDto
+//
+//	@return FormDto
 func (a *ProcessDefinitionAPIService) GetStartFormExecute(r ApiGetStartFormRequest) (*FormDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FormDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FormDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartForm")
@@ -3978,8 +3999,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormExecute(r ApiGetStartFormReque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3989,8 +4010,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormExecute(r ApiGetStartFormReque
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4008,9 +4029,9 @@ func (a *ProcessDefinitionAPIService) GetStartFormExecute(r ApiGetStartFormReque
 }
 
 type ApiGetStartFormByKeyRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
+	key        string
 }
 
 func (r ApiGetStartFormByKeyRequest) Execute() (*FormDto, *http.Response, error) {
@@ -4024,26 +4045,27 @@ Retrieves the key of the start form for the latest version of the process defini
 which belongs to no tenant.
 The form key corresponds to the `FormData#formKey` property in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) for which the form key is to be retrieved.
- @return ApiGetStartFormByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) for which the form key is to be retrieved.
+	@return ApiGetStartFormByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartFormByKey(ctx context.Context, key string) ApiGetStartFormByKeyRequest {
 	return ApiGetStartFormByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return FormDto
+//
+//	@return FormDto
 func (a *ProcessDefinitionAPIService) GetStartFormByKeyExecute(r ApiGetStartFormByKeyRequest) (*FormDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FormDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FormDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartFormByKey")
@@ -4104,8 +4126,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyExecute(r ApiGetStartForm
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -4115,8 +4137,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyExecute(r ApiGetStartForm
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4134,10 +4156,10 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyExecute(r ApiGetStartForm
 }
 
 type ApiGetStartFormByKeyAndTenantIdRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	key        string
+	tenantId   string
 }
 
 func (r ApiGetStartFormByKeyAndTenantIdRequest) Execute() (*FormDto, *http.Response, error) {
@@ -4150,28 +4172,29 @@ GetStartFormByKeyAndTenantId Get Start Form Key
 Retrieves the key of the start form for the latest version of the process definition for a tenant.
 The form key corresponds to the `FormData#formKey` property in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) for which the form key is to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetStartFormByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) for which the form key is to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetStartFormByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartFormByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetStartFormByKeyAndTenantIdRequest {
 	return ApiGetStartFormByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return FormDto
+//
+//	@return FormDto
 func (a *ProcessDefinitionAPIService) GetStartFormByKeyAndTenantIdExecute(r ApiGetStartFormByKeyAndTenantIdRequest) (*FormDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FormDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FormDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartFormByKeyAndTenantId")
@@ -4233,8 +4256,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyAndTenantIdExecute(r ApiG
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -4244,8 +4267,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyAndTenantIdExecute(r ApiG
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4263,10 +4286,10 @@ func (a *ProcessDefinitionAPIService) GetStartFormByKeyAndTenantIdExecute(r ApiG
 }
 
 type ApiGetStartFormVariablesRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
-	variableNames *string
+	ctx               context.Context
+	ApiService        *ProcessDefinitionAPIService
+	id                string
+	variableNames     *string
 	deserializeValues *bool
 }
 
@@ -4290,32 +4313,33 @@ func (r ApiGetStartFormVariablesRequest) Execute() (*map[string]VariableValueDto
 GetStartFormVariables Get Start Form Variables
 
 Retrieves the start form variables for a process definition
-(only if they are defined via the 
+(only if they are defined via the
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms) approach).
 The start form variables take form data specified on the start event into account.
 If form fields are defined, the variable types and default values
 of the form fields are taken into account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to retrieve the variables for.
- @return ApiGetStartFormVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to retrieve the variables for.
+	@return ApiGetStartFormVariablesRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartFormVariables(ctx context.Context, id string) ApiGetStartFormVariablesRequest {
 	return ApiGetStartFormVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *ProcessDefinitionAPIService) GetStartFormVariablesExecute(r ApiGetStartFormVariablesRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartFormVariables")
@@ -4385,8 +4409,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesExecute(r ApiGetStart
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4404,10 +4428,10 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesExecute(r ApiGetStart
 }
 
 type ApiGetStartFormVariablesByKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	variableNames *string
+	ctx               context.Context
+	ApiService        *ProcessDefinitionAPIService
+	key               string
+	variableNames     *string
 	deserializeValues *bool
 }
 
@@ -4431,32 +4455,33 @@ func (r ApiGetStartFormVariablesByKeyRequest) Execute() (*map[string]VariableVal
 GetStartFormVariablesByKey Get Start Form Variables
 
 Retrieves the start form variables for the latest process definition which belongs to no tenant
-(only if they are defined via the 
+(only if they are defined via the
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms) approach).
 The start form variables take form data specified on the start event into account.
 If form fields are defined, the variable types and default values
 of the form fields are taken into account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiGetStartFormVariablesByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiGetStartFormVariablesByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKey(ctx context.Context, key string) ApiGetStartFormVariablesByKeyRequest {
 	return ApiGetStartFormVariablesByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyExecute(r ApiGetStartFormVariablesByKeyRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartFormVariablesByKey")
@@ -4526,8 +4551,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyExecute(r ApiGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4545,11 +4570,11 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyExecute(r ApiGet
 }
 
 type ApiGetStartFormVariablesByKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
-	variableNames *string
+	ctx               context.Context
+	ApiService        *ProcessDefinitionAPIService
+	key               string
+	tenantId          string
+	variableNames     *string
 	deserializeValues *bool
 }
 
@@ -4573,34 +4598,35 @@ func (r ApiGetStartFormVariablesByKeyAndTenantIdRequest) Execute() (*map[string]
 GetStartFormVariablesByKeyAndTenantId Get Start Form Variables
 
 Retrieves the start form variables for the latest process definition for a tenant
-(only if they are defined via the 
+(only if they are defined via the
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms) approach).
 The start form variables take form data specified on the start event into account.
 If form fields are defined, the variable types and default values
 of the form fields are taken into account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiGetStartFormVariablesByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiGetStartFormVariablesByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiGetStartFormVariablesByKeyAndTenantIdRequest {
 	return ApiGetStartFormVariablesByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyAndTenantIdExecute(r ApiGetStartFormVariablesByKeyAndTenantIdRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStartFormVariablesByKeyAndTenantId")
@@ -4671,8 +4697,8 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyAndTenantIdExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4690,9 +4716,9 @@ func (a *ProcessDefinitionAPIService) GetStartFormVariablesByKeyAndTenantIdExecu
 }
 
 type ApiGetStaticCalledProcessDefinitionsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *ProcessDefinitionAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetStaticCalledProcessDefinitionsRequest) Execute() ([]CalledProcessDefinitionDto, *http.Response, error) {
@@ -4715,26 +4741,27 @@ activities that are calling that
 process. This endpoint does not resolve references to case
 definitions.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition.
- @return ApiGetStaticCalledProcessDefinitionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition.
+	@return ApiGetStaticCalledProcessDefinitionsRequest
 */
 func (a *ProcessDefinitionAPIService) GetStaticCalledProcessDefinitions(ctx context.Context, id string) ApiGetStaticCalledProcessDefinitionsRequest {
 	return ApiGetStaticCalledProcessDefinitionsRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []CalledProcessDefinitionDto
+//
+//	@return []CalledProcessDefinitionDto
 func (a *ProcessDefinitionAPIService) GetStaticCalledProcessDefinitionsExecute(r ApiGetStaticCalledProcessDefinitionsRequest) ([]CalledProcessDefinitionDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []CalledProcessDefinitionDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []CalledProcessDefinitionDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.GetStaticCalledProcessDefinitions")
@@ -4795,8 +4822,8 @@ func (a *ProcessDefinitionAPIService) GetStaticCalledProcessDefinitionsExecute(r
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4814,9 +4841,9 @@ func (a *ProcessDefinitionAPIService) GetStaticCalledProcessDefinitionsExecute(r
 }
 
 type ApiRestartProcessInstanceRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                       context.Context
+	ApiService                *ProcessDefinitionAPIService
+	id                        string
 	restartProcessInstanceDto *RestartProcessInstanceDto
 }
 
@@ -4842,24 +4869,24 @@ For more information about the difference between synchronous and asynchronous e
 please refer to the related section of the
 [User Guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-restart/#execution).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition of the process instances to restart.
- @return ApiRestartProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition of the process instances to restart.
+	@return ApiRestartProcessInstanceRequest
 */
 func (a *ProcessDefinitionAPIService) RestartProcessInstance(ctx context.Context, id string) ApiRestartProcessInstanceRequest {
 	return ApiRestartProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) RestartProcessInstanceExecute(r ApiRestartProcessInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.RestartProcessInstance")
@@ -4922,8 +4949,8 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceExecute(r ApiRestart
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -4933,8 +4960,8 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceExecute(r ApiRestart
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -4943,9 +4970,9 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceExecute(r ApiRestart
 }
 
 type ApiRestartProcessInstanceAsyncOperationRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                       context.Context
+	ApiService                *ProcessDefinitionAPIService
+	id                        string
 	restartProcessInstanceDto *RestartProcessInstanceDto
 }
 
@@ -4971,26 +4998,27 @@ For more information about the difference between synchronous and asynchronous e
 please refer to the related section of the
 [User Guide](https://docs.operaton.org/manual/1.0/user-guide/process-engine/process-instance-restart/#execution).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition of the process instances to restart.
- @return ApiRestartProcessInstanceAsyncOperationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition of the process instances to restart.
+	@return ApiRestartProcessInstanceAsyncOperationRequest
 */
 func (a *ProcessDefinitionAPIService) RestartProcessInstanceAsyncOperation(ctx context.Context, id string) ApiRestartProcessInstanceAsyncOperationRequest {
 	return ApiRestartProcessInstanceAsyncOperationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return BatchDto
+//
+//	@return BatchDto
 func (a *ProcessDefinitionAPIService) RestartProcessInstanceAsyncOperationExecute(r ApiRestartProcessInstanceAsyncOperationRequest) (*BatchDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *BatchDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *BatchDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.RestartProcessInstanceAsyncOperation")
@@ -5053,8 +5081,8 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceAsyncOperationExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -5064,8 +5092,8 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceAsyncOperationExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5083,9 +5111,9 @@ func (a *ProcessDefinitionAPIService) RestartProcessInstanceAsyncOperationExecut
 }
 
 type ApiStartProcessInstanceRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                     context.Context
+	ApiService              *ProcessDefinitionAPIService
+	id                      string
 	startProcessInstanceDto *StartProcessInstanceDto
 }
 
@@ -5104,26 +5132,27 @@ StartProcessInstance Start Instance
 Instantiates a given process definition.
 Process variables and business key may be supplied in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to be retrieved.
- @return ApiStartProcessInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to be retrieved.
+	@return ApiStartProcessInstanceRequest
 */
 func (a *ProcessDefinitionAPIService) StartProcessInstance(ctx context.Context, id string) ApiStartProcessInstanceRequest {
 	return ApiStartProcessInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceWithVariablesDto
+//
+//	@return ProcessInstanceWithVariablesDto
 func (a *ProcessDefinitionAPIService) StartProcessInstanceExecute(r ApiStartProcessInstanceRequest) (*ProcessInstanceWithVariablesDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceWithVariablesDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceWithVariablesDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.StartProcessInstance")
@@ -5186,8 +5215,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceExecute(r ApiStartProc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5197,8 +5226,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceExecute(r ApiStartProc
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5216,9 +5245,9 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceExecute(r ApiStartProc
 }
 
 type ApiStartProcessInstanceByKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
+	ctx                     context.Context
+	ApiService              *ProcessDefinitionAPIService
+	key                     string
 	startProcessInstanceDto *StartProcessInstanceDto
 }
 
@@ -5238,26 +5267,27 @@ Instantiates a given process definition, starts the latest version of the proces
 which belongs to no tenant.
 Process variables and business key may be supplied in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @return ApiStartProcessInstanceByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@return ApiStartProcessInstanceByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) StartProcessInstanceByKey(ctx context.Context, key string) ApiStartProcessInstanceByKeyRequest {
 	return ApiStartProcessInstanceByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceWithVariablesDto
+//
+//	@return ProcessInstanceWithVariablesDto
 func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyExecute(r ApiStartProcessInstanceByKeyRequest) (*ProcessInstanceWithVariablesDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceWithVariablesDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceWithVariablesDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.StartProcessInstanceByKey")
@@ -5320,8 +5350,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyExecute(r ApiStar
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5331,8 +5361,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyExecute(r ApiStar
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5350,10 +5380,10 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyExecute(r ApiStar
 }
 
 type ApiStartProcessInstanceByKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	ctx                     context.Context
+	ApiService              *ProcessDefinitionAPIService
+	key                     string
+	tenantId                string
 	startProcessInstanceDto *StartProcessInstanceDto
 }
 
@@ -5372,28 +5402,29 @@ StartProcessInstanceByKeyAndTenantId Start Instance
 Instantiates a given process definition, starts the latest version of the process definition for tenant.
 Process variables and business key may be supplied in the request body.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be retrieved.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiStartProcessInstanceByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be retrieved.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiStartProcessInstanceByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiStartProcessInstanceByKeyAndTenantIdRequest {
 	return ApiStartProcessInstanceByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceWithVariablesDto
+//
+//	@return ProcessInstanceWithVariablesDto
 func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyAndTenantIdExecute(r ApiStartProcessInstanceByKeyAndTenantIdRequest) (*ProcessInstanceWithVariablesDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceWithVariablesDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceWithVariablesDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.StartProcessInstanceByKeyAndTenantId")
@@ -5457,8 +5488,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5468,8 +5499,8 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyAndTenantIdExecut
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5487,9 +5518,9 @@ func (a *ProcessDefinitionAPIService) StartProcessInstanceByKeyAndTenantIdExecut
 }
 
 type ApiSubmitFormRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                         context.Context
+	ApiService                  *ProcessDefinitionAPIService
+	id                          string
 	startProcessInstanceFormDto *StartProcessInstanceFormDto
 }
 
@@ -5510,26 +5541,27 @@ If the start event has Form Field Metadata defined, the process engine will perf
 for any form fields which have validators defined.
 See [Documentation on Generated Task Forms](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to submit the form for.
- @return ApiSubmitFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to submit the form for.
+	@return ApiSubmitFormRequest
 */
 func (a *ProcessDefinitionAPIService) SubmitForm(ctx context.Context, id string) ApiSubmitFormRequest {
 	return ApiSubmitFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceDto
+//
+//	@return ProcessInstanceDto
 func (a *ProcessDefinitionAPIService) SubmitFormExecute(r ApiSubmitFormRequest) (*ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.SubmitForm")
@@ -5592,8 +5624,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormExecute(r ApiSubmitFormRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -5603,8 +5635,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormExecute(r ApiSubmitFormRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5614,8 +5646,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormExecute(r ApiSubmitFormRequest) 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5633,9 +5665,9 @@ func (a *ProcessDefinitionAPIService) SubmitFormExecute(r ApiSubmitFormRequest) 
 }
 
 type ApiSubmitFormByKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
+	ctx                         context.Context
+	ApiService                  *ProcessDefinitionAPIService
+	key                         string
 	startProcessInstanceFormDto *StartProcessInstanceFormDto
 }
 
@@ -5657,26 +5689,27 @@ If the start event has Form Field Metadata defined, the process engine will perf
 for any form fields which have validators defined.
 See [Documentation on Generated Task Forms](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition to submit the form for.
- @return ApiSubmitFormByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition to submit the form for.
+	@return ApiSubmitFormByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) SubmitFormByKey(ctx context.Context, key string) ApiSubmitFormByKeyRequest {
 	return ApiSubmitFormByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceDto
+//
+//	@return ProcessInstanceDto
 func (a *ProcessDefinitionAPIService) SubmitFormByKeyExecute(r ApiSubmitFormByKeyRequest) (*ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.SubmitFormByKey")
@@ -5739,8 +5772,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyExecute(r ApiSubmitFormByKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -5750,8 +5783,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyExecute(r ApiSubmitFormByKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5761,8 +5794,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyExecute(r ApiSubmitFormByKe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5780,10 +5813,10 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyExecute(r ApiSubmitFormByKe
 }
 
 type ApiSubmitFormByKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	ctx                         context.Context
+	ApiService                  *ProcessDefinitionAPIService
+	key                         string
+	tenantId                    string
 	startProcessInstanceFormDto *StartProcessInstanceFormDto
 }
 
@@ -5805,28 +5838,29 @@ If the start event has Form Field Metadata defined, the process engine will perf
 for any form fields which have validators defined.
 See [Documentation on Generated Task Forms](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition to submit the form for.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiSubmitFormByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition to submit the form for.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiSubmitFormByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiSubmitFormByKeyAndTenantIdRequest {
 	return ApiSubmitFormByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
-//  @return ProcessInstanceDto
+//
+//	@return ProcessInstanceDto
 func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantIdExecute(r ApiSubmitFormByKeyAndTenantIdRequest) (*ProcessInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ProcessInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ProcessInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.SubmitFormByKeyAndTenantId")
@@ -5890,8 +5924,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantIdExecute(r ApiSub
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -5901,8 +5935,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantIdExecute(r ApiSub
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -5912,8 +5946,8 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantIdExecute(r ApiSub
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -5931,9 +5965,9 @@ func (a *ProcessDefinitionAPIService) SubmitFormByKeyAndTenantIdExecute(r ApiSub
 }
 
 type ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                  context.Context
+	ApiService           *ProcessDefinitionAPIService
+	id                   string
 	historyTimeToLiveDto *HistoryTimeToLiveDto
 }
 
@@ -5955,24 +5989,24 @@ The value of the update is mandatory by default and does not allow `null` values
 set the feature flag `enforceHistoryTimeToLive` to `false`. Read more in [Configuration Properties]
 (https://docs.operaton.org/manual/1.0/reference/deployment-descriptors/tags/process-engine#configuration-properties)
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to change history time to live.
- @return ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to change history time to live.
+	@return ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionId(ctx context.Context, id string) ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest {
 	return ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionIdExecute(r ApiUpdateHistoryTimeToLiveByProcessDefinitionIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateHistoryTimeToLiveByProcessDefinitionId")
@@ -6035,8 +6069,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6046,8 +6080,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6056,9 +6090,9 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 }
 
 type ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
+	ctx                  context.Context
+	ApiService           *ProcessDefinitionAPIService
+	key                  string
 	historyTimeToLiveDto *HistoryTimeToLiveDto
 }
 
@@ -6080,24 +6114,24 @@ The value of the update is mandatory by default and does not allow `null` values
 set the feature flag `enforceHistoryTimeToLive` to `false`. Read more in [Configuration Properties]
 (https://docs.operaton.org/manual/1.0/reference/deployment-descriptors/tags/process-engine#configuration-properties)
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition to change history time to live.
- @return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition to change history time to live.
+	@return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionKey(ctx context.Context, key string) ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest {
 	return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionKeyExecute(r ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateHistoryTimeToLiveByProcessDefinitionKey")
@@ -6160,8 +6194,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6171,8 +6205,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6181,10 +6215,10 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 }
 
 type ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	ctx                  context.Context
+	ApiService           *ProcessDefinitionAPIService
+	key                  string
+	tenantId             string
 	historyTimeToLiveDto *HistoryTimeToLiveDto
 }
 
@@ -6203,26 +6237,26 @@ UpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantId Update History Time to 
 Updates history time to live for the latest version of the process definition for a tenant.
 The field is used within [History cleanup](https://docs.operaton.org/manual/1.0/user-guide/process-engine/history/#history-cleanup).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition to change history time to live.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition to change history time to live.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest {
 	return ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdExecute(r ApiUpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateHistoryTimeToLiveByProcessDefinitionKeyAndTenantId")
@@ -6286,8 +6320,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6297,8 +6331,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6307,8 +6341,8 @@ func (a *ProcessDefinitionAPIService) UpdateHistoryTimeToLiveByProcessDefinition
 }
 
 type ApiUpdateProcessDefinitionSuspensionStateRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
+	ctx                                 context.Context
+	ApiService                          *ProcessDefinitionAPIService
 	processDefinitionSuspensionStateDto *ProcessDefinitionSuspensionStateDto
 }
 
@@ -6327,22 +6361,22 @@ UpdateProcessDefinitionSuspensionState Activate/Suspend By Key
 
 Activates or suspends process definitions with the given process definition key.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiUpdateProcessDefinitionSuspensionStateRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiUpdateProcessDefinitionSuspensionStateRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionState(ctx context.Context) ApiUpdateProcessDefinitionSuspensionStateRequest {
 	return ApiUpdateProcessDefinitionSuspensionStateRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateExecute(r ApiUpdateProcessDefinitionSuspensionStateRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateProcessDefinitionSuspensionState")
@@ -6404,8 +6438,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateExec
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6415,8 +6449,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateExec
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6425,9 +6459,9 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateExec
 }
 
 type ApiUpdateProcessDefinitionSuspensionStateByIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	id string
+	ctx                                 context.Context
+	ApiService                          *ProcessDefinitionAPIService
+	id                                  string
 	processDefinitionSuspensionStateDto *ProcessDefinitionSuspensionStateDto
 }
 
@@ -6446,24 +6480,24 @@ UpdateProcessDefinitionSuspensionStateById Activate/Suspend By Id
 
 Activates or suspends a given process definition by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the process definition to activate or suspend.
- @return ApiUpdateProcessDefinitionSuspensionStateByIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the process definition to activate or suspend.
+	@return ApiUpdateProcessDefinitionSuspensionStateByIdRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateById(ctx context.Context, id string) ApiUpdateProcessDefinitionSuspensionStateByIdRequest {
 	return ApiUpdateProcessDefinitionSuspensionStateByIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByIdExecute(r ApiUpdateProcessDefinitionSuspensionStateByIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateProcessDefinitionSuspensionStateById")
@@ -6526,8 +6560,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateById
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6537,8 +6571,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateById
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6547,9 +6581,9 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateById
 }
 
 type ApiUpdateProcessDefinitionSuspensionStateByKeyRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
+	ctx                                 context.Context
+	ApiService                          *ProcessDefinitionAPIService
+	key                                 string
 	processDefinitionSuspensionStateDto *ProcessDefinitionSuspensionStateDto
 }
 
@@ -6569,24 +6603,24 @@ UpdateProcessDefinitionSuspensionStateByKey Activate/Suspend by Id
 Activates or suspends a given process definition by latest version of process definition key
 which belongs to no tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be activated/suspended.
- @return ApiUpdateProcessDefinitionSuspensionStateByKeyRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be activated/suspended.
+	@return ApiUpdateProcessDefinitionSuspensionStateByKeyRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKey(ctx context.Context, key string) ApiUpdateProcessDefinitionSuspensionStateByKeyRequest {
 	return ApiUpdateProcessDefinitionSuspensionStateByKeyRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
+		ctx:        ctx,
+		key:        key,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKeyExecute(r ApiUpdateProcessDefinitionSuspensionStateByKeyRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateProcessDefinitionSuspensionStateByKey")
@@ -6649,8 +6683,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6660,8 +6694,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -6670,10 +6704,10 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKe
 }
 
 type ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest struct {
-	ctx context.Context
-	ApiService *ProcessDefinitionAPIService
-	key string
-	tenantId string
+	ctx                                 context.Context
+	ApiService                          *ProcessDefinitionAPIService
+	key                                 string
+	tenantId                            string
 	processDefinitionSuspensionStateDto *ProcessDefinitionSuspensionStateDto
 }
 
@@ -6693,26 +6727,26 @@ UpdateProcessDefinitionSuspensionStateByKeyAndTenantId Activate/Suspend by Id
 Activates or suspends a given process definition by the latest version of
 the process definition for tenant.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param key The key of the process definition (the latest version thereof) to be activated/suspended.
- @param tenantId The id of the tenant the process definition belongs to.
- @return ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param key The key of the process definition (the latest version thereof) to be activated/suspended.
+	@param tenantId The id of the tenant the process definition belongs to.
+	@return ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest
 */
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKeyAndTenantId(ctx context.Context, key string, tenantId string) ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest {
 	return ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest{
 		ApiService: a,
-		ctx: ctx,
-		key: key,
-		tenantId: tenantId,
+		ctx:        ctx,
+		key:        key,
+		tenantId:   tenantId,
 	}
 }
 
 // Execute executes the request
 func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKeyAndTenantIdExecute(r ApiUpdateProcessDefinitionSuspensionStateByKeyAndTenantIdRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ProcessDefinitionAPIService.UpdateProcessDefinitionSuspensionStateByKeyAndTenantId")
@@ -6776,8 +6810,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -6787,8 +6821,8 @@ func (a *ProcessDefinitionAPIService) UpdateProcessDefinitionSuspensionStateByKe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

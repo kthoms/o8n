@@ -142,6 +142,7 @@ func (o *RedeploymentDto) HasSource() bool {
 func (o *RedeploymentDto) SetSource(v string) {
 	o.Source.Set(&v)
 }
+
 // SetSourceNil sets the value for Source to be an explicit nil
 func (o *RedeploymentDto) SetSourceNil() {
 	o.Source.Set(nil)
@@ -153,7 +154,7 @@ func (o *RedeploymentDto) UnsetSource() {
 }
 
 func (o RedeploymentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -209,5 +210,3 @@ func (v *NullableRedeploymentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -20,14 +20,13 @@ import (
 	"time"
 )
 
-
 // IncidentAPIService IncidentAPI service
 type IncidentAPIService service
 
 type ApiClearIncidentAnnotationRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *IncidentAPIService
-	id string
+	id         string
 }
 
 func (r ApiClearIncidentAnnotationRequest) Execute() (*http.Response, error) {
@@ -39,24 +38,24 @@ ClearIncidentAnnotation Clear Incident Annotation
 
 Clears the annotation of an incident with given id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the incident to clear the annotation at.
- @return ApiClearIncidentAnnotationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the incident to clear the annotation at.
+	@return ApiClearIncidentAnnotationRequest
 */
 func (a *IncidentAPIService) ClearIncidentAnnotation(ctx context.Context, id string) ApiClearIncidentAnnotationRequest {
 	return ApiClearIncidentAnnotationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *IncidentAPIService) ClearIncidentAnnotationExecute(r ApiClearIncidentAnnotationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.ClearIncidentAnnotation")
@@ -117,8 +116,8 @@ func (a *IncidentAPIService) ClearIncidentAnnotationExecute(r ApiClearIncidentAn
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -127,9 +126,9 @@ func (a *IncidentAPIService) ClearIncidentAnnotationExecute(r ApiClearIncidentAn
 }
 
 type ApiGetIncidentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *IncidentAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetIncidentRequest) Execute() (*IncidentDto, *http.Response, error) {
@@ -141,26 +140,27 @@ GetIncident Get Incident
 
 Retrieves an incident by ID.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the incident to be retrieved.
- @return ApiGetIncidentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the incident to be retrieved.
+	@return ApiGetIncidentRequest
 */
 func (a *IncidentAPIService) GetIncident(ctx context.Context, id string) ApiGetIncidentRequest {
 	return ApiGetIncidentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return IncidentDto
+//
+//	@return IncidentDto
 func (a *IncidentAPIService) GetIncidentExecute(r ApiGetIncidentRequest) (*IncidentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *IncidentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *IncidentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.GetIncident")
@@ -221,8 +221,8 @@ func (a *IncidentAPIService) GetIncidentExecute(r ApiGetIncidentRequest) (*Incid
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -240,29 +240,29 @@ func (a *IncidentAPIService) GetIncidentExecute(r ApiGetIncidentRequest) (*Incid
 }
 
 type ApiGetIncidentsRequest struct {
-	ctx context.Context
-	ApiService *IncidentAPIService
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	processDefinitionId *string
-	processDefinitionKeyIn *string
-	processInstanceId *string
-	executionId *string
+	ctx                     context.Context
+	ApiService              *IncidentAPIService
+	incidentId              *string
+	incidentType            *string
+	incidentMessage         *string
+	incidentMessageLike     *string
+	processDefinitionId     *string
+	processDefinitionKeyIn  *string
+	processInstanceId       *string
+	executionId             *string
 	incidentTimestampBefore *time.Time
-	incidentTimestampAfter *time.Time
-	activityId *string
-	failedActivityId *string
-	causeIncidentId *string
-	rootCauseIncidentId *string
-	configuration *string
-	tenantIdIn *string
-	jobDefinitionIdIn *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	incidentTimestampAfter  *time.Time
+	activityId              *string
+	failedActivityId        *string
+	causeIncidentId         *string
+	rootCauseIncidentId     *string
+	configuration           *string
+	tenantIdIn              *string
+	jobDefinitionIdIn       *string
+	sortBy                  *string
+	sortOrder               *string
+	firstResult             *int32
+	maxResults              *int32
 }
 
 // Restricts to incidents that have the given id.
@@ -401,24 +401,25 @@ GetIncidents Get List
 Queries for incidents that fulfill given parameters. The size of the result set can be retrieved by using
 the [Get Incident Count](https://docs.operaton.org/manual/1.0/reference/rest/incident/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetIncidentsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetIncidentsRequest
 */
 func (a *IncidentAPIService) GetIncidents(ctx context.Context) ApiGetIncidentsRequest {
 	return ApiGetIncidentsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []IncidentDto
+//
+//	@return []IncidentDto
 func (a *IncidentAPIService) GetIncidentsExecute(r ApiGetIncidentsRequest) ([]IncidentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []IncidentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []IncidentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.GetIncidents")
@@ -541,8 +542,8 @@ func (a *IncidentAPIService) GetIncidentsExecute(r ApiGetIncidentsRequest) ([]In
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -560,25 +561,25 @@ func (a *IncidentAPIService) GetIncidentsExecute(r ApiGetIncidentsRequest) ([]In
 }
 
 type ApiGetIncidentsCountRequest struct {
-	ctx context.Context
-	ApiService *IncidentAPIService
-	incidentId *string
-	incidentType *string
-	incidentMessage *string
-	incidentMessageLike *string
-	processDefinitionId *string
-	processDefinitionKeyIn *string
-	processInstanceId *string
-	executionId *string
+	ctx                     context.Context
+	ApiService              *IncidentAPIService
+	incidentId              *string
+	incidentType            *string
+	incidentMessage         *string
+	incidentMessageLike     *string
+	processDefinitionId     *string
+	processDefinitionKeyIn  *string
+	processInstanceId       *string
+	executionId             *string
 	incidentTimestampBefore *time.Time
-	incidentTimestampAfter *time.Time
-	activityId *string
-	failedActivityId *string
-	causeIncidentId *string
-	rootCauseIncidentId *string
-	configuration *string
-	tenantIdIn *string
-	jobDefinitionIdIn *string
+	incidentTimestampAfter  *time.Time
+	activityId              *string
+	failedActivityId        *string
+	causeIncidentId         *string
+	rootCauseIncidentId     *string
+	configuration           *string
+	tenantIdIn              *string
+	jobDefinitionIdIn       *string
 }
 
 // Restricts to incidents that have the given id.
@@ -693,24 +694,25 @@ GetIncidentsCount Get List Count
 Queries for the number of incidents that fulfill given parameters. Takes the same parameters as the
 [Get Incidents](https://docs.operaton.org/manual/1.0/reference/rest/incident/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetIncidentsCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetIncidentsCountRequest
 */
 func (a *IncidentAPIService) GetIncidentsCount(ctx context.Context) ApiGetIncidentsCountRequest {
 	return ApiGetIncidentsCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *IncidentAPIService) GetIncidentsCountExecute(r ApiGetIncidentsCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.GetIncidentsCount")
@@ -821,8 +823,8 @@ func (a *IncidentAPIService) GetIncidentsCountExecute(r ApiGetIncidentsCountRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -840,9 +842,9 @@ func (a *IncidentAPIService) GetIncidentsCountExecute(r ApiGetIncidentsCountRequ
 }
 
 type ApiResolveIncidentRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *IncidentAPIService
-	id string
+	id         string
 }
 
 func (r ApiResolveIncidentRequest) Execute() (*http.Response, error) {
@@ -854,24 +856,24 @@ ResolveIncident Resolve Incident
 
 Resolves an incident with given id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the incident to be resolved.
- @return ApiResolveIncidentRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the incident to be resolved.
+	@return ApiResolveIncidentRequest
 */
 func (a *IncidentAPIService) ResolveIncident(ctx context.Context, id string) ApiResolveIncidentRequest {
 	return ApiResolveIncidentRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *IncidentAPIService) ResolveIncidentExecute(r ApiResolveIncidentRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.ResolveIncident")
@@ -932,8 +934,8 @@ func (a *IncidentAPIService) ResolveIncidentExecute(r ApiResolveIncidentRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 400 {
@@ -943,8 +945,8 @@ func (a *IncidentAPIService) ResolveIncidentExecute(r ApiResolveIncidentRequest)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -953,9 +955,9 @@ func (a *IncidentAPIService) ResolveIncidentExecute(r ApiResolveIncidentRequest)
 }
 
 type ApiSetIncidentAnnotationRequest struct {
-	ctx context.Context
-	ApiService *IncidentAPIService
-	id string
+	ctx           context.Context
+	ApiService    *IncidentAPIService
+	id            string
 	annotationDto *AnnotationDto
 }
 
@@ -973,24 +975,24 @@ SetIncidentAnnotation Set Incident Annotation
 
 Sets the annotation of an incident with given id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the incident to clear the annotation at.
- @return ApiSetIncidentAnnotationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the incident to clear the annotation at.
+	@return ApiSetIncidentAnnotationRequest
 */
 func (a *IncidentAPIService) SetIncidentAnnotation(ctx context.Context, id string) ApiSetIncidentAnnotationRequest {
 	return ApiSetIncidentAnnotationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *IncidentAPIService) SetIncidentAnnotationExecute(r ApiSetIncidentAnnotationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IncidentAPIService.SetIncidentAnnotation")
@@ -1053,8 +1055,8 @@ func (a *IncidentAPIService) SetIncidentAnnotationExecute(r ApiSetIncidentAnnota
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

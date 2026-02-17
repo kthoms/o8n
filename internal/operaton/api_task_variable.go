@@ -16,19 +16,18 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // TaskVariableAPIService TaskVariableAPI service
 type TaskVariableAPIService service
 
 type ApiDeleteTaskVariableRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskVariableAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiDeleteTaskVariableRequest) Execute() (*http.Response, error) {
@@ -42,26 +41,26 @@ Removes a variable that is visible to a task. A variable is visible to a task if
 variable or declared in a parent scope of the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to delete the variable from.
- @param varName The name of the variable to be removed.
- @return ApiDeleteTaskVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to delete the variable from.
+	@param varName The name of the variable to be removed.
+	@return ApiDeleteTaskVariableRequest
 */
 func (a *TaskVariableAPIService) DeleteTaskVariable(ctx context.Context, id string, varName string) ApiDeleteTaskVariableRequest {
 	return ApiDeleteTaskVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *TaskVariableAPIService) DeleteTaskVariableExecute(r ApiDeleteTaskVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.DeleteTaskVariable")
@@ -123,8 +122,8 @@ func (a *TaskVariableAPIService) DeleteTaskVariableExecute(r ApiDeleteTaskVariab
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -133,10 +132,10 @@ func (a *TaskVariableAPIService) DeleteTaskVariableExecute(r ApiDeleteTaskVariab
 }
 
 type ApiGetTaskVariableRequest struct {
-	ctx context.Context
-	ApiService *TaskVariableAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *TaskVariableAPIService
+	id               string
+	varName          string
 	deserializeValue *bool
 }
 
@@ -158,28 +157,29 @@ The variable must be visible from the task. It is visible from the task if it is
 declared in a parent scope of the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the variable from.
- @param varName The name of the variable to get.
- @return ApiGetTaskVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the variable from.
+	@param varName The name of the variable to get.
+	@return ApiGetTaskVariableRequest
 */
 func (a *TaskVariableAPIService) GetTaskVariable(ctx context.Context, id string, varName string) ApiGetTaskVariableRequest {
 	return ApiGetTaskVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return VariableValueDto
+//
+//	@return VariableValueDto
 func (a *TaskVariableAPIService) GetTaskVariableExecute(r ApiGetTaskVariableRequest) (*VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.GetTaskVariable")
@@ -247,8 +247,8 @@ func (a *TaskVariableAPIService) GetTaskVariableExecute(r ApiGetTaskVariableRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -258,8 +258,8 @@ func (a *TaskVariableAPIService) GetTaskVariableExecute(r ApiGetTaskVariableRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -277,10 +277,10 @@ func (a *TaskVariableAPIService) GetTaskVariableExecute(r ApiGetTaskVariableRequ
 }
 
 type ApiGetTaskVariableBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskVariableAPIService
-	id string
-	varName string
+	id         string
+	varName    string
 }
 
 func (r ApiGetTaskVariableBinaryRequest) Execute() (*os.File, *http.Response, error) {
@@ -295,28 +295,29 @@ variables. The variable must be visible from the task. It is visible from the ta
 variable or declared in a parent scope of the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the variable for.
- @param varName The name of the variable to retrieve.
- @return ApiGetTaskVariableBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the variable for.
+	@param varName The name of the variable to retrieve.
+	@return ApiGetTaskVariableBinaryRequest
 */
 func (a *TaskVariableAPIService) GetTaskVariableBinary(ctx context.Context, id string, varName string) ApiGetTaskVariableBinaryRequest {
 	return ApiGetTaskVariableBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *TaskVariableAPIService) GetTaskVariableBinaryExecute(r ApiGetTaskVariableBinaryRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.GetTaskVariableBinary")
@@ -378,8 +379,8 @@ func (a *TaskVariableAPIService) GetTaskVariableBinaryExecute(r ApiGetTaskVariab
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -389,8 +390,8 @@ func (a *TaskVariableAPIService) GetTaskVariableBinaryExecute(r ApiGetTaskVariab
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -408,9 +409,9 @@ func (a *TaskVariableAPIService) GetTaskVariableBinaryExecute(r ApiGetTaskVariab
 }
 
 type ApiGetTaskVariablesRequest struct {
-	ctx context.Context
-	ApiService *TaskVariableAPIService
-	id string
+	ctx               context.Context
+	ApiService        *TaskVariableAPIService
+	id                string
 	deserializeValues *bool
 }
 
@@ -431,26 +432,27 @@ Retrieves all variables visible from the task. A variable is visible from the ta
 variable or declared in a parent scope of the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the variables from.
- @return ApiGetTaskVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the variables from.
+	@return ApiGetTaskVariablesRequest
 */
 func (a *TaskVariableAPIService) GetTaskVariables(ctx context.Context, id string) ApiGetTaskVariablesRequest {
 	return ApiGetTaskVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *TaskVariableAPIService) GetTaskVariablesExecute(r ApiGetTaskVariablesRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.GetTaskVariables")
@@ -517,8 +519,8 @@ func (a *TaskVariableAPIService) GetTaskVariablesExecute(r ApiGetTaskVariablesRe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -536,9 +538,9 @@ func (a *TaskVariableAPIService) GetTaskVariablesExecute(r ApiGetTaskVariablesRe
 }
 
 type ApiModifyTaskVariablesRequest struct {
-	ctx context.Context
-	ApiService *TaskVariableAPIService
-	id string
+	ctx               context.Context
+	ApiService        *TaskVariableAPIService
+	id                string
 	patchVariablesDto *PatchVariablesDto
 }
 
@@ -559,24 +561,24 @@ updated AND deleted, the deletion overrides the update. A variable is visible fr
 local task variable or declared in a parent scope of the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to set variables for.
- @return ApiModifyTaskVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to set variables for.
+	@return ApiModifyTaskVariablesRequest
 */
 func (a *TaskVariableAPIService) ModifyTaskVariables(ctx context.Context, id string) ApiModifyTaskVariablesRequest {
 	return ApiModifyTaskVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskVariableAPIService) ModifyTaskVariablesExecute(r ApiModifyTaskVariablesRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.ModifyTaskVariables")
@@ -639,8 +641,8 @@ func (a *TaskVariableAPIService) ModifyTaskVariablesExecute(r ApiModifyTaskVaria
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -650,8 +652,8 @@ func (a *TaskVariableAPIService) ModifyTaskVariablesExecute(r ApiModifyTaskVaria
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -660,10 +662,10 @@ func (a *TaskVariableAPIService) ModifyTaskVariablesExecute(r ApiModifyTaskVaria
 }
 
 type ApiPutTaskVariableRequest struct {
-	ctx context.Context
-	ApiService *TaskVariableAPIService
-	id string
-	varName string
+	ctx              context.Context
+	ApiService       *TaskVariableAPIService
+	id               string
+	varName          string
 	variableValueDto *VariableValueDto
 }
 
@@ -686,26 +688,26 @@ is a local task variable, or declared in a parent scope of the task. See the doc
 **Note**: If a variable doesn't exist, the variable is created in the top-most scope
 visible from the task.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to set the variable for.
- @param varName The name of the variable to set.
- @return ApiPutTaskVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to set the variable for.
+	@param varName The name of the variable to set.
+	@return ApiPutTaskVariableRequest
 */
 func (a *TaskVariableAPIService) PutTaskVariable(ctx context.Context, id string, varName string) ApiPutTaskVariableRequest {
 	return ApiPutTaskVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *TaskVariableAPIService) PutTaskVariableExecute(r ApiPutTaskVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.PutTaskVariable")
@@ -769,8 +771,8 @@ func (a *TaskVariableAPIService) PutTaskVariableExecute(r ApiPutTaskVariableRequ
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -780,8 +782,8 @@ func (a *TaskVariableAPIService) PutTaskVariableExecute(r ApiPutTaskVariableRequ
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -790,12 +792,12 @@ func (a *TaskVariableAPIService) PutTaskVariableExecute(r ApiPutTaskVariableRequ
 }
 
 type ApiSetBinaryTaskVariableRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskVariableAPIService
-	id string
-	varName string
-	data *os.File
-	valueType *string
+	id         string
+	varName    string
+	data       *os.File
+	valueType  *string
 }
 
 // The binary data to be set. For File variables, this multipart can contain the filename, binary value and MIME type of the file variable to be set Only the filename is mandatory.
@@ -822,26 +824,26 @@ task. A variable is visible from the task if it is a local task variable or decl
 the task. See documentation on
 [visiblity of variables](https://docs.operaton.org/manual/1.0/user-guide/process-engine/variables/).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the variable for.
- @param varName The name of the variable to retrieve.
- @return ApiSetBinaryTaskVariableRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the variable for.
+	@param varName The name of the variable to retrieve.
+	@return ApiSetBinaryTaskVariableRequest
 */
 func (a *TaskVariableAPIService) SetBinaryTaskVariable(ctx context.Context, id string, varName string) ApiSetBinaryTaskVariableRequest {
 	return ApiSetBinaryTaskVariableRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
-		varName: varName,
+		ctx:        ctx,
+		id:         id,
+		varName:    varName,
 	}
 }
 
 // Execute executes the request
 func (a *TaskVariableAPIService) SetBinaryTaskVariableExecute(r ApiSetBinaryTaskVariableRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskVariableAPIService.SetBinaryTaskVariable")
@@ -875,8 +877,8 @@ func (a *TaskVariableAPIService) SetBinaryTaskVariableExecute(r ApiSetBinaryTask
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	var dataLocalVarFormFileName string
-	var dataLocalVarFileName     string
-	var dataLocalVarFileBytes    []byte
+	var dataLocalVarFileName string
+	var dataLocalVarFileBytes []byte
 
 	dataLocalVarFormFileName = "data"
 	dataLocalVarFile := r.data
@@ -921,8 +923,8 @@ func (a *TaskVariableAPIService) SetBinaryTaskVariableExecute(r ApiSetBinaryTask
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -932,8 +934,8 @@ func (a *TaskVariableAPIService) SetBinaryTaskVariableExecute(r ApiSetBinaryTask
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

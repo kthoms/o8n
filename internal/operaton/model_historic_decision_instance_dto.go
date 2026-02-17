@@ -117,6 +117,7 @@ func (o *HistoricDecisionInstanceDto) HasId() bool {
 func (o *HistoricDecisionInstanceDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -159,6 +160,7 @@ func (o *HistoricDecisionInstanceDto) HasDecisionDefinitionId() bool {
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionId(v string) {
 	o.DecisionDefinitionId.Set(&v)
 }
+
 // SetDecisionDefinitionIdNil sets the value for DecisionDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionIdNil() {
 	o.DecisionDefinitionId.Set(nil)
@@ -201,6 +203,7 @@ func (o *HistoricDecisionInstanceDto) HasDecisionDefinitionKey() bool {
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionKey(v string) {
 	o.DecisionDefinitionKey.Set(&v)
 }
+
 // SetDecisionDefinitionKeyNil sets the value for DecisionDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionKeyNil() {
 	o.DecisionDefinitionKey.Set(nil)
@@ -243,6 +246,7 @@ func (o *HistoricDecisionInstanceDto) HasDecisionDefinitionName() bool {
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionName(v string) {
 	o.DecisionDefinitionName.Set(&v)
 }
+
 // SetDecisionDefinitionNameNil sets the value for DecisionDefinitionName to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetDecisionDefinitionNameNil() {
 	o.DecisionDefinitionName.Set(nil)
@@ -285,6 +289,7 @@ func (o *HistoricDecisionInstanceDto) HasEvaluationTime() bool {
 func (o *HistoricDecisionInstanceDto) SetEvaluationTime(v time.Time) {
 	o.EvaluationTime.Set(&v)
 }
+
 // SetEvaluationTimeNil sets the value for EvaluationTime to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetEvaluationTimeNil() {
 	o.EvaluationTime.Set(nil)
@@ -327,6 +332,7 @@ func (o *HistoricDecisionInstanceDto) HasRemovalTime() bool {
 func (o *HistoricDecisionInstanceDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -369,6 +375,7 @@ func (o *HistoricDecisionInstanceDto) HasProcessDefinitionId() bool {
 func (o *HistoricDecisionInstanceDto) SetProcessDefinitionId(v string) {
 	o.ProcessDefinitionId.Set(&v)
 }
+
 // SetProcessDefinitionIdNil sets the value for ProcessDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetProcessDefinitionIdNil() {
 	o.ProcessDefinitionId.Set(nil)
@@ -411,6 +418,7 @@ func (o *HistoricDecisionInstanceDto) HasProcessDefinitionKey() bool {
 func (o *HistoricDecisionInstanceDto) SetProcessDefinitionKey(v string) {
 	o.ProcessDefinitionKey.Set(&v)
 }
+
 // SetProcessDefinitionKeyNil sets the value for ProcessDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetProcessDefinitionKeyNil() {
 	o.ProcessDefinitionKey.Set(nil)
@@ -453,6 +461,7 @@ func (o *HistoricDecisionInstanceDto) HasProcessInstanceId() bool {
 func (o *HistoricDecisionInstanceDto) SetProcessInstanceId(v string) {
 	o.ProcessInstanceId.Set(&v)
 }
+
 // SetProcessInstanceIdNil sets the value for ProcessInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetProcessInstanceIdNil() {
 	o.ProcessInstanceId.Set(nil)
@@ -495,6 +504,7 @@ func (o *HistoricDecisionInstanceDto) HasCaseDefinitionId() bool {
 func (o *HistoricDecisionInstanceDto) SetCaseDefinitionId(v string) {
 	o.CaseDefinitionId.Set(&v)
 }
+
 // SetCaseDefinitionIdNil sets the value for CaseDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetCaseDefinitionIdNil() {
 	o.CaseDefinitionId.Set(nil)
@@ -537,6 +547,7 @@ func (o *HistoricDecisionInstanceDto) HasCaseDefinitionKey() bool {
 func (o *HistoricDecisionInstanceDto) SetCaseDefinitionKey(v string) {
 	o.CaseDefinitionKey.Set(&v)
 }
+
 // SetCaseDefinitionKeyNil sets the value for CaseDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetCaseDefinitionKeyNil() {
 	o.CaseDefinitionKey.Set(nil)
@@ -579,6 +590,7 @@ func (o *HistoricDecisionInstanceDto) HasCaseInstanceId() bool {
 func (o *HistoricDecisionInstanceDto) SetCaseInstanceId(v string) {
 	o.CaseInstanceId.Set(&v)
 }
+
 // SetCaseInstanceIdNil sets the value for CaseInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetCaseInstanceIdNil() {
 	o.CaseInstanceId.Set(nil)
@@ -621,6 +633,7 @@ func (o *HistoricDecisionInstanceDto) HasActivityId() bool {
 func (o *HistoricDecisionInstanceDto) SetActivityId(v string) {
 	o.ActivityId.Set(&v)
 }
+
 // SetActivityIdNil sets the value for ActivityId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetActivityIdNil() {
 	o.ActivityId.Set(nil)
@@ -663,6 +676,7 @@ func (o *HistoricDecisionInstanceDto) HasActivityInstanceId() bool {
 func (o *HistoricDecisionInstanceDto) SetActivityInstanceId(v string) {
 	o.ActivityInstanceId.Set(&v)
 }
+
 // SetActivityInstanceIdNil sets the value for ActivityInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetActivityInstanceIdNil() {
 	o.ActivityInstanceId.Set(nil)
@@ -705,6 +719,7 @@ func (o *HistoricDecisionInstanceDto) HasTenantId() bool {
 func (o *HistoricDecisionInstanceDto) SetTenantId(v string) {
 	o.TenantId.Set(&v)
 }
+
 // SetTenantIdNil sets the value for TenantId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetTenantIdNil() {
 	o.TenantId.Set(nil)
@@ -747,6 +762,7 @@ func (o *HistoricDecisionInstanceDto) HasUserId() bool {
 func (o *HistoricDecisionInstanceDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -855,6 +871,7 @@ func (o *HistoricDecisionInstanceDto) HasCollectResultValue() bool {
 func (o *HistoricDecisionInstanceDto) SetCollectResultValue(v float64) {
 	o.CollectResultValue.Set(&v)
 }
+
 // SetCollectResultValueNil sets the value for CollectResultValue to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetCollectResultValueNil() {
 	o.CollectResultValue.Set(nil)
@@ -897,6 +914,7 @@ func (o *HistoricDecisionInstanceDto) HasRootDecisionInstanceId() bool {
 func (o *HistoricDecisionInstanceDto) SetRootDecisionInstanceId(v string) {
 	o.RootDecisionInstanceId.Set(&v)
 }
+
 // SetRootDecisionInstanceIdNil sets the value for RootDecisionInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetRootDecisionInstanceIdNil() {
 	o.RootDecisionInstanceId.Set(nil)
@@ -939,6 +957,7 @@ func (o *HistoricDecisionInstanceDto) HasRootProcessInstanceId() bool {
 func (o *HistoricDecisionInstanceDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -981,6 +1000,7 @@ func (o *HistoricDecisionInstanceDto) HasDecisionRequirementsDefinitionId() bool
 func (o *HistoricDecisionInstanceDto) SetDecisionRequirementsDefinitionId(v string) {
 	o.DecisionRequirementsDefinitionId.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionIdNil sets the value for DecisionRequirementsDefinitionId to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetDecisionRequirementsDefinitionIdNil() {
 	o.DecisionRequirementsDefinitionId.Set(nil)
@@ -1023,6 +1043,7 @@ func (o *HistoricDecisionInstanceDto) HasDecisionRequirementsDefinitionKey() boo
 func (o *HistoricDecisionInstanceDto) SetDecisionRequirementsDefinitionKey(v string) {
 	o.DecisionRequirementsDefinitionKey.Set(&v)
 }
+
 // SetDecisionRequirementsDefinitionKeyNil sets the value for DecisionRequirementsDefinitionKey to be an explicit nil
 func (o *HistoricDecisionInstanceDto) SetDecisionRequirementsDefinitionKeyNil() {
 	o.DecisionRequirementsDefinitionKey.Set(nil)
@@ -1034,7 +1055,7 @@ func (o *HistoricDecisionInstanceDto) UnsetDecisionRequirementsDefinitionKey() {
 }
 
 func (o HistoricDecisionInstanceDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -1150,5 +1171,3 @@ func (v *NullableHistoricDecisionInstanceDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

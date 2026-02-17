@@ -74,6 +74,7 @@ func (o *TaskEscalationDto) HasEscalationCode() bool {
 func (o *TaskEscalationDto) SetEscalationCode(v string) {
 	o.EscalationCode.Set(&v)
 }
+
 // SetEscalationCodeNil sets the value for EscalationCode to be an explicit nil
 func (o *TaskEscalationDto) SetEscalationCodeNil() {
 	o.EscalationCode.Set(nil)
@@ -118,7 +119,7 @@ func (o *TaskEscalationDto) SetVariables(v map[string]VariableValueDto) {
 }
 
 func (o TaskEscalationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -171,5 +172,3 @@ func (v *NullableTaskEscalationDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

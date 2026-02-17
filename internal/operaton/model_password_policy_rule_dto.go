@@ -74,6 +74,7 @@ func (o *PasswordPolicyRuleDto) HasPlaceholder() bool {
 func (o *PasswordPolicyRuleDto) SetPlaceholder(v string) {
 	o.Placeholder.Set(&v)
 }
+
 // SetPlaceholderNil sets the value for Placeholder to be an explicit nil
 func (o *PasswordPolicyRuleDto) SetPlaceholderNil() {
 	o.Placeholder.Set(nil)
@@ -117,7 +118,7 @@ func (o *PasswordPolicyRuleDto) SetParameter(v map[string]string) {
 }
 
 func (o PasswordPolicyRuleDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -170,5 +171,3 @@ func (v *NullablePasswordPolicyRuleDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

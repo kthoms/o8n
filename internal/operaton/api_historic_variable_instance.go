@@ -16,18 +16,17 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // HistoricVariableInstanceAPIService HistoricVariableInstanceAPI service
 type HistoricVariableInstanceAPIService service
 
 type ApiDeleteHistoricVariableInstanceRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricVariableInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteHistoricVariableInstanceRequest) Execute() (*http.Response, error) {
@@ -39,24 +38,24 @@ DeleteHistoricVariableInstance Delete Variable Instance
 
 Deletes a historic variable instance by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the variable instance.
- @return ApiDeleteHistoricVariableInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the variable instance.
+	@return ApiDeleteHistoricVariableInstanceRequest
 */
 func (a *HistoricVariableInstanceAPIService) DeleteHistoricVariableInstance(ctx context.Context, id string) ApiDeleteHistoricVariableInstanceRequest {
 	return ApiDeleteHistoricVariableInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *HistoricVariableInstanceAPIService) DeleteHistoricVariableInstanceExecute(r ApiDeleteHistoricVariableInstanceRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.DeleteHistoricVariableInstance")
@@ -117,8 +116,8 @@ func (a *HistoricVariableInstanceAPIService) DeleteHistoricVariableInstanceExecu
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -127,9 +126,9 @@ func (a *HistoricVariableInstanceAPIService) DeleteHistoricVariableInstanceExecu
 }
 
 type ApiGetHistoricVariableInstanceRequest struct {
-	ctx context.Context
-	ApiService *HistoricVariableInstanceAPIService
-	id string
+	ctx               context.Context
+	ApiService        *HistoricVariableInstanceAPIService
+	id                string
 	deserializeValues *bool
 }
 
@@ -148,26 +147,27 @@ GetHistoricVariableInstance Get Variable Instance
 
 Retrieves a historic variable by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the variable instance.
- @return ApiGetHistoricVariableInstanceRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the variable instance.
+	@return ApiGetHistoricVariableInstanceRequest
 */
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstance(ctx context.Context, id string) ApiGetHistoricVariableInstanceRequest {
 	return ApiGetHistoricVariableInstanceRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return HistoricVariableInstanceDto
+//
+//	@return HistoricVariableInstanceDto
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceExecute(r ApiGetHistoricVariableInstanceRequest) (*HistoricVariableInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *HistoricVariableInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *HistoricVariableInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.GetHistoricVariableInstance")
@@ -231,8 +231,8 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -250,9 +250,9 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceExecute(
 }
 
 type ApiGetHistoricVariableInstanceBinaryRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *HistoricVariableInstanceAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetHistoricVariableInstanceBinaryRequest) Execute() (*os.File, *http.Response, error) {
@@ -265,26 +265,27 @@ GetHistoricVariableInstanceBinary Get Variable Instance (Binary)
 Retrieves the content of a historic variable by id. Applicable for variables that
 are serialized as binary data.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the variable instance.
- @return ApiGetHistoricVariableInstanceBinaryRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the variable instance.
+	@return ApiGetHistoricVariableInstanceBinaryRequest
 */
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceBinary(ctx context.Context, id string) ApiGetHistoricVariableInstanceBinaryRequest {
 	return ApiGetHistoricVariableInstanceBinaryRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceBinaryExecute(r ApiGetHistoricVariableInstanceBinaryRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.GetHistoricVariableInstanceBinary")
@@ -345,8 +346,8 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceBinaryEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -356,8 +357,8 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceBinaryEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -375,33 +376,33 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstanceBinaryEx
 }
 
 type ApiGetHistoricVariableInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricVariableInstanceAPIService
-	variableName *string
-	variableNameLike *string
-	variableValue *map[string]interface{}
-	variableNamesIgnoreCase *bool
+	ctx                      context.Context
+	ApiService               *HistoricVariableInstanceAPIService
+	variableName             *string
+	variableNameLike         *string
+	variableValue            *map[string]interface{}
+	variableNamesIgnoreCase  *bool
 	variableValuesIgnoreCase *bool
-	variableTypeIn *string
-	includeDeleted *bool
-	processInstanceId *string
-	processInstanceIdIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	executionIdIn *string
-	caseInstanceId *string
-	caseExecutionIdIn *string
-	caseActivityIdIn *string
-	taskIdIn *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	variableNameIn *string
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
-	deserializeValues *bool
+	variableTypeIn           *string
+	includeDeleted           *bool
+	processInstanceId        *string
+	processInstanceIdIn      *string
+	processDefinitionId      *string
+	processDefinitionKey     *string
+	executionIdIn            *string
+	caseInstanceId           *string
+	caseExecutionIdIn        *string
+	caseActivityIdIn         *string
+	taskIdIn                 *string
+	activityInstanceIdIn     *string
+	tenantIdIn               *string
+	withoutTenantId          *bool
+	variableNameIn           *string
+	sortBy                   *string
+	sortOrder                *string
+	firstResult              *int32
+	maxResults               *int32
+	deserializeValues        *bool
 }
 
 // Filter by variable name.
@@ -566,24 +567,25 @@ The size of the result set can be retrieved by using the
 [Get Variable Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/variable-instance/get-variable-instance-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricVariableInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricVariableInstancesRequest
 */
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstances(ctx context.Context) ApiGetHistoricVariableInstancesRequest {
 	return ApiGetHistoricVariableInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricVariableInstanceDto
+//
+//	@return []HistoricVariableInstanceDto
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesExecute(r ApiGetHistoricVariableInstancesRequest) ([]HistoricVariableInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricVariableInstanceDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricVariableInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.GetHistoricVariableInstances")
@@ -718,8 +720,8 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -737,28 +739,28 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesExecute
 }
 
 type ApiGetHistoricVariableInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricVariableInstanceAPIService
-	variableName *string
-	variableNameLike *string
-	variableValue *map[string]interface{}
-	variableNamesIgnoreCase *bool
+	ctx                      context.Context
+	ApiService               *HistoricVariableInstanceAPIService
+	variableName             *string
+	variableNameLike         *string
+	variableValue            *map[string]interface{}
+	variableNamesIgnoreCase  *bool
 	variableValuesIgnoreCase *bool
-	variableTypeIn *string
-	includeDeleted *bool
-	processInstanceId *string
-	processInstanceIdIn *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	executionIdIn *string
-	caseInstanceId *string
-	caseExecutionIdIn *string
-	caseActivityIdIn *string
-	taskIdIn *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	variableNameIn *string
+	variableTypeIn           *string
+	includeDeleted           *bool
+	processInstanceId        *string
+	processInstanceIdIn      *string
+	processDefinitionId      *string
+	processDefinitionKey     *string
+	executionIdIn            *string
+	caseInstanceId           *string
+	caseExecutionIdIn        *string
+	caseActivityIdIn         *string
+	taskIdIn                 *string
+	activityInstanceIdIn     *string
+	tenantIdIn               *string
+	withoutTenantId          *bool
+	variableNameIn           *string
 }
 
 // Filter by variable name.
@@ -894,24 +896,25 @@ Takes the same parameters as the
 [Get Variable Instances](https://docs.operaton.org/manual/1.0/reference/rest/history/variable-instance/get-variable-instance-query/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetHistoricVariableInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetHistoricVariableInstancesCountRequest
 */
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesCount(ctx context.Context) ApiGetHistoricVariableInstancesCountRequest {
 	return ApiGetHistoricVariableInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesCountExecute(r ApiGetHistoricVariableInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.GetHistoricVariableInstancesCount")
@@ -1031,8 +1034,8 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesCountEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1050,11 +1053,11 @@ func (a *HistoricVariableInstanceAPIService) GetHistoricVariableInstancesCountEx
 }
 
 type ApiQueryHistoricVariableInstancesRequest struct {
-	ctx context.Context
-	ApiService *HistoricVariableInstanceAPIService
-	firstResult *int32
-	maxResults *int32
-	deserializeValues *bool
+	ctx                              context.Context
+	ApiService                       *HistoricVariableInstanceAPIService
+	firstResult                      *int32
+	maxResults                       *int32
+	deserializeValues                *bool
 	historicVariableInstanceQueryDto *HistoricVariableInstanceQueryDto
 }
 
@@ -1094,24 +1097,25 @@ This method is slightly more powerful than the
 method because it allows filtering by variable values of the different
 types `String`, `Number` or `Boolean`.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricVariableInstancesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricVariableInstancesRequest
 */
 func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstances(ctx context.Context) ApiQueryHistoricVariableInstancesRequest {
 	return ApiQueryHistoricVariableInstancesRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []HistoricVariableInstanceDto
+//
+//	@return []HistoricVariableInstanceDto
 func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesExecute(r ApiQueryHistoricVariableInstancesRequest) ([]HistoricVariableInstanceDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []HistoricVariableInstanceDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []HistoricVariableInstanceDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.QueryHistoricVariableInstances")
@@ -1182,8 +1186,8 @@ func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1201,8 +1205,8 @@ func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesExecu
 }
 
 type ApiQueryHistoricVariableInstancesCountRequest struct {
-	ctx context.Context
-	ApiService *HistoricVariableInstanceAPIService
+	ctx                              context.Context
+	ApiService                       *HistoricVariableInstanceAPIService
 	historicVariableInstanceQueryDto *HistoricVariableInstanceQueryDto
 }
 
@@ -1226,24 +1230,25 @@ than the
 [Get Variable Instance Count](https://docs.operaton.org/manual/1.0/reference/rest/history/variable-instance/get-variable-instance-query-count/)
 method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryHistoricVariableInstancesCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryHistoricVariableInstancesCountRequest
 */
 func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesCount(ctx context.Context) ApiQueryHistoricVariableInstancesCountRequest {
 	return ApiQueryHistoricVariableInstancesCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesCountExecute(r ApiQueryHistoricVariableInstancesCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "HistoricVariableInstanceAPIService.QueryHistoricVariableInstancesCount")
@@ -1305,8 +1310,8 @@ func (a *HistoricVariableInstanceAPIService) QueryHistoricVariableInstancesCount
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}

@@ -78,6 +78,7 @@ func (o *IdentityServiceUserDto) HasId() bool {
 func (o *IdentityServiceUserDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *IdentityServiceUserDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -120,6 +121,7 @@ func (o *IdentityServiceUserDto) HasFirstName() bool {
 func (o *IdentityServiceUserDto) SetFirstName(v string) {
 	o.FirstName.Set(&v)
 }
+
 // SetFirstNameNil sets the value for FirstName to be an explicit nil
 func (o *IdentityServiceUserDto) SetFirstNameNil() {
 	o.FirstName.Set(nil)
@@ -162,6 +164,7 @@ func (o *IdentityServiceUserDto) HasLastName() bool {
 func (o *IdentityServiceUserDto) SetLastName(v string) {
 	o.LastName.Set(&v)
 }
+
 // SetLastNameNil sets the value for LastName to be an explicit nil
 func (o *IdentityServiceUserDto) SetLastNameNil() {
 	o.LastName.Set(nil)
@@ -204,6 +207,7 @@ func (o *IdentityServiceUserDto) HasDisplayName() bool {
 func (o *IdentityServiceUserDto) SetDisplayName(v string) {
 	o.DisplayName.Set(&v)
 }
+
 // SetDisplayNameNil sets the value for DisplayName to be an explicit nil
 func (o *IdentityServiceUserDto) SetDisplayNameNil() {
 	o.DisplayName.Set(nil)
@@ -215,7 +219,7 @@ func (o *IdentityServiceUserDto) UnsetDisplayName() {
 }
 
 func (o IdentityServiceUserDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -274,5 +278,3 @@ func (v *NullableIdentityServiceUserDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

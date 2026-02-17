@@ -76,6 +76,7 @@ func (o *VariableQueryParameterDto) HasOperator() bool {
 func (o *VariableQueryParameterDto) SetOperator(v string) {
 	o.Operator.Set(&v)
 }
+
 // SetOperatorNil sets the value for Operator to be an explicit nil
 func (o *VariableQueryParameterDto) SetOperatorNil() {
 	o.Operator.Set(nil)
@@ -150,6 +151,7 @@ func (o *VariableQueryParameterDto) HasName() bool {
 func (o *VariableQueryParameterDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *VariableQueryParameterDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -161,7 +163,7 @@ func (o *VariableQueryParameterDto) UnsetName() {
 }
 
 func (o VariableQueryParameterDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -217,5 +219,3 @@ func (v *NullableVariableQueryParameterDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

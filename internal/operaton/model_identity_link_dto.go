@@ -11,8 +11,8 @@ API version: 1.0.1
 package operaton
 
 import (
-	"encoding/json"
 	"bytes"
+	"encoding/json"
 	"fmt"
 )
 
@@ -81,6 +81,7 @@ func (o *IdentityLinkDto) HasUserId() bool {
 func (o *IdentityLinkDto) SetUserId(v string) {
 	o.UserId.Set(&v)
 }
+
 // SetUserIdNil sets the value for UserId to be an explicit nil
 func (o *IdentityLinkDto) SetUserIdNil() {
 	o.UserId.Set(nil)
@@ -123,6 +124,7 @@ func (o *IdentityLinkDto) HasGroupId() bool {
 func (o *IdentityLinkDto) SetGroupId(v string) {
 	o.GroupId.Set(&v)
 }
+
 // SetGroupIdNil sets the value for GroupId to be an explicit nil
 func (o *IdentityLinkDto) SetGroupIdNil() {
 	o.GroupId.Set(nil)
@@ -160,7 +162,7 @@ func (o *IdentityLinkDto) SetType(v string) {
 }
 
 func (o IdentityLinkDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -192,10 +194,10 @@ func (o *IdentityLinkDto) UnmarshalJSON(data []byte) (err error) {
 	err = json.Unmarshal(data, &allProperties)
 
 	if err != nil {
-		return err;
+		return err
 	}
 
-	for _, requiredProperty := range(requiredProperties) {
+	for _, requiredProperty := range requiredProperties {
 		if _, exists := allProperties[requiredProperty]; !exists {
 			return fmt.Errorf("no value given for required property %v", requiredProperty)
 		}
@@ -251,5 +253,3 @@ func (v *NullableIdentityLinkDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

@@ -16,19 +16,18 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"os"
+	"strings"
 )
-
 
 // TaskAPIService TaskAPI service
 type TaskAPIService service
 
 type ApiClaimRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
-	userIdDto *UserIdDto
+	id         string
+	userIdDto  *UserIdDto
 }
 
 // Provide the id of the user that claims the task.
@@ -51,24 +50,24 @@ Claims a task for a specific user.
 method is that here a check is performed to see if the task already has a user
 assigned to it.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to claim.
- @return ApiClaimRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to claim.
+	@return ApiClaimRequest
 */
 func (a *TaskAPIService) Claim(ctx context.Context, id string) ApiClaimRequest {
 	return ApiClaimRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) ClaimExecute(r ApiClaimRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.Claim")
@@ -131,8 +130,8 @@ func (a *TaskAPIService) ClaimExecute(r ApiClaimRequest) (*http.Response, error)
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -141,9 +140,9 @@ func (a *TaskAPIService) ClaimExecute(r ApiClaimRequest) (*http.Response, error)
 }
 
 type ApiCompleteRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
+	ctx             context.Context
+	ApiService      *TaskAPIService
+	id              string
 	completeTaskDto *CompleteTaskDto
 }
 
@@ -161,26 +160,27 @@ Complete Complete
 
 Completes a task and updates process variables.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to complete.
- @return ApiCompleteRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to complete.
+	@return ApiCompleteRequest
 */
 func (a *TaskAPIService) Complete(ctx context.Context, id string) ApiCompleteRequest {
 	return ApiCompleteRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *TaskAPIService) CompleteExecute(r ApiCompleteRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.Complete")
@@ -243,8 +243,8 @@ func (a *TaskAPIService) CompleteExecute(r ApiCompleteRequest) (*map[string]Vari
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -254,8 +254,8 @@ func (a *TaskAPIService) CompleteExecute(r ApiCompleteRequest) (*map[string]Vari
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -273,9 +273,9 @@ func (a *TaskAPIService) CompleteExecute(r ApiCompleteRequest) (*map[string]Vari
 }
 
 type ApiCreateTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	taskDto *TaskDto
+	taskDto    *TaskDto
 }
 
 func (r ApiCreateTaskRequest) TaskDto(taskDto TaskDto) ApiCreateTaskRequest {
@@ -292,22 +292,22 @@ CreateTask Create
 
 Creates a new task.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateTaskRequest
 */
 func (a *TaskAPIService) CreateTask(ctx context.Context) ApiCreateTaskRequest {
 	return ApiCreateTaskRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) CreateTaskExecute(r ApiCreateTaskRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.CreateTask")
@@ -369,8 +369,8 @@ func (a *TaskAPIService) CreateTaskExecute(r ApiCreateTaskRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -379,10 +379,10 @@ func (a *TaskAPIService) CreateTaskExecute(r ApiCreateTaskRequest) (*http.Respon
 }
 
 type ApiDelegateTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
-	userIdDto *UserIdDto
+	id         string
+	userIdDto  *UserIdDto
 }
 
 // Provide the id of the user that the task should be delegated to.
@@ -400,24 +400,24 @@ DelegateTask Delegate
 
 Delegates a task to another user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to delegate.
- @return ApiDelegateTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to delegate.
+	@return ApiDelegateTaskRequest
 */
 func (a *TaskAPIService) DelegateTask(ctx context.Context, id string) ApiDelegateTaskRequest {
 	return ApiDelegateTaskRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) DelegateTaskExecute(r ApiDelegateTaskRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.DelegateTask")
@@ -480,8 +480,8 @@ func (a *TaskAPIService) DelegateTaskExecute(r ApiDelegateTaskRequest) (*http.Re
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -490,9 +490,9 @@ func (a *TaskAPIService) DelegateTaskExecute(r ApiDelegateTaskRequest) (*http.Re
 }
 
 type ApiDeleteTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteTaskRequest) Execute() (*http.Response, error) {
@@ -504,24 +504,24 @@ DeleteTask Delete
 
 Removes a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to be removed.
- @return ApiDeleteTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to be removed.
+	@return ApiDeleteTaskRequest
 */
 func (a *TaskAPIService) DeleteTask(ctx context.Context, id string) ApiDeleteTaskRequest {
 	return ApiDeleteTaskRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) DeleteTaskExecute(r ApiDeleteTaskRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.DeleteTask")
@@ -582,8 +582,8 @@ func (a *TaskAPIService) DeleteTaskExecute(r ApiDeleteTaskRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -593,8 +593,8 @@ func (a *TaskAPIService) DeleteTaskExecute(r ApiDeleteTaskRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -603,9 +603,9 @@ func (a *TaskAPIService) DeleteTaskExecute(r ApiDeleteTaskRequest) (*http.Respon
 }
 
 type ApiGetDeployedFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetDeployedFormRequest) Execute() (*os.File, *http.Response, error) {
@@ -619,26 +619,27 @@ Retrieves the deployed form that is referenced from a given task. For further
 information please refer to the
 [User Guide](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#embedded-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to get the deployed form for.
- @return ApiGetDeployedFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to get the deployed form for.
+	@return ApiGetDeployedFormRequest
 */
 func (a *TaskAPIService) GetDeployedForm(ctx context.Context, id string) ApiGetDeployedFormRequest {
 	return ApiGetDeployedFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *TaskAPIService) GetDeployedFormExecute(r ApiGetDeployedFormRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetDeployedForm")
@@ -699,8 +700,8 @@ func (a *TaskAPIService) GetDeployedFormExecute(r ApiGetDeployedFormRequest) (*o
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -710,8 +711,8 @@ func (a *TaskAPIService) GetDeployedFormExecute(r ApiGetDeployedFormRequest) (*o
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -721,8 +722,8 @@ func (a *TaskAPIService) GetDeployedFormExecute(r ApiGetDeployedFormRequest) (*o
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -740,9 +741,9 @@ func (a *TaskAPIService) GetDeployedFormExecute(r ApiGetDeployedFormRequest) (*o
 }
 
 type ApiGetFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetFormRequest) Execute() (*FormDto, *http.Response, error) {
@@ -757,26 +758,27 @@ property in the engine. This key can be used to do task-specific form rendering 
 client applications. Additionally, the context path of the containing process
 application is returned.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the form for.
- @return ApiGetFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the form for.
+	@return ApiGetFormRequest
 */
 func (a *TaskAPIService) GetForm(ctx context.Context, id string) ApiGetFormRequest {
 	return ApiGetFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return FormDto
+//
+//	@return FormDto
 func (a *TaskAPIService) GetFormExecute(r ApiGetFormRequest) (*FormDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FormDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FormDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetForm")
@@ -837,8 +839,8 @@ func (a *TaskAPIService) GetFormExecute(r ApiGetFormRequest) (*FormDto, *http.Re
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -856,10 +858,10 @@ func (a *TaskAPIService) GetFormExecute(r ApiGetFormRequest) (*FormDto, *http.Re
 }
 
 type ApiGetFormVariablesRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
-	variableNames *string
+	ctx               context.Context
+	ApiService        *TaskAPIService
+	id                string
+	variableNames     *string
 	deserializeValues *bool
 }
 
@@ -886,26 +888,27 @@ Retrieves the form variables for a task. The form variables take form data speci
 on the task into account. If form fields are defined, the variable types and default
 values of the form fields are taken into account.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to retrieve the variables for.
- @return ApiGetFormVariablesRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to retrieve the variables for.
+	@return ApiGetFormVariablesRequest
 */
 func (a *TaskAPIService) GetFormVariables(ctx context.Context, id string) ApiGetFormVariablesRequest {
 	return ApiGetFormVariablesRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *TaskAPIService) GetFormVariablesExecute(r ApiGetFormVariablesRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetFormVariables")
@@ -975,8 +978,8 @@ func (a *TaskAPIService) GetFormVariablesExecute(r ApiGetFormVariablesRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -994,9 +997,9 @@ func (a *TaskAPIService) GetFormVariablesExecute(r ApiGetFormVariablesRequest) (
 }
 
 type ApiGetRenderedFormRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetRenderedFormRequest) Execute() (*os.File, *http.Response, error) {
@@ -1010,26 +1013,27 @@ Retrieves the rendered form for a task. This method can be used to get the HTML
 rendering of a
 [Generated Task Form](https://docs.operaton.org/manual/1.0/user-guide/task-forms/#generated-task-forms).
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to get the rendered form for.
- @return ApiGetRenderedFormRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to get the rendered form for.
+	@return ApiGetRenderedFormRequest
 */
 func (a *TaskAPIService) GetRenderedForm(ctx context.Context, id string) ApiGetRenderedFormRequest {
 	return ApiGetRenderedFormRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return *os.File
+//
+//	@return *os.File
 func (a *TaskAPIService) GetRenderedFormExecute(r ApiGetRenderedFormRequest) (*os.File, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *os.File
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *os.File
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetRenderedForm")
@@ -1090,8 +1094,8 @@ func (a *TaskAPIService) GetRenderedFormExecute(r ApiGetRenderedFormRequest) (*o
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1109,9 +1113,9 @@ func (a *TaskAPIService) GetRenderedFormExecute(r ApiGetRenderedFormRequest) (*o
 }
 
 type ApiGetTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiGetTaskRequest) Execute() (*TaskWithAttachmentAndCommentDto, *http.Response, error) {
@@ -1123,26 +1127,27 @@ GetTask Get
 
 Retrieves a task by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to be retrieved.
- @return ApiGetTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to be retrieved.
+	@return ApiGetTaskRequest
 */
 func (a *TaskAPIService) GetTask(ctx context.Context, id string) ApiGetTaskRequest {
 	return ApiGetTaskRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return TaskWithAttachmentAndCommentDto
+//
+//	@return TaskWithAttachmentAndCommentDto
 func (a *TaskAPIService) GetTaskExecute(r ApiGetTaskRequest) (*TaskWithAttachmentAndCommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *TaskWithAttachmentAndCommentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *TaskWithAttachmentAndCommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetTask")
@@ -1203,8 +1208,8 @@ func (a *TaskAPIService) GetTaskExecute(r ApiGetTaskRequest) (*TaskWithAttachmen
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1222,7 +1227,7 @@ func (a *TaskAPIService) GetTaskExecute(r ApiGetTaskRequest) (*TaskWithAttachmen
 }
 
 type ApiGetTaskCountByCandidateGroupRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
 }
 
@@ -1235,24 +1240,25 @@ GetTaskCountByCandidateGroup Get Task Count By Candidate Group
 
 Retrieves the number of tasks for each candidate group.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTaskCountByCandidateGroupRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTaskCountByCandidateGroupRequest
 */
 func (a *TaskAPIService) GetTaskCountByCandidateGroup(ctx context.Context) ApiGetTaskCountByCandidateGroupRequest {
 	return ApiGetTaskCountByCandidateGroupRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []TaskCountByCandidateGroupResultDto
+//
+//	@return []TaskCountByCandidateGroupResultDto
 func (a *TaskAPIService) GetTaskCountByCandidateGroupExecute(r ApiGetTaskCountByCandidateGroupRequest) ([]TaskCountByCandidateGroupResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []TaskCountByCandidateGroupResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []TaskCountByCandidateGroupResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetTaskCountByCandidateGroup")
@@ -1312,8 +1318,8 @@ func (a *TaskAPIService) GetTaskCountByCandidateGroupExecute(r ApiGetTaskCountBy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1323,8 +1329,8 @@ func (a *TaskAPIService) GetTaskCountByCandidateGroupExecute(r ApiGetTaskCountBy
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1342,110 +1348,110 @@ func (a *TaskAPIService) GetTaskCountByCandidateGroupExecute(r ApiGetTaskCountBy
 }
 
 type ApiGetTasksRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	taskId *string
-	taskIdIn *string
-	processInstanceId *string
-	processInstanceIdIn *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyExpression *string
-	processInstanceBusinessKeyIn *string
-	processInstanceBusinessKeyLike *string
+	ctx                                      context.Context
+	ApiService                               *TaskAPIService
+	taskId                                   *string
+	taskIdIn                                 *string
+	processInstanceId                        *string
+	processInstanceIdIn                      *string
+	processInstanceBusinessKey               *string
+	processInstanceBusinessKeyExpression     *string
+	processInstanceBusinessKeyIn             *string
+	processInstanceBusinessKeyLike           *string
 	processInstanceBusinessKeyLikeExpression *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	executionId *string
-	caseInstanceId *string
-	caseInstanceBusinessKey *string
-	caseInstanceBusinessKeyLike *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseDefinitionName *string
-	caseDefinitionNameLike *string
-	caseExecutionId *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	assignee *string
-	assigneeExpression *string
-	assigneeLike *string
-	assigneeLikeExpression *string
-	assigneeIn *string
-	assigneeNotIn *string
-	owner *string
-	ownerExpression *string
-	candidateGroup *string
-	candidateGroupLike *string
-	candidateGroupExpression *string
-	candidateUser *string
-	candidateUserExpression *string
-	includeAssignedTasks *bool
-	involvedUser *string
-	involvedUserExpression *string
-	assigned *bool
-	unassigned *bool
-	taskDefinitionKey *string
-	taskDefinitionKeyIn *string
-	taskDefinitionKeyNotIn *string
-	taskDefinitionKeyLike *string
-	name *string
-	nameNotEqual *string
-	nameLike *string
-	nameNotLike *string
-	description *string
-	descriptionLike *string
-	priority *int32
-	maxPriority *int32
-	minPriority *int32
-	dueDate *string
-	dueDateExpression *string
-	dueAfter *string
-	dueAfterExpression *string
-	dueBefore *string
-	dueBeforeExpression *string
-	withoutDueDate *bool
-	followUpDate *string
-	followUpDateExpression *string
-	followUpAfter *string
-	followUpAfterExpression *string
-	followUpBefore *string
-	followUpBeforeExpression *string
-	followUpBeforeOrNotExistent *string
-	followUpBeforeOrNotExistentExpression *string
-	createdOn *string
-	createdOnExpression *string
-	createdAfter *string
-	createdAfterExpression *string
-	createdBefore *string
-	createdBeforeExpression *string
-	updatedAfter *string
-	updatedAfterExpression *string
-	delegationState *string
-	candidateGroups *string
-	candidateGroupsExpression *string
-	withCandidateGroups *bool
-	withoutCandidateGroups *bool
-	withCandidateUsers *bool
-	withoutCandidateUsers *bool
-	active *bool
-	suspended *bool
-	taskVariables *string
-	processVariables *string
-	caseInstanceVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	parentTaskId *string
-	withCommentAttachmentInfo *bool
-	withTaskVariablesInReturn *bool
-	withTaskLocalVariablesInReturn *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	processDefinitionId                      *string
+	processDefinitionKey                     *string
+	processDefinitionKeyIn                   *string
+	processDefinitionName                    *string
+	processDefinitionNameLike                *string
+	executionId                              *string
+	caseInstanceId                           *string
+	caseInstanceBusinessKey                  *string
+	caseInstanceBusinessKeyLike              *string
+	caseDefinitionId                         *string
+	caseDefinitionKey                        *string
+	caseDefinitionName                       *string
+	caseDefinitionNameLike                   *string
+	caseExecutionId                          *string
+	activityInstanceIdIn                     *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
+	assignee                                 *string
+	assigneeExpression                       *string
+	assigneeLike                             *string
+	assigneeLikeExpression                   *string
+	assigneeIn                               *string
+	assigneeNotIn                            *string
+	owner                                    *string
+	ownerExpression                          *string
+	candidateGroup                           *string
+	candidateGroupLike                       *string
+	candidateGroupExpression                 *string
+	candidateUser                            *string
+	candidateUserExpression                  *string
+	includeAssignedTasks                     *bool
+	involvedUser                             *string
+	involvedUserExpression                   *string
+	assigned                                 *bool
+	unassigned                               *bool
+	taskDefinitionKey                        *string
+	taskDefinitionKeyIn                      *string
+	taskDefinitionKeyNotIn                   *string
+	taskDefinitionKeyLike                    *string
+	name                                     *string
+	nameNotEqual                             *string
+	nameLike                                 *string
+	nameNotLike                              *string
+	description                              *string
+	descriptionLike                          *string
+	priority                                 *int32
+	maxPriority                              *int32
+	minPriority                              *int32
+	dueDate                                  *string
+	dueDateExpression                        *string
+	dueAfter                                 *string
+	dueAfterExpression                       *string
+	dueBefore                                *string
+	dueBeforeExpression                      *string
+	withoutDueDate                           *bool
+	followUpDate                             *string
+	followUpDateExpression                   *string
+	followUpAfter                            *string
+	followUpAfterExpression                  *string
+	followUpBefore                           *string
+	followUpBeforeExpression                 *string
+	followUpBeforeOrNotExistent              *string
+	followUpBeforeOrNotExistentExpression    *string
+	createdOn                                *string
+	createdOnExpression                      *string
+	createdAfter                             *string
+	createdAfterExpression                   *string
+	createdBefore                            *string
+	createdBeforeExpression                  *string
+	updatedAfter                             *string
+	updatedAfterExpression                   *string
+	delegationState                          *string
+	candidateGroups                          *string
+	candidateGroupsExpression                *string
+	withCandidateGroups                      *bool
+	withoutCandidateGroups                   *bool
+	withCandidateUsers                       *bool
+	withoutCandidateUsers                    *bool
+	active                                   *bool
+	suspended                                *bool
+	taskVariables                            *string
+	processVariables                         *string
+	caseInstanceVariables                    *string
+	variableNamesIgnoreCase                  *bool
+	variableValuesIgnoreCase                 *bool
+	parentTaskId                             *string
+	withCommentAttachmentInfo                *bool
+	withTaskVariablesInReturn                *bool
+	withTaskLocalVariablesInReturn           *bool
+	sortBy                                   *string
+	sortOrder                                *string
+	firstResult                              *int32
+	maxResults                               *int32
 }
 
 // Restrict to task with the given id.
@@ -2076,24 +2082,25 @@ prevent remote code execution. See the section on
 [security considerations](https://docs.operaton.org/manual/1.0/user-guide/process-engine/securing-custom-code/)
 for custom code in the user guide for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTasksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTasksRequest
 */
 func (a *TaskAPIService) GetTasks(ctx context.Context) ApiGetTasksRequest {
 	return ApiGetTasksRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []TaskWithAttachmentAndCommentDto
+//
+//	@return []TaskWithAttachmentAndCommentDto
 func (a *TaskAPIService) GetTasksExecute(r ApiGetTasksRequest) ([]TaskWithAttachmentAndCommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []TaskWithAttachmentAndCommentDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []TaskWithAttachmentAndCommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetTasks")
@@ -2507,8 +2514,8 @@ func (a *TaskAPIService) GetTasksExecute(r ApiGetTasksRequest) ([]TaskWithAttach
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -2526,106 +2533,106 @@ func (a *TaskAPIService) GetTasksExecute(r ApiGetTasksRequest) ([]TaskWithAttach
 }
 
 type ApiGetTasksCountRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	taskId *string
-	taskIdIn *string
-	processInstanceId *string
-	processInstanceIdIn *string
-	processInstanceBusinessKey *string
-	processInstanceBusinessKeyExpression *string
-	processInstanceBusinessKeyIn *string
-	processInstanceBusinessKeyLike *string
+	ctx                                      context.Context
+	ApiService                               *TaskAPIService
+	taskId                                   *string
+	taskIdIn                                 *string
+	processInstanceId                        *string
+	processInstanceIdIn                      *string
+	processInstanceBusinessKey               *string
+	processInstanceBusinessKeyExpression     *string
+	processInstanceBusinessKeyIn             *string
+	processInstanceBusinessKeyLike           *string
 	processInstanceBusinessKeyLikeExpression *string
-	processDefinitionId *string
-	processDefinitionKey *string
-	processDefinitionKeyIn *string
-	processDefinitionName *string
-	processDefinitionNameLike *string
-	executionId *string
-	caseInstanceId *string
-	caseInstanceBusinessKey *string
-	caseInstanceBusinessKeyLike *string
-	caseDefinitionId *string
-	caseDefinitionKey *string
-	caseDefinitionName *string
-	caseDefinitionNameLike *string
-	caseExecutionId *string
-	activityInstanceIdIn *string
-	tenantIdIn *string
-	withoutTenantId *bool
-	assignee *string
-	assigneeExpression *string
-	assigneeLike *string
-	assigneeLikeExpression *string
-	assigneeIn *string
-	assigneeNotIn *string
-	owner *string
-	ownerExpression *string
-	candidateGroup *string
-	candidateGroupLike *string
-	candidateGroupExpression *string
-	candidateUser *string
-	candidateUserExpression *string
-	includeAssignedTasks *bool
-	involvedUser *string
-	involvedUserExpression *string
-	assigned *bool
-	unassigned *bool
-	taskDefinitionKey *string
-	taskDefinitionKeyIn *string
-	taskDefinitionKeyNotIn *string
-	taskDefinitionKeyLike *string
-	name *string
-	nameNotEqual *string
-	nameLike *string
-	nameNotLike *string
-	description *string
-	descriptionLike *string
-	priority *int32
-	maxPriority *int32
-	minPriority *int32
-	dueDate *string
-	dueDateExpression *string
-	dueAfter *string
-	dueAfterExpression *string
-	dueBefore *string
-	dueBeforeExpression *string
-	withoutDueDate *bool
-	followUpDate *string
-	followUpDateExpression *string
-	followUpAfter *string
-	followUpAfterExpression *string
-	followUpBefore *string
-	followUpBeforeExpression *string
-	followUpBeforeOrNotExistent *string
-	followUpBeforeOrNotExistentExpression *string
-	createdOn *string
-	createdOnExpression *string
-	createdAfter *string
-	createdAfterExpression *string
-	createdBefore *string
-	createdBeforeExpression *string
-	updatedAfter *string
-	updatedAfterExpression *string
-	delegationState *string
-	candidateGroups *string
-	candidateGroupsExpression *string
-	withCandidateGroups *bool
-	withoutCandidateGroups *bool
-	withCandidateUsers *bool
-	withoutCandidateUsers *bool
-	active *bool
-	suspended *bool
-	taskVariables *string
-	processVariables *string
-	caseInstanceVariables *string
-	variableNamesIgnoreCase *bool
-	variableValuesIgnoreCase *bool
-	parentTaskId *string
-	withCommentAttachmentInfo *bool
-	withTaskVariablesInReturn *bool
-	withTaskLocalVariablesInReturn *bool
+	processDefinitionId                      *string
+	processDefinitionKey                     *string
+	processDefinitionKeyIn                   *string
+	processDefinitionName                    *string
+	processDefinitionNameLike                *string
+	executionId                              *string
+	caseInstanceId                           *string
+	caseInstanceBusinessKey                  *string
+	caseInstanceBusinessKeyLike              *string
+	caseDefinitionId                         *string
+	caseDefinitionKey                        *string
+	caseDefinitionName                       *string
+	caseDefinitionNameLike                   *string
+	caseExecutionId                          *string
+	activityInstanceIdIn                     *string
+	tenantIdIn                               *string
+	withoutTenantId                          *bool
+	assignee                                 *string
+	assigneeExpression                       *string
+	assigneeLike                             *string
+	assigneeLikeExpression                   *string
+	assigneeIn                               *string
+	assigneeNotIn                            *string
+	owner                                    *string
+	ownerExpression                          *string
+	candidateGroup                           *string
+	candidateGroupLike                       *string
+	candidateGroupExpression                 *string
+	candidateUser                            *string
+	candidateUserExpression                  *string
+	includeAssignedTasks                     *bool
+	involvedUser                             *string
+	involvedUserExpression                   *string
+	assigned                                 *bool
+	unassigned                               *bool
+	taskDefinitionKey                        *string
+	taskDefinitionKeyIn                      *string
+	taskDefinitionKeyNotIn                   *string
+	taskDefinitionKeyLike                    *string
+	name                                     *string
+	nameNotEqual                             *string
+	nameLike                                 *string
+	nameNotLike                              *string
+	description                              *string
+	descriptionLike                          *string
+	priority                                 *int32
+	maxPriority                              *int32
+	minPriority                              *int32
+	dueDate                                  *string
+	dueDateExpression                        *string
+	dueAfter                                 *string
+	dueAfterExpression                       *string
+	dueBefore                                *string
+	dueBeforeExpression                      *string
+	withoutDueDate                           *bool
+	followUpDate                             *string
+	followUpDateExpression                   *string
+	followUpAfter                            *string
+	followUpAfterExpression                  *string
+	followUpBefore                           *string
+	followUpBeforeExpression                 *string
+	followUpBeforeOrNotExistent              *string
+	followUpBeforeOrNotExistentExpression    *string
+	createdOn                                *string
+	createdOnExpression                      *string
+	createdAfter                             *string
+	createdAfterExpression                   *string
+	createdBefore                            *string
+	createdBeforeExpression                  *string
+	updatedAfter                             *string
+	updatedAfterExpression                   *string
+	delegationState                          *string
+	candidateGroups                          *string
+	candidateGroupsExpression                *string
+	withCandidateGroups                      *bool
+	withoutCandidateGroups                   *bool
+	withCandidateUsers                       *bool
+	withoutCandidateUsers                    *bool
+	active                                   *bool
+	suspended                                *bool
+	taskVariables                            *string
+	processVariables                         *string
+	caseInstanceVariables                    *string
+	variableNamesIgnoreCase                  *bool
+	variableValuesIgnoreCase                 *bool
+	parentTaskId                             *string
+	withCommentAttachmentInfo                *bool
+	withTaskVariablesInReturn                *bool
+	withTaskLocalVariablesInReturn           *bool
 }
 
 // Restrict to task with the given id.
@@ -3232,24 +3239,25 @@ prevent remote code execution. See the section on
 [security considerations](https://docs.operaton.org/manual/1.0/user-guide/process-engine/securing-custom-code/)
 for custom code in the user guide for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetTasksCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetTasksCountRequest
 */
 func (a *TaskAPIService) GetTasksCount(ctx context.Context) ApiGetTasksCountRequest {
 	return ApiGetTasksCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *TaskAPIService) GetTasksCountExecute(r ApiGetTasksCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.GetTasksCount")
@@ -3651,8 +3659,8 @@ func (a *TaskAPIService) GetTasksCountExecute(r ApiGetTasksCountRequest) (*Count
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -3670,9 +3678,9 @@ func (a *TaskAPIService) GetTasksCountExecute(r ApiGetTasksCountRequest) (*Count
 }
 
 type ApiHandleBpmnErrorRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
+	ctx              context.Context
+	ApiService       *TaskAPIService
+	id               string
 	taskBpmnErrorDto *TaskBpmnErrorDto
 }
 
@@ -3693,24 +3701,24 @@ be specified to identify the BPMN error handler. See the documentation for
 [Reporting Bpmn Error](https://docs.operaton.org/manual/1.0/reference/bpmn20/tasks/user-task/#reporting-bpmn-error)
 in User Tasks.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task a BPMN error is reported for.
- @return ApiHandleBpmnErrorRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task a BPMN error is reported for.
+	@return ApiHandleBpmnErrorRequest
 */
 func (a *TaskAPIService) HandleBpmnError(ctx context.Context, id string) ApiHandleBpmnErrorRequest {
 	return ApiHandleBpmnErrorRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) HandleBpmnErrorExecute(r ApiHandleBpmnErrorRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.HandleBpmnError")
@@ -3773,8 +3781,8 @@ func (a *TaskAPIService) HandleBpmnErrorExecute(r ApiHandleBpmnErrorRequest) (*h
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3784,8 +3792,8 @@ func (a *TaskAPIService) HandleBpmnErrorExecute(r ApiHandleBpmnErrorRequest) (*h
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3795,8 +3803,8 @@ func (a *TaskAPIService) HandleBpmnErrorExecute(r ApiHandleBpmnErrorRequest) (*h
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3805,9 +3813,9 @@ func (a *TaskAPIService) HandleBpmnErrorExecute(r ApiHandleBpmnErrorRequest) (*h
 }
 
 type ApiHandleEscalationRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
+	ctx               context.Context
+	ApiService        *TaskAPIService
+	id                string
 	taskEscalationDto *TaskEscalationDto
 }
 
@@ -3828,24 +3836,24 @@ be specified to identify the escalation handler. See the documentation for
 [Reporting Bpmn Escalation](https://docs.operaton.org/manual/1.0/reference/bpmn20/tasks/user-task/#reporting-bpmn-escalation)
 in User Tasks.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task in which context a BPMN escalation is reported.
- @return ApiHandleEscalationRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task in which context a BPMN escalation is reported.
+	@return ApiHandleEscalationRequest
 */
 func (a *TaskAPIService) HandleEscalation(ctx context.Context, id string) ApiHandleEscalationRequest {
 	return ApiHandleEscalationRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) HandleEscalationExecute(r ApiHandleEscalationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.HandleEscalation")
@@ -3908,8 +3916,8 @@ func (a *TaskAPIService) HandleEscalationExecute(r ApiHandleEscalationRequest) (
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3919,8 +3927,8 @@ func (a *TaskAPIService) HandleEscalationExecute(r ApiHandleEscalationRequest) (
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3930,8 +3938,8 @@ func (a *TaskAPIService) HandleEscalationExecute(r ApiHandleEscalationRequest) (
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3940,10 +3948,10 @@ func (a *TaskAPIService) HandleEscalationExecute(r ApiHandleEscalationRequest) (
 }
 
 type ApiQueryTasksRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	firstResult *int32
-	maxResults *int32
+	ctx          context.Context
+	ApiService   *TaskAPIService
+	firstResult  *int32
+	maxResults   *int32
 	taskQueryDto *TaskQueryDto
 }
 
@@ -3984,24 +3992,25 @@ section on
 [security considerations for custom code](https://docs.operaton.org/manual/1.0/user-guide/process-engine/securing-custom-code/)
 in the user guide for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryTasksRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryTasksRequest
 */
 func (a *TaskAPIService) QueryTasks(ctx context.Context) ApiQueryTasksRequest {
 	return ApiQueryTasksRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []TaskWithAttachmentAndCommentDto
+//
+//	@return []TaskWithAttachmentAndCommentDto
 func (a *TaskAPIService) QueryTasksExecute(r ApiQueryTasksRequest) ([]TaskWithAttachmentAndCommentDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []TaskWithAttachmentAndCommentDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []TaskWithAttachmentAndCommentDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.QueryTasks")
@@ -4069,8 +4078,8 @@ func (a *TaskAPIService) QueryTasksExecute(r ApiQueryTasksRequest) ([]TaskWithAt
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4088,8 +4097,8 @@ func (a *TaskAPIService) QueryTasksExecute(r ApiQueryTasksRequest) ([]TaskWithAt
 }
 
 type ApiQueryTasksCountRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
+	ctx          context.Context
+	ApiService   *TaskAPIService
 	taskQueryDto *TaskQueryDto
 }
 
@@ -4116,24 +4125,25 @@ section on
 [security considerations for custom code](https://docs.operaton.org/manual/1.0/user-guide/process-engine/securing-custom-code/)
 in the user guide for details.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiQueryTasksCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiQueryTasksCountRequest
 */
 func (a *TaskAPIService) QueryTasksCount(ctx context.Context) ApiQueryTasksCountRequest {
 	return ApiQueryTasksCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *TaskAPIService) QueryTasksCountExecute(r ApiQueryTasksCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.QueryTasksCount")
@@ -4195,8 +4205,8 @@ func (a *TaskAPIService) QueryTasksCountExecute(r ApiQueryTasksCountRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4214,9 +4224,9 @@ func (a *TaskAPIService) QueryTasksCountExecute(r ApiQueryTasksCountRequest) (*C
 }
 
 type ApiResolveRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
+	ctx             context.Context
+	ApiService      *TaskAPIService
+	id              string
 	completeTaskDto *CompleteTaskDto
 }
 
@@ -4238,24 +4248,24 @@ Resolving a task marks that the assignee is done with the task delegated to them
 that it can be sent back to the owner. Can only be executed when the task has been
 delegated. The assignee will be set to the owner, who performed the delegation.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to resolve.
- @return ApiResolveRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to resolve.
+	@return ApiResolveRequest
 */
 func (a *TaskAPIService) Resolve(ctx context.Context, id string) ApiResolveRequest {
 	return ApiResolveRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) ResolveExecute(r ApiResolveRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.Resolve")
@@ -4318,8 +4328,8 @@ func (a *TaskAPIService) ResolveExecute(r ApiResolveRequest) (*http.Response, er
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -4329,8 +4339,8 @@ func (a *TaskAPIService) ResolveExecute(r ApiResolveRequest) (*http.Response, er
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -4339,10 +4349,10 @@ func (a *TaskAPIService) ResolveExecute(r ApiResolveRequest) (*http.Response, er
 }
 
 type ApiSetAssigneeRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
-	userIdDto *UserIdDto
+	id         string
+	userIdDto  *UserIdDto
 }
 
 // Provide the id of the user that will be the assignee of the task.
@@ -4364,24 +4374,24 @@ Changes the assignee of a task to a specific user.
 method is that this method does not check if the task already has a user
 assigned to it.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to set the assignee for.
- @return ApiSetAssigneeRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to set the assignee for.
+	@return ApiSetAssigneeRequest
 */
 func (a *TaskAPIService) SetAssignee(ctx context.Context, id string) ApiSetAssigneeRequest {
 	return ApiSetAssigneeRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) SetAssigneeExecute(r ApiSetAssigneeRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.SetAssignee")
@@ -4444,8 +4454,8 @@ func (a *TaskAPIService) SetAssigneeExecute(r ApiSetAssigneeRequest) (*http.Resp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -4454,9 +4464,9 @@ func (a *TaskAPIService) SetAssigneeExecute(r ApiSetAssigneeRequest) (*http.Resp
 }
 
 type ApiSubmitRequest struct {
-	ctx context.Context
-	ApiService *TaskAPIService
-	id string
+	ctx             context.Context
+	ApiService      *TaskAPIService
+	id              string
 	completeTaskDto *CompleteTaskDto
 }
 
@@ -4483,26 +4493,27 @@ See the
 [Generated Task Forms](https://docs.operaton.org/manual/1.0/user-guide/task-forms/_index/#generated-task-forms)
 section of the [User Guide](https://docs.operaton.org/manual/1.0/user-guide/) for more information.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to submit the form for.
- @return ApiSubmitRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to submit the form for.
+	@return ApiSubmitRequest
 */
 func (a *TaskAPIService) Submit(ctx context.Context, id string) ApiSubmitRequest {
 	return ApiSubmitRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]VariableValueDto
+//
+//	@return map[string]VariableValueDto
 func (a *TaskAPIService) SubmitExecute(r ApiSubmitRequest) (*map[string]VariableValueDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *map[string]VariableValueDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *map[string]VariableValueDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.Submit")
@@ -4565,8 +4576,8 @@ func (a *TaskAPIService) SubmitExecute(r ApiSubmitRequest) (*map[string]Variable
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 500 {
@@ -4576,8 +4587,8 @@ func (a *TaskAPIService) SubmitExecute(r ApiSubmitRequest) (*map[string]Variable
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -4595,9 +4606,9 @@ func (a *TaskAPIService) SubmitExecute(r ApiSubmitRequest) (*map[string]Variable
 }
 
 type ApiUnclaimRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
+	id         string
 }
 
 func (r ApiUnclaimRequest) Execute() (*http.Response, error) {
@@ -4609,24 +4620,24 @@ Unclaim Unclaim
 
 Resets a task's assignee. If successful, the task is not assigned to a user.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to unclaim.
- @return ApiUnclaimRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to unclaim.
+	@return ApiUnclaimRequest
 */
 func (a *TaskAPIService) Unclaim(ctx context.Context, id string) ApiUnclaimRequest {
 	return ApiUnclaimRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) UnclaimExecute(r ApiUnclaimRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPost
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.Unclaim")
@@ -4687,8 +4698,8 @@ func (a *TaskAPIService) UnclaimExecute(r ApiUnclaimRequest) (*http.Response, er
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -4697,10 +4708,10 @@ func (a *TaskAPIService) UnclaimExecute(r ApiUnclaimRequest) (*http.Response, er
 }
 
 type ApiUpdateTaskRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *TaskAPIService
-	id string
-	taskDto *TaskDto
+	id         string
+	taskDto    *TaskDto
 }
 
 func (r ApiUpdateTaskRequest) TaskDto(taskDto TaskDto) ApiUpdateTaskRequest {
@@ -4717,24 +4728,24 @@ UpdateTask Update
 
 Updates a task.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the task to be updated.
- @return ApiUpdateTaskRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the task to be updated.
+	@return ApiUpdateTaskRequest
 */
 func (a *TaskAPIService) UpdateTask(ctx context.Context, id string) ApiUpdateTaskRequest {
 	return ApiUpdateTaskRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *TaskAPIService) UpdateTaskExecute(r ApiUpdateTaskRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "TaskAPIService.UpdateTask")
@@ -4797,8 +4808,8 @@ func (a *TaskAPIService) UpdateTaskExecute(r ApiUpdateTaskRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -4808,8 +4819,8 @@ func (a *TaskAPIService) UpdateTaskExecute(r ApiUpdateTaskRequest) (*http.Respon
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

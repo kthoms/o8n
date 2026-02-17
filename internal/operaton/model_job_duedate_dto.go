@@ -75,6 +75,7 @@ func (o *JobDuedateDto) HasDuedate() bool {
 func (o *JobDuedateDto) SetDuedate(v time.Time) {
 	o.Duedate.Set(&v)
 }
+
 // SetDuedateNil sets the value for Duedate to be an explicit nil
 func (o *JobDuedateDto) SetDuedateNil() {
 	o.Duedate.Set(nil)
@@ -117,6 +118,7 @@ func (o *JobDuedateDto) HasCascade() bool {
 func (o *JobDuedateDto) SetCascade(v bool) {
 	o.Cascade.Set(&v)
 }
+
 // SetCascadeNil sets the value for Cascade to be an explicit nil
 func (o *JobDuedateDto) SetCascadeNil() {
 	o.Cascade.Set(nil)
@@ -128,7 +130,7 @@ func (o *JobDuedateDto) UnsetCascade() {
 }
 
 func (o JobDuedateDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -181,5 +183,3 @@ func (v *NullableJobDuedateDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

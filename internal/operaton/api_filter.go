@@ -19,13 +19,12 @@ import (
 	"strings"
 )
 
-
 // FilterAPIService FilterAPI service
 type FilterAPIService service
 
 type ApiCreateFilterRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
+	ctx             context.Context
+	ApiService      *FilterAPIService
 	createFilterDto *CreateFilterDto
 }
 
@@ -43,24 +42,25 @@ CreateFilter Create Filter
 
 Creates a new filter.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiCreateFilterRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiCreateFilterRequest
 */
 func (a *FilterAPIService) CreateFilter(ctx context.Context) ApiCreateFilterRequest {
 	return ApiCreateFilterRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return FilterDto
+//
+//	@return FilterDto
 func (a *FilterAPIService) CreateFilterExecute(r ApiCreateFilterRequest) (*FilterDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FilterDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FilterDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.CreateFilter")
@@ -122,8 +122,8 @@ func (a *FilterAPIService) CreateFilterExecute(r ApiCreateFilterRequest) (*Filte
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -133,8 +133,8 @@ func (a *FilterAPIService) CreateFilterExecute(r ApiCreateFilterRequest) (*Filte
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -152,9 +152,9 @@ func (a *FilterAPIService) CreateFilterExecute(r ApiCreateFilterRequest) (*Filte
 }
 
 type ApiDeleteFilterRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
+	id         string
 }
 
 func (r ApiDeleteFilterRequest) Execute() (*http.Response, error) {
@@ -166,24 +166,24 @@ DeleteFilter Delete Filter
 
 Deletes a filter by id.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to be deleted.
- @return ApiDeleteFilterRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to be deleted.
+	@return ApiDeleteFilterRequest
 */
 func (a *FilterAPIService) DeleteFilter(ctx context.Context, id string) ApiDeleteFilterRequest {
 	return ApiDeleteFilterRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *FilterAPIService) DeleteFilterExecute(r ApiDeleteFilterRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodDelete
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodDelete
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.DeleteFilter")
@@ -244,8 +244,8 @@ func (a *FilterAPIService) DeleteFilterExecute(r ApiDeleteFilterRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -255,8 +255,8 @@ func (a *FilterAPIService) DeleteFilterExecute(r ApiDeleteFilterRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -265,9 +265,9 @@ func (a *FilterAPIService) DeleteFilterExecute(r ApiDeleteFilterRequest) (*http.
 }
 
 type ApiExecuteFilterCountRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
+	id         string
 }
 
 func (r ApiExecuteFilterCountRequest) Execute() (*CountResultDto, *http.Response, error) {
@@ -279,26 +279,27 @@ ExecuteFilterCount Execute Filter Count
 
 Executes the saved query of the filter by id and returns the count.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiExecuteFilterCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiExecuteFilterCountRequest
 */
 func (a *FilterAPIService) ExecuteFilterCount(ctx context.Context, id string) ApiExecuteFilterCountRequest {
 	return ApiExecuteFilterCountRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *FilterAPIService) ExecuteFilterCountExecute(r ApiExecuteFilterCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.ExecuteFilterCount")
@@ -359,8 +360,8 @@ func (a *FilterAPIService) ExecuteFilterCountExecute(r ApiExecuteFilterCountRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -370,8 +371,8 @@ func (a *FilterAPIService) ExecuteFilterCountExecute(r ApiExecuteFilterCountRequ
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -389,11 +390,11 @@ func (a *FilterAPIService) ExecuteFilterCountExecute(r ApiExecuteFilterCountRequ
 }
 
 type ApiExecuteFilterListRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
-	id string
+	ctx         context.Context
+	ApiService  *FilterAPIService
+	id          string
 	firstResult *int32
-	maxResults *int32
+	maxResults  *int32
 }
 
 // Pagination of results. Specifies the index of the first result to return.
@@ -417,26 +418,27 @@ ExecuteFilterList Execute Filter List
 
 Executes the saved query of the filter by id and returns the result list.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiExecuteFilterListRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiExecuteFilterListRequest
 */
 func (a *FilterAPIService) ExecuteFilterList(ctx context.Context, id string) ApiExecuteFilterListRequest {
 	return ApiExecuteFilterListRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []map[string]interface{}
+//
+//	@return []map[string]interface{}
 func (a *FilterAPIService) ExecuteFilterListExecute(r ApiExecuteFilterListRequest) ([]map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []map[string]interface{}
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.ExecuteFilterList")
@@ -503,8 +505,8 @@ func (a *FilterAPIService) ExecuteFilterListExecute(r ApiExecuteFilterListReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -514,8 +516,8 @@ func (a *FilterAPIService) ExecuteFilterListExecute(r ApiExecuteFilterListReques
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -533,9 +535,9 @@ func (a *FilterAPIService) ExecuteFilterListExecute(r ApiExecuteFilterListReques
 }
 
 type ApiExecuteFilterSingleResultRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
+	id         string
 }
 
 func (r ApiExecuteFilterSingleResultRequest) Execute() (map[string]interface{}, *http.Response, error) {
@@ -547,26 +549,27 @@ ExecuteFilterSingleResult Execute Filter Single Result
 
 Executes the saved query of the filter by id and returns the single result.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiExecuteFilterSingleResultRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiExecuteFilterSingleResultRequest
 */
 func (a *FilterAPIService) ExecuteFilterSingleResult(ctx context.Context, id string) ApiExecuteFilterSingleResultRequest {
 	return ApiExecuteFilterSingleResultRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]interface{}
+//
+//	@return map[string]interface{}
 func (a *FilterAPIService) ExecuteFilterSingleResultExecute(r ApiExecuteFilterSingleResultRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  map[string]interface{}
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.ExecuteFilterSingleResult")
@@ -627,8 +630,8 @@ func (a *FilterAPIService) ExecuteFilterSingleResultExecute(r ApiExecuteFilterSi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -638,8 +641,8 @@ func (a *FilterAPIService) ExecuteFilterSingleResultExecute(r ApiExecuteFilterSi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -649,8 +652,8 @@ func (a *FilterAPIService) ExecuteFilterSingleResultExecute(r ApiExecuteFilterSi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -668,7 +671,7 @@ func (a *FilterAPIService) ExecuteFilterSingleResultExecute(r ApiExecuteFilterSi
 }
 
 type ApiFilterResourceOptionsRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
 }
 
@@ -679,30 +682,31 @@ func (r ApiFilterResourceOptionsRequest) Execute() (*ResourceOptionsDto, *http.R
 /*
 FilterResourceOptions Filter Resource Options
 
-The OPTIONS request allows you to check for the set of available operations 
+The OPTIONS request allows you to check for the set of available operations
 that the currently authenticated user can perform on the `/filter` resource.
 Whether the user can perform an operation or not may depend on various
 factors, including the users authorizations to interact with this
 resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiFilterResourceOptionsRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiFilterResourceOptionsRequest
 */
 func (a *FilterAPIService) FilterResourceOptions(ctx context.Context) ApiFilterResourceOptionsRequest {
 	return ApiFilterResourceOptionsRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *FilterAPIService) FilterResourceOptionsExecute(r ApiFilterResourceOptionsRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.FilterResourceOptions")
@@ -771,9 +775,9 @@ func (a *FilterAPIService) FilterResourceOptionsExecute(r ApiFilterResourceOptio
 }
 
 type ApiFilterResourceOptionsSingleRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
+	id         string
 }
 
 func (r ApiFilterResourceOptionsSingleRequest) Execute() (*ResourceOptionsDto, *http.Response, error) {
@@ -783,32 +787,33 @@ func (r ApiFilterResourceOptionsSingleRequest) Execute() (*ResourceOptionsDto, *
 /*
 FilterResourceOptionsSingle Filter Resource Options
 
-The OPTIONS request allows you to check for the set of available operations 
+The OPTIONS request allows you to check for the set of available operations
 that the currently authenticated user can perform on the `/filter` resource.
 Whether the user can perform an operation or not may depend on various
 factors, including the users authorizations to interact with this
 resource and the internal configuration of the process engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to be checked.
- @return ApiFilterResourceOptionsSingleRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to be checked.
+	@return ApiFilterResourceOptionsSingleRequest
 */
 func (a *FilterAPIService) FilterResourceOptionsSingle(ctx context.Context, id string) ApiFilterResourceOptionsSingleRequest {
 	return ApiFilterResourceOptionsSingleRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return ResourceOptionsDto
+//
+//	@return ResourceOptionsDto
 func (a *FilterAPIService) FilterResourceOptionsSingleExecute(r ApiFilterResourceOptionsSingleRequest) (*ResourceOptionsDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodOptions
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *ResourceOptionsDto
+		localVarHTTPMethod  = http.MethodOptions
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *ResourceOptionsDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.FilterResourceOptionsSingle")
@@ -878,13 +883,13 @@ func (a *FilterAPIService) FilterResourceOptionsSingleExecute(r ApiFilterResourc
 }
 
 type ApiGetFilterCountRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
-	filterId *string
+	ctx          context.Context
+	ApiService   *FilterAPIService
+	filterId     *string
 	resourceType *string
-	name *string
-	nameLike *string
-	owner *string
+	name         *string
+	nameLike     *string
+	owner        *string
 }
 
 // Filter by the id of the filter.
@@ -925,27 +930,28 @@ func (r ApiGetFilterCountRequest) Execute() (*CountResultDto, *http.Response, er
 GetFilterCount Get Filter Count
 
 Retrieves the number of filters that fulfill a provided query. Corresponds to the
-size of the result set when using the 
+size of the result set when using the
 [Get Filters](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-query/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetFilterCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetFilterCountRequest
 */
 func (a *FilterAPIService) GetFilterCount(ctx context.Context) ApiGetFilterCountRequest {
 	return ApiGetFilterCountRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *FilterAPIService) GetFilterCountExecute(r ApiGetFilterCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.GetFilterCount")
@@ -1020,8 +1026,8 @@ func (a *FilterAPIService) GetFilterCountExecute(r ApiGetFilterCountRequest) (*C
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1039,18 +1045,18 @@ func (a *FilterAPIService) GetFilterCountExecute(r ApiGetFilterCountRequest) (*C
 }
 
 type ApiGetFilterListRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
-	filterId *string
+	ctx          context.Context
+	ApiService   *FilterAPIService
+	filterId     *string
 	resourceType *string
-	name *string
-	nameLike *string
-	owner *string
-	itemCount *bool
-	sortBy *string
-	sortOrder *string
-	firstResult *int32
-	maxResults *int32
+	name         *string
+	nameLike     *string
+	owner        *string
+	itemCount    *bool
+	sortBy       *string
+	sortOrder    *string
+	firstResult  *int32
+	maxResults   *int32
 }
 
 // Filter by the id of the filter.
@@ -1124,24 +1130,25 @@ Queries for a list of filters using a list of parameters. The size of the result
 set can be retrieved
 by using the [Get Filter Count](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-query-count/) method.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiGetFilterListRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@return ApiGetFilterListRequest
 */
 func (a *FilterAPIService) GetFilterList(ctx context.Context) ApiGetFilterListRequest {
 	return ApiGetFilterListRequest{
 		ApiService: a,
-		ctx: ctx,
+		ctx:        ctx,
 	}
 }
 
 // Execute executes the request
-//  @return []FilterDto
+//
+//	@return []FilterDto
 func (a *FilterAPIService) GetFilterListExecute(r ApiGetFilterListRequest) ([]FilterDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []FilterDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []FilterDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.GetFilterList")
@@ -1231,8 +1238,8 @@ func (a *FilterAPIService) GetFilterListExecute(r ApiGetFilterListRequest) ([]Fi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1250,10 +1257,10 @@ func (a *FilterAPIService) GetFilterListExecute(r ApiGetFilterListRequest) ([]Fi
 }
 
 type ApiGetSingleFilterRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
-	itemCount *bool
+	id         string
+	itemCount  *bool
 }
 
 // If set to &#x60;true&#x60;, each filter result will contain an &#x60;itemCount&#x60; property with the number of items matched by the filter itself.
@@ -1271,26 +1278,27 @@ GetSingleFilter Get Single Filter
 
 Retrieves a single filter by id, according to the `Filter` interface in the engine.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to be retrieved.
- @return ApiGetSingleFilterRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to be retrieved.
+	@return ApiGetSingleFilterRequest
 */
 func (a *FilterAPIService) GetSingleFilter(ctx context.Context, id string) ApiGetSingleFilterRequest {
 	return ApiGetSingleFilterRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return FilterDto
+//
+//	@return FilterDto
 func (a *FilterAPIService) GetSingleFilterExecute(r ApiGetSingleFilterRequest) (*FilterDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodGet
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *FilterDto
+		localVarHTTPMethod  = http.MethodGet
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *FilterDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.GetSingleFilter")
@@ -1354,8 +1362,8 @@ func (a *FilterAPIService) GetSingleFilterExecute(r ApiGetSingleFilterRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1365,8 +1373,8 @@ func (a *FilterAPIService) GetSingleFilterExecute(r ApiGetSingleFilterRequest) (
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1384,10 +1392,10 @@ func (a *FilterAPIService) GetSingleFilterExecute(r ApiGetSingleFilterRequest) (
 }
 
 type ApiPostExecuteFilterCountRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
-	body *map[string]interface{}
+	id         string
+	body       *map[string]interface{}
 }
 
 // A JSON object which corresponds to the type of the saved query of the filter, i.e., if the resource type of the filter is Task the body should form a valid task query corresponding to the Task resource.
@@ -1404,29 +1412,30 @@ func (r ApiPostExecuteFilterCountRequest) Execute() (*CountResultDto, *http.Resp
 PostExecuteFilterCount Execute Filter Count (POST)
 
 Executes the saved query of the filter by id and returns the count. This method is
-slightly more powerful then the [Get Execute Filter Count](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-execute-count/) 
+slightly more powerful then the [Get Execute Filter Count](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-execute-count/)
 method because it allows to extend the saved query of the filter.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiPostExecuteFilterCountRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiPostExecuteFilterCountRequest
 */
 func (a *FilterAPIService) PostExecuteFilterCount(ctx context.Context, id string) ApiPostExecuteFilterCountRequest {
 	return ApiPostExecuteFilterCountRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return CountResultDto
+//
+//	@return CountResultDto
 func (a *FilterAPIService) PostExecuteFilterCountExecute(r ApiPostExecuteFilterCountRequest) (*CountResultDto, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  *CountResultDto
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue *CountResultDto
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.PostExecuteFilterCount")
@@ -1489,8 +1498,8 @@ func (a *FilterAPIService) PostExecuteFilterCountExecute(r ApiPostExecuteFilterC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1500,8 +1509,8 @@ func (a *FilterAPIService) PostExecuteFilterCountExecute(r ApiPostExecuteFilterC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1511,8 +1520,8 @@ func (a *FilterAPIService) PostExecuteFilterCountExecute(r ApiPostExecuteFilterC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1530,12 +1539,12 @@ func (a *FilterAPIService) PostExecuteFilterCountExecute(r ApiPostExecuteFilterC
 }
 
 type ApiPostExecuteFilterListRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
-	id string
+	ctx         context.Context
+	ApiService  *FilterAPIService
+	id          string
 	firstResult *int32
-	maxResults *int32
-	body *map[string]interface{}
+	maxResults  *int32
+	body        *map[string]interface{}
 }
 
 // Pagination of results. Specifies the index of the first result to return.
@@ -1564,30 +1573,31 @@ func (r ApiPostExecuteFilterListRequest) Execute() ([]map[string]interface{}, *h
 PostExecuteFilterList Execute Filter List (POST)
 
 Executes the saved query of the filter by id and returns the result list. This
-method is slightly more powerful then the 
+method is slightly more powerful then the
 [Get Execute FilterList](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-execute-list/) method
 because it allows to extend the saved query of the filter.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiPostExecuteFilterListRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiPostExecuteFilterListRequest
 */
 func (a *FilterAPIService) PostExecuteFilterList(ctx context.Context, id string) ApiPostExecuteFilterListRequest {
 	return ApiPostExecuteFilterListRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return []map[string]interface{}
+//
+//	@return []map[string]interface{}
 func (a *FilterAPIService) PostExecuteFilterListExecute(r ApiPostExecuteFilterListRequest) ([]map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  []map[string]interface{}
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue []map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.PostExecuteFilterList")
@@ -1656,8 +1666,8 @@ func (a *FilterAPIService) PostExecuteFilterListExecute(r ApiPostExecuteFilterLi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1667,8 +1677,8 @@ func (a *FilterAPIService) PostExecuteFilterListExecute(r ApiPostExecuteFilterLi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1678,8 +1688,8 @@ func (a *FilterAPIService) PostExecuteFilterListExecute(r ApiPostExecuteFilterLi
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1697,10 +1707,10 @@ func (a *FilterAPIService) PostExecuteFilterListExecute(r ApiPostExecuteFilterLi
 }
 
 type ApiPostExecuteFilterSingleResultRequest struct {
-	ctx context.Context
+	ctx        context.Context
 	ApiService *FilterAPIService
-	id string
-	body *map[string]interface{}
+	id         string
+	body       *map[string]interface{}
 }
 
 // A JSON object which corresponds to the type of the saved query of the filter, i.e., if the resource type of the filter is Task the body should form a valid task query corresponding to the Task resource.
@@ -1720,26 +1730,27 @@ Executes the saved query of the filter by id and returns the single result. This
 powerful then the [Get Execute Filter Single Result](https://docs.operaton.org/manual/1.0/reference/rest/filter/get-execute-single-result/)
 method because it allows to extend the saved query of the filter.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to execute.
- @return ApiPostExecuteFilterSingleResultRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to execute.
+	@return ApiPostExecuteFilterSingleResultRequest
 */
 func (a *FilterAPIService) PostExecuteFilterSingleResult(ctx context.Context, id string) ApiPostExecuteFilterSingleResultRequest {
 	return ApiPostExecuteFilterSingleResultRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
-//  @return map[string]interface{}
+//
+//	@return map[string]interface{}
 func (a *FilterAPIService) PostExecuteFilterSingleResultExecute(r ApiPostExecuteFilterSingleResultRequest) (map[string]interface{}, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPost
-		localVarPostBody     interface{}
-		formFiles            []formFile
-		localVarReturnValue  map[string]interface{}
+		localVarHTTPMethod  = http.MethodPost
+		localVarPostBody    interface{}
+		formFiles           []formFile
+		localVarReturnValue map[string]interface{}
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.PostExecuteFilterSingleResult")
@@ -1802,8 +1813,8 @@ func (a *FilterAPIService) PostExecuteFilterSingleResultExecute(r ApiPostExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1813,8 +1824,8 @@ func (a *FilterAPIService) PostExecuteFilterSingleResultExecute(r ApiPostExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1824,8 +1835,8 @@ func (a *FilterAPIService) PostExecuteFilterSingleResultExecute(r ApiPostExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
@@ -1843,9 +1854,9 @@ func (a *FilterAPIService) PostExecuteFilterSingleResultExecute(r ApiPostExecute
 }
 
 type ApiUpdateFilterRequest struct {
-	ctx context.Context
-	ApiService *FilterAPIService
-	id string
+	ctx             context.Context
+	ApiService      *FilterAPIService
+	id              string
 	createFilterDto *CreateFilterDto
 }
 
@@ -1863,24 +1874,24 @@ UpdateFilter Update Filter
 
 Updates an existing filter.
 
- @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param id The id of the filter to be updated.
- @return ApiUpdateFilterRequest
+	@param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+	@param id The id of the filter to be updated.
+	@return ApiUpdateFilterRequest
 */
 func (a *FilterAPIService) UpdateFilter(ctx context.Context, id string) ApiUpdateFilterRequest {
 	return ApiUpdateFilterRequest{
 		ApiService: a,
-		ctx: ctx,
-		id: id,
+		ctx:        ctx,
+		id:         id,
 	}
 }
 
 // Execute executes the request
 func (a *FilterAPIService) UpdateFilterExecute(r ApiUpdateFilterRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = http.MethodPut
-		localVarPostBody     interface{}
-		formFiles            []formFile
+		localVarHTTPMethod = http.MethodPut
+		localVarPostBody   interface{}
+		formFiles          []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "FilterAPIService.UpdateFilter")
@@ -1943,8 +1954,8 @@ func (a *FilterAPIService) UpdateFilterExecute(r ApiUpdateFilterRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1954,8 +1965,8 @@ func (a *FilterAPIService) UpdateFilterExecute(r ApiUpdateFilterRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1965,8 +1976,8 @@ func (a *FilterAPIService) UpdateFilterExecute(r ApiUpdateFilterRequest) (*http.
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-					newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
-					newErr.model = v
+			newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+			newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

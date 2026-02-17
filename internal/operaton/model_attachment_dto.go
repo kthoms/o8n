@@ -124,6 +124,7 @@ func (o *AttachmentDto) HasId() bool {
 func (o *AttachmentDto) SetId(v string) {
 	o.Id.Set(&v)
 }
+
 // SetIdNil sets the value for Id to be an explicit nil
 func (o *AttachmentDto) SetIdNil() {
 	o.Id.Set(nil)
@@ -166,6 +167,7 @@ func (o *AttachmentDto) HasName() bool {
 func (o *AttachmentDto) SetName(v string) {
 	o.Name.Set(&v)
 }
+
 // SetNameNil sets the value for Name to be an explicit nil
 func (o *AttachmentDto) SetNameNil() {
 	o.Name.Set(nil)
@@ -208,6 +210,7 @@ func (o *AttachmentDto) HasDescription() bool {
 func (o *AttachmentDto) SetDescription(v string) {
 	o.Description.Set(&v)
 }
+
 // SetDescriptionNil sets the value for Description to be an explicit nil
 func (o *AttachmentDto) SetDescriptionNil() {
 	o.Description.Set(nil)
@@ -250,6 +253,7 @@ func (o *AttachmentDto) HasTaskId() bool {
 func (o *AttachmentDto) SetTaskId(v string) {
 	o.TaskId.Set(&v)
 }
+
 // SetTaskIdNil sets the value for TaskId to be an explicit nil
 func (o *AttachmentDto) SetTaskIdNil() {
 	o.TaskId.Set(nil)
@@ -292,6 +296,7 @@ func (o *AttachmentDto) HasType() bool {
 func (o *AttachmentDto) SetType(v string) {
 	o.Type.Set(&v)
 }
+
 // SetTypeNil sets the value for Type to be an explicit nil
 func (o *AttachmentDto) SetTypeNil() {
 	o.Type.Set(nil)
@@ -334,6 +339,7 @@ func (o *AttachmentDto) HasUrl() bool {
 func (o *AttachmentDto) SetUrl(v string) {
 	o.Url.Set(&v)
 }
+
 // SetUrlNil sets the value for Url to be an explicit nil
 func (o *AttachmentDto) SetUrlNil() {
 	o.Url.Set(nil)
@@ -376,6 +382,7 @@ func (o *AttachmentDto) HasCreateTime() bool {
 func (o *AttachmentDto) SetCreateTime(v time.Time) {
 	o.CreateTime.Set(&v)
 }
+
 // SetCreateTimeNil sets the value for CreateTime to be an explicit nil
 func (o *AttachmentDto) SetCreateTimeNil() {
 	o.CreateTime.Set(nil)
@@ -418,6 +425,7 @@ func (o *AttachmentDto) HasRemovalTime() bool {
 func (o *AttachmentDto) SetRemovalTime(v time.Time) {
 	o.RemovalTime.Set(&v)
 }
+
 // SetRemovalTimeNil sets the value for RemovalTime to be an explicit nil
 func (o *AttachmentDto) SetRemovalTimeNil() {
 	o.RemovalTime.Set(nil)
@@ -460,6 +468,7 @@ func (o *AttachmentDto) HasRootProcessInstanceId() bool {
 func (o *AttachmentDto) SetRootProcessInstanceId(v string) {
 	o.RootProcessInstanceId.Set(&v)
 }
+
 // SetRootProcessInstanceIdNil sets the value for RootProcessInstanceId to be an explicit nil
 func (o *AttachmentDto) SetRootProcessInstanceIdNil() {
 	o.RootProcessInstanceId.Set(nil)
@@ -471,7 +480,7 @@ func (o *AttachmentDto) UnsetRootProcessInstanceId() {
 }
 
 func (o AttachmentDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -548,5 +557,3 @@ func (v *NullableAttachmentDto) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-

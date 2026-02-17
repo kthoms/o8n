@@ -74,6 +74,7 @@ func (o *AbstractVendorVersionInformationDto) HasVendor() bool {
 func (o *AbstractVendorVersionInformationDto) SetVendor(v string) {
 	o.Vendor.Set(&v)
 }
+
 // SetVendorNil sets the value for Vendor to be an explicit nil
 func (o *AbstractVendorVersionInformationDto) SetVendorNil() {
 	o.Vendor.Set(nil)
@@ -116,6 +117,7 @@ func (o *AbstractVendorVersionInformationDto) HasVersion() bool {
 func (o *AbstractVendorVersionInformationDto) SetVersion(v string) {
 	o.Version.Set(&v)
 }
+
 // SetVersionNil sets the value for Version to be an explicit nil
 func (o *AbstractVendorVersionInformationDto) SetVersionNil() {
 	o.Version.Set(nil)
@@ -127,7 +129,7 @@ func (o *AbstractVendorVersionInformationDto) UnsetVersion() {
 }
 
 func (o AbstractVendorVersionInformationDto) MarshalJSON() ([]byte, error) {
-	toSerialize,err := o.ToMap()
+	toSerialize, err := o.ToMap()
 	if err != nil {
 		return []byte{}, err
 	}
@@ -180,5 +182,3 @@ func (v *NullableAbstractVendorVersionInformationDto) UnmarshalJSON(src []byte) 
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }
-
-
