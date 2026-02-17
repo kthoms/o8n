@@ -375,17 +375,23 @@ func TestEditableColumnsMarkedWithIndicator(t *testing.T) {
 		t.Fatalf("expected 2 rows, got %d", len(rows))
 	}
 
-	// First column (name) should NOT have [E] marker
+	// First column (name) should NOT have [E] marker in cell values
 	if strings.Contains(rows[0][0], "[E]") {
-		t.Errorf("name column should not be marked as editable, got: %s", rows[0][0])
+		t.Errorf("name column should not be marked in cell values, got: %s", rows[0][0])
 	}
 
-	// Second column (value) SHOULD have [E] marker
-	if !strings.Contains(rows[0][1], "[E]") {
-		t.Errorf("value column should be marked as editable with [E], got: %s", rows[0][1])
+	// Editable columns are now indicated in the header with a write emoji.
+	cols := m.table.Columns()
+	if len(cols) < 2 {
+		t.Fatalf("expected at least 2 columns, got %d", len(cols))
 	}
-	if !strings.HasSuffix(rows[0][1], "[E]") {
-		t.Errorf("value column should end with [E], got: %s", rows[0][1])
+	// First column header should NOT contain the write emoji
+	if strings.Contains(cols[0].Title, "🖍️") {
+		t.Errorf("name column header should not be marked editable, got: %s", cols[0].Title)
+	}
+	// Second column header SHOULD contain the write emoji
+	if !strings.Contains(cols[1].Title, "🖍️") {
+		t.Errorf("value column header should be marked editable with ✍️, got: %s", cols[1].Title)
 	}
 }
 

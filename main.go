@@ -1073,8 +1073,9 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		}
 		used += w
 		title := strings.ToUpper(visible[i].Name)
+		// mark editable columns with a write emoji in the header
 		if visible[i].Editable {
-			title = title + "*"
+			title = title + " 🖍️"
 		}
 		cols = append(cols, table.Column{Title: title, Width: w})
 	}
@@ -1115,7 +1116,6 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
-	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessDefinitions)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "definitions"
@@ -1146,7 +1146,6 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
-	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessInstances)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "instances"
@@ -1181,7 +1180,6 @@ func (m *model) applyVariables(vars []config.Variable) {
 		colsCount = len(cols)
 	}
 	normRows := normalizeRows(rows, colsCount)
-	normRows = m.addEditableMarkers(normRows, dao.ResourceProcessVariables)
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "variables"
