@@ -1415,8 +1415,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Show help screen
 			m.activeModal = ModalHelp
 			return m, nil
-		case "ctrl+c", "q":
-			// Quit (ctrl+c is standard, q for convenience)
+		case "ctrl+c":
+			// Quit via <ctrl>+c only; do not exit on plain 'q'
 			return m, tea.Quit
 		case "ctrl+e":
 			// Switch environment
