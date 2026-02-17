@@ -19,6 +19,7 @@ import (
 	"github.com/kthoms/o8n/internal/client"
 	"github.com/kthoms/o8n/internal/config"
 	"github.com/kthoms/o8n/internal/dao"
+	"golang.org/x/term"
 )
 
 const refreshInterval = 5 * time.Second
@@ -388,6 +389,16 @@ func newModel(cfg *config.Config) model {
 
 	// sensible defaults so the header is visible immediately
 	m.lastWidth = 80
+	m.lastHeight = 24
+	// try to detect actual terminal size right away so we use full width
+	if w, h, err := term.GetSize(int(os.Stdout.Fd())); err == nil {
+		if w > 0 {
+			m.lastWidth = w
+		}
+		if h > 0 {
+			m.lastHeight = h
+		}
+	}
 	// compute default paneWidth as remaining width after left column + margins
 	leftW := m.lastWidth / 4
 	m.paneWidth = m.lastWidth - leftW - 4
@@ -1604,6 +1615,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.contentHeader = fmt.Sprintf("process-instances(%s)", val)
 					// reset cursor to row 0
 					m.table.SetCursor(0)
+					// immediately set variables columns and clear rows while loading to avoid showing previous rows
+					colsVarView := m.buildColumnsFor(dao.ResourceProcessVariables, m.paneWidth-4)
+					if len(colsVarView) > 0 {
+						// set rows first to match the new column count, then set columns
+						m.table.SetRows(normalizeRows(nil, len(colsVarView)))
+						m.table.SetColumns(colsVarView)
+					} else {
+						m.table.SetRows([]table.Row{})
+					}
 					return m, tea.Batch(m.fetchVariablesCmd(val), flashOnCmd())
 
 				default:
@@ -1671,6 +1691,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
 				// reset cursor to row 0
 				m.table.SetCursor(0)
+				// immediately set variables columns and clear rows while loading to avoid showing previous rows
+				colsVarView2 := m.buildColumnsFor(dao.ResourceProcessVariables, m.paneWidth-4)
+				if len(colsVarView2) > 0 {
+					// set rows first to match the new column count, then set columns
+					m.table.SetRows(normalizeRows(nil, len(colsVarView2)))
+					m.table.SetColumns(colsVarView2)
+				} else {
+					m.table.SetRows([]table.Row{})
+				}
 				return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
 			}
 
@@ -2007,7 +2036,16 @@ func (m model) View() string {
 		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
 	}
 
-	return baseView
+	// Ensure the main UI uses the full terminal area to avoid trailing space artifacts
+	w := m.lastWidth
+	h := m.lastHeight
+	if w <= 0 {
+		w = 80
+	}
+	if h <= 0 {
+		h = 24
+	}
+	return lipgloss.Place(w, h, lipgloss.Left, lipgloss.Top, baseView)
 }
 
 func rowInstanceID(row table.Row) string {
