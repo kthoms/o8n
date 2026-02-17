@@ -308,17 +308,8 @@ func (m *model) renderCompactHeader(width int) string {
 	// Join rows
 	header := fmt.Sprintf("%s\n%s\n%s", row1, row2, row3)
 
-	// Always render header with a visible background so it's readable across terminals
-	// Use environment UI color as accent if provided
-	fg := "white"
-	if m.config != nil {
-		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			if env.UIColor != "" {
-				fg = env.UIColor
-			}
-		}
-	}
-	headerStyle := lipgloss.NewStyle().Width(width).Padding(0, 1).Background(lipgloss.Color("#2b2b2b")).Foreground(lipgloss.Color(fg)).Bold(true)
+	// Render header using default terminal colors (no forced background/foreground).
+	headerStyle := lipgloss.NewStyle().Width(width).Padding(0, 1).Bold(true)
 	return headerStyle.Render(header)
 }
 
@@ -1791,11 +1782,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.lastWidth = width
 		m.lastHeight = height
 		// Reserve lines: compact header 3 rows + content header 1 row + context selection 1 line + footer 1 line
-		headerLines := 4 // compactHeader (3) + content header (1)
+		headerLines := 2 // compactHeader (3) + content header (1)
 		contextSelectionLines := 1
 		footerLines := 1
 		// reserve an extra safe line to avoid off-by-one overflow
-		contentHeight := height - headerLines - contextSelectionLines - footerLines - 1
+		// reduce content height by one more line so the content section is
+		// one line less high than before
+		contentHeight := height - headerLines - contextSelectionLines - footerLines
 		if contentHeight < 3 {
 			contentHeight = 3
 		}
@@ -1974,8 +1967,8 @@ func (m model) View() string {
 
 	// Main UI - use compact 3-row header
 	compactHeader := m.renderCompactHeader(m.lastWidth)
-	// Ensure compact header occupies exactly 3 rows so it remains visible
-	compactHeader = lipgloss.Place(m.lastWidth, 3, lipgloss.Left, lipgloss.Center, compactHeader)
+	// Ensure compact header occupies exactly 4 rows (one extra top spacer)
+	compactHeader = lipgloss.Place(m.lastWidth, 4, lipgloss.Left, lipgloss.Center, compactHeader)
 
 	// get border color
 	color := ""
@@ -2026,6 +2019,18 @@ func (m model) View() string {
 	// embedded into the content border by the custom box renderer below.
 	headerStack := compactHeader
 
+	// recompute pane width from current terminal width to ensure the content
+	// box matches the intended pane area (accounts for left column)
+	leftW := m.lastWidth / 4
+	if leftW < 12 {
+		leftW = 12
+	}
+	// reserve margins (4) like in sizing logic
+	pw = m.lastWidth - leftW - 4
+	if pw < 10 {
+		pw = 10
+	}
+
 	// render the main content box with title embedded into top border
 	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, m.contentHeader, color)
 
@@ -2066,7 +2071,7 @@ func (m model) View() string {
 	spacer := strings.Repeat(" ", padW)
 	footerLine := leftPart + spacer + rightPart
 
-	// Compose final vertical layout: compactHeader (3 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row)
+	// Compose final vertical layout: compactHeader (4 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row)
 	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
 
 	// If modal is active, overlay it
@@ -2163,21 +2168,38 @@ func renderBoxWithTitle(content string, totalWidth, totalHeight int, title, colo
 	bottom := "└" + strings.Repeat("─", innerWidth) + "┘"
 
 	var b strings.Builder
-	b.WriteString(top)
+	// Prepare border style if color provided
+	var borderStyle lipgloss.Style
+	useBorderColor := color != ""
+	if useBorderColor {
+		borderStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color))
+	}
+
+	if useBorderColor {
+		b.WriteString(borderStyle.Render(top))
+	} else {
+		b.WriteString(top)
+	}
 	b.WriteString("\n")
 	for _, l := range lines {
-		b.WriteString("│")
-		b.WriteString(l)
-		b.WriteString("│")
+		if useBorderColor {
+			b.WriteString(borderStyle.Render("│"))
+			b.WriteString(l)
+			b.WriteString(borderStyle.Render("│"))
+		} else {
+			b.WriteString("│")
+			b.WriteString(l)
+			b.WriteString("│")
+		}
 		b.WriteString("\n")
 	}
-	b.WriteString(bottom)
-
-	out := b.String()
-	if color != "" {
-		out = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Render(out)
+	if useBorderColor {
+		b.WriteString(borderStyle.Render(bottom))
+	} else {
+		b.WriteString(bottom)
 	}
-	return out
+
+	return b.String()
 }
 
 // navigateToBreadcrumb moves the UI state to the breadcrumb level at idx (0-based).
