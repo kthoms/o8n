@@ -1446,6 +1446,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		switch s {
+		case "q", "Q":
+			// Ignore plain 'q'/'Q' to avoid accidental quit; only ctrl+c quits.
+			return m, nil
 		case "?":
 			// Show help screen
 			m.activeModal = ModalHelp
