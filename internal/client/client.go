@@ -5,6 +5,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/url"
+	"os"
+	"path/filepath"
+	"sync"
 	"time"
 
 	"github.com/kthoms/o8n/internal/config"
@@ -17,6 +21,10 @@ type Client struct {
 	httpClient  *http.Client
 	operatonAPI *operaton.APIClient
 	authContext context.Context
+	// debug logging
+	debugEnabled bool
+	debugFile    *os.File
+	mu           sync.Mutex
 }
 
 // NewClient creates a Client with a default timeout.
@@ -49,16 +57,42 @@ func NewClient(env config.Environment) *Client {
 	}
 	authContext := context.WithValue(context.Background(), operaton.ContextBasicAuth, auth)
 
-	return &Client{
+	c := &Client{
 		env:         env,
 		httpClient:  httpClient,
 		operatonAPI: apiClient,
 		authContext: authContext,
 	}
+
+	// enable debug logging if O8N_DEBUG env var is set
+	if os.Getenv("O8N_DEBUG") != "" {
+		_ = os.MkdirAll("./debug", 0755)
+		path := filepath.Join("./debug", "access.log")
+		f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+		if err == nil {
+			c.debugEnabled = true
+			c.debugFile = f
+		}
+	}
+
+	return c
+}
+
+func (c *Client) logf(format string, a ...interface{}) {
+	if !c.debugEnabled || c.debugFile == nil {
+		return
+	}
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	ts := time.Now().Format(time.RFC3339)
+	line := fmt.Sprintf("%s %s\n", ts, fmt.Sprintf(format, a...))
+	_, _ = c.debugFile.WriteString(line)
 }
 
 // FetchProcessDefinitions retrieves all process definitions using the generated client.
 func (c *Client) FetchProcessDefinitions() ([]config.ProcessDefinition, error) {
+	c.logf("API: FetchProcessDefinitions")
+	c.logf("API: GET /process-definition")
 	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
@@ -92,6 +126,14 @@ func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, er
 		req = req.ProcessDefinitionKey(processKey)
 	}
 
+	c.logf("API: FetchInstances processKey=%q", processKey)
+	if processKey == "" {
+		c.logf("API: GET /process-instance")
+	} else {
+		q := url.Values{}
+		q.Set("processDefinitionKey", processKey)
+		c.logf("API: GET /process-instance?%s", q.Encode())
+	}
 	instances, _, err := req.Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch instances: %w", err)
@@ -117,6 +159,8 @@ func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, er
 // FetchVariables retrieves variables for a process instance using the generated client.
 // The Operaton API returns a map of variable names to variable values.
 func (c *Client) FetchVariables(instanceID string) ([]config.Variable, error) {
+	c.logf("API: FetchVariables instanceID=%q", instanceID)
+	c.logf("API: GET /process-instance/{id}/variables")
 	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch variables: %w", err)
@@ -145,6 +189,8 @@ func (c *Client) SetProcessInstanceVariable(instanceID, varName string, value in
 	if valueType != "" {
 		dto.SetType(valueType)
 	}
+	c.logf("API: SetProcessInstanceVariable instanceID=%q var=%q type=%q value=%v", instanceID, varName, valueType, value)
+	c.logf("API: PUT /process-instance/{id}/variables/{varName}")
 	_, err := c.operatonAPI.ProcessInstanceAPI.SetProcessInstanceVariable(c.authContext, instanceID, varName).
 		VariableValueDto(dto).
 		Execute()
@@ -156,6 +202,8 @@ func (c *Client) SetProcessInstanceVariable(instanceID, varName string, value in
 
 // TerminateInstance terminates a process instance using the generated client.
 func (c *Client) TerminateInstance(instanceID string) error {
+	c.logf("API: TerminateInstance instanceID=%q", instanceID)
+	c.logf("API: DELETE /process-instance/{id}")
 	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()
 	if err != nil {
 		return fmt.Errorf("failed to terminate instance %s: %w", instanceID, err)

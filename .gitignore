@@ -32,6 +32,7 @@ o8n
 
 # User config file (use o8n-env.yaml.example as template)
 o8n-env.yaml
+debug/
 
 # Editor/IDE
 .idea/

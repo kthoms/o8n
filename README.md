@@ -116,6 +116,34 @@ go build -o o8n .
 - Breadcrumb navigation in footer
 - Intuitive back navigation with `Esc`
 
+### Debug Mode
+
+Run the application with `--debug` to enable debug diagnostics and API access logging:
+
+```bash
+./o8n --debug
+```
+
+When enabled the application creates a `./debug` directory and writes two files:
+
+- `./debug/last-screen.txt` — a dump of the last rendered TUI frame (useful for reproducing layout issues)
+- `./debug/access.log` — an append-only log of API calls. Each API call is logged as two lines:
+
+Example:
+
+```
+2026-02-17T02:11:25+01:00 API: FetchVariables instanceID="076899d8-0b54-11f1-b360-0242ac110002"
+2026-02-17T02:11:25+01:00 API: GET /process-instance/{id}/variables
+```
+
+Query parameters are shown as a URL query string when present, e.g.:
+
+```
+2026-02-17T02:24:34+01:00 API: GET /process-instance?processDefinitionKey=invoice
+```
+
+The debug files are intended for troubleshooting and are safe to remove after use.
+
 ### Configuration Files
 
 **o8n-env.yaml** (Environment Configuration):

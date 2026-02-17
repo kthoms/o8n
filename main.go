@@ -219,7 +219,8 @@ type model struct {
 	variablesByName map[string]config.Variable
 
 	// Version number
-	version string
+	version      string
+	debugEnabled bool
 }
 
 // getKeyHints returns keyboard hints based on current view and terminal width
@@ -284,7 +285,7 @@ func (m *model) renderCompactHeader(width int) string {
 		}
 	}
 
-	row1 := fmt.Sprintf("o8n %s │ %s", m.version, envInfo)
+	row1 := fmt.Sprintf("[H] o8n %s │ %s", m.version, envInfo)
 	if len(row1) > width-4 {
 		row1 = row1[:width-7] + "..."
 	}
@@ -307,18 +308,17 @@ func (m *model) renderCompactHeader(width int) string {
 	// Join rows
 	header := fmt.Sprintf("%s\n%s\n%s", row1, row2, row3)
 
-	// Style with color
-	color := ""
+	// Always render header with a visible background so it's readable across terminals
+	// Use environment UI color as accent if provided
+	fg := "white"
 	if m.config != nil {
 		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			color = env.UIColor
+			if env.UIColor != "" {
+				fg = env.UIColor
+			}
 		}
 	}
-	headerStyle := lipgloss.NewStyle().Width(width).Padding(0, 1)
-	if color != "" {
-		headerStyle = headerStyle.Foreground(lipgloss.Color(color))
-	}
-
+	headerStyle := lipgloss.NewStyle().Width(width).Padding(0, 1).Background(lipgloss.Color("#2b2b2b")).Foreground(lipgloss.Color(fg)).Bold(true)
 	return headerStyle.Render(header)
 }
 
@@ -370,6 +370,7 @@ func newModel(cfg *config.Config) model {
 		activeModal:     ModalNone,
 		version:         "0.1.0",
 		variablesByName: map[string]config.Variable{},
+		debugEnabled:    false,
 	}
 
 	// edit input defaults
@@ -401,11 +402,33 @@ func newModel(cfg *config.Config) model {
 	}
 	// compute default paneWidth as remaining width after left column + margins
 	leftW := m.lastWidth / 4
+	if leftW < 12 {
+		leftW = 12
+	}
 	m.paneWidth = m.lastWidth - leftW - 4
 	if m.paneWidth < 20 {
 		m.paneWidth = m.lastWidth - 4
 	}
-	m.paneHeight = 12
+	// compute content height reserving header/context/footer lines so header is visible
+	// compactHeader (3 lines) + content header (1 line) = 4 header lines total
+	headerLines := 4
+	contextSelectionLines := 1
+	footerLines := 1
+	// reserve an extra safe line to avoid off-by-one overflow
+	contentHeight := m.lastHeight - headerLines - contextSelectionLines - footerLines - 1
+	if contentHeight < 3 {
+		contentHeight = 3
+	}
+	m.paneHeight = contentHeight
+
+	// initialize list/table sizes to match detected terminal size
+	m.list.SetSize(leftW-2, contentHeight-1)
+	tableInner := m.paneWidth - 4
+	if tableInner < 10 {
+		tableInner = 10
+	}
+	m.table.SetWidth(tableInner)
+	m.table.SetHeight(contentHeight - 1)
 
 	// set root contexts and currentRoot
 	m.rootContexts = loadRootContexts("resources/operaton-rest-api.json")
@@ -1752,11 +1775,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// store terminal size for View footer alignment
 		m.lastWidth = width
 		m.lastHeight = height
-		// Reserve lines: compact header 3 rows + context selection 1 line + footer 1 line
-		headerLines := 3 // Reduced from 8 to 3 for compact header
+		// Reserve lines: compact header 3 rows + content header 1 row + context selection 1 line + footer 1 line
+		headerLines := 4 // compactHeader (3) + content header (1)
 		contextSelectionLines := 1
 		footerLines := 1
-		contentHeight := height - headerLines - contextSelectionLines - footerLines
+		// reserve an extra safe line to avoid off-by-one overflow
+		contentHeight := height - headerLines - contextSelectionLines - footerLines - 1
 		if contentHeight < 3 {
 			contentHeight = 3
 		}
@@ -1935,6 +1959,8 @@ func (m model) View() string {
 
 	// Main UI - use compact 3-row header
 	compactHeader := m.renderCompactHeader(m.lastWidth)
+	// Ensure compact header occupies exactly 3 rows so it remains visible
+	compactHeader = lipgloss.Place(m.lastWidth, 3, lipgloss.Left, lipgloss.Center, compactHeader)
 
 	// get border color
 	color := ""
@@ -1968,12 +1994,8 @@ func (m model) View() string {
 			Padding(0, 1)
 		contextSelectionBox = boxStyle.Render(displayText)
 	} else {
-		boxStyle := lipgloss.NewStyle().
-			BorderStyle(lipgloss.NormalBorder()).
-			BorderForeground(lipgloss.Color(color)).
-			Width(m.lastWidth-4).
-			Padding(0, 1)
-		contextSelectionBox = boxStyle.Render(" ")
+		// do not render an empty boxed context selection when popup is inactive
+		contextSelectionBox = ""
 	}
 
 	// main content boxed (table)
@@ -1989,6 +2011,9 @@ func (m model) View() string {
 	// render content header as a centered small box above the table
 	headerStyle := lipgloss.NewStyle().Width(pw).Align(lipgloss.Center).Bold(true).Foreground(lipgloss.Color(color))
 	headerBox := headerStyle.Render(m.contentHeader)
+
+	// combine compact header and content header into a single header stack so it's always visible
+	headerStack := lipgloss.JoinVertical(lipgloss.Center, compactHeader, headerBox)
 
 	mainBox := mainBoxStyle.Width(pw).Height(m.paneHeight).Render(m.table.View())
 
@@ -2024,7 +2049,7 @@ func (m model) View() string {
 	footerLine := leftPart + spacer + rightPart
 
 	// Compose final vertical layout: compactHeader (3 rows), contextSelectionBox (1 row), headerBox, mainBox, footerLine (1 row)
-	baseView := lipgloss.JoinVertical(lipgloss.Left, compactHeader, contextSelectionBox, headerBox, mainBox, footerLine)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
 
 	// If modal is active, overlay it
 	if m.activeModal == ModalConfirmDelete {
@@ -2044,6 +2069,13 @@ func (m model) View() string {
 	}
 	if h <= 0 {
 		h = 24
+	}
+	// Optionally write last rendered view to ./debug/last-screen.txt when debug enabled
+	if m.debugEnabled {
+		go func(s string) {
+			_ = os.MkdirAll("./debug", 0755)
+			_ = os.WriteFile("./debug/last-screen.txt", []byte(s), 0644)
+		}(baseView)
 	}
 	return lipgloss.Place(w, h, lipgloss.Left, lipgloss.Top, baseView)
 }
@@ -2201,6 +2233,13 @@ func loadRootContexts(specPath string) []string {
 }
 
 func main() {
+	debugMode := false
+	for _, a := range os.Args[1:] {
+		if a == "--debug" {
+			debugMode = true
+			break
+		}
+	}
 	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
 	cfg, err := config.LoadSplitConfig()
 	if err != nil {
@@ -2214,7 +2253,13 @@ func main() {
 		return
 	}
 
-	if _, err := tea.NewProgram(newModel(cfg)).Run(); err != nil {
+	m := newModel(cfg)
+	if debugMode {
+		// ensure internal client picks up debug mode
+		_ = os.Setenv("O8N_DEBUG", "1")
+		m.debugEnabled = true
+	}
+	if _, err := tea.NewProgram(m).Run(); err != nil {
 		log.Fatalf("failed to run program: %v", err)
 	}
 }
