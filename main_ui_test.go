@@ -184,7 +184,7 @@ func TestConfigDrivenDrilldownFromDefinitionToInstances(t *testing.T) {
 		t.Fatalf("expected viewMode instances after drill, got %s", m2.viewMode)
 	}
 	// simulate the fetch that would be scheduled by the program (fetchInstancesCmd)
-	fetchMsg := m2.fetchInstancesCmd("k1")()
+	fetchMsg := m2.fetchInstancesCmd("processDefinitionKey", "k1")()
 	res2, _ := m2.Update(fetchMsg)
 	m3 := res2.(model)
 	rows := m3.table.Rows()
@@ -304,7 +304,7 @@ func TestNavigationStackPreservesRowSelection(t *testing.T) {
 	}
 
 	// simulate the fetch
-	fetchMsg := m2.fetchInstancesCmd("k3")()
+	fetchMsg := m2.fetchInstancesCmd("processDefinitionKey", "k3")()
 	res2, _ := m2.Update(fetchMsg)
 	m3 := res2.(model)
 
@@ -475,7 +475,7 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 		t.Fatalf("expected instances, got %s", m2.viewMode)
 	}
 	// simulate fetchInstances
-	fetchMsg := m2.fetchInstancesCmd("k1")()
+	fetchMsg := m2.fetchInstancesCmd("processDefinitionKey", "k1")()
 	res2, _ := m2.Update(fetchMsg)
 	m3 := res2.(model)
 

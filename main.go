@@ -1202,27 +1202,26 @@ func (m model) fetchDefinitionsCmd() tea.Cmd {
 	}
 }
 
-func (m model) fetchInstancesCmd(processIdentifier string) tea.Cmd {
+func (m model) fetchInstancesCmd(paramName, paramValue string) tea.Cmd {
 	env, ok := m.config.Environments[m.currentEnv]
 	if !ok {
 		return nil
 	}
 	c := client.NewClient(env)
 	return func() tea.Msg {
-		// resolve identifier: it may be a definition key or an id
-		id := processIdentifier
-		for _, d := range m.cachedDefinitions {
-			if d.Key == processIdentifier {
-				id = d.ID
-				break
-			}
-			if d.ID == processIdentifier {
-				id = d.ID
-				break
+		// If caller asked for a definition id but provided a key, resolve it from cache
+		value := paramValue
+		if paramName == "processDefinitionId" {
+			// try to map key -> id when possible
+			for _, d := range m.cachedDefinitions {
+				if d.Key == paramValue {
+					value = d.ID
+					break
+				}
 			}
 		}
 
-		instances, err := c.FetchInstances(id)
+		instances, err := c.FetchInstances(paramName, value)
 		if err != nil {
 			return errMsg{err}
 		}
@@ -1274,7 +1273,7 @@ func (m model) fetchDataCmd() tea.Cmd {
 
 		var instances []config.ProcessInstance
 		if selectedKey != "" {
-			instances, err = c.FetchInstances(selectedKey)
+			instances, err = c.FetchInstances("processDefinitionKey", selectedKey)
 			if err != nil {
 				return errMsg{err}
 			}
@@ -1622,7 +1621,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, val)
 					// reset cursor to row 0
 					m.table.SetCursor(0)
-					return m, tea.Batch(m.fetchInstancesCmd(val), flashOnCmd())
+					return m, tea.Batch(m.fetchInstancesCmd(chosen.Param, val), flashOnCmd())
 				case "process-variables", "variables", "variable-instance", "variable-instances":
 					// instances -> variables (expects an instance id)
 					// Save current state before performing the drilldown to variables
@@ -1698,7 +1697,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
 				// reset cursor to row 0
 				m.table.SetCursor(0)
-				return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
+				return m, tea.Batch(m.fetchInstancesCmd("processDefinitionKey", key), flashOnCmd())
 			} else if m.viewMode == "instances" {
 				// Fallback instances -> variables: save state then drill
 				cols4 := m.table.Columns()
@@ -2123,7 +2122,7 @@ func (m *model) navigateToBreadcrumb(idx int) tea.Cmd {
 		}
 		m.viewMode = "instances"
 		m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, m.selectedDefinitionKey)
-		return tea.Batch(m.fetchInstancesCmd(m.selectedDefinitionKey), flashOnCmd())
+		return tea.Batch(m.fetchInstancesCmd("processDefinitionKey", m.selectedDefinitionKey), flashOnCmd())
 	case "variables":
 		if m.selectedInstanceID == "" {
 			m.footerError = "No instance selected to show variables"

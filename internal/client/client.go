@@ -1,37 +1,192 @@
-// Package client provides API client functionality for Operaton
 package client
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
 	"path/filepath"
+	"strings"
 	"sync"
 	"time"
 
-	"github.com/kthoms/o8n/internal/config"
-	"github.com/kthoms/o8n/internal/operaton"
+	cfgpkg "github.com/kthoms/o8n/internal/config"
+
+	operaton "github.com/kthoms/o8n/internal/operaton"
 )
 
-// Client represents an API client bound to a specific environment.
 type Client struct {
-	env         config.Environment
+	api    *operaton.APIClient
+	base   string
+	debug  bool
+	mu     sync.Mutex
+	writer io.Writer
+	cfg    *operaton.Configuration
+}
+
+// New creates a new Client. If debug is true, logs are written to ./debug/access.log.
+func New(cfg *operaton.Configuration, debug bool) (*Client, error) {
+	api := operaton.NewAPIClient(cfg)
+	c := &Client{api: api, debug: debug}
+	c.cfg = cfg
+	if debug {
+		if err := os.MkdirAll("./debug", 0o755); err != nil {
+			return nil, err
+		}
+		fpath := filepath.Join(".", "debug", "access.log")
+		f, err := os.OpenFile(fpath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
+		if err != nil {
+			return nil, err
+		}
+		c.writer = f
+	}
+	return c, nil
+}
+
+func (c *Client) logf(format string, args ...interface{}) {
+	if !c.debug || c.writer == nil {
+		return
+	}
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	fmt.Fprintf(c.writer, format+"\n", args...)
+}
+
+// FetchProcessDefinitions fetches process definitions.
+func (c *Client) FetchProcessDefinitions(ctx context.Context) ([]operaton.ProcessDefinitionDto, error) {
+	req := c.api.ProcessDefinitionAPI.GetProcessDefinitions(ctx)
+	c.logf("API: FetchProcessDefinitions()")
+	// Concrete HTTP log
+	c.logf("API: GET /process-definition")
+	res, r, err := req.Execute()
+	_ = r
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
+}
+
+// FetchInstances fetches process instances using a single param name/value.
+func (c *Client) FetchInstances(ctx context.Context, paramName, paramValue string) ([]map[string]interface{}, error) {
+	m := map[string]string{paramName: paramValue}
+	return c.FetchInstancesWithParams(ctx, m)
+}
+
+// FetchInstancesWithParams tries to use the generated client's request setters for params.
+// If any param cannot be applied via setters, it falls back to a manual HTTP GET with the full query string.
+func (c *Client) FetchInstancesWithParams(ctx context.Context, params map[string]string) ([]map[string]interface{}, error) {
+	// Manual HTTP GET to /process-instance with query string (fallback-only implementation)
+	q := url.Values{}
+	for k, v := range params {
+		q.Set(k, v)
+	}
+	raw := "/process-instance"
+	if enc := q.Encode(); enc != "" {
+		raw = raw + "?" + enc
+	}
+	c.logf("API: FetchInstancesWithParams()")
+	c.logf("API: GET %s", raw)
+
+	// Build manual request using API client's configuration to find base path
+	urlStr := raw
+	if c.cfg != nil {
+		if base, err := c.cfg.ServerURLWithContext(ctx, ""); err == nil {
+			urlStr = strings.TrimRight(base, "/") + raw
+		}
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
+	if err != nil {
+		return nil, err
+	}
+	// Use default client
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+	var out []map[string]interface{}
+	dec := json.NewDecoder(resp.Body)
+	if err := dec.Decode(&out); err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// toPascal converts camelCase or lowerCamel to PascalCase suitable for method names.
+func toPascal(s string) string {
+	// split on non-letter/digit boundaries and uppercase first letter
+	var parts []string
+	cur := ""
+	for i, r := range s {
+		if r == '_' || r == '-' {
+			if cur != "" {
+				parts = append(parts, cur)
+				cur = ""
+			}
+			continue
+		}
+		if i == 0 {
+			cur += strings.ToUpper(string(r))
+			continue
+		}
+		cur += string(r)
+	}
+	if cur != "" {
+		parts = append(parts, cur)
+	}
+	return strings.Join(parts, "")
+}
+
+// SetProcessVariable sets a variable on a process instance.
+func (c *Client) SetProcessVariable(ctx context.Context, instanceId, name string, value interface{}) error {
+	c.logf("API: SetProcessVariable(%s, %s)", instanceId, name)
+	body := map[string]interface{}{"value": value}
+	b, _ := json.Marshal(body)
+	// We'll perform a manual PUT to set the variable
+	var basePath string
+	if c.cfg != nil {
+		if base, err := c.cfg.ServerURLWithContext(ctx, ""); err == nil {
+			basePath = strings.TrimRight(base, "/")
+		}
+	}
+	urlStr := fmt.Sprintf("%s/process-instance/%s/variables/%s", basePath, instanceId, url.PathEscape(name))
+	r, err := http.NewRequestWithContext(ctx, http.MethodPut, urlStr, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("error setting variable: %s", string(data))
+	}
+	return nil
+}
+
+// --- Compatibility wrapper to match the previous package API used by main and tests ---
+
+// Use config package types for compatibility
+
+// CompatClient provides the historic API surface used by the rest of the app/tests.
+type CompatClient struct {
+	env         cfgpkg.Environment
 	httpClient  *http.Client
 	operatonAPI *operaton.APIClient
 	authContext context.Context
-	// debug logging
-	debugEnabled bool
-	debugFile    *os.File
-	mu           sync.Mutex
 }
 
-// NewClient creates a Client with a default timeout.
-func NewClient(env config.Environment) *Client {
+// NewClient creates a CompatClient from the environment config (keeps previous API).
+func NewClient(env cfgpkg.Environment) *CompatClient {
 	httpClient := &http.Client{Timeout: 10 * time.Second}
 
-	// Create OpenAPI configuration
 	cfg := operaton.NewConfiguration()
 	cfg.HTTPClient = httpClient
 	cfg.Servers = operaton.ServerConfigurations{
@@ -47,173 +202,22 @@ func NewClient(env config.Environment) *Client {
 		},
 	}
 
-	// Create the generated API client
 	apiClient := operaton.NewAPIClient(cfg)
 
-	// Create context with basic auth
 	auth := operaton.BasicAuth{
 		UserName: env.Username,
 		Password: env.Password,
 	}
 	authContext := context.WithValue(context.Background(), operaton.ContextBasicAuth, auth)
 
-	c := &Client{
+	return &CompatClient{
 		env:         env,
 		httpClient:  httpClient,
 		operatonAPI: apiClient,
 		authContext: authContext,
 	}
-
-	// enable debug logging if O8N_DEBUG env var is set
-	if os.Getenv("O8N_DEBUG") != "" {
-		_ = os.MkdirAll("./debug", 0755)
-		path := filepath.Join("./debug", "access.log")
-		f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
-		if err == nil {
-			c.debugEnabled = true
-			c.debugFile = f
-		}
-	}
-
-	return c
 }
 
-func (c *Client) logf(format string, a ...interface{}) {
-	if !c.debugEnabled || c.debugFile == nil {
-		return
-	}
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	ts := time.Now().Format(time.RFC3339)
-	line := fmt.Sprintf("%s %s\n", ts, fmt.Sprintf(format, a...))
-	_, _ = c.debugFile.WriteString(line)
-}
-
-// FetchProcessDefinitions retrieves all process definitions using the generated client.
-func (c *Client) FetchProcessDefinitions() ([]config.ProcessDefinition, error) {
-	c.logf("API: FetchProcessDefinitions")
-	c.logf("API: GET /process-definition")
-	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
-	}
-
-	// Convert from generated DTOs to our model
-	result := make([]config.ProcessDefinition, len(defs))
-	for i, def := range defs {
-		result[i] = config.ProcessDefinition{
-			ID:           getStringValue(def.Id),
-			Key:          getStringValue(def.Key),
-			Category:     getStringValue(def.Category),
-			Description:  getStringValue(def.Description),
-			Name:         getStringValue(def.Name),
-			Version:      int(getInt32Value(def.Version)),
-			Resource:     getStringValue(def.Resource),
-			DeploymentID: getStringValue(def.DeploymentId),
-			Diagram:      getStringValue(def.Diagram),
-			Suspended:    getBoolValue(def.Suspended),
-			TenantID:     getStringValue(def.TenantId),
-		}
-	}
-
-	return result, nil
-}
-
-// FetchInstances retrieves process instances filtered by process key using the generated client.
-func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, error) {
-	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
-	if processKey != "" {
-		// treat the provided identifier as a process definition id
-		req = req.ProcessDefinitionId(processKey)
-	}
-
-	c.logf("API: FetchInstances processDefinitionId=%q", processKey)
-	if processKey == "" {
-		c.logf("API: GET /process-instance")
-	} else {
-		q := url.Values{}
-		q.Set("processDefinitionId", processKey)
-		c.logf("API: GET /process-instance?%s", q.Encode())
-	}
-	instances, _, err := req.Execute()
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch instances: %w", err)
-	}
-
-	// Convert from generated DTOs to our model
-	result := make([]config.ProcessInstance, len(instances))
-	for i, inst := range instances {
-		result[i] = config.ProcessInstance{
-			ID:             getStringValue(inst.Id),
-			DefinitionID:   getStringValue(inst.DefinitionId),
-			BusinessKey:    getStringValue(inst.BusinessKey),
-			CaseInstanceID: getStringValue(inst.CaseInstanceId),
-			Ended:          getBoolValue(inst.Ended),
-			Suspended:      getBoolValue(inst.Suspended),
-			TenantID:       getStringValue(inst.TenantId),
-		}
-	}
-
-	return result, nil
-}
-
-// FetchVariables retrieves variables for a process instance using the generated client.
-// The Operaton API returns a map of variable names to variable values.
-func (c *Client) FetchVariables(instanceID string) ([]config.Variable, error) {
-	c.logf("API: FetchVariables instanceID=%q", instanceID)
-	c.logf("API: GET /process-instance/{id}/variables")
-	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
-	if err != nil {
-		return nil, fmt.Errorf("failed to fetch variables: %w", err)
-	}
-
-	// Convert from map to slice
-	vars := make([]config.Variable, 0, len(*varsMap))
-	for name, varValue := range *varsMap {
-		value := ""
-		if varValue.Value != nil {
-			value = fmt.Sprintf("%v", varValue.Value)
-		}
-		vars = append(vars, config.Variable{
-			Name:  name,
-			Value: value,
-			Type:  getStringValue(varValue.Type),
-		})
-	}
-
-	return vars, nil
-}
-
-// SetProcessInstanceVariable updates a single variable on a process instance.
-func (c *Client) SetProcessInstanceVariable(instanceID, varName string, value interface{}, valueType string) error {
-	dto := operaton.VariableValueDto{Value: value}
-	if valueType != "" {
-		dto.SetType(valueType)
-	}
-	c.logf("API: SetProcessInstanceVariable instanceID=%q var=%q type=%q value=%v", instanceID, varName, valueType, value)
-	c.logf("API: PUT /process-instance/{id}/variables/{varName}")
-	_, err := c.operatonAPI.ProcessInstanceAPI.SetProcessInstanceVariable(c.authContext, instanceID, varName).
-		VariableValueDto(dto).
-		Execute()
-	if err != nil {
-		return fmt.Errorf("failed to set variable %s on instance %s: %w", varName, instanceID, err)
-	}
-	return nil
-}
-
-// TerminateInstance terminates a process instance using the generated client.
-func (c *Client) TerminateInstance(instanceID string) error {
-	c.logf("API: TerminateInstance instanceID=%q", instanceID)
-	c.logf("API: DELETE /process-instance/{id}")
-	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()
-	if err != nil {
-		return fmt.Errorf("failed to terminate instance %s: %w", instanceID, err)
-	}
-
-	return nil
-}
-
-// Helper functions to safely handle Nullable types from the generated client
 func getStringValue(nullable operaton.NullableString) string {
 	ptr := nullable.Get()
 	if ptr == nil {
@@ -236,4 +240,101 @@ func getBoolValue(nullable operaton.NullableBool) bool {
 		return false
 	}
 	return *ptr
+}
+
+// FetchProcessDefinitions retrieves process definitions.
+func (c *CompatClient) FetchProcessDefinitions() ([]cfgpkg.ProcessDefinition, error) {
+	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
+	}
+	out := make([]cfgpkg.ProcessDefinition, len(defs))
+	for i, d := range defs {
+		out[i] = cfgpkg.ProcessDefinition{
+			ID:           getStringValue(d.Id),
+			Key:          getStringValue(d.Key),
+			Category:     getStringValue(d.Category),
+			Description:  getStringValue(d.Description),
+			Name:         getStringValue(d.Name),
+			Version:      int(getInt32Value(d.Version)),
+			Resource:     getStringValue(d.Resource),
+			DeploymentID: getStringValue(d.DeploymentId),
+			Diagram:      getStringValue(d.Diagram),
+			Suspended:    getBoolValue(d.Suspended),
+			TenantID:     getStringValue(d.TenantId),
+		}
+	}
+	return out, nil
+}
+
+// FetchInstances retrieves process instances; if processKey is non-empty it uses that as processDefinitionKey.
+func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.ProcessInstance, error) {
+	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
+	if paramName != "" && paramValue != "" {
+		// Only support processDefinitionKey directly here; other params are unsupported in this legacy wrapper
+		if paramName == "processDefinitionKey" {
+			req = req.ProcessDefinitionKey(paramValue)
+		}
+	}
+	instances, _, err := req.Execute()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch instances: %w", err)
+	}
+	out := make([]cfgpkg.ProcessInstance, len(instances))
+	for i, inst := range instances {
+		out[i] = cfgpkg.ProcessInstance{
+			ID:             getStringValue(inst.Id),
+			DefinitionID:   getStringValue(inst.DefinitionId),
+			BusinessKey:    getStringValue(inst.BusinessKey),
+			CaseInstanceID: getStringValue(inst.CaseInstanceId),
+			Ended:          getBoolValue(inst.Ended),
+			Suspended:      getBoolValue(inst.Suspended),
+			TenantID:       getStringValue(inst.TenantId),
+		}
+	}
+	return out, nil
+}
+
+// FetchVariables retrieves variables (legacy wrapper) for a process instance.
+func (c *CompatClient) FetchVariables(instanceID string) ([]cfgpkg.Variable, error) {
+	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch variables: %w", err)
+	}
+	vars := make([]cfgpkg.Variable, 0, len(*varsMap))
+	for name, varValue := range *varsMap {
+		value := ""
+		if varValue.Value != nil {
+			value = fmt.Sprintf("%v", varValue.Value)
+		}
+		vars = append(vars, cfgpkg.Variable{
+			Name:  name,
+			Value: value,
+			Type:  getStringValue(varValue.Type),
+		})
+	}
+	return vars, nil
+}
+
+// TerminateInstance terminates a process instance.
+func (c *CompatClient) TerminateInstance(instanceID string) error {
+	_, err := c.operatonAPI.ProcessInstanceAPI.DeleteProcessInstance(c.authContext, instanceID).Execute()
+	if err != nil {
+		return fmt.Errorf("failed to terminate instance %s: %w", instanceID, err)
+	}
+	return nil
+}
+
+// SetProcessInstanceVariable sets a process variable on an instance (legacy API used by UI).
+func (c *CompatClient) SetProcessInstanceVariable(instanceID, varName string, value interface{}, valueType string) error {
+	v := operaton.NewVariableValueDto()
+	v.SetValue(value)
+	if valueType != "" {
+		v.SetType(valueType)
+	}
+	_, err := c.operatonAPI.ProcessInstanceAPI.SetProcessInstanceVariable(c.authContext, instanceID, varName).VariableValueDto(*v).Execute()
+	if err != nil {
+		return fmt.Errorf("failed to set variable: %w", err)
+	}
+	return nil
 }
