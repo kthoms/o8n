@@ -10,6 +10,8 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -79,6 +81,109 @@ func (c *Client) FetchInstances(ctx context.Context, paramName, paramValue strin
 // FetchInstancesWithParams tries to use the generated client's request setters for params.
 // If any param cannot be applied via setters, it falls back to a manual HTTP GET with the full query string.
 func (c *Client) FetchInstancesWithParams(ctx context.Context, params map[string]string) ([]map[string]interface{}, error) {
+	// First try to use the generated client's request builder setters via reflection.
+	// This is a best-effort, safe attempt: if any step fails or not all params can
+	// be applied, fall back to a manual HTTP GET.
+	if c.api != nil && c.api.ProcessInstanceAPI != nil {
+		// Use reflection to call GetProcessInstances(ctx) on the service
+		// and then call setter methods for each param when available.
+		defer func() {
+			_ = recover()
+		}()
+		svcVal := reflect.ValueOf(c.api.ProcessInstanceAPI)
+		getMethod := svcVal.MethodByName("GetProcessInstances")
+		if getMethod.IsValid() {
+			res := getMethod.Call([]reflect.Value{reflect.ValueOf(ctx)})
+			if len(res) >= 1 {
+				reqBuilder := res[0]
+				applied := 0
+				for k, v := range params {
+					setterName := toPascal(k)
+					meth := reqBuilder.MethodByName(setterName)
+					if !meth.IsValid() {
+						continue
+					}
+					// ensure the method accepts exactly one argument
+					if meth.Type().NumIn() != 1 {
+						continue
+					}
+					inType := meth.Type().In(0)
+					var arg reflect.Value
+					switch inType.Kind() {
+					case reflect.String:
+						arg = reflect.ValueOf(v)
+					case reflect.Bool:
+						bv, err := strconv.ParseBool(v)
+						if err != nil {
+							continue
+						}
+						arg = reflect.ValueOf(bv)
+					case reflect.Int32:
+						iv, err := strconv.ParseInt(v, 10, 32)
+						if err != nil {
+							continue
+						}
+						arg = reflect.ValueOf(int32(iv))
+					case reflect.Int, reflect.Int64:
+						iv, err := strconv.ParseInt(v, 10, 64)
+						if err != nil {
+							continue
+						}
+						// use int64 value
+						arg = reflect.ValueOf(iv)
+					default:
+						// try to pass as string if assignable
+						if inType.AssignableTo(reflect.TypeOf("")) {
+							arg = reflect.ValueOf(v)
+						} else {
+							continue
+						}
+					}
+					out := meth.Call([]reflect.Value{arg})
+					if len(out) >= 1 {
+						reqBuilder = out[0]
+					}
+					applied++
+				}
+				if applied == len(params) {
+					// All params applied — execute the generated request
+					exec := reqBuilder.MethodByName("Execute")
+					if exec.IsValid() {
+						out := exec.Call(nil)
+						if len(out) >= 3 {
+							// (result, *http.Response, error)
+							last := out[len(out)-1]
+							if !last.IsNil() {
+								return nil, last.Interface().(error)
+							}
+							first := out[0]
+							b, err := json.Marshal(first.Interface())
+							if err != nil {
+								return nil, err
+							}
+							var outv []map[string]interface{}
+							if err := json.Unmarshal(b, &outv); err != nil {
+								var single map[string]interface{}
+								if err2 := json.Unmarshal(b, &single); err2 == nil {
+									return []map[string]interface{}{single}, nil
+								}
+								return nil, err
+							}
+							// Log the concrete HTTP path we expect (query string)
+							q := url.Values{}
+							for k, v := range params {
+								q.Set(k, v)
+							}
+							c.logf("API: FetchInstancesWithParams()")
+							c.logf("API: GET /process-instance?%s", q.Encode())
+							return outv, nil
+						}
+					}
+				}
+			}
+		}
+	}
+
 	// Manual HTTP GET to /process-instance with query string (fallback-only implementation)
 	q := url.Values{}
 	for k, v := range params {

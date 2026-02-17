@@ -2043,16 +2043,22 @@ func (m model) View() string {
 	}
 	breadcrumbRendered := strings.Join(crumbs, " ")
 
-	remote := " "
+	// Render remote flash as a fixed-width styled box on the right to ensure visibility.
+	remoteSymbol := " "
+	rpStyle := lipgloss.NewStyle().Width(3).Align(lipgloss.Right)
 	if m.flashActive {
-		remote = "⚡"
+		remoteSymbol = "⚡"
+		rpStyle = rpStyle.Foreground(lipgloss.Color("#00FF00")).Bold(true)
+	} else {
+		remoteSymbol = " "
+		rpStyle = rpStyle.Foreground(lipgloss.Color("#666666"))
 	}
+	rightPart := rpStyle.Render(remoteSymbol)
 
 	// place breadcrumb left and remote right within lastWidth
 	totalW := m.lastWidth
 	leftPart := breadcrumbRendered
-	rightPart := remote
-	// compute padding
+	// compute padding so rightPart is flush right
 	padW := totalW - lipgloss.Width(leftPart) - lipgloss.Width(rightPart)
 	if padW < 1 {
 		padW = 1
