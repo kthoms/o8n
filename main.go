@@ -53,7 +53,7 @@ type splashDoneMsg struct{}
 // splash frame message for animation
 type splashFrameMsg struct{ frame int }
 
-const totalSplashFrames = 10
+const totalSplashFrames = 15
 
 type processDefinitionItem struct {
 	definition config.ProcessDefinition
@@ -617,7 +617,7 @@ func (m *model) applyStyle() {
 func (m model) Init() tea.Cmd {
 	// fetch definitions at start and flash, and start splash animation (150ms per frame, total 1.5s)
 	// we start with frame 1 already set; schedule frame 2 after 150ms
-	firstTick := tea.Tick(150*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: 2} })
+	firstTick := tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: 2} })
 	return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), firstTick)
 }
 
@@ -1293,7 +1293,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.splashFrame = msg.frame
 			// schedule next frame
 			next := msg.frame + 1
-			return m, tea.Tick(150*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: next} })
+			return m, tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: next} })
 		}
 
 	case tea.KeyMsg:
@@ -1512,26 +1512,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 
-			// Save current state before drilling down
-			// Normalize rows to current columns so restoration is exact
-			cols := m.table.Columns()
-			rowsCopy := append([]table.Row{}, m.table.Rows()...)
-			if len(cols) > 0 {
-				norm := normalizeRows(rowsCopy, len(cols))
-				rowsCopy = norm
-			}
-			currentState := viewState{
-				viewMode:              m.viewMode,
-				breadcrumb:            append([]string{}, m.breadcrumb...),
-				contentHeader:         m.contentHeader,
-				selectedDefinitionKey: m.selectedDefinitionKey,
-				selectedInstanceID:    m.selectedInstanceID,
-				tableRows:             rowsCopy,
-				tableCursor:           m.table.Cursor(),
-				cachedDefinitions:     m.cachedDefinitions,
-				tableColumns:          append([]table.Column{}, cols...),
-			}
-			m.navigationStack = append(m.navigationStack, currentState)
+			// (deferred) save state only when we actually perform a drilldown
 
 			// Config-driven drilldown: consult TableDef.Drilldown (if present)
 			if def := m.findTableDef(currentTableKey); def != nil && len(def.Drilldown) > 0 {
@@ -1568,6 +1549,25 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				// supported runtime targets -> dispatch
 				switch chosen.Target {
 				case "process-instance", "process-instances":
+					// Save current state before performing the drilldown to instances
+					cols2 := m.table.Columns()
+					rowsCopy2 := append([]table.Row{}, m.table.Rows()...)
+					if len(cols2) > 0 {
+						norm2 := normalizeRows(rowsCopy2, len(cols2))
+						rowsCopy2 = norm2
+					}
+					currentState2 := viewState{
+						viewMode:              m.viewMode,
+						breadcrumb:            append([]string{}, m.breadcrumb...),
+						contentHeader:         m.contentHeader,
+						selectedDefinitionKey: m.selectedDefinitionKey,
+						selectedInstanceID:    m.selectedInstanceID,
+						tableRows:             rowsCopy2,
+						tableCursor:           m.table.Cursor(),
+						cachedDefinitions:     m.cachedDefinitions,
+						tableColumns:          append([]table.Column{}, cols2...),
+					}
+					m.navigationStack = append(m.navigationStack, currentState2)
 					// definitions -> instances (expects a process key)
 					m.selectedDefinitionKey = val
 					m.viewMode = "instances"
@@ -1576,9 +1576,28 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					// reset cursor to row 0
 					m.table.SetCursor(0)
 					return m, tea.Batch(m.fetchInstancesCmd(val), flashOnCmd())
-
 				case "process-variables", "variables", "variable-instance", "variable-instances":
 					// instances -> variables (expects an instance id)
+					// Save current state before performing the drilldown to variables
+					colsVar := m.table.Columns()
+					rowsCopyVar := append([]table.Row{}, m.table.Rows()...)
+					if len(colsVar) > 0 {
+						normVar := normalizeRows(rowsCopyVar, len(colsVar))
+						rowsCopyVar = normVar
+					}
+					currentStateVar := viewState{
+						viewMode:              m.viewMode,
+						breadcrumb:            append([]string{}, m.breadcrumb...),
+						contentHeader:         m.contentHeader,
+						selectedDefinitionKey: m.selectedDefinitionKey,
+						selectedInstanceID:    m.selectedInstanceID,
+						tableRows:             rowsCopyVar,
+						tableCursor:           m.table.Cursor(),
+						cachedDefinitions:     m.cachedDefinitions,
+						tableColumns:          append([]table.Column{}, colsVar...),
+					}
+					m.navigationStack = append(m.navigationStack, currentStateVar)
+
 					m.selectedInstanceID = val
 					m.viewMode = "variables"
 					m.breadcrumb = append(m.breadcrumb, "variables")
@@ -1596,6 +1615,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// fallback: preserve previous hard-coded drill behaviour
 			if m.viewMode == "definitions" {
+				// Save current state before fallback drilldown
+				cols3 := m.table.Columns()
+				rowsCopy3 := append([]table.Row{}, m.table.Rows()...)
+				if len(cols3) > 0 {
+					norm3 := normalizeRows(rowsCopy3, len(cols3))
+					rowsCopy3 = norm3
+				}
+				currentState3 := viewState{
+					viewMode:              m.viewMode,
+					breadcrumb:            append([]string{}, m.breadcrumb...),
+					contentHeader:         m.contentHeader,
+					selectedDefinitionKey: m.selectedDefinitionKey,
+					selectedInstanceID:    m.selectedInstanceID,
+					tableRows:             rowsCopy3,
+					tableCursor:           m.table.Cursor(),
+					cachedDefinitions:     m.cachedDefinitions,
+					tableColumns:          append([]table.Column{}, cols3...),
+				}
+				m.navigationStack = append(m.navigationStack, currentState3)
+
 				key := fmt.Sprintf("%v", row[0])
 				m.selectedDefinitionKey = key
 				m.viewMode = "instances"
@@ -1605,6 +1644,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.table.SetCursor(0)
 				return m, tea.Batch(m.fetchInstancesCmd(key), flashOnCmd())
 			} else if m.viewMode == "instances" {
+				// Fallback instances -> variables: save state then drill
+				cols4 := m.table.Columns()
+				rowsCopy4 := append([]table.Row{}, m.table.Rows()...)
+				if len(cols4) > 0 {
+					norm4 := normalizeRows(rowsCopy4, len(cols4))
+					rowsCopy4 = norm4
+				}
+				currentState4 := viewState{
+					viewMode:              m.viewMode,
+					breadcrumb:            append([]string{}, m.breadcrumb...),
+					contentHeader:         m.contentHeader,
+					selectedDefinitionKey: m.selectedDefinitionKey,
+					selectedInstanceID:    m.selectedInstanceID,
+					tableRows:             rowsCopy4,
+					tableCursor:           m.table.Cursor(),
+					cachedDefinitions:     m.cachedDefinitions,
+					tableColumns:          append([]table.Column{}, cols4...),
+				}
+				m.navigationStack = append(m.navigationStack, currentState4)
+
 				id := fmt.Sprintf("%v", row[0])
 				m.selectedInstanceID = id
 				m.viewMode = "variables"

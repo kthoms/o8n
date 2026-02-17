@@ -362,24 +362,24 @@ func TestEditableColumnsMarkedWithIndicator(t *testing.T) {
 		Tables:       appCfg.Tables,
 	}
 	m := newModel(cfg)
-	
+
 	// Apply variables
 	vars := []config.Variable{
 		{Name: "myVar", Value: "test123", Type: "String"},
 		{Name: "count", Value: "42", Type: "Integer"},
 	}
 	m.applyVariables(vars)
-	
+
 	rows := m.table.Rows()
 	if len(rows) != 2 {
 		t.Fatalf("expected 2 rows, got %d", len(rows))
 	}
-	
+
 	// First column (name) should NOT have [E] marker
 	if strings.Contains(rows[0][0], "[E]") {
 		t.Errorf("name column should not be marked as editable, got: %s", rows[0][0])
 	}
-	
+
 	// Second column (value) SHOULD have [E] marker
 	if !strings.Contains(rows[0][1], "[E]") {
 		t.Errorf("value column should be marked as editable with [E], got: %s", rows[0][1])
@@ -407,18 +407,115 @@ func TestEditableColumnsFor(t *testing.T) {
 		Tables:       appCfg.Tables,
 	}
 	m := newModel(cfg)
-	
+
 	editableCols := m.editableColumnsFor("process-variables")
 	if len(editableCols) != 1 {
 		t.Fatalf("expected 1 editable column, got %d", len(editableCols))
 	}
-	
+
 	if editableCols[0].index != 1 {
 		t.Errorf("expected editable column at index 1, got %d", editableCols[0].index)
 	}
-	
+
 	if editableCols[0].def.Name != "value" {
 		t.Errorf("expected editable column name 'value', got '%s'", editableCols[0].def.Name)
 	}
 }
 
+func TestExtraEntersDontPushNavigationStack(t *testing.T) {
+	// Server: respond to definitions, instances and variables
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/process-definition" {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}})
+			return
+		}
+		if r.URL.Path == "/process-instance" {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]config.ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}})
+			return
+		}
+		if strings.HasPrefix(r.URL.Path, "/process-instance/") && strings.HasSuffix(r.URL.Path, "/variables") {
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]map[string]interface{}{"var1": {"value": "v1", "type": "String"}})
+			return
+		}
+		w.WriteHeader(http.StatusNotFound)
+	}))
+	defer server.Close()
+
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: server.URL}},
+		Tables: []config.TableDef{
+			{
+				Name:      "process-definition",
+				Columns:   []config.ColumnDef{{Name: "key", Visible: true}, {Name: "name", Visible: true}},
+				Drilldown: []config.DrillDownDef{{Target: "process-instance", Param: "processDefinitionKey", Column: "key"}},
+			},
+			{
+				Name:      "process-instance",
+				Columns:   []config.ColumnDef{{Name: "id", Visible: true}, {Name: "definitionId", Visible: true}},
+				Drilldown: []config.DrillDownDef{{Target: "process-variables", Param: "processInstanceId", Column: "id"}},
+			},
+			{
+				Name:    "process-variables",
+				Columns: []config.ColumnDef{{Name: "name", Visible: true}, {Name: "value", Visible: true}},
+			},
+		},
+	}
+
+	m := newModel(cfg)
+	// populate definitions
+	m.applyDefinitions([]config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One"}})
+
+	// Enter -> instances
+	res, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	m2 := res.(model)
+	if m2.viewMode != "instances" {
+		t.Fatalf("expected instances, got %s", m2.viewMode)
+	}
+	// simulate fetchInstances
+	fetchMsg := m2.fetchInstancesCmd("k1")()
+	res2, _ := m2.Update(fetchMsg)
+	m3 := res2.(model)
+
+	// Enter -> variables
+	res3, _ := m3.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	m4 := res3.(model)
+	if m4.viewMode != "variables" {
+		t.Fatalf("expected variables, got %s", m4.viewMode)
+	}
+	// simulate fetchVariables
+	fetchMsg2 := m4.fetchVariablesCmd("i1")()
+	res4, _ := m4.Update(fetchMsg2)
+	m5 := res4.(model)
+
+	// Press Enter two extra times in variables view (should NOT push stack)
+	_, _ = m5.Update(tea.KeyMsg{Type: tea.KeyEnter})
+	_, _ = m5.Update(tea.KeyMsg{Type: tea.KeyEnter})
+
+	// navigation stack should contain two saved states: definitions->instances and instances->variables
+	if len(m5.navigationStack) != 2 {
+		t.Fatalf("expected navigationStack size 2 after drilldowns, got %d", len(m5.navigationStack))
+	}
+
+	// Press Esc once: should go back to instances and leave one saved state (definitions->instances)
+	res5, _ := m5.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	m6 := res5.(model)
+	if m6.viewMode != "instances" {
+		t.Fatalf("expected instances after Esc, got %s", m6.viewMode)
+	}
+	if len(m6.navigationStack) != 1 {
+		t.Fatalf("expected navigationStack size 1 after first Esc, got %d", len(m6.navigationStack))
+	}
+
+	// Press Esc second time: should return to definitions and have empty stack
+	res6, _ := m6.Update(tea.KeyMsg{Type: tea.KeyEsc})
+	m7 := res6.(model)
+	if m7.viewMode != "definitions" {
+		t.Fatalf("expected definitions after second Esc, got %s", m7.viewMode)
+	}
+	if len(m7.navigationStack) != 0 {
+		t.Fatalf("expected navigationStack empty after second Esc, got %d", len(m7.navigationStack))
+	}
+}
