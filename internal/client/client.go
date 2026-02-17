@@ -421,9 +421,13 @@ func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.Pr
 
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
 	if paramName != "" && paramValue != "" {
-		// Only support processDefinitionKey directly here; other params are unsupported in this legacy wrapper
+		// Support common drilldown params: processDefinitionKey and processDefinitionId
 		if paramName == "processDefinitionKey" {
 			req = req.ProcessDefinitionKey(paramValue)
+		} else if paramName == "processDefinitionId" {
+			// generated client may expose ProcessDefinitionId setter
+			// use it when available
+			req = req.ProcessDefinitionId(paramValue)
 		}
 	}
 	instances, _, err := req.Execute()
