@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"net/http"
 	"os"
 	"sort"
 	"strconv"
@@ -36,6 +39,12 @@ type instancesLoadedMsg struct{ instances []config.ProcessInstance }
 
 // New: fetch variables for a given instance
 type variablesLoadedMsg struct{ variables []config.Variable }
+
+// genericLoadedMsg carries arbitrary collection data fetched from an endpoint
+type genericLoadedMsg struct {
+	root  string
+	items []map[string]interface{}
+}
 
 type terminatedMsg struct{ id string }
 
@@ -1274,6 +1283,68 @@ func (m model) fetchDataCmd() tea.Cmd {
 	}
 }
 
+// fetchForRoot returns a command that fetches data for the given root resource.
+// It maps known root names to their corresponding fetch commands.
+func (m model) fetchForRoot(root string) tea.Cmd {
+	// If we know the common ones, handle them specially
+	switch root {
+	case dao.ResourceProcessDefinitions:
+		return m.fetchDefinitionsCmd()
+	case dao.ResourceProcessInstances:
+		// fetch all instances (no param)
+		return m.fetchInstancesCmd("", "")
+	case dao.ResourceProcessVariables:
+		// no sensible root-level fetch for variables without an instance id
+		return nil
+	default:
+		// If we have a table definition, attempt a generic fetch of the collection
+		if def := m.findTableDef(root); def != nil {
+			return m.fetchGenericCmd(root)
+		}
+		// fallback: try definitions
+		return m.fetchDefinitionsCmd()
+	}
+}
+
+// fetchGenericCmd performs a GET to the environment server for the provided
+// collection resource (root) and returns a genericLoadedMsg with the parsed
+// JSON array of objects.
+func (m model) fetchGenericCmd(root string) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return nil
+	}
+	return func() tea.Msg {
+		base := strings.TrimRight(env.URL, "/")
+		urlStr := base + "/" + strings.TrimLeft(root, "/")
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
+		if err != nil {
+			return errMsg{err}
+		}
+		req.Header.Set("Accept", "application/json")
+		if env.Username != "" {
+			req.SetBasicAuth(env.Username, env.Password)
+		}
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return errMsg{err}
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode >= 400 {
+			data, _ := io.ReadAll(resp.Body)
+			return errMsg{fmt.Errorf("failed to fetch %s: %s", root, string(data))}
+		}
+		var items []map[string]interface{}
+		dec := json.NewDecoder(resp.Body)
+		if err := dec.Decode(&items); err != nil {
+			return errMsg{err}
+		}
+		return genericLoadedMsg{root: root, items: items}
+	}
+}
+
 func (m model) terminateInstanceCmd(id string) tea.Cmd {
 	env, ok := m.config.Environments[m.currentEnv]
 	if !ok {
@@ -1534,6 +1605,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						// reset breadcrumb and header
 						m.breadcrumb = []string{rc}
 						m.contentHeader = rc
+						// If we have a TableDef for this root, set columns and trigger the appropriate fetch
+						if def := m.findTableDef(rc); def != nil {
+							cols := m.buildColumnsFor(rc, m.paneWidth-4)
+							if len(cols) > 0 {
+								m.table.SetRows(normalizeRows(nil, len(cols)))
+								m.table.SetColumns(cols)
+							}
+							return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd())
+						}
+						// fallback to definitions fetch
 						return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
 					}
 				}
@@ -1828,6 +1909,57 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case variablesLoadedMsg:
 		// show variables table
 		m.applyVariables(msg.variables)
+	case genericLoadedMsg:
+		// Apply generic fetched collection into the table using the table definition if available
+		def := m.findTableDef(msg.root)
+		var cols []table.Column
+		if def != nil {
+			cols = m.buildColumnsFor(msg.root, m.paneWidth-4)
+		} else {
+			// infer columns from first item keys
+			if len(msg.items) > 0 {
+				keys := make([]string, 0, len(msg.items[0]))
+				for k := range msg.items[0] {
+					keys = append(keys, k)
+				}
+				sort.Strings(keys)
+				for _, k := range keys {
+					cols = append(cols, table.Column{Title: strings.ToUpper(k), Width: 20})
+				}
+			}
+		}
+		// Build rows from items
+		rows := make([]table.Row, 0, len(msg.items))
+		for _, it := range msg.items {
+			if len(cols) == 0 {
+				// fallback: add single column with JSON representation
+				rows = append(rows, table.Row{fmt.Sprintf("%v", it)})
+				continue
+			}
+			r := make(table.Row, len(cols))
+			for i, col := range cols {
+				// prefer original column name from TableDef when available
+				key := strings.ToLower(col.Title)
+				// If title contains spaces or was uppercased, try original key forms
+				val := ""
+				if v, ok := it[key]; ok {
+					val = fmt.Sprintf("%v", v)
+				} else {
+					// try lowercase and camel-case variants
+					if v, ok := it[strings.ToLower(col.Title)]; ok {
+						val = fmt.Sprintf("%v", v)
+					} else if v, ok := it[col.Title]; ok {
+						val = fmt.Sprintf("%v", v)
+					}
+				}
+				r[i] = val
+			}
+			rows = append(rows, r)
+		}
+		if len(cols) > 0 {
+			m.table.SetColumns(cols)
+		}
+		m.table.SetRows(normalizeRows(rows, len(cols)))
 	case editSavedMsg:
 		rows := m.table.Rows()
 		if msg.rowIndex >= 0 && msg.rowIndex < len(rows) {
