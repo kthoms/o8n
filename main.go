@@ -47,6 +47,11 @@ type genericLoadedMsg struct {
 	items []map[string]interface{}
 }
 
+type instancesWithCountMsg struct {
+	instances []config.ProcessInstance
+	count     int
+}
+
 type terminatedMsg struct{ id string }
 
 type errMsg struct{ err error }
@@ -228,6 +233,12 @@ type model struct {
 	// variables cache for type-aware editing
 	variablesByName map[string]config.Variable
 
+	// pagination state per root collection: first result offset and known total count
+	pageOffsets map[string]int
+	pageTotals  map[string]int
+	// requested cursor position to restore after page load (keeps selection stable across pages)
+	pendingCursorAfterPage int
+
 	// Version number
 	version      string
 	debugEnabled bool
@@ -268,6 +279,7 @@ func (m *model) getKeyHints(width int) []KeyHint {
 	if width >= 90 {
 		hints = append(hints, KeyHint{"<ctrl>-r", "refresh", 6})
 	}
+	hints = append(hints, KeyHint{"PgDn/PgUp", "page", 3})
 	if width >= 100 && m.viewMode == "instances" {
 		hints = append(hints, KeyHint{"<ctrl>+d", "delete", 7})
 	}
@@ -360,18 +372,21 @@ func newModel(cfg *config.Config) model {
 	}
 
 	m := model{
-		config:          cfg,
-		envNames:        envNames,
-		currentEnv:      current,
-		list:            l,
-		table:           t,
-		viewMode:        "definitions",
-		splashActive:    true,
-		splashFrame:     1,
-		activeModal:     ModalNone,
-		version:         "0.1.0",
-		variablesByName: map[string]config.Variable{},
-		debugEnabled:    false,
+		config:                 cfg,
+		envNames:               envNames,
+		currentEnv:             current,
+		list:                   l,
+		table:                  t,
+		viewMode:               "definitions",
+		splashActive:           true,
+		splashFrame:            1,
+		activeModal:            ModalNone,
+		version:                "0.1.0",
+		variablesByName:        map[string]config.Variable{},
+		debugEnabled:           false,
+		pageOffsets:            make(map[string]int),
+		pageTotals:             make(map[string]int),
+		pendingCursorAfterPage: -1,
 	}
 
 	// edit input defaults
@@ -1195,6 +1210,19 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 	m.table.SetColumns(cols)
 	m.table.SetRows(normRows)
 	m.viewMode = "instances"
+	// restore cursor position requested for paging operations
+	if m.pendingCursorAfterPage >= 0 {
+		last := len(normRows) - 1
+		pos := m.pendingCursorAfterPage
+		if pos > last {
+			pos = last
+		}
+		if pos < 0 {
+			pos = 0
+		}
+		m.table.SetCursor(pos)
+		m.pendingCursorAfterPage = -1
+	}
 }
 
 // New: variables table
@@ -1231,6 +1259,21 @@ func (m *model) applyVariables(vars []config.Variable) {
 	m.viewMode = "variables"
 }
 
+// getPageSize returns the preferred number of rows to load per page
+func (m *model) getPageSize() int {
+	if m.table.Height() > 0 {
+		return m.table.Height()
+	}
+	if m.paneHeight > 0 {
+		n := m.paneHeight - 2
+		if n <= 0 {
+			return 1
+		}
+		return n
+	}
+	return 10
+}
+
 func (m model) fetchDefinitionsCmd() tea.Cmd {
 	env, ok := m.config.Environments[m.currentEnv]
 	if !ok {
@@ -1251,7 +1294,7 @@ func (m model) fetchInstancesCmd(paramName, paramValue string) tea.Cmd {
 	if !ok {
 		return nil
 	}
-	c := client.NewClient(env)
+	// Use paged HTTP fetch similar to generic fetch so we can pass firstResult/maxResults
 	return func() tea.Msg {
 		// If caller asked for a definition id but provided a key, resolve it from cache
 		value := paramValue
@@ -1265,11 +1308,99 @@ func (m model) fetchInstancesCmd(paramName, paramValue string) tea.Cmd {
 			}
 		}
 
-		instances, err := c.FetchInstances(paramName, value)
+		base := strings.TrimRight(env.URL, "/")
+		// API uses singular path for instances endpoint
+		urlStr := base + "/process-instance"
+		// add filter param if provided
+		q := ""
+		if paramName != "" && value != "" {
+			q = fmt.Sprintf("%s=%s", paramName, value)
+		}
+		offset := 0
+		if v, ok := m.pageOffsets[dao.ResourceProcessInstances]; ok {
+			offset = v
+		}
+		limit := m.getPageSize()
+		if q != "" {
+			urlStr = urlStr + "?" + q + fmt.Sprintf("&firstResult=%d&maxResults=%d", offset, limit)
+		} else {
+			urlStr = urlStr + fmt.Sprintf("?firstResult=%d&maxResults=%d", offset, limit)
+		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
 		if err != nil {
 			return errMsg{err}
 		}
-		return instancesLoadedMsg{instances: instances}
+		req.Header.Set("Accept", "application/json")
+		if env.Username != "" {
+			req.SetBasicAuth(env.Username, env.Password)
+		}
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			return errMsg{err}
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode >= 400 {
+			data, _ := io.ReadAll(resp.Body)
+			return errMsg{fmt.Errorf("failed to fetch instances: %s", string(data))}
+		}
+		var items []map[string]interface{}
+		dec := json.NewDecoder(resp.Body)
+		if err := dec.Decode(&items); err != nil {
+			return errMsg{err}
+		}
+
+		// Try to load count
+		count := -1
+		countURL := base + "/process-instance/count"
+		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel2()
+		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
+		if err2 == nil {
+			req2.Header.Set("Accept", "application/json")
+			if env.Username != "" {
+				req2.SetBasicAuth(env.Username, env.Password)
+			}
+			if resp2, err2 := http.DefaultClient.Do(req2); err2 == nil {
+				defer resp2.Body.Close()
+				if resp2.StatusCode < 400 {
+					var cntBody map[string]interface{}
+					dec2 := json.NewDecoder(resp2.Body)
+					if err3 := dec2.Decode(&cntBody); err3 == nil {
+						if v, ok := cntBody["count"]; ok {
+							if n, ok := v.(float64); ok {
+								count = int(n)
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// Convert items to typed instances
+		instances := make([]config.ProcessInstance, 0, len(items))
+		for _, it := range items {
+			pi := config.ProcessInstance{}
+			if v, ok := it["id"]; ok {
+				pi.ID = fmt.Sprintf("%v", v)
+			}
+			if v, ok := it["processDefinitionId"]; ok {
+				pi.DefinitionID = fmt.Sprintf("%v", v)
+			}
+			if v, ok := it["businessKey"]; ok {
+				pi.BusinessKey = fmt.Sprintf("%v", v)
+			}
+			if v, ok := it["startTime"]; ok {
+				pi.StartTime = fmt.Sprintf("%v", v)
+			}
+			instances = append(instances, pi)
+		}
+
+		// return typed instances message (tests expect this path)
+		// Note: count handling for instances is not propagated in this message.
+		return instancesWithCountMsg{instances: instances, count: count}
 	}
 }
 
@@ -1358,9 +1489,30 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 	if !ok {
 		return nil
 	}
+	// ensure paging defaults
+	if m.pageOffsets == nil {
+		m.pageOffsets = make(map[string]int)
+	}
+	if m.pageTotals == nil {
+		m.pageTotals = make(map[string]int)
+	}
+
 	return func() tea.Msg {
 		base := strings.TrimRight(env.URL, "/")
+		offset := 0
+		if v, ok := m.pageOffsets[root]; ok {
+			offset = v
+		}
+		limit := m.getPageSize()
 		urlStr := base + "/" + strings.TrimLeft(root, "/")
+		// append paging params
+		if limit > 0 {
+			if strings.Contains(urlStr, "?") {
+				urlStr = fmt.Sprintf("%s&firstResult=%d&maxResults=%d", urlStr, offset, limit)
+			} else {
+				urlStr = fmt.Sprintf("%s?firstResult=%d&maxResults=%d", urlStr, offset, limit)
+			}
+		}
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
 		req, err := http.NewRequestWithContext(ctx, http.MethodGet, urlStr, nil)
@@ -1385,7 +1537,51 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		if err := dec.Decode(&items); err != nil {
 			return errMsg{err}
 		}
-		return genericLoadedMsg{root: root, items: items}
+		// try to also fetch count from <root>/count endpoint
+		// best-effort: do not fail overall if count endpoint is missing
+		count := -1
+		countURL := base + "/" + strings.TrimLeft(root, "/") + "/count"
+		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel2()
+		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
+		if err2 == nil {
+			req2.Header.Set("Accept", "application/json")
+			if env.Username != "" {
+				req2.SetBasicAuth(env.Username, env.Password)
+			}
+			if resp2, err2 := http.DefaultClient.Do(req2); err2 == nil {
+				defer resp2.Body.Close()
+				if resp2.StatusCode < 400 {
+					var cntBody map[string]interface{}
+					dec2 := json.NewDecoder(resp2.Body)
+					if err3 := dec2.Decode(&cntBody); err3 == nil {
+						if v, ok := cntBody["count"]; ok {
+							switch n := v.(type) {
+							case float64:
+								count = int(n)
+							case int:
+								count = n
+							}
+						}
+					}
+				}
+			}
+		}
+
+		msg := genericLoadedMsg{root: root, items: items}
+		if count >= 0 {
+			// attach count via tableTotals map by returning a special msg
+			// reuse genericLoadedMsg and set global map after sending message
+			// We'll include count as an extra field by wrapping in errMsg on channel is not ideal,
+			// instead set pageTotals directly on model via a closure side-effect is not possible here
+			// So include count by encoding into items as a special item _meta_count
+			if msg.items == nil {
+				msg.items = []map[string]interface{}{}
+			}
+			meta := map[string]interface{}{"_meta_count": count}
+			msg.items = append([]map[string]interface{}{meta}, msg.items...)
+		}
+		return msg
 	}
 }
 
@@ -1859,6 +2055,53 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			return m, nil
 		case "tab":
+		case "pgdown", "pagedown", "pgdn", "ctrl+f":
+			// Page down: advance offset by visible rows and refetch
+			root := m.currentRoot
+			if len(m.breadcrumb) > 0 {
+				root = m.breadcrumb[len(m.breadcrumb)-1]
+			}
+			pageSize := m.getPageSize()
+			if pageSize <= 0 {
+				pageSize = 10
+			}
+			curOff := 0
+			if v, ok := m.pageOffsets[root]; ok {
+				curOff = v
+			}
+			newOff := curOff + pageSize
+			// if total known, clamp
+			if t, ok := m.pageTotals[root]; ok && t > 0 {
+				if newOff >= t {
+					// move to last page where last row is last
+					newOff = t - pageSize
+					if newOff < 0 {
+						newOff = 0
+					}
+				}
+			}
+			m.pageOffsets[root] = newOff
+			// keep selection stable
+			m.pendingCursorAfterPage = m.table.Cursor()
+			return m, tea.Batch(m.fetchForRoot(root), flashOnCmd())
+		case "pgup", "pageup", "ctrl+b":
+			// Page up: decrease offset by visible rows and refetch
+			root := m.currentRoot
+			if len(m.breadcrumb) > 0 {
+				root = m.breadcrumb[len(m.breadcrumb)-1]
+			}
+			pageSize := m.getPageSize()
+			curOff := 0
+			if v, ok := m.pageOffsets[root]; ok {
+				curOff = v
+			}
+			newOff := curOff - pageSize
+			if newOff < 0 {
+				newOff = 0
+			}
+			m.pageOffsets[root] = newOff
+			m.pendingCursorAfterPage = m.table.Cursor()
+			return m, tea.Batch(m.fetchForRoot(root), flashOnCmd())
 			if m.showRootPopup && len(m.rootInput) > 0 {
 				// complete to first match
 				for _, rc := range m.rootContexts {
@@ -1951,6 +2194,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case variablesLoadedMsg:
 		// show variables table
 		m.applyVariables(msg.variables)
+	case instancesWithCountMsg:
+		// set known total for instances root
+		m.pageTotals[dao.ResourceProcessInstances] = msg.count
+		m.applyInstances(msg.instances)
 	case genericLoadedMsg:
 		// Apply generic fetched collection into the table using the table definition if available
 		def := m.findTableDef(msg.root)
@@ -1998,10 +2245,38 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			rows = append(rows, r)
 		}
+		// If the first item is a meta object containing _meta_count, extract it
+		if len(msg.items) > 0 {
+			if v, ok := msg.items[0]["_meta_count"]; ok {
+				if n, ok2 := v.(float64); ok2 {
+					m.pageTotals[msg.root] = int(n)
+					// strip meta item before rendering
+					msg.items = msg.items[1:]
+				} else if n2, ok3 := v.(int); ok3 {
+					m.pageTotals[msg.root] = n2
+					msg.items = msg.items[1:]
+				}
+			}
+		}
+
 		if len(cols) > 0 {
 			m.table.SetColumns(cols)
 		}
 		m.table.SetRows(normalizeRows(rows, len(cols)))
+		// restore pending cursor after page operations for generic loads
+		if m.pendingCursorAfterPage >= 0 {
+			r := m.table.Rows()
+			last := len(r) - 1
+			pos := m.pendingCursorAfterPage
+			if pos > last {
+				pos = last
+			}
+			if pos < 0 {
+				pos = 0
+			}
+			m.table.SetCursor(pos)
+			m.pendingCursorAfterPage = -1
+		}
 	case editSavedMsg:
 		rows := m.table.Rows()
 		if msg.rowIndex >= 0 && msg.rowIndex < len(rows) {
@@ -2191,7 +2466,12 @@ func (m model) View() string {
 	}
 
 	// render the main content box with title embedded into top border
-	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, m.contentHeader, color)
+	// Append total count for current root if known
+	title := m.contentHeader
+	if total, ok := m.pageTotals[m.currentRoot]; ok && total >= 0 {
+		title = fmt.Sprintf("%s — %d items", m.contentHeader, total)
+	}
+	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, title, color)
 
 	// Footer: breadcrumb on the left, remote indicator right
 	// build breadcrumb render
