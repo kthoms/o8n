@@ -51,6 +51,7 @@ type EnvConfig struct {
 // AppConfig holds application-level configuration (moved to o8n-cfg.yaml)
 type AppConfig struct {
 	Tables []TableDef `yaml:"tables,omitempty"`
+	UI     *UIConfig  `yaml:"ui,omitempty"`
 }
 
 // Config is a compatibility type combining environment and app config
@@ -58,6 +59,33 @@ type Config struct {
 	Environments map[string]Environment `yaml:"environments"`
 	Active       string                 `yaml:"active,omitempty"`
 	Tables       []TableDef             `yaml:"tables,omitempty"`
+	UI           *UIConfig             `yaml:"ui,omitempty"`
+}
+
+// UIConfig holds UI-related configuration, e.g., edit modal styling
+type UIConfig struct {
+	EditModal *EditModalConfig `yaml:"edit_modal,omitempty"`
+}
+
+type EditModalConfig struct {
+	Width        int    `yaml:"width,omitempty"`
+	Border       string `yaml:"border,omitempty"`
+	BorderColor  string `yaml:"border_color,omitempty"`
+	OverlayOpacity float64 `yaml:"overlay_opacity,omitempty"`
+	Buttons      *EditModalButtons `yaml:"buttons,omitempty"`
+}
+
+type EditModalButtons struct {
+	Save   *ButtonStyle `yaml:"save,omitempty"`
+	Cancel *ButtonStyle `yaml:"cancel,omitempty"`
+}
+
+type ButtonStyle struct {
+	Label      string `yaml:"label,omitempty"`
+	Key        string `yaml:"key,omitempty"`
+	Background string `yaml:"background,omitempty"`
+	Foreground string `yaml:"foreground,omitempty"`
+	Style      string `yaml:"style,omitempty"`
 }
 
 // LoadEnvConfig loads the environment YAML file (o8n-env.yaml)

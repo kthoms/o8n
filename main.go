@@ -9,7 +9,6 @@ import (
 	"net/http"
 	"os"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -22,6 +21,7 @@ import (
 	"github.com/kthoms/o8n/internal/client"
 	"github.com/kthoms/o8n/internal/config"
 	"github.com/kthoms/o8n/internal/dao"
+	"github.com/kthoms/o8n/internal/validation"
 	"golang.org/x/term"
 )
 
@@ -582,37 +582,71 @@ func (m *model) renderEditModal(width, height int) string {
 		errorLine = "Error: " + m.editError + "\n\n"
 	}
 
-	modalContent := fmt.Sprintf(
-		"EDIT VALUE\n\n"+
-			"Table: %s\n"+
-			"Column: %s\n"+
-			"Type: %s\n\n"+
-			"%s"+
-			"%s"+
-			"%s\n\n"+
-			"Enter Save    Esc Cancel    Tab Next Column",
-		m.editTableKey,
-		col.def.Name,
-		inputType,
-		columnsLine,
-		m.editInput.View(),
-		errorLine,
-	)
+	// Build header and body
+	header := fmt.Sprintf("EDIT VALUE\n\nTable: %s\nColumn: %s\nType: %s\n\n", m.editTableKey, col.def.Name, inputType)
+	body := columnsLine + m.editInput.View() + "\n\n" + errorLine
 
-	color := ""
-	if m.config != nil {
-		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			color = env.UIColor
+	// Determine button styles from config or defaults
+	saveBg := "#00A8E1"
+	saveFg := "#FFFFFF"
+	cancelBg := "#666666"
+	cancelFg := "#FFFFFF"
+	if m.config != nil && m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.Buttons != nil {
+		if b := m.config.UI.EditModal.Buttons.Save; b != nil {
+			if b.Background != "" {
+				saveBg = b.Background
+			}
+			if b.Foreground != "" {
+				saveFg = b.Foreground
+			}
+		}
+		if b := m.config.UI.EditModal.Buttons.Cancel; b != nil {
+			if b.Background != "" {
+				cancelBg = b.Background
+			}
+			if b.Foreground != "" {
+				cancelFg = b.Foreground
+			}
 		}
 	}
 
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(lipgloss.Color(color)).
-		Padding(1, 2).
-		Width(60)
+	saveStyle := lipgloss.NewStyle().Background(lipgloss.Color(saveBg)).Foreground(lipgloss.Color(saveFg)).Padding(0, 1).Bold(true)
+	cancelStyle := lipgloss.NewStyle().Background(lipgloss.Color(cancelBg)).Foreground(lipgloss.Color(cancelFg)).Padding(0, 1)
 
-	modal := modalStyle.Render(modalContent)
+	saveLabel := " Save "
+	cancelLabel := " Cancel "
+	if m.config != nil && m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.Buttons != nil {
+		if b := m.config.UI.EditModal.Buttons.Save; b != nil && b.Label != "" {
+			saveLabel = " " + b.Label + " "
+		}
+		if b := m.config.UI.EditModal.Buttons.Cancel; b != nil && b.Label != "" {
+			cancelLabel = " " + b.Label + " "
+		}
+	}
+
+	buttons := saveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
+
+	modalBody := header + body + "\n" + buttons
+
+	// Border color: prefer environment color if available
+	borderColor := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			borderColor = env.UIColor
+		}
+		if m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.BorderColor != "" {
+			borderColor = m.config.UI.EditModal.BorderColor
+		}
+	}
+
+	modalStyle := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(lipgloss.Color(borderColor)).Padding(1, 2)
+	if m.config != nil && m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.Width > 0 {
+		modalStyle = modalStyle.Width(m.config.UI.EditModal.Width)
+	} else {
+		modalStyle = modalStyle.Width(60)
+	}
+
+	modal := modalStyle.Render(modalBody)
 	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
 }
 
@@ -862,31 +896,8 @@ func (m *model) resolveEditTypes(col config.ColumnDef, tableKey string, row tabl
 }
 
 func parseInputValue(input string, inputType string) (interface{}, error) {
-	trimmed := strings.TrimSpace(input)
-	switch inputType {
-	case "bool":
-		if strings.EqualFold(trimmed, "true") || trimmed == "1" {
-			return true, nil
-		}
-		if strings.EqualFold(trimmed, "false") || trimmed == "0" {
-			return false, nil
-		}
-		return nil, fmt.Errorf("enter true or false")
-	case "int":
-		v, err := strconv.ParseInt(trimmed, 10, 64)
-		if err != nil {
-			return nil, fmt.Errorf("enter an integer")
-		}
-		return v, nil
-	case "number":
-		v, err := strconv.ParseFloat(trimmed, 64)
-		if err != nil {
-			return nil, fmt.Errorf("enter a number")
-		}
-		return v, nil
-	default:
-		return input, nil
-	}
+	// delegate to validation package which centralizes parsing/validation rules
+	return validation.ValidateAndParse(input, inputType)
 }
 
 func (m *model) currentEditRow() table.Row {
