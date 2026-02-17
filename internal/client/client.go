@@ -123,15 +123,16 @@ func (c *Client) FetchProcessDefinitions() ([]config.ProcessDefinition, error) {
 func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, error) {
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
 	if processKey != "" {
-		req = req.ProcessDefinitionKey(processKey)
+		// treat the provided identifier as a process definition id
+		req = req.ProcessDefinitionId(processKey)
 	}
 
-	c.logf("API: FetchInstances processKey=%q", processKey)
+	c.logf("API: FetchInstances processDefinitionId=%q", processKey)
 	if processKey == "" {
 		c.logf("API: GET /process-instance")
 	} else {
 		q := url.Values{}
-		q.Set("processDefinitionKey", processKey)
+		q.Set("processDefinitionId", processKey)
 		c.logf("API: GET /process-instance?%s", q.Encode())
 	}
 	instances, _, err := req.Execute()

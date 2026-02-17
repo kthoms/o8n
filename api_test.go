@@ -72,8 +72,8 @@ func TestFetchInstances(t *testing.T) {
 		if r.URL.Path != "/process-instance" {
 			t.Fatalf("unexpected path: %s", r.URL.Path)
 		}
-		if got := r.URL.Query().Get("processDefinitionKey"); got != processKey {
-			t.Fatalf("expected processDefinitionKey=%s, got %s", processKey, got)
+		if got := r.URL.Query().Get("processDefinitionId"); got != processKey {
+			t.Fatalf("expected processDefinitionId=%s, got %s", processKey, got)
 		}
 		if auth := r.Header.Get("Authorization"); auth != "Basic "+basic(username, password) {
 			t.Fatalf("missing or invalid basic auth header: %s", auth)

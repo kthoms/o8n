@@ -149,8 +149,8 @@ tables:
           align: left
       drilldown:
         - target: process-instance
-          param: processDefinitionKey
-          column: key
+          param: processDefinitionId
+          column: id
         - target: history-process-instance
           param: processDefinitionId
           column: id

@@ -1202,14 +1202,27 @@ func (m model) fetchDefinitionsCmd() tea.Cmd {
 	}
 }
 
-func (m model) fetchInstancesCmd(processKey string) tea.Cmd {
+func (m model) fetchInstancesCmd(processIdentifier string) tea.Cmd {
 	env, ok := m.config.Environments[m.currentEnv]
 	if !ok {
 		return nil
 	}
 	c := client.NewClient(env)
 	return func() tea.Msg {
-		instances, err := c.FetchInstances(processKey)
+		// resolve identifier: it may be a definition key or an id
+		id := processIdentifier
+		for _, d := range m.cachedDefinitions {
+			if d.Key == processIdentifier {
+				id = d.ID
+				break
+			}
+			if d.ID == processIdentifier {
+				id = d.ID
+				break
+			}
+		}
+
+		instances, err := c.FetchInstances(id)
 		if err != nil {
 			return errMsg{err}
 		}
