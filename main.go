@@ -2014,7 +2014,6 @@ func (m model) View() string {
 	}
 
 	// main content boxed (table)
-	mainBoxStyle := lipgloss.NewStyle().BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).Padding(0, 1)
 	pw := m.paneWidth
 	if pw > m.lastWidth {
 		pw = m.lastWidth
@@ -2023,14 +2022,12 @@ func (m model) View() string {
 		pw = 10
 	}
 
-	// render content header as a centered small box above the table
-	headerStyle := lipgloss.NewStyle().Width(pw).Align(lipgloss.Center).Bold(true).Foreground(lipgloss.Color(color))
-	headerBox := headerStyle.Render(m.contentHeader)
+	// combine compact header only; the content header will be rendered
+	// embedded into the content border by the custom box renderer below.
+	headerStack := compactHeader
 
-	// combine compact header and content header into a single header stack so it's always visible
-	headerStack := lipgloss.JoinVertical(lipgloss.Center, compactHeader, headerBox)
-
-	mainBox := mainBoxStyle.Width(pw).Height(m.paneHeight).Render(m.table.View())
+	// render the main content box with title embedded into top border
+	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, m.contentHeader, color)
 
 	// Footer: breadcrumb on the left, remote indicator right
 	// build breadcrumb render
@@ -2069,7 +2066,7 @@ func (m model) View() string {
 	spacer := strings.Repeat(" ", padW)
 	footerLine := leftPart + spacer + rightPart
 
-	// Compose final vertical layout: compactHeader (3 rows), contextSelectionBox (1 row), headerBox, mainBox, footerLine (1 row)
+	// Compose final vertical layout: compactHeader (3 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row)
 	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
 
 	// If modal is active, overlay it
@@ -2106,6 +2103,81 @@ func rowInstanceID(row table.Row) string {
 		return row[0]
 	}
 	return ""
+}
+
+// renderBoxWithTitle draws a simple single-line-border box of the given
+// totalWidth/totalHeight and embeds title centered into the top border.
+// The content is clipped/padded to fit the inner area. If color is non-empty
+// the entire box text is colorized using that foreground color.
+func renderBoxWithTitle(content string, totalWidth, totalHeight int, title, color string) string {
+	innerWidth := totalWidth - 2
+	if innerWidth < 1 {
+		innerWidth = 1
+	}
+
+	// Determine available content height (exclude top/bottom border)
+	contentHeight := totalHeight - 2
+	if contentHeight < 0 {
+		contentHeight = 0
+	}
+
+	// Split content into lines and prepare a fixed-height slice
+	contentLines := strings.Split(content, "\n")
+	lines := make([]string, contentHeight)
+	for i := 0; i < contentHeight; i++ {
+		var l string
+		if i < len(contentLines) {
+			l = contentLines[i]
+		} else {
+			l = ""
+		}
+		// Truncate or pad to innerWidth using rune-aware slicing
+		if lipgloss.Width(l) > innerWidth {
+			runes := []rune(l)
+			if len(runes) > innerWidth {
+				l = string(runes[:innerWidth])
+			}
+		}
+		pad := innerWidth - lipgloss.Width(l)
+		if pad < 0 {
+			pad = 0
+		}
+		lines[i] = l + strings.Repeat(" ", pad)
+	}
+
+	// Prepare title, trimming if necessary
+	t := title
+	if lipgloss.Width(t) > innerWidth {
+		runes := []rune(t)
+		if len(runes) > innerWidth {
+			t = string(runes[:innerWidth])
+		}
+	}
+	left := (innerWidth - lipgloss.Width(t)) / 2
+	if left < 0 {
+		left = 0
+	}
+	right := innerWidth - left - lipgloss.Width(t)
+
+	top := "┌" + strings.Repeat("─", left) + t + strings.Repeat("─", right) + "┐"
+	bottom := "└" + strings.Repeat("─", innerWidth) + "┘"
+
+	var b strings.Builder
+	b.WriteString(top)
+	b.WriteString("\n")
+	for _, l := range lines {
+		b.WriteString("│")
+		b.WriteString(l)
+		b.WriteString("│")
+		b.WriteString("\n")
+	}
+	b.WriteString(bottom)
+
+	out := b.String()
+	if color != "" {
+		out = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Render(out)
+	}
+	return out
 }
 
 // navigateToBreadcrumb moves the UI state to the breadcrumb level at idx (0-based).
