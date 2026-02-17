@@ -11,42 +11,42 @@ import (
 
 // Client represents an API client bound to a specific environment.
 type Client struct {
-	env           Environment
-	httpClient    *http.Client
-	operatonAPI   *operaton.APIClient
-	authContext   context.Context
+	env         Environment
+	httpClient  *http.Client
+	operatonAPI *operaton.APIClient
+	authContext context.Context
 }
 
 // NewClient creates a Client with a default timeout.
 func NewClient(env Environment) *Client {
 	httpClient := &http.Client{Timeout: 10 * time.Second}
-	
+
 	// Create OpenAPI configuration
 	cfg := operaton.NewConfiguration()
 	cfg.HTTPClient = httpClient
 	cfg.Servers = operaton.ServerConfigurations{
 		{
-			URL: "{url}",
+			URL:         "{url}",
 			Description: "Custom Operaton server",
 			Variables: map[string]operaton.ServerVariable{
 				"url": {
-					Description: "Server URL",
+					Description:  "Server URL",
 					DefaultValue: env.URL,
 				},
 			},
 		},
 	}
-	
+
 	// Create the generated API client
 	apiClient := operaton.NewAPIClient(cfg)
-	
+
 	// Create context with basic auth
 	auth := operaton.BasicAuth{
 		UserName: env.Username,
 		Password: env.Password,
 	}
 	authContext := context.WithValue(context.Background(), operaton.ContextBasicAuth, auth)
-	
+
 	return &Client{
 		env:         env,
 		httpClient:  httpClient,
@@ -54,7 +54,6 @@ func NewClient(env Environment) *Client {
 		authContext: authContext,
 	}
 }
-
 
 // FetchProcessDefinitions retrieves all process definitions using the generated client.
 func (c *Client) FetchProcessDefinitions() ([]ProcessDefinition, error) {
@@ -109,14 +108,13 @@ func getBoolValue(nullable operaton.NullableBool) bool {
 	return *ptr
 }
 
-
 // FetchInstances retrieves process instances filtered by process key using the generated client.
 func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
 	if processKey != "" {
 		req = req.ProcessDefinitionKey(processKey)
 	}
-	
+
 	instances, _, err := req.Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch instances: %w", err)
@@ -138,7 +136,6 @@ func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
 
 	return result, nil
 }
-
 
 // FetchVariables retrieves variables for a process instance using the generated client.
 // The Operaton API returns a map of variable names to variable values.
@@ -164,7 +161,6 @@ func (c *Client) FetchVariables(instanceID string) ([]Variable, error) {
 
 	return vars, nil
 }
-
 
 // TerminateInstance terminates a process instance using the generated client.
 func (c *Client) TerminateInstance(instanceID string) error {

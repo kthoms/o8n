@@ -116,6 +116,7 @@ type viewState struct {
 	tableRows             []table.Row
 	tableCursor           int
 	cachedDefinitions     []config.ProcessDefinition
+	tableColumns          []table.Column
 }
 
 type model struct {
@@ -1462,7 +1463,19 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.cachedDefinitions = prevState.cachedDefinitions
 
 				// restore table rows and cursor position
-				m.table.SetRows(prevState.tableRows)
+				// restore columns first to ensure rows align with expected column count
+				if len(prevState.tableColumns) > 0 {
+					m.table.SetColumns(prevState.tableColumns)
+				}
+				// normalize rows to the restored column count (defensive)
+				cols := m.table.Columns()
+				rows := prevState.tableRows
+				if len(cols) > 0 {
+					norm := normalizeRows(rows, len(cols))
+					m.table.SetRows(norm)
+				} else {
+					m.table.SetRows(rows)
+				}
 				m.table.SetCursor(prevState.tableCursor)
 
 				return m, flashOnCmd()
@@ -1500,15 +1513,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 			// Save current state before drilling down
+			// Normalize rows to current columns so restoration is exact
+			cols := m.table.Columns()
+			rowsCopy := append([]table.Row{}, m.table.Rows()...)
+			if len(cols) > 0 {
+				norm := normalizeRows(rowsCopy, len(cols))
+				rowsCopy = norm
+			}
 			currentState := viewState{
 				viewMode:              m.viewMode,
 				breadcrumb:            append([]string{}, m.breadcrumb...),
 				contentHeader:         m.contentHeader,
 				selectedDefinitionKey: m.selectedDefinitionKey,
 				selectedInstanceID:    m.selectedInstanceID,
-				tableRows:             append([]table.Row{}, m.table.Rows()...),
+				tableRows:             rowsCopy,
 				tableCursor:           m.table.Cursor(),
 				cachedDefinitions:     m.cachedDefinitions,
+				tableColumns:          append([]table.Column{}, cols...),
 			}
 			m.navigationStack = append(m.navigationStack, currentState)
 
@@ -1725,6 +1746,29 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.manualRefreshTriggered = true
 	}
 	m.lastListIndex = newIndex
+
+	// Defensive: ensure table rows match the number of columns before updating
+	// This avoids panics in the underlying bubbles table when rows/cols get out of sync
+	if cols := m.table.Columns(); len(cols) > 0 {
+		rows := m.table.Rows()
+		norm := normalizeRows(rows, len(cols))
+		// Only reset rows if normalization changed anything
+		changed := false
+		if len(norm) != len(rows) {
+			changed = true
+		} else {
+			for i := range norm {
+				if len(norm[i]) != len(rows[i]) {
+					changed = true
+					break
+				}
+			}
+		}
+		if changed {
+			log.Printf("normalized table rows: cols=%d rows_before=%d rows_after=%d", len(cols), len(rows), len(norm))
+			m.table.SetRows(norm)
+		}
+	}
 
 	m.table, cmd = m.table.Update(msg)
 	cmds = append(cmds, cmd)

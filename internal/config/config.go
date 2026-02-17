@@ -22,10 +22,10 @@ type Environment struct {
 type ColumnDef struct {
 	Name      string `yaml:"name"`
 	Visible   bool   `yaml:"visible"`
-	Width     string `yaml:"width"`      // percentage like "25%" or empty for auto
-	Align     string `yaml:"align"`      // left/right/center (currently informational)
-	Editable  bool   `yaml:"editable,omitempty"`    // whether this column can be edited
-	InputType string `yaml:"input_type,omitempty"`  // text/number/bool/auto (optional)
+	Width     string `yaml:"width"`                // percentage like "25%" or empty for auto
+	Align     string `yaml:"align"`                // left/right/center (currently informational)
+	Editable  bool   `yaml:"editable,omitempty"`   // whether this column can be edited
+	InputType string `yaml:"input_type,omitempty"` // text/number/bool/auto (optional)
 }
 
 // DrillDownDef describes a drill-down target for a table (target collection and query parameter)
