@@ -1,0 +1,1 @@
+../../_bmad/core/agents/bmm-dev.md
