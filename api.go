@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/kthoms/o8n/internal/client"
+	"github.com/kthoms/o8n/internal/config"
 	"github.com/kthoms/o8n/internal/operaton"
 )
 
@@ -56,60 +58,34 @@ func NewClient(env Environment) *Client {
 }
 
 // FetchProcessDefinitions retrieves all process definitions using the generated client.
-func (c *Client) FetchProcessDefinitions() ([]ProcessDefinition, error) {
+func (c *Client) FetchProcessDefinitions() ([]config.ProcessDefinition, error) {
 	defs, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitions(c.authContext).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch process definitions: %w", err)
 	}
 
-	// Convert from generated DTOs to our model
-	result := make([]ProcessDefinition, len(defs))
+	result := make([]config.ProcessDefinition, len(defs))
 	for i, def := range defs {
-		result[i] = ProcessDefinition{
-			ID:           getStringValue(def.Id),
-			Key:          getStringValue(def.Key),
-			Category:     getStringValue(def.Category),
-			Description:  getStringValue(def.Description),
-			Name:         getStringValue(def.Name),
-			Version:      int(getInt32Value(def.Version)),
-			Resource:     getStringValue(def.Resource),
-			DeploymentID: getStringValue(def.DeploymentId),
-			Diagram:      getStringValue(def.Diagram),
-			Suspended:    getBoolValue(def.Suspended),
-			TenantID:     getStringValue(def.TenantId),
+		result[i] = config.ProcessDefinition{
+			ID:           client.GetStringValue(def.Id),
+			Key:          client.GetStringValue(def.Key),
+			Category:     client.GetStringValue(def.Category),
+			Description:  client.GetStringValue(def.Description),
+			Name:         client.GetStringValue(def.Name),
+			Version:      int(client.GetInt32Value(def.Version)),
+			Resource:     client.GetStringValue(def.Resource),
+			DeploymentID: client.GetStringValue(def.DeploymentId),
+			Diagram:      client.GetStringValue(def.Diagram),
+			Suspended:    client.GetBoolValue(def.Suspended),
+			TenantID:     client.GetStringValue(def.TenantId),
 		}
 	}
 
 	return result, nil
 }
 
-// Helper functions to safely handle Nullable types from the generated client
-func getStringValue(nullable operaton.NullableString) string {
-	ptr := nullable.Get()
-	if ptr == nil {
-		return ""
-	}
-	return *ptr
-}
-
-func getInt32Value(nullable operaton.NullableInt32) int32 {
-	ptr := nullable.Get()
-	if ptr == nil {
-		return 0
-	}
-	return *ptr
-}
-
-func getBoolValue(nullable operaton.NullableBool) bool {
-	ptr := nullable.Get()
-	if ptr == nil {
-		return false
-	}
-	return *ptr
-}
-
 // FetchInstances retrieves process instances filtered by process key using the generated client.
-func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
+func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, error) {
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
 	if processKey != "" {
 		req = req.ProcessDefinitionKey(processKey)
@@ -120,17 +96,16 @@ func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
 		return nil, fmt.Errorf("failed to fetch instances: %w", err)
 	}
 
-	// Convert from generated DTOs to our model
-	result := make([]ProcessInstance, len(instances))
+	result := make([]config.ProcessInstance, len(instances))
 	for i, inst := range instances {
-		result[i] = ProcessInstance{
-			ID:             getStringValue(inst.Id),
-			DefinitionID:   getStringValue(inst.DefinitionId),
-			BusinessKey:    getStringValue(inst.BusinessKey),
-			CaseInstanceID: getStringValue(inst.CaseInstanceId),
-			Ended:          getBoolValue(inst.Ended),
-			Suspended:      getBoolValue(inst.Suspended),
-			TenantID:       getStringValue(inst.TenantId),
+		result[i] = config.ProcessInstance{
+			ID:             client.GetStringValue(inst.Id),
+			DefinitionID:   client.GetStringValue(inst.DefinitionId),
+			BusinessKey:    client.GetStringValue(inst.BusinessKey),
+			CaseInstanceID: client.GetStringValue(inst.CaseInstanceId),
+			Ended:          client.GetBoolValue(inst.Ended),
+			Suspended:      client.GetBoolValue(inst.Suspended),
+			TenantID:       client.GetStringValue(inst.TenantId),
 		}
 	}
 
@@ -139,23 +114,22 @@ func (c *Client) FetchInstances(processKey string) ([]ProcessInstance, error) {
 
 // FetchVariables retrieves variables for a process instance using the generated client.
 // The Operaton API returns a map of variable names to variable values.
-func (c *Client) FetchVariables(instanceID string) ([]Variable, error) {
+func (c *Client) FetchVariables(instanceID string) ([]config.Variable, error) {
 	varsMap, _, err := c.operatonAPI.ProcessInstanceAPI.GetProcessInstanceVariables(c.authContext, instanceID).Execute()
 	if err != nil {
 		return nil, fmt.Errorf("failed to fetch variables: %w", err)
 	}
 
-	// Convert from map to slice
-	vars := make([]Variable, 0, len(*varsMap))
+	vars := make([]config.Variable, 0, len(*varsMap))
 	for name, varValue := range *varsMap {
 		value := ""
 		if varValue.Value != nil {
 			value = fmt.Sprintf("%v", varValue.Value)
 		}
-		vars = append(vars, Variable{
+		vars = append(vars, config.Variable{
 			Name:  name,
 			Value: value,
-			Type:  getStringValue(varValue.Type),
+			Type:  client.GetStringValue(varValue.Type),
 		})
 	}
 

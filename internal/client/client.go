@@ -354,7 +354,7 @@ func NewClient(env cfgpkg.Environment) *CompatClient {
 	}
 }
 
-func getStringValue(nullable operaton.NullableString) string {
+func GetStringValue(nullable operaton.NullableString) string {
 	ptr := nullable.Get()
 	if ptr == nil {
 		return ""
@@ -362,7 +362,7 @@ func getStringValue(nullable operaton.NullableString) string {
 	return *ptr
 }
 
-func getInt32Value(nullable operaton.NullableInt32) int32 {
+func GetInt32Value(nullable operaton.NullableInt32) int32 {
 	ptr := nullable.Get()
 	if ptr == nil {
 		return 0
@@ -370,7 +370,7 @@ func getInt32Value(nullable operaton.NullableInt32) int32 {
 	return *ptr
 }
 
-func getBoolValue(nullable operaton.NullableBool) bool {
+func GetBoolValue(nullable operaton.NullableBool) bool {
 	ptr := nullable.Get()
 	if ptr == nil {
 		return false
@@ -389,17 +389,17 @@ func (c *CompatClient) FetchProcessDefinitions() ([]cfgpkg.ProcessDefinition, er
 	out := make([]cfgpkg.ProcessDefinition, len(defs))
 	for i, d := range defs {
 		out[i] = cfgpkg.ProcessDefinition{
-			ID:           getStringValue(d.Id),
-			Key:          getStringValue(d.Key),
-			Category:     getStringValue(d.Category),
-			Description:  getStringValue(d.Description),
-			Name:         getStringValue(d.Name),
-			Version:      int(getInt32Value(d.Version)),
-			Resource:     getStringValue(d.Resource),
-			DeploymentID: getStringValue(d.DeploymentId),
-			Diagram:      getStringValue(d.Diagram),
-			Suspended:    getBoolValue(d.Suspended),
-			TenantID:     getStringValue(d.TenantId),
+			ID:           GetStringValue(d.Id),
+			Key:          GetStringValue(d.Key),
+			Category:     GetStringValue(d.Category),
+			Description:  GetStringValue(d.Description),
+			Name:         GetStringValue(d.Name),
+			Version:      int(GetInt32Value(d.Version)),
+			Resource:     GetStringValue(d.Resource),
+			DeploymentID: GetStringValue(d.DeploymentId),
+			Diagram:      GetStringValue(d.Diagram),
+			Suspended:    GetBoolValue(d.Suspended),
+			TenantID:     GetStringValue(d.TenantId),
 		}
 	}
 	return out, nil
@@ -437,13 +437,13 @@ func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.Pr
 	out := make([]cfgpkg.ProcessInstance, len(instances))
 	for i, inst := range instances {
 		out[i] = cfgpkg.ProcessInstance{
-			ID:             getStringValue(inst.Id),
-			DefinitionID:   getStringValue(inst.DefinitionId),
-			BusinessKey:    getStringValue(inst.BusinessKey),
-			CaseInstanceID: getStringValue(inst.CaseInstanceId),
-			Ended:          getBoolValue(inst.Ended),
-			Suspended:      getBoolValue(inst.Suspended),
-			TenantID:       getStringValue(inst.TenantId),
+			ID:             GetStringValue(inst.Id),
+			DefinitionID:   GetStringValue(inst.DefinitionId),
+			BusinessKey:    GetStringValue(inst.BusinessKey),
+			CaseInstanceID: GetStringValue(inst.CaseInstanceId),
+			Ended:          GetBoolValue(inst.Ended),
+			Suspended:      GetBoolValue(inst.Suspended),
+			TenantID:       GetStringValue(inst.TenantId),
 		}
 	}
 	return out, nil
@@ -466,7 +466,7 @@ func (c *CompatClient) FetchVariables(instanceID string) ([]cfgpkg.Variable, err
 		vars = append(vars, cfgpkg.Variable{
 			Name:  name,
 			Value: value,
-			Type:  getStringValue(varValue.Type),
+			Type:  GetStringValue(varValue.Type),
 		})
 	}
 	return vars, nil

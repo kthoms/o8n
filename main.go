@@ -26,7 +26,18 @@ import (
 	"golang.org/x/term"
 )
 
-const refreshInterval = 5 * time.Second
+const (
+	refreshInterval = 5 * time.Second
+	appVersion      = "0.1.0"
+)
+
+// Package-level style constants used in View — cached here to avoid per-frame allocations.
+var (
+	// completionStyle renders the greyed-out autocomplete ghost text in the root popup.
+	completionStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
+	// flashBaseStyle is the fixed-width right-aligned base for the flash/remote indicator.
+	flashBaseStyle = lipgloss.NewStyle().Width(3).Align(lipgloss.Right)
+)
 
 type refreshMsg struct{}
 
@@ -381,7 +392,7 @@ func newModel(cfg *config.Config) model {
 		splashActive:           true,
 		splashFrame:            1,
 		activeModal:            ModalNone,
-		version:                "0.1.0",
+		version:                appVersion,
 		variablesByName:        map[string]config.Variable{},
 		debugEnabled:           false,
 		pageOffsets:            make(map[string]int),
@@ -909,8 +920,16 @@ func typeNameForInputType(inputType string, variableType string) string {
 	}
 }
 
+func isVariableTable(tableKey string) bool {
+	switch tableKey {
+	case "process-variables", "variables", "variable-instance", "variable-instances":
+		return true
+	}
+	return false
+}
+
 func (m *model) variableTypeForRow(tableKey string, row table.Row) string {
-	if tableKey != "process-variables" && tableKey != "variables" && tableKey != "variable-instance" && tableKey != "variable-instances" {
+	if !isVariableTable(tableKey) {
 		return ""
 	}
 	def := m.findTableDef(tableKey)
@@ -1689,7 +1708,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.editError = "No selection"
 					return m, nil
 				}
-				if m.editTableKey == "process-variables" || m.editTableKey == "variables" || m.editTableKey == "variable-instance" || m.editTableKey == "variable-instances" {
+				if isVariableTable(m.editTableKey) {
 					varName := m.variableNameForRow(m.editTableKey, row)
 					if varName == "" {
 						m.editError = "Variable name not found"
@@ -2392,7 +2411,7 @@ func (m model) View() string {
 		logoRendered := m.splashLogoStyle.Render(displayed)
 
 		// animate info: fade in during last half of frames by showing once frame > half
-		info := "v0.1.0"
+		info := "v" + m.version
 		infoRendered := ""
 		if m.splashFrame >= totalSplashFrames/2 {
 			infoRendered = m.splashInfoStyle.Render(info)
@@ -2441,7 +2460,6 @@ func (m model) View() string {
 		}
 
 		inputStyle := lipgloss.NewStyle().Foreground(lipgloss.Color(color))
-		completionStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
 		displayText := inputStyle.Render(m.rootInput) + completionStyle.Render(completion)
 
 		boxStyle := lipgloss.NewStyle().
@@ -2489,7 +2507,7 @@ func (m model) View() string {
 
 	// Render remote flash as a fixed-width styled box on the right to ensure visibility.
 	remoteSymbol := " "
-	rpStyle := lipgloss.NewStyle().Width(3).Align(lipgloss.Right)
+	rpStyle := flashBaseStyle
 	if m.flashActive {
 		remoteSymbol = "⚡"
 		rpStyle = rpStyle.Foreground(lipgloss.Color("#00FF00")).Bold(true)
