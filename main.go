@@ -1865,6 +1865,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selectedDefinitionKey = prevState.selectedDefinitionKey
 				m.selectedInstanceID = prevState.selectedInstanceID
 				m.cachedDefinitions = prevState.cachedDefinitions
+				m.genericParams = prevState.genericParams // restore drilldown filter params
 
 				// restore table rows and cursor position
 				// restore columns first to ensure rows align with expected column count
@@ -1895,6 +1896,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.rootInput = ""
 						// clear any footer error
 						m.footerError = ""
+						// clear drilldown filter params when switching root context
+						m.genericParams = make(map[string]string)
 						// reset breadcrumb and header
 						m.breadcrumb = []string{rc}
 						m.contentHeader = rc
@@ -2030,9 +2033,44 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					return m, tea.Batch(m.fetchVariablesCmd(val), flashOnCmd())
 
 				default:
-					// config declares a drill target but UI/client not implemented yet
-					m.footerError = fmt.Sprintf("Drill target '%s' not supported in UI yet", chosen.Target)
-					return m, tea.Tick(3*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+					// Generic drilldown for any configured target
+					// Save current state before performing the drilldown
+					colsGeneric := m.table.Columns()
+					rowsCopyGeneric := append([]table.Row{}, m.table.Rows()...)
+					if len(colsGeneric) > 0 {
+						normGeneric := normalizeRows(rowsCopyGeneric, len(colsGeneric))
+						rowsCopyGeneric = normGeneric
+					}
+					currentStateGeneric := viewState{
+						viewMode:              m.viewMode,
+						breadcrumb:            append([]string{}, m.breadcrumb...),
+						contentHeader:         m.contentHeader,
+						selectedDefinitionKey: m.selectedDefinitionKey,
+						selectedInstanceID:    m.selectedInstanceID,
+						tableRows:             rowsCopyGeneric,
+						tableCursor:           m.table.Cursor(),
+						cachedDefinitions:     m.cachedDefinitions,
+						tableColumns:          append([]table.Column{}, colsGeneric...),
+						genericParams:         m.genericParams, // save current filter params
+					}
+					m.navigationStack = append(m.navigationStack, currentStateGeneric)
+
+					// Set up the drilldown: store the filter param and navigate to target table
+					m.currentRoot = chosen.Target
+					m.genericParams = map[string]string{chosen.Param: val}
+					m.breadcrumb = append(m.breadcrumb, chosen.Target)
+					m.contentHeader = fmt.Sprintf("%s(%s=%s)", chosen.Target, chosen.Param, val)
+					// reset cursor to row 0
+					m.table.SetCursor(0)
+					// Build columns for target table and clear rows while loading
+					colsTarget := m.buildColumnsFor(chosen.Target, m.paneWidth-4)
+					if len(colsTarget) > 0 {
+						m.table.SetRows(normalizeRows(nil, len(colsTarget)))
+						m.table.SetColumns(colsTarget)
+					} else {
+						m.table.SetRows([]table.Row{})
+					}
+					return m, tea.Batch(m.fetchGenericCmd(chosen.Target), flashOnCmd())
 				}
 			}
 
@@ -2256,7 +2294,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		var cols []table.Column
 		if def != nil {
 			cols = m.buildColumnsFor(msg.root, m.paneWidth-4)
-		} else {
+			// If buildColumnsFor returned only the "EMPTY" fallback (when all columns are invisible),
+			// infer columns from the data instead
+			if len(cols) == 1 && cols[0].Title == "EMPTY" {
+				cols = nil
+			}
+		}
+		if len(cols) == 0 {
 			// infer columns from first item keys
 			if len(msg.items) > 0 {
 				keys := make([]string, 0, len(msg.items[0]))
