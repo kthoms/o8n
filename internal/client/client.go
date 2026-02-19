@@ -332,7 +332,7 @@ func NewClient(env cfgpkg.Environment) *CompatClient {
 			Variables: map[string]operaton.ServerVariable{
 				"url": {
 					Description:  "Server URL",
-					DefaultValue: env.URL,
+					DefaultValue: strings.TrimRight(env.URL, "/"),
 				},
 			},
 		},

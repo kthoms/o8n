@@ -1516,6 +1516,14 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		m.pageTotals = make(map[string]int)
 	}
 
+	// Resolve the API path: rootContexts pluralizes names (e.g. "task" → "tasks")
+	// but the Operaton REST API uses the singular form. Use the table def name when
+	// available since it mirrors the actual API path segment.
+	apiPath := root
+	if def := m.findTableDef(root); def != nil {
+		apiPath = def.Name
+	}
+
 	return func() tea.Msg {
 		base := strings.TrimRight(env.URL, "/")
 		offset := 0
@@ -1523,7 +1531,7 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 			offset = v
 		}
 		limit := m.getPageSize()
-		urlStr := base + "/" + strings.TrimLeft(root, "/")
+		urlStr := base + "/" + strings.TrimLeft(apiPath, "/")
 		// append paging params
 		if limit > 0 {
 			if strings.Contains(urlStr, "?") {
@@ -1559,7 +1567,7 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		// try to also fetch count from <root>/count endpoint
 		// best-effort: do not fail overall if count endpoint is missing
 		count := -1
-		countURL := base + "/" + strings.TrimLeft(root, "/") + "/count"
+		countURL := base + "/" + strings.TrimLeft(apiPath, "/") + "/count"
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel2()
 		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
@@ -2235,6 +2243,19 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 		}
+		// If the first item is a meta object containing _meta_count, extract it
+		// before building rows so it doesn't produce a phantom empty row.
+		if len(msg.items) > 0 {
+			if v, ok := msg.items[0]["_meta_count"]; ok {
+				if n, ok2 := v.(float64); ok2 {
+					m.pageTotals[msg.root] = int(n)
+					msg.items = msg.items[1:]
+				} else if n2, ok3 := v.(int); ok3 {
+					m.pageTotals[msg.root] = n2
+					msg.items = msg.items[1:]
+				}
+			}
+		}
 		// Build rows from items
 		rows := make([]table.Row, 0, len(msg.items))
 		for _, it := range msg.items {
@@ -2262,19 +2283,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				r[i] = val
 			}
 			rows = append(rows, r)
-		}
-		// If the first item is a meta object containing _meta_count, extract it
-		if len(msg.items) > 0 {
-			if v, ok := msg.items[0]["_meta_count"]; ok {
-				if n, ok2 := v.(float64); ok2 {
-					m.pageTotals[msg.root] = int(n)
-					// strip meta item before rendering
-					msg.items = msg.items[1:]
-				} else if n2, ok3 := v.(int); ok3 {
-					m.pageTotals[msg.root] = n2
-					msg.items = msg.items[1:]
-				}
-			}
 		}
 
 		if len(cols) > 0 {
