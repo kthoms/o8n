@@ -2074,6 +2074,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			return m, nil
 		case "tab":
+			if m.showRootPopup && len(m.rootInput) > 0 {
+				// complete to first match
+				for _, rc := range m.rootContexts {
+					if strings.HasPrefix(rc, m.rootInput) {
+						m.rootInput = rc
+						break
+					}
+				}
+			}
+			return m, nil
 		case "pgdown", "pagedown", "pgdn", "ctrl+f":
 			// Page down: advance offset by visible rows and refetch
 			root := m.currentRoot
@@ -2121,17 +2131,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.pageOffsets[root] = newOff
 			m.pendingCursorAfterPage = m.table.Cursor()
 			return m, tea.Batch(m.fetchForRoot(root), flashOnCmd())
-			if m.showRootPopup && len(m.rootInput) > 0 {
-				// complete to first match
-				for _, rc := range m.rootContexts {
-					if strings.HasPrefix(rc, m.rootInput) {
-						m.rootInput = rc
-						break
-					}
-				}
-				return m, nil
-			}
-			return m, nil
 		case "backspace":
 			if m.showRootPopup {
 				if len(m.rootInput) > 0 {
@@ -2316,8 +2315,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case errMsg:
 		// display error in footer
 		m.footerError = msg.err.Error()
-		// clear after 4 seconds
-		return m, tea.Tick(4*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+		// clear after 5 seconds
+		return m, tea.Tick(5*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
 	case clearErrorMsg:
 		m.footerError = ""
 	}
