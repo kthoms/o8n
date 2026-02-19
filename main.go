@@ -144,6 +144,7 @@ type viewState struct {
 	tableCursor           int
 	cachedDefinitions     []config.ProcessDefinition
 	tableColumns          []table.Column
+	genericParams         map[string]string // drilldown filter params active at this level
 }
 
 type model struct {
@@ -249,6 +250,9 @@ type model struct {
 	pageTotals  map[string]int
 	// requested cursor position to restore after page load (keeps selection stable across pages)
 	pendingCursorAfterPage int
+
+	// active filter params for the current generic collection view (e.g. drilldown filters)
+	genericParams map[string]string
 
 	// Version number
 	version      string
@@ -398,6 +402,7 @@ func newModel(cfg *config.Config) model {
 		pageOffsets:            make(map[string]int),
 		pageTotals:             make(map[string]int),
 		pendingCursorAfterPage: -1,
+		genericParams:          make(map[string]string),
 	}
 
 	// edit input defaults
@@ -1524,6 +1529,12 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		apiPath = def.Name
 	}
 
+	// Copy active filter params for thread-safe use inside the goroutine.
+	paramsCopy := make(map[string]string, len(m.genericParams))
+	for k, v := range m.genericParams {
+		paramsCopy[k] = v
+	}
+
 	return func() tea.Msg {
 		base := strings.TrimRight(env.URL, "/")
 		offset := 0
@@ -1532,7 +1543,14 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		}
 		limit := m.getPageSize()
 		urlStr := base + "/" + strings.TrimLeft(apiPath, "/")
-		// append paging params
+		// append drilldown filter params, then paging params
+		for k, v := range paramsCopy {
+			if strings.Contains(urlStr, "?") {
+				urlStr = fmt.Sprintf("%s&%s=%s", urlStr, k, v)
+			} else {
+				urlStr = fmt.Sprintf("%s?%s=%s", urlStr, k, v)
+			}
+		}
 		if limit > 0 {
 			if strings.Contains(urlStr, "?") {
 				urlStr = fmt.Sprintf("%s&firstResult=%d&maxResults=%d", urlStr, offset, limit)
@@ -1568,6 +1586,14 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		// best-effort: do not fail overall if count endpoint is missing
 		count := -1
 		countURL := base + "/" + strings.TrimLeft(apiPath, "/") + "/count"
+		// carry filter params to count URL too
+		for k, v := range paramsCopy {
+			if strings.Contains(countURL, "?") {
+				countURL = fmt.Sprintf("%s&%s=%s", countURL, k, v)
+			} else {
+				countURL = fmt.Sprintf("%s?%s=%s", countURL, k, v)
+			}
+		}
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel2()
 		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
