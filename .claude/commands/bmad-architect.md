@@ -1,1 +1,0 @@
-../../_bmad/core/agents/bmad-architect.md
