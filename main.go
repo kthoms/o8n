@@ -2883,10 +2883,12 @@ func loadRootContexts(specPath string) []string {
 
 func main() {
 	debugMode := false
+	noSplash := false
 	for _, a := range os.Args[1:] {
 		if a == "--debug" {
 			debugMode = true
-			break
+		} else if a == "--no-splash" {
+			noSplash = true
 		}
 	}
 	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
@@ -2907,6 +2909,9 @@ func main() {
 		// ensure internal client picks up debug mode
 		_ = os.Setenv("O8N_DEBUG", "1")
 		m.debugEnabled = true
+	}
+	if noSplash {
+		m.splashActive = false
 	}
 	if _, err := tea.NewProgram(m).Run(); err != nil {
 		log.Fatalf("failed to run program: %v", err)

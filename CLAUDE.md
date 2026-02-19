@@ -12,7 +12,8 @@ go test ./...   # Standard test run
 go vet ./...    # Static analysis
 gofmt -w .      # Format code
 
-./o8n --debug   # Run with debug logging → ./debug/access.log + ./debug/last-screen.txt
+./o8n --debug       # Run with debug logging → ./debug/access.log + ./debug/last-screen.txt
+./o8n --no-splash   # Skip splash screen and go directly to main view
 ```
 
 ## Architecture
