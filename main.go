@@ -59,6 +59,8 @@ var (
 	successFooterStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#50C878")).Bold(true)
 	infoFooterStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#00A8E1"))
 	loadingFooterStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700"))
+	// Validation error style for edit modal
+	validationErrorStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B")).Bold(true)
 )
 
 type refreshMsg struct{}
@@ -68,7 +70,10 @@ type dataLoadedMsg struct {
 	instances   []config.ProcessInstance
 }
 
-type definitionsLoadedMsg struct{ definitions []config.ProcessDefinition }
+type definitionsLoadedMsg struct {
+	definitions []config.ProcessDefinition
+	count       int
+}
 type instancesLoadedMsg struct{ instances []config.ProcessInstance }
 
 // New: fetch variables for a given instance
@@ -278,6 +283,10 @@ type model struct {
 	footerStatusKind footerStatusKind
 	// isLoading indicates that an async API call is in progress
 	isLoading bool
+	// lastAPILatency tracks the most recent API call duration
+	lastAPILatency time.Duration
+	// apiCallStarted records when the current API call started
+	apiCallStarted time.Time
 
 	// splash screen active
 	splashActive bool
@@ -319,7 +328,7 @@ type model struct {
 	envStatus map[string]EnvironmentStatus
 }
 
-// getKeyHints returns keyboard hints based on current view and terminal width
+// getKeyHints returns context-aware keyboard hints based on current view and terminal width
 func (m *model) getKeyHints(width int) []KeyHint {
 	hints := []KeyHint{}
 
@@ -329,24 +338,34 @@ func (m *model) getKeyHints(width int) []KeyHint {
 		KeyHint{":", "switch", 2},
 	)
 
+	// Context-specific hints based on viewMode
 	if m.viewMode == "definitions" {
 		hints = append(hints,
 			KeyHint{"↑↓", "nav", 3},
 			KeyHint{"Enter", "drill", 4},
 		)
+		// Drill-down drilldown hint
+		if width >= 85 {
+			hints = append(hints, KeyHint{"e", "Edit def", 4})
+		}
 	} else if m.viewMode == "instances" {
 		hints = append(hints,
 			KeyHint{"Esc", "back", 5},
 			KeyHint{"↑↓", "nav", 3},
 			KeyHint{"Enter", "vars", 4},
 		)
+		// Terminate instance hint in instances view
+		if width >= 100 {
+			hints = append(hints, KeyHint{"<ctrl>+d", "terminate", 7})
+		}
 	} else if m.viewMode == "variables" {
 		hints = append(hints,
 			KeyHint{"Esc", "back", 5},
 			KeyHint{"↑↓", "nav", 3},
 		)
+		// Show edit hint for variables when columns are editable
 		if m.hasEditableColumns() {
-			hints = append(hints, KeyHint{"e", "edit", 4})
+			hints = append(hints, KeyHint{"e", "edit var", 4})
 		}
 	}
 
@@ -355,9 +374,6 @@ func (m *model) getKeyHints(width int) []KeyHint {
 		hints = append(hints, KeyHint{"<ctrl>-r", "refresh", 6})
 	}
 	hints = append(hints, KeyHint{"PgDn/PgUp", "page", 3})
-	if width >= 100 && m.viewMode == "instances" {
-		hints = append(hints, KeyHint{"<ctrl>+d", "delete", 7})
-	}
 	if width >= 110 {
 		hints = append(hints, KeyHint{"<ctrl>+c", "quit", 8})
 	}
@@ -693,7 +709,7 @@ func (m *model) renderEditModal(width, height int) string {
 
 	errorLine := ""
 	if m.editError != "" {
-		errorLine = "Error: " + m.editError + "\n\n"
+		errorLine = validationErrorStyle.Render("⚠ " + m.editError) + "\n\n"
 	}
 
 	// Build body (without header)
@@ -745,7 +761,7 @@ func (m *model) renderEditModal(width, height int) string {
 			saveDisabled = true
 			// if no explicit editError set, show the validation error inline
 			if m.editError == "" {
-				errorLine = "Error: " + err.Error() + "\n\n"
+				errorLine = validationErrorStyle.Render("⚠ " + err.Error()) + "\n\n"
 			}
 		}
 	}
@@ -1437,7 +1453,12 @@ func (m model) fetchDefinitionsCmd() tea.Cmd {
 		if err != nil {
 			return errMsg{err}
 		}
-		return definitionsLoadedMsg{definitions: defs}
+		// Fetch count separately (non-fatal if it fails)
+		count := 0
+		if countVal, err := c.FetchProcessDefinitionsCount(); err == nil {
+			count = countVal
+		}
+		return definitionsLoadedMsg{definitions: defs, count: count}
 	}
 }
 
@@ -1980,12 +2001,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.resetViews()
 			// refetch definitions for new env and flash
 			m.isLoading = true
+			m.apiCallStarted = time.Now()
 			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), healthCmd)
 		case "ctrl+r", "r":
 			// Toggle auto-refresh
 			m.autoRefresh = !m.autoRefresh
 			if m.autoRefresh {
 				m.isLoading = true
+				m.apiCallStarted = time.Now()
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), tea.Tick(refreshInterval, func(time.Time) tea.Msg { return refreshMsg{} }))
 			}
 			return m, nil
@@ -2075,10 +2098,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 								m.table.SetColumns(cols)
 							}
 							m.isLoading = true
+							m.apiCallStarted = time.Now()
 							return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd())
 						}
 						// fallback to definitions fetch
 						m.isLoading = true
+					m.apiCallStarted = time.Now()
 						return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
 					}
 				}
@@ -2446,19 +2471,36 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case flashOffMsg:
 		m.flashActive = false
 	case definitionsLoadedMsg:
+		m.pageTotals[dao.ResourceProcessDefinitions] = msg.count
 		m.applyDefinitions(msg.definitions)
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
+		}
 		m.isLoading = false
 	case instancesLoadedMsg:
 		m.applyInstances(msg.instances)
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
+		}
 		m.isLoading = false
 	case variablesLoadedMsg:
 		// show variables table
 		m.applyVariables(msg.variables)
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
+		}
 		m.isLoading = false
 	case instancesWithCountMsg:
 		// set known total for instances root
 		m.pageTotals[dao.ResourceProcessInstances] = msg.count
 		m.applyInstances(msg.instances)
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
+		}
 		m.isLoading = false
 	case genericLoadedMsg:
 		// Apply generic fetched collection into the table using the table definition if available
@@ -2545,6 +2587,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			m.table.SetCursor(pos)
 			m.pendingCursorAfterPage = -1
+		}
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
 		}
 		m.isLoading = false
 	case editSavedMsg:
@@ -2751,8 +2797,12 @@ func (m model) View() string {
 	}
 	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, title, color)
 
-	// Footer: breadcrumb on the left, remote indicator right
-	// build breadcrumb render
+	// Footer (1 row with 3 columns per specification):
+	// Column 1: Context tag with breadcrumb navigation hints
+	// Column 2: Status message (error/success/loading/info)
+	// Column 3: Remote activity indicator (⚡)
+	// Columns separated by " | "
+
 	crumbs := make([]string, 0, len(m.breadcrumb))
 	for i, c := range m.breadcrumb {
 		style := lipgloss.NewStyle()
@@ -2765,7 +2815,7 @@ func (m model) View() string {
 	}
 	breadcrumbRendered := strings.Join(crumbs, " ")
 
-	// Render remote flash as a fixed-width styled box on the right to ensure visibility.
+	// Render remote flash as a fixed-width symbol on the right, plus latency and pagination if available
 	remoteSymbol := " "
 	rpStyle := flashBaseStyle
 	if m.flashActive {
@@ -2775,21 +2825,24 @@ func (m model) View() string {
 		remoteSymbol = " "
 		rpStyle = rpStyle.Foreground(lipgloss.Color("#666666"))
 	}
-	rightPart := rpStyle.Render(remoteSymbol)
-
-	// place breadcrumb left and remote right within lastWidth
-	totalW := m.lastWidth
-	leftPart := breadcrumbRendered
-	// compute padding so rightPart is flush right
-	padW := totalW - lipgloss.Width(leftPart) - lipgloss.Width(rightPart)
-	if padW < 1 {
-		padW = 1
+	latencyStr := ""
+	if m.lastAPILatency > 0 {
+		latencyStr = fmt.Sprintf(" %dms", m.lastAPILatency.Milliseconds())
 	}
-	spacer := strings.Repeat(" ", padW)
-	footerLine := leftPart + spacer + rightPart
+	// Add pagination status if available
+	paginationStr := ""
+	if m.currentRoot != "" {
+		if total, ok := m.pageTotals[m.currentRoot]; ok && total > 0 {
+			pageSize := m.getPageSize()
+			currentPage := (m.pageOffsets[m.currentRoot] / pageSize) + 1
+			totalPages := (total + pageSize - 1) / pageSize
+			paginationStr = fmt.Sprintf(" [%d/%d]", currentPage, totalPages)
+		}
+	}
+	rightPart := rpStyle.Render(remoteSymbol + latencyStr + paginationStr)
 
-	// Build status line with icon based on footerStatusKind
-	statusLine := ""
+	// Build status message with icon based on footerStatusKind
+	statusMessage := ""
 	if m.footerError != "" {
 		icon := ""
 		style := lipgloss.NewStyle()
@@ -2803,11 +2856,48 @@ func (m model) View() string {
 		default: // footerStatusInfo
 			icon, style = "ℹ ", infoFooterStyle
 		}
-		statusLine = style.Render(icon + m.footerError)
+		statusMessage = style.Render(icon + m.footerError)
 	}
 
-	// Compose final vertical layout: compactHeader (4 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row), statusLine (1 row)
-	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine, statusLine)
+	// Layout footer: [breadcrumb] | [status] | [remote]
+	// Format: leftPart | middlePart | rightPart (all separated by " | ")
+	totalW := m.lastWidth
+	const sepWidth = 3 // width of " | "
+
+	leftPart := breadcrumbRendered
+	leftPartW := lipgloss.Width(leftPart)
+
+	// Remote indicator always at the right (1 char + " | " before it = 4 total)
+	remotePart := " | " + rightPart
+	remotePartW := lipgloss.Width(remotePart)
+
+	// Available width for middle column (status message)
+	middleW := totalW - leftPartW - remotePartW - sepWidth
+	if middleW < 0 {
+		middleW = 0
+	}
+
+	// Truncate or pad status message to fit available space
+	statusWidth := lipgloss.Width(statusMessage)
+	if statusWidth > middleW && middleW > 0 {
+		// Simple truncation: remove from the end until it fits
+		// Note: This is a simplification; proper UTF-8 aware truncation would be more complex
+		truncMsg := statusMessage
+		for lipgloss.Width(truncMsg) > middleW && len(truncMsg) > 0 {
+			truncMsg = truncMsg[:len(truncMsg)-1]
+		}
+		statusMessage = truncMsg
+	}
+	// Pad to fill the column
+	padW := middleW - lipgloss.Width(statusMessage)
+	if padW > 0 {
+		statusMessage = statusMessage + strings.Repeat(" ", padW)
+	}
+
+	footerLine := leftPart + " | " + statusMessage + remotePart
+
+	// Compose final vertical layout: header, context box, main content, footer (1 row)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
 
 	// If modal is active, overlay it
 	if m.activeModal == ModalConfirmDelete {

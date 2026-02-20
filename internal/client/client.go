@@ -405,6 +405,20 @@ func (c *CompatClient) FetchProcessDefinitions() ([]cfgpkg.ProcessDefinition, er
 	return out, nil
 }
 
+// FetchProcessDefinitionsCount returns the total count of process definitions.
+func (c *CompatClient) FetchProcessDefinitionsCount() (int, error) {
+	c.logf("API: FetchProcessDefinitionsCount()")
+	c.logf("API: GET /process-definition/count")
+	countResp, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitionsCount(c.authContext).Execute()
+	if err != nil {
+		return 0, fmt.Errorf("failed to fetch process definitions count: %w", err)
+	}
+	if countResp == nil || countResp.Count == nil {
+		return 0, nil
+	}
+	return int(*countResp.Count), nil
+}
+
 // FetchInstances retrieves process instances; if processKey is non-empty it uses that as processDefinitionKey.
 func (c *CompatClient) FetchInstances(paramName, paramValue string) ([]cfgpkg.ProcessInstance, error) {
 	c.logf("API: FetchInstances(%s=%s)", paramName, paramValue)

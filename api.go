@@ -84,6 +84,18 @@ func (c *Client) FetchProcessDefinitions() ([]config.ProcessDefinition, error) {
 	return result, nil
 }
 
+// FetchProcessDefinitionsCount returns the total count of process definitions.
+func (c *Client) FetchProcessDefinitionsCount() (int, error) {
+	countResp, _, err := c.operatonAPI.ProcessDefinitionAPI.GetProcessDefinitionsCount(c.authContext).Execute()
+	if err != nil {
+		return 0, fmt.Errorf("failed to fetch process definitions count: %w", err)
+	}
+	if countResp == nil || countResp.Count == nil {
+		return 0, nil
+	}
+	return int(*countResp.Count), nil
+}
+
 // FetchInstances retrieves process instances filtered by process key using the generated client.
 func (c *Client) FetchInstances(processKey string) ([]config.ProcessInstance, error) {
 	req := c.operatonAPI.ProcessInstanceAPI.GetProcessInstances(c.authContext)
