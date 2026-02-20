@@ -903,6 +903,7 @@ func (m *model) renderEditModal(width, height int) string {
 }
 
 func (m *model) applyStyle() {
+	log.Printf("DEBUG: applyStyle called. m.skin is nil: %t", m.skin == nil)
 	if m.skin != nil {
 		m.style = lipgloss.NewStyle().
 			Foreground(lipgloss.Color(m.skin.O8n.Body.FgColor)).
