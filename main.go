@@ -3314,6 +3314,38 @@ func (m *model) deriveFocusBackgroundColor(accentColor string) string {
 	return "23"
 }
 
+// validateConfigFiles verifies that critical config files exist and are not empty.
+// Returns an error if config files appear corrupted or missing.
+func validateConfigFiles() error {
+	criticalFiles := map[string]int{
+		"o8n-cfg.yaml": 700,   // Config should have ~760 lines
+		"o8n-env.yaml": 5,     // Env should have ~10-11 lines (absolute minimum)
+	}
+
+	for file, minLines := range criticalFiles {
+		// Read file to count lines and verify it exists
+		data, err := os.ReadFile(file)
+		if err != nil {
+			return fmt.Errorf("critical file missing or unreadable: %s", file)
+		}
+
+		// Check if file appears empty or too small
+		size := len(data)
+		if size < 100 {
+			return fmt.Errorf("critical file appears corrupted or empty: %s (%d bytes). Expected ~%d lines minimum. Restore with: git show HEAD~2:%s > %s",
+				file, size, minLines, file, file)
+		}
+
+		lineCount := strings.Count(string(data), "\n")
+		if lineCount < minLines {
+			return fmt.Errorf("%s appears corrupted (%d lines, expected ~%d minimum). Restore with: git show HEAD~2:%s > %s",
+				file, lineCount, minLines, file, file)
+		}
+	}
+
+	return nil
+}
+
 func main() {
 	debugMode := false
 	noSplash := false
@@ -3324,6 +3356,13 @@ func main() {
 			noSplash = true
 		}
 	}
+
+	// Verify critical config files exist and are not corrupted
+	if err := validateConfigFiles(); err != nil {
+		log.Printf("CRITICAL: %v", err)
+		return
+	}
+
 	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
 	cfg, err := config.LoadSplitConfig()
 	if err != nil {

@@ -20,6 +20,14 @@ endif
 
 default: help
 
+verify-config:           ## Verify critical config files are not corrupted
+	@echo "Verifying critical config files..."
+	@[ -f o8n-cfg.yaml ] || (echo "ERROR: o8n-cfg.yaml not found"; exit 1)
+	@[ -f o8n-env.yaml ] || (echo "ERROR: o8n-env.yaml not found"; exit 1)
+	@[ $$(wc -l < o8n-cfg.yaml) -gt 700 ] || (echo "ERROR: o8n-cfg.yaml is corrupted ($(shell wc -l < o8n-cfg.yaml) lines, expected ~760)"; exit 1)
+	@[ $$(wc -l < o8n-env.yaml) -gt 5 ] || (echo "ERROR: o8n-env.yaml is corrupted"; exit 1)
+	@echo "✓ Config files verified"
+
 test:                    ## Run all tests
 	@go clean --testcache && go test ./...
 
@@ -27,7 +35,7 @@ cover:                   ## Run test coverage suite
 	@go test ./... --coverprofile=cov.out
 	@go tool cover --html=cov.out
 
-build:                   ## Builds the CLI
+build: verify-config     ## Builds the CLI
 	@CGO_ENABLED=${CGO_ENABLED} go build ${GO_FLAGS} \
 	-ldflags "-w -s -X ${PACKAGE}/cmd.version=${VERSION} -X ${PACKAGE}/cmd.commit=${GIT_REV} -X ${PACKAGE}/cmd.date=${DATE}" \
 	-a -tags=${GO_TAGS} -o ${OUTPUT_BIN} main.go
