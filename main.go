@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -372,6 +373,9 @@ type model struct {
 	// Environment popup state
 	showEnvPopup   bool
 	envPopupCursor int
+
+	activeSkin string
+	skin       *Skin
 }
 
 // getKeyHints returns context-aware keyboard hints based on current view and terminal width
@@ -627,7 +631,7 @@ func newModel(cfg *config.Config) model {
 	return m
 }
 
-func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig) model {
+func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig, skinName string) model {
 	// Build compatibility Config from split configs
 	cfg := &config.Config{
 		Environments: make(map[string]config.Environment),
@@ -643,10 +647,20 @@ func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig) model {
 		}
 	}
 	cfg.Active = envCfg.Active
+	cfg.Skin = envCfg.Skin
 
 	m := newModel(cfg)
 	m.envConfig = envCfg
 	m.appConfig = appCfg
+	m.activeSkin = skinName
+
+	skin, err := loadSkin(skinName)
+	if err != nil {
+		log.Printf("Falling back to stock skin. Could not load skin: %v", err)
+		skin, _ = loadSkin("stock.yaml")
+	}
+	m.skin = skin
+
 	// copy tables into m.config for backward compatibility
 	m.config = cfg
 	return m
@@ -889,43 +903,71 @@ func (m *model) renderEditModal(width, height int) string {
 }
 
 func (m *model) applyStyle() {
-	color := ""
-	if m.config != nil {
-		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			color = env.UIColor
+	if m.skin != nil {
+		m.style = lipgloss.NewStyle().
+			Foreground(lipgloss.Color(m.skin.O8n.Body.FgColor)).
+			Background(lipgloss.Color(m.skin.O8n.Body.BgColor))
+
+		listStyles := list.DefaultStyles()
+		listStyles.Title = listStyles.Title.BorderForeground(lipgloss.Color(m.skin.O8n.Frame.Border.FocusColor))
+		m.list.Styles = listStyles
+
+		tStyles := table.DefaultStyles()
+		tStyles.Header = tStyles.Header.
+			BorderStyle(lipgloss.NormalBorder()).
+			BorderForeground(lipgloss.Color(m.skin.O8n.Frame.Border.FgColor)).
+			BorderBottom(false).
+			Foreground(lipgloss.Color(m.skin.O8n.Body.FgColor)).
+			Bold(true)
+		tStyles.Selected = tStyles.Selected.
+			Foreground(lipgloss.Color(m.skin.O8n.Body.BgColor)).
+			Background(lipgloss.Color(m.skin.O8n.Frame.Border.FocusColor)).
+			Bold(true)
+		m.table.SetStyles(tStyles)
+
+		m.splashLogoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(m.skin.O8n.Body.LogoColor)).Bold(true).Align(lipgloss.Center)
+		m.splashInfoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(m.skin.O8n.Body.LogoColor)).Align(lipgloss.Center)
+
+		m.breadcrumbStyles = []lipgloss.Style{
+			lipgloss.NewStyle().Background(lipgloss.Color(m.skin.O8n.Frame.Border.FocusColor)).Foreground(lipgloss.Color(m.skin.O8n.Body.BgColor)).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#e6e6fa")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#f0fff0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#fffaf0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+		}
+	} else {
+		// Fallback to old styling if skin is not loaded
+		color := ""
+		if m.config != nil {
+			if env, ok := m.config.Environments[m.currentEnv]; ok {
+				color = env.UIColor
+			}
+		}
+		m.style = lipgloss.NewStyle().BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).Bold(true)
+
+		listStyles := list.DefaultStyles()
+		listStyles.Title = listStyles.Title.BorderForeground(lipgloss.Color(color))
+		m.list.Styles = listStyles
+
+		tStyles := table.DefaultStyles()
+		tStyles.Header = tStyles.Header.BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).BorderBottom(false).Foreground(lipgloss.Color("white")).Bold(true)
+		bgColor := m.deriveFocusBackgroundColor(color)
+		tStyles.Selected = tStyles.Selected.
+			Foreground(lipgloss.Color("white")).
+			Background(lipgloss.Color(bgColor)).
+			Bold(true)
+		m.table.SetStyles(tStyles)
+
+		m.splashLogoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Bold(true).Align(lipgloss.Center)
+		m.splashInfoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Align(lipgloss.Center)
+
+		m.breadcrumbStyles = []lipgloss.Style{
+			lipgloss.NewStyle().Background(lipgloss.Color(color)).Foreground(lipgloss.Color("black")).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#e6e6fa")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#f0fff0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
+			lipgloss.NewStyle().Background(lipgloss.Color("#fffaf0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
 		}
 	}
-	m.style = lipgloss.NewStyle().BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).Bold(true)
-
-	listStyles := list.DefaultStyles()
-	listStyles.Title = listStyles.Title.BorderForeground(lipgloss.Color(color))
-	m.list.Styles = listStyles
-
-	// Table header color is white as requested. Remove header bottom border to hide separator line.
-	tStyles := table.DefaultStyles()
-	tStyles.Header = tStyles.Header.BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).BorderBottom(false).Foreground(lipgloss.Color("white")).Bold(true)
-	// Enhanced focus indicator: bold + background color (dark shade of accent) + white text
-	// Derive darker shade for background (simple mapping of common colors)
-	bgColor := m.deriveFocusBackgroundColor(color)
-	tStyles.Selected = tStyles.Selected.
-		Foreground(lipgloss.Color("white")).
-		Background(lipgloss.Color(bgColor)).
-		Bold(true)
-	m.table.SetStyles(tStyles)
-
-	// splash styles
-	m.splashLogoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Bold(true).Align(lipgloss.Center)
-	m.splashInfoStyle = lipgloss.NewStyle().Foreground(lipgloss.Color(color)).Align(lipgloss.Center)
-
-	// breadcrumb styles (up to 4 levels)
-	m.breadcrumbStyles = []lipgloss.Style{
-		lipgloss.NewStyle().Background(lipgloss.Color(color)).Foreground(lipgloss.Color("black")).Padding(0, 1),
-		lipgloss.NewStyle().Background(lipgloss.Color("#e6e6fa")).Foreground(lipgloss.Color("black")).Padding(0, 1),
-		lipgloss.NewStyle().Background(lipgloss.Color("#f0fff0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
-		lipgloss.NewStyle().Background(lipgloss.Color("#fffaf0")).Foreground(lipgloss.Color("black")).Padding(0, 1),
-	}
 }
-
 func (m model) Init() tea.Cmd {
 	// fetch definitions at start and flash, and start splash animation (150ms per frame, total 1.5s)
 	// we start with frame 1 already set; schedule frame 2 after 150ms
@@ -4340,14 +4382,24 @@ func validateConfigFiles() error {
 }
 
 func main() {
-	debugMode := false
-	noSplash := false
-	for _, a := range os.Args[1:] {
-		if a == "--debug" {
-			debugMode = true
-		} else if a == "--no-splash" {
-			noSplash = true
+	var debug = flag.Bool("debug", false, "enable debug logging")
+	var skin = flag.String("skin", "", "skin to use")
+	var noSplash = flag.Bool("no-splash", false, "disable splash screen")
+	flag.Parse()
+
+	// If debug is enabled, create a log file
+	if *debug {
+		os.Mkdir("debug", 0755)
+		f, err := os.OpenFile("debug/o8n.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+		if err != nil {
+			log.Fatalf("error opening file: %v", err)
 		}
+		defer f.Close()
+		log.SetOutput(f)
+		log.Println("--- o8n debug session started ---")
+	} else {
+		// a nil writer discards all log output
+		log.SetOutput(io.Discard)
 	}
 
 	// Verify critical config files exist and are not corrupted
@@ -4357,27 +4409,35 @@ func main() {
 	}
 
 	// Load split config files (o8n-env.yaml + o8n-cfg.yaml). No legacy fallback.
-	cfg, err := config.LoadSplitConfig()
+	envCfg, err := config.LoadEnvConfig("o8n-env.yaml")
 	if err != nil {
-		log.Printf("Configuration error: %v", err)
-		log.Printf("Please create 'o8n-env.yaml' (see o8n-env.yaml.example) and 'o8n-cfg.yaml' (table definitions).")
-		return
+		fmt.Printf("Error loading o8n-env.yaml: %v\n", err)
+		fmt.Println("Please create o8n-env.yaml from the example.")
+		os.Exit(1)
 	}
 
-	if len(cfg.Environments) == 0 {
+	appCfg, err := config.LoadAppConfig("o8n-cfg.yaml")
+	if err != nil {
+		fmt.Printf("Error loading o8n-cfg.yaml: %v\n", err)
+		os.Exit(1)
+	}
+
+	if len(envCfg.Environments) == 0 {
 		log.Println("No environments configured. Please create 'o8n-env.yaml' and define at least one environment.")
 		return
 	}
 
-	m := newModel(cfg)
-	if debugMode {
-		// ensure internal client picks up debug mode
-		_ = os.Setenv("O8N_DEBUG", "1")
-		m.debugEnabled = true
-	}
-	if noSplash {
+			skinName := *skin
+		if skinName == "" && envCfg.Skin != "" {
+			skinName = envCfg.Skin
+		}
+		log.Printf("DEBUG: skinName resolved to: %s", skinName)
+	m := newModelEnvApp(envCfg, appCfg, skinName)
+	m.debugEnabled = *debug
+	if *noSplash {
 		m.splashActive = false
 	}
+
 	if _, err := tea.NewProgram(m).Run(); err != nil {
 		log.Fatalf("failed to run program: %v", err)
 	}

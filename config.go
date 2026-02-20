@@ -45,6 +45,7 @@ type TableDef struct {
 type EnvConfig struct {
 	Environments map[string]Environment `yaml:"environments"`
 	Active       string                 `yaml:"active,omitempty"`
+	Skin         string                 `yaml:"skin,omitempty"`
 }
 
 // AppConfig holds application-level configuration (moved to o8n-cfg.yaml)
@@ -106,6 +107,7 @@ func SaveAppConfig(path string, cfg *AppConfig) error {
 type Config struct {
 	Environments map[string]Environment `yaml:"environments"`
 	Active       string                 `yaml:"active,omitempty"`
+	Skin         string                 `yaml:"skin,omitempty"`
 	Tables       []TableDef             `yaml:"tables,omitempty"`
 }
 
@@ -119,6 +121,7 @@ func LoadSplitConfig() (*Config, error) {
 	cfg := &Config{}
 	cfg.Environments = envCfg.Environments
 	cfg.Active = envCfg.Active
+	cfg.Skin = envCfg.Skin
 	cfg.Tables = appCfg.Tables
 	return cfg, nil
 }
@@ -136,10 +139,10 @@ func LoadConfig(_path string) (*Config, error) {
 	return &cfg, nil
 }
 
-// SaveConfig persists the env.Active field back to o8n-env.yaml (best-effort)
+// SaveConfig persists the env.Active and env.Skin fields back to o8n-env.yaml (best-effort)
 func SaveConfig(_path string, cfg *Config) error {
 	// Write out env file if possible
-	envCfg := &EnvConfig{Environments: cfg.Environments, Active: cfg.Active}
+	envCfg := &EnvConfig{Environments: cfg.Environments, Active: cfg.Active, Skin: cfg.Skin}
 	if err := SaveEnvConfig("o8n-env.yaml", envCfg); err != nil {
 		return err
 	}
