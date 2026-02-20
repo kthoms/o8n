@@ -17,6 +17,7 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/x/ansi"
 
 	"github.com/kthoms/o8n/internal/client"
 	"github.com/kthoms/o8n/internal/config"
@@ -30,6 +31,22 @@ const (
 	refreshInterval = 5 * time.Second
 	appVersion      = "0.1.0"
 )
+
+// EnvironmentStatus represents connection status to an environment
+type EnvironmentStatus string
+
+const (
+	StatusUnknown     EnvironmentStatus = "unknown"
+	StatusOperational EnvironmentStatus = "operational"
+	StatusUnreachable EnvironmentStatus = "unreachable"
+)
+
+// envStatusMsg reports health check result for an environment
+type envStatusMsg struct {
+	env    string
+	status EnvironmentStatus
+	err    error
+}
 
 // Package-level style constants used in View — cached here to avoid per-frame allocations.
 var (
@@ -122,6 +139,15 @@ const (
 	ModalEdit
 )
 
+// editFocusArea tracks keyboard focus within the edit modal
+type editFocusArea int
+
+const (
+	editFocusInput  editFocusArea = iota // text input focused
+	editFocusSave                         // Save button focused
+	editFocusCancel                       // Cancel button focused
+)
+
 type editSavedMsg struct {
 	rowIndex int
 	colIndex int
@@ -185,6 +211,7 @@ type model struct {
 	editRowIndex  int
 	editTableKey  string
 	editError     string
+	editFocus     editFocusArea
 
 	// lastListIndex stores the last-known list index so we can detect
 	// selection changes even when list.Update doesn't change the index in tests.
@@ -257,6 +284,9 @@ type model struct {
 	// Version number
 	version      string
 	debugEnabled bool
+
+	// Environment connection status tracking
+	envStatus map[string]EnvironmentStatus
 }
 
 // getKeyHints returns keyboard hints based on current view and terminal width
@@ -314,13 +344,29 @@ func (m *model) renderCompactHeader(width int) string {
 		width = 80
 	}
 
-	// Row 1: Status line (environment, URL, user, connection status)
-	envInfo := fmt.Sprintf("%s @ %s", m.currentEnv, "localhost:8080")
-	if m.config != nil {
-		if env, ok := m.config.Environments[m.currentEnv]; ok {
-			envInfo = fmt.Sprintf("%s @ %s │ %s", m.currentEnv, env.URL, env.Username)
-		}
+	// Row 1: Status line (environment with status indicator instead of URL/user)
+	status, ok := m.envStatus[m.currentEnv]
+	if !ok {
+		status = StatusUnknown
 	}
+
+	// Determine status symbol and color
+	statusSymbol := "●"
+	statusColor := lipgloss.Color("#FFAA00") // yellow/orange for unknown
+	switch status {
+	case StatusOperational:
+		statusSymbol = "●"
+		statusColor = lipgloss.Color("#00FF00") // green
+	case StatusUnreachable:
+		statusSymbol = "✗"
+		statusColor = lipgloss.Color("#FF0000") // red
+	case StatusUnknown:
+		statusSymbol = "○"
+		statusColor = lipgloss.Color("#FFAA00") // yellow
+	}
+
+	statusStyle := lipgloss.NewStyle().Foreground(statusColor)
+	envInfo := fmt.Sprintf("%s %s", m.currentEnv, statusStyle.Render(statusSymbol))
 
 	row1 := fmt.Sprintf("[H] o8n %s │ %s", m.version, envInfo)
 	if len(row1) > width-4 {
@@ -403,6 +449,7 @@ func newModel(cfg *config.Config) model {
 		pageTotals:             make(map[string]int),
 		pendingCursorAfterPage: -1,
 		genericParams:          make(map[string]string),
+		envStatus:              make(map[string]EnvironmentStatus),
 	}
 
 	// edit input defaults
@@ -419,6 +466,11 @@ func newModel(cfg *config.Config) model {
 	// initialize breadcrumb: start with current root
 	m.breadcrumb = []string{dao.ResourceProcessDefinitions}
 	m.contentHeader = dao.ResourceProcessDefinitions
+
+	// initialize environment status to unknown
+	for _, envName := range envNames {
+		m.envStatus[envName] = StatusUnknown
+	}
 
 	// sensible defaults so the header is visible immediately
 	m.lastWidth = 80
@@ -537,8 +589,8 @@ func (m *model) renderConfirmDeleteModal(width, height int) string {
 
 	modal := modalStyle.Render(modalContent)
 
-	// Center the modal
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	// Return just the styled box — overlayCenter handles centering
+	return modal
 }
 
 // renderHelpScreen renders the help screen modal
@@ -606,7 +658,7 @@ func (m *model) renderEditModal(width, height int) string {
 			}
 			parts = append(parts, label)
 		}
-		columnsLine = "Columns: " + strings.Join(parts, " ") + "\n\n"
+		columnsLine = strings.Join(parts, " ") + "\n\n"
 	}
 
 	errorLine := ""
@@ -614,8 +666,7 @@ func (m *model) renderEditModal(width, height int) string {
 		errorLine = "Error: " + m.editError + "\n\n"
 	}
 
-	// Build header and body
-	header := fmt.Sprintf("EDIT VALUE\n\nTable: %s\nColumn: %s\nType: %s\n\n", m.editTableKey, col.def.Name, inputType)
+	// Build body (without header)
 	body := columnsLine + m.editInput.View() + "\n\n" + errorLine
 
 	// Determine button styles from config or defaults
@@ -680,14 +731,37 @@ func (m *model) renderEditModal(width, height int) string {
 	}
 	body = columnsLine + m.editInput.View() + "\n\n" + errorLine + suggestionLine
 
-	var buttons string
-	if saveDisabled {
-		buttons = disabledSaveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
-	} else {
-		buttons = saveStyle.Render(saveLabel) + "  " + cancelStyle.Render(cancelLabel) + "  (Enter=Save Esc=Cancel)"
-	}
+	// Render buttons with focus styles
+	savedFocusedStyle := saveStyle.Copy().Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#FFFFFF"))
+	cancelFocusedStyle := cancelStyle.Copy().Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#FFFFFF"))
 
-	modalBody := header + body + "\n" + buttons
+	var saveBtn, cancelBtn string
+	switch m.editFocus {
+	case editFocusSave:
+		if saveDisabled {
+			saveBtn = disabledSaveStyle.Copy().Border(lipgloss.NormalBorder()).Render(saveLabel)
+		} else {
+			saveBtn = savedFocusedStyle.Render(saveLabel)
+		}
+		cancelBtn = cancelStyle.Render(cancelLabel)
+	case editFocusCancel:
+		if saveDisabled {
+			saveBtn = disabledSaveStyle.Render(saveLabel)
+		} else {
+			saveBtn = saveStyle.Render(saveLabel)
+		}
+		cancelBtn = cancelFocusedStyle.Render(cancelLabel)
+	default: // editFocusInput
+		if saveDisabled {
+			saveBtn = disabledSaveStyle.Render(saveLabel)
+		} else {
+			saveBtn = saveStyle.Render(saveLabel)
+		}
+		cancelBtn = cancelStyle.Render(cancelLabel)
+	}
+	buttons := saveBtn + "  " + cancelBtn
+
+	modalBody := body + "\n" + buttons
 
 	// Border color: prefer environment color if available
 	borderColor := ""
@@ -708,7 +782,8 @@ func (m *model) renderEditModal(width, height int) string {
 	}
 
 	modal := modalStyle.Render(modalBody)
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	// Return just the styled box — overlayCenter handles centering
+	return modal
 }
 
 func (m *model) applyStyle() {
@@ -747,12 +822,19 @@ func (m model) Init() tea.Cmd {
 	// fetch definitions at start and flash, and start splash animation (150ms per frame, total 1.5s)
 	// we start with frame 1 already set; schedule frame 2 after 150ms
 	firstTick := tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: 2} })
-	return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), firstTick)
+
+	// Check health of all environments
+	cmds := []tea.Cmd{m.fetchDefinitionsCmd(), flashOnCmd(), firstTick}
+	for _, envName := range m.envNames {
+		cmds = append(cmds, m.checkEnvironmentHealthCmd(envName))
+	}
+
+	return tea.Batch(cmds...)
 }
 
-func (m *model) nextEnvironment() {
+func (m *model) nextEnvironment() tea.Cmd {
 	if len(m.envNames) == 0 {
-		return
+		return nil
 	}
 	idx := 0
 	for i, name := range m.envNames {
@@ -771,6 +853,8 @@ func (m *model) nextEnvironment() {
 			log.Printf("warning: failed to save config active environment: %v", err)
 		}
 	}
+	// Check health of the newly selected environment
+	return m.checkEnvironmentHealthCmd(m.currentEnv)
 }
 
 func (m *model) resetViews() {
@@ -1034,6 +1118,7 @@ func (m *model) startEdit(tableKey string) {
 	m.editRowIndex = m.table.Cursor()
 	m.editColumnPos = 0
 	m.editError = ""
+	m.editFocus = editFocusInput
 	m.editInput.Focus()
 	m.setEditColumn(0)
 	m.activeModal = ModalEdit
@@ -1721,13 +1806,41 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.editInput.Blur()
 				return m, nil
 			case "tab":
-				m.setEditColumn(m.editColumnPos + 1)
+				switch m.editFocus {
+				case editFocusInput:
+					if len(m.editColumns) > 1 && m.editColumnPos < len(m.editColumns)-1 {
+						m.setEditColumn(m.editColumnPos + 1)  // still on input, next column
+					} else {
+						m.editFocus = editFocusSave
+						m.editInput.Blur()
+					}
+				case editFocusSave:
+					m.editFocus = editFocusCancel
+				case editFocusCancel:
+					m.editFocus = editFocusInput
+					m.setEditColumn(0)
+					m.editInput.Focus()
+				}
 				return m, nil
 			case "shift+tab", "backtab":
-				m.setEditColumn(m.editColumnPos - 1)
+				switch m.editFocus {
+				case editFocusInput:
+					if len(m.editColumns) > 1 && m.editColumnPos > 0 {
+						m.setEditColumn(m.editColumnPos - 1)  // still on input, prev column
+					} else {
+						m.editFocus = editFocusCancel
+						m.editInput.Blur()
+					}
+				case editFocusSave:
+					m.editFocus = editFocusInput
+					m.setEditColumn(len(m.editColumns) - 1)
+					m.editInput.Focus()
+				case editFocusCancel:
+					m.editFocus = editFocusSave
+				}
 				return m, nil
 			case " ", "space":
-				if inputType == "bool" {
+				if inputType == "bool" && m.editFocus == editFocusInput {
 					current := strings.TrimSpace(strings.ToLower(m.editInput.Value()))
 					if current == "true" {
 						m.editInput.SetValue("false")
@@ -1738,6 +1851,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					return m, nil
 				}
 			case "enter":
+				if m.editFocus == editFocusCancel {
+					m.activeModal = ModalNone
+					m.editError = ""
+					m.editInput.Blur()
+					return m, nil
+				}
+				// editFocusInput or editFocusSave → save
 				if row == nil || col == nil {
 					m.editError = "No selection"
 					return m, nil
@@ -1813,10 +1933,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 		case "ctrl+e":
 			// Switch environment
-			m.nextEnvironment()
+			healthCmd := m.nextEnvironment()
 			m.resetViews()
 			// refetch definitions for new env and flash
-			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
+			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), healthCmd)
 		case "ctrl+r", "r":
 			// Toggle auto-refresh
 			m.autoRefresh = !m.autoRefresh
@@ -2290,6 +2410,20 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.applyInstances(msg.instances)
 	case genericLoadedMsg:
 		// Apply generic fetched collection into the table using the table definition if available
+
+		// Strip _meta_count FIRST before inferring columns from data
+		if len(msg.items) > 0 {
+			if v, ok := msg.items[0]["_meta_count"]; ok {
+				if n, ok2 := v.(float64); ok2 {
+					m.pageTotals[msg.root] = int(n)
+					msg.items = msg.items[1:]
+				} else if n2, ok3 := v.(int); ok3 {
+					m.pageTotals[msg.root] = n2
+					msg.items = msg.items[1:]
+				}
+			}
+		}
+
 		def := m.findTableDef(msg.root)
 		var cols []table.Column
 		if def != nil {
@@ -2301,7 +2435,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 		}
 		if len(cols) == 0 {
-			// infer columns from first item keys
+			// infer columns from first item keys (after stripping _meta_count)
 			if len(msg.items) > 0 {
 				keys := make([]string, 0, len(msg.items[0]))
 				for k := range msg.items[0] {
@@ -2310,19 +2444,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				sort.Strings(keys)
 				for _, k := range keys {
 					cols = append(cols, table.Column{Title: strings.ToUpper(k), Width: 20})
-				}
-			}
-		}
-		// If the first item is a meta object containing _meta_count, extract it
-		// before building rows so it doesn't produce a phantom empty row.
-		if len(msg.items) > 0 {
-			if v, ok := msg.items[0]["_meta_count"]; ok {
-				if n, ok2 := v.(float64); ok2 {
-					m.pageTotals[msg.root] = int(n)
-					msg.items = msg.items[1:]
-				} else if n2, ok3 := v.(int); ok3 {
-					m.pageTotals[msg.root] = n2
-					msg.items = msg.items[1:]
 				}
 			}
 		}
@@ -2390,6 +2511,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.applyDefinitions(msg.definitions)
 	case terminatedMsg:
 		m.removeInstance(msg.id)
+	case envStatusMsg:
+		// Update environment status
+		m.envStatus[msg.env] = msg.status
 	case errMsg:
 		// display error in footer
 		m.footerError = msg.err.Error()
@@ -2610,10 +2734,11 @@ func (m model) View() string {
 
 	// If modal is active, overlay it
 	if m.activeModal == ModalConfirmDelete {
-		modalOverlay := m.renderConfirmDeleteModal(m.lastWidth, m.lastHeight)
-		return modalOverlay
+		overlay := m.renderConfirmDeleteModal(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalEdit {
-		return m.renderEditModal(m.lastWidth, m.lastHeight)
+		overlay := m.renderEditModal(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalHelp {
 		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
 	}
@@ -2879,6 +3004,102 @@ func loadRootContexts(specPath string) []string {
 	}
 	sort.Strings(roots)
 	return roots
+}
+
+// checkEnvironmentHealthCmd performs a simple health check on the given environment
+func (m *model) checkEnvironmentHealthCmd(envName string) tea.Cmd {
+	return func() tea.Msg {
+		if m.config == nil {
+			return envStatusMsg{env: envName, status: StatusUnknown}
+		}
+
+		env, ok := m.config.Environments[envName]
+		if !ok {
+			return envStatusMsg{env: envName, status: StatusUnknown}
+		}
+
+		// Make a simple HTTP GET request to check connectivity
+		httpClient := &http.Client{
+			Timeout: 2 * time.Second,
+		}
+
+		// Try a simple identity endpoint to check health
+		req, err := http.NewRequest("GET", env.URL+"/identity/current", nil)
+		if err != nil {
+			return envStatusMsg{env: envName, status: StatusUnreachable, err: err}
+		}
+
+		// Add basic auth
+		req.SetBasicAuth(env.Username, env.Password)
+
+		resp, err := httpClient.Do(req)
+		if err != nil {
+			return envStatusMsg{env: envName, status: StatusUnreachable, err: err}
+		}
+		defer resp.Body.Close()
+
+		// Any 2xx or 3xx response = operational (ignore auth errors for now)
+		if resp.StatusCode >= 200 && resp.StatusCode < 400 {
+			return envStatusMsg{env: envName, status: StatusOperational}
+		}
+
+		// 4xx/5xx = unreachable/unhealthy
+		return envStatusMsg{env: envName, status: StatusUnreachable}
+	}
+}
+
+// overlayCenter places the fg string centered over the bg string.
+// The left side of each overlaid line preserves ANSI styling from bg.
+// The right side uses plain text (stripped ANSI) — acceptable since
+// the modal box covers the visually important center region.
+func overlayCenter(bg, fg string) string {
+	bgLines := strings.Split(bg, "\n")
+	fgLines := strings.Split(fg, "\n")
+	bgH, fgH := len(bgLines), len(fgLines)
+	bgW := 0
+	for _, l := range bgLines {
+		if w := lipgloss.Width(l); w > bgW {
+			bgW = w
+		}
+	}
+	fgW := 0
+	for _, l := range fgLines {
+		if w := lipgloss.Width(l); w > fgW {
+			fgW = w
+		}
+	}
+	startRow := (bgH - fgH) / 2
+	startCol := (bgW - fgW) / 2
+	if startRow < 0 {
+		startRow = 0
+	}
+	if startCol < 0 {
+		startCol = 0
+	}
+	result := make([]string, bgH)
+	copy(result, bgLines)
+	for i, fgLine := range fgLines {
+		row := startRow + i
+		if row < 0 || row >= bgH {
+			continue
+		}
+		bgLine := bgLines[row]
+		left := ansi.Truncate(bgLine, startCol, "")
+		leftW := lipgloss.Width(left)
+		if leftW < startCol {
+			left += strings.Repeat(" ", startCol-leftW)
+		}
+		// Right portion: use stripped bg text beyond the overlay area
+		plain := ansi.Strip(bgLine)
+		runes := []rune(plain)
+		rightStart := startCol + lipgloss.Width(fgLine)
+		right := ""
+		if rightStart < len(runes) {
+			right = string(runes[rightStart:])
+		}
+		result[row] = left + fgLine + right
+	}
+	return strings.Join(result, "\n")
 }
 
 func main() {
