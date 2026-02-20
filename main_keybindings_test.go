@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 
 	"github.com/charmbracelet/bubbles/table"
@@ -206,12 +207,27 @@ func TestErrMsgDisplaysInFooter(t *testing.T) {
 func TestClearErrorMsgClearsFooter(t *testing.T) {
 	m := newTestModel(t)
 	m.footerError = "some error"
+	m.footerStatusKind = footerStatusError
+	m.lastWidth = 80
+	m.lastHeight = 24
 
 	res, _ := m.Update(clearErrorMsg{})
 	m2 := res.(model)
 
 	if m2.footerError != "" {
 		t.Errorf("expected empty footerError after clearErrorMsg, got %q", m2.footerError)
+	}
+	if m2.footerStatusKind != footerStatusNone {
+		t.Errorf("expected footerStatusKind to be footerStatusNone after clearErrorMsg, got %v", m2.footerStatusKind)
+	}
+	if m2.isLoading {
+		t.Error("expected isLoading to be false after clearErrorMsg")
+	}
+
+	// Verify the status zone is empty in view
+	view := m2.View()
+	if strings.Contains(view, "✗") && strings.Contains(view, "some error") {
+		t.Error("expected view to not contain error icon and message after clear")
 	}
 }
 

@@ -71,8 +71,10 @@ func TestPaginationPageDownUp(t *testing.T) {
 	if len(rows) == 0 {
 		t.Fatalf("expected rows after initial fetch")
 	}
-	if rows[0][0] != "i1" {
-		t.Fatalf("expected first row i1, got %v", rows[0][0])
+	// Account for focus indicator prefix (▶ )
+	firstRowID := stripFocusIndicatorPrefix(rows[0][0])
+	if firstRowID != "i1" {
+		t.Fatalf("expected first row i1, got %v", firstRowID)
 	}
 
 	// set selection to third row (index 2)
@@ -90,8 +92,10 @@ func TestPaginationPageDownUp(t *testing.T) {
 	p := m1.getPageSize()
 	rows2 := m3.table.Rows()
 	expectedFirst := "i" + strconv.Itoa(p+1)
-	if rows2[0][0] != expectedFirst {
-		t.Fatalf("expected page2 first row %s, got %v", expectedFirst, rows2[0][0])
+	// Account for focus indicator prefix (▶ )
+	page2FirstRow := stripFocusIndicatorPrefix(rows2[0][0])
+	if page2FirstRow != expectedFirst {
+		t.Fatalf("expected page2 first row %s, got %v", expectedFirst, page2FirstRow)
 	}
 	// selection preservation is validated at runtime; here we ensure the page content changed
 
@@ -108,8 +112,10 @@ func TestPaginationPageDownUp(t *testing.T) {
 	m5 := res5.(model)
 
 	rows3 := m5.table.Rows()
-	if rows3[0][0] != "i1" {
-		t.Fatalf("expected page1 first row i1 after page up, got %v", rows3[0][0])
+	// Account for focus indicator prefix (▶ )
+	page1FirstRow := stripFocusIndicatorPrefix(rows3[0][0])
+	if page1FirstRow != "i1" {
+		t.Fatalf("expected page1 first row i1 after page up, got %v", page1FirstRow)
 	}
 	// ensure we returned to first page content
 }

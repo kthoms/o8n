@@ -89,8 +89,10 @@ func TestCursorPreservedAcrossPages(t *testing.T) {
 		t.Fatalf("no selected row after page down")
 	}
 	expectedID := "i" + strconv.Itoa(offset+postCursor+1)
-	if sel[0] != expectedID {
-		t.Fatalf("expected selected id %s, got %v", expectedID, sel[0])
+	// Account for focus indicator prefix (▶ )
+	selectedID := stripFocusIndicatorPrefix(sel[0])
+	if selectedID != expectedID {
+		t.Fatalf("expected selected id %s, got %v", expectedID, selectedID)
 	}
 }
 

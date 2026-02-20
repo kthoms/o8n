@@ -54,6 +54,11 @@ var (
 	completionStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
 	// flashBaseStyle is the fixed-width right-aligned base for the flash/remote indicator.
 	flashBaseStyle = lipgloss.NewStyle().Width(3).Align(lipgloss.Right)
+	// Feedback status styles
+	errorFooterStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B")).Bold(true)
+	successFooterStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#50C878")).Bold(true)
+	infoFooterStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#00A8E1"))
+	loadingFooterStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700"))
 )
 
 type refreshMsg struct{}
@@ -91,6 +96,17 @@ type flashOffMsg struct{}
 // message used to clear footer errors
 type clearErrorMsg struct{}
 
+// footerStatusKind represents the type of feedback message in the footer
+type footerStatusKind int
+
+const (
+	footerStatusNone    footerStatusKind = iota
+	footerStatusError                    // red ✗
+	footerStatusSuccess                  // green ✓
+	footerStatusInfo                     // blue ℹ
+	footerStatusLoading                  // yellow ⟳
+)
+
 // splash done message
 type splashDoneMsg struct{}
 
@@ -98,6 +114,16 @@ type splashDoneMsg struct{}
 type splashFrameMsg struct{ frame int }
 
 const totalSplashFrames = 15
+
+// setFooterStatus returns values to set a footer message with a kind and schedules auto-clear.
+// clearAfter == 0 means no auto-clear (for loading states).
+func setFooterStatus(kind footerStatusKind, msg string, clearAfter time.Duration) (string, footerStatusKind, tea.Cmd) {
+	var cmd tea.Cmd
+	if clearAfter > 0 {
+		cmd = tea.Tick(clearAfter, func(time.Time) tea.Msg { return clearErrorMsg{} })
+	}
+	return msg, kind, cmd
+}
 
 type processDefinitionItem struct {
 	definition config.ProcessDefinition
@@ -248,6 +274,10 @@ type model struct {
 
 	// footer error message
 	footerError string
+	// footer status kind (error, success, info, loading)
+	footerStatusKind footerStatusKind
+	// isLoading indicates that an async API call is in progress
+	isLoading bool
 
 	// splash screen active
 	splashActive bool
@@ -497,7 +527,7 @@ func newModel(cfg *config.Config) model {
 	// compactHeader (3 lines) + content header (1 line) = 4 header lines total
 	headerLines := 4
 	contextSelectionLines := 1
-	footerLines := 1
+	footerLines := 2  // breadcrumb line + status line
 	// reserve an extra safe line to avoid off-by-one overflow
 	contentHeight := m.lastHeight - headerLines - contextSelectionLines - footerLines - 1
 	if contentHeight < 3 {
@@ -802,7 +832,13 @@ func (m *model) applyStyle() {
 	// Table header color is white as requested. Remove header bottom border to hide separator line.
 	tStyles := table.DefaultStyles()
 	tStyles.Header = tStyles.Header.BorderStyle(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color(color)).BorderBottom(false).Foreground(lipgloss.Color("white")).Bold(true)
-	tStyles.Selected = tStyles.Selected.Foreground(lipgloss.Color(color)).Bold(true)
+	// Enhanced focus indicator: bold + background color (dark shade of accent) + white text
+	// Derive darker shade for background (simple mapping of common colors)
+	bgColor := m.deriveFocusBackgroundColor(color)
+	tStyles.Selected = tStyles.Selected.
+		Foreground(lipgloss.Color("white")).
+		Background(lipgloss.Color(bgColor)).
+		Bold(true)
 	m.table.SetStyles(tStyles)
 
 	// splash styles
@@ -1103,15 +1139,15 @@ func (m *model) variableNameForRow(tableKey string, row table.Row) string {
 	return fmt.Sprintf("%v", row[nameIdx])
 }
 
-func (m *model) startEdit(tableKey string) {
+// startEdit opens the edit modal and returns an error if not possible.
+// Returns empty string on success.
+func (m *model) startEdit(tableKey string) string {
 	cols := m.editableColumnsFor(tableKey)
 	if len(cols) == 0 {
-		m.footerError = "No editable columns"
-		return
+		return "No editable columns"
 	}
 	if len(m.table.Rows()) == 0 {
-		m.footerError = "No row selected"
-		return
+		return "No row selected"
 	}
 	m.editColumns = cols
 	m.editTableKey = tableKey
@@ -1122,6 +1158,7 @@ func (m *model) startEdit(tableKey string) {
 	m.editInput.Focus()
 	m.setEditColumn(0)
 	m.activeModal = ModalEdit
+	return ""
 }
 
 // buildColumnsFor builds table.Column slice for a named table using the config definitions
@@ -1260,6 +1297,7 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error rendering definitions: %v", r)
+			m.footerStatusKind = footerStatusError
 			log.Printf("applyDefinitions panic recovered: %v", r)
 		}
 	}()
@@ -1268,7 +1306,8 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	rows := make([]table.Row, 0, len(defs))
 	for _, d := range defs {
 		items = append(items, processDefinitionItem{definition: d})
-		rows = append(rows, table.Row{d.Key, d.Name, fmt.Sprintf("%d", d.Version), d.Resource})
+		// Add drilldown prefix to first column for focus indicator
+		rows = append(rows, table.Row{"▶ " + d.Key, d.Name, fmt.Sprintf("%d", d.Version), d.Resource})
 	}
 	m.list.SetItems(items)
 	// determine available table width
@@ -1295,12 +1334,14 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error rendering instances: %v", r)
+			m.footerStatusKind = footerStatusError
 			log.Printf("applyInstances panic recovered: %v", r)
 		}
 	}()
 	rows := make([]table.Row, 0, len(instances))
 	for _, inst := range instances {
-		rows = append(rows, table.Row{inst.ID, inst.DefinitionID, inst.BusinessKey, inst.StartTime})
+		// Add drilldown prefix to first column for focus indicator
+		rows = append(rows, table.Row{"▶ " + inst.ID, inst.DefinitionID, inst.BusinessKey, inst.StartTime})
 	}
 	tableWidth := m.table.Width()
 	if tableWidth <= 0 {
@@ -1339,6 +1380,7 @@ func (m *model) applyVariables(vars []config.Variable) {
 	defer func() {
 		if r := recover(); r != nil {
 			m.footerError = fmt.Sprintf("Error loading variables: %v", r)
+			m.footerStatusKind = footerStatusError
 			log.Printf("variables panic recovered: %v", r)
 		}
 	}()
@@ -1346,7 +1388,8 @@ func (m *model) applyVariables(vars []config.Variable) {
 	rows := make([]table.Row, 0, len(vars))
 	m.variablesByName = make(map[string]config.Variable, len(vars))
 	for _, v := range vars {
-		rows = append(rows, table.Row{v.Name, v.Value})
+		// Add drilldown prefix to first column for focus indicator
+		rows = append(rows, table.Row{"▶ " + v.Name, v.Value})
 		m.variablesByName[v.Name] = v
 	}
 	tableWidth := m.table.Width()
@@ -1936,11 +1979,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			healthCmd := m.nextEnvironment()
 			m.resetViews()
 			// refetch definitions for new env and flash
+			m.isLoading = true
 			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), healthCmd)
 		case "ctrl+r", "r":
 			// Toggle auto-refresh
 			m.autoRefresh = !m.autoRefresh
 			if m.autoRefresh {
+				m.isLoading = true
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), tea.Tick(refreshInterval, func(time.Time) tea.Msg { return refreshMsg{} }))
 			}
 			return m, nil
@@ -1949,7 +1994,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if m.viewMode == "instances" {
 				row := m.table.SelectedRow()
 				if len(row) > 0 {
-					m.pendingDeleteID = fmt.Sprintf("%v", row[0])
+					m.pendingDeleteID = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
 					m.activeModal = ModalConfirmDelete
 				}
 			}
@@ -1960,12 +2005,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			tableKey := m.currentTableKey()
-			if len(m.editableColumnsFor(tableKey)) > 0 {
-				m.startEdit(tableKey)
-				return m, nil
+			if errMsg := m.startEdit(tableKey); errMsg != "" {
+				msg2, kind, cmd := setFooterStatus(footerStatusError, errMsg, 5*time.Second)
+				m.footerError = msg2
+				m.footerStatusKind = kind
+				return m, cmd
 			}
-			m.footerError = "No editable columns"
-			return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+			return m, nil
 		case "esc":
 			if m.showRootPopup {
 				m.showRootPopup = false
@@ -2028,9 +2074,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 								m.table.SetRows(normalizeRows(nil, len(cols)))
 								m.table.SetColumns(cols)
 							}
+							m.isLoading = true
 							return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd())
 						}
 						// fallback to definitions fetch
+						m.isLoading = true
 						return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
 					}
 				}
@@ -2399,15 +2447,19 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.flashActive = false
 	case definitionsLoadedMsg:
 		m.applyDefinitions(msg.definitions)
+		m.isLoading = false
 	case instancesLoadedMsg:
 		m.applyInstances(msg.instances)
+		m.isLoading = false
 	case variablesLoadedMsg:
 		// show variables table
 		m.applyVariables(msg.variables)
+		m.isLoading = false
 	case instancesWithCountMsg:
 		// set known total for instances root
 		m.pageTotals[dao.ResourceProcessInstances] = msg.count
 		m.applyInstances(msg.instances)
+		m.isLoading = false
 	case genericLoadedMsg:
 		// Apply generic fetched collection into the table using the table definition if available
 
@@ -2494,6 +2546,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.table.SetCursor(pos)
 			m.pendingCursorAfterPage = -1
 		}
+		m.isLoading = false
 	case editSavedMsg:
 		rows := m.table.Rows()
 		if msg.rowIndex >= 0 && msg.rowIndex < len(rows) {
@@ -2504,8 +2557,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.table.SetRows(rows)
 			}
 		}
-		m.footerError = "Saved"
-		return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+		msg2, kind, cmd := setFooterStatus(footerStatusSuccess, "✓ Saved", 2*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		return m, cmd
 	case dataLoadedMsg:
 		// keep backward compatibility: only apply definitions to avoid auto-drilldown
 		m.applyDefinitions(msg.definitions)
@@ -2515,12 +2570,16 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Update environment status
 		m.envStatus[msg.env] = msg.status
 	case errMsg:
-		// display error in footer
-		m.footerError = msg.err.Error()
-		// clear after 5 seconds
-		return m, tea.Tick(5*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+		// display error in footer with 8s auto-clear
+		msg2, kind, cmd := setFooterStatus(footerStatusError, msg.err.Error(), 8*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		m.isLoading = false
+		return m, cmd
 	case clearErrorMsg:
 		m.footerError = ""
+		m.footerStatusKind = footerStatusNone
+		m.isLoading = false
 	}
 
 	var cmd tea.Cmd
@@ -2729,8 +2788,26 @@ func (m model) View() string {
 	spacer := strings.Repeat(" ", padW)
 	footerLine := leftPart + spacer + rightPart
 
-	// Compose final vertical layout: compactHeader (4 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row)
-	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
+	// Build status line with icon based on footerStatusKind
+	statusLine := ""
+	if m.footerError != "" {
+		icon := ""
+		style := lipgloss.NewStyle()
+		switch m.footerStatusKind {
+		case footerStatusError:
+			icon, style = "✗ ", errorFooterStyle
+		case footerStatusSuccess:
+			icon, style = "✓ ", successFooterStyle
+		case footerStatusLoading:
+			icon, style = "⟳ ", loadingFooterStyle
+		default: // footerStatusInfo
+			icon, style = "ℹ ", infoFooterStyle
+		}
+		statusLine = style.Render(icon + m.footerError)
+	}
+
+	// Compose final vertical layout: compactHeader (4 rows), contextSelectionBox (1 row), mainBox, footerLine (1 row), statusLine (1 row)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine, statusLine)
 
 	// If modal is active, overlay it
 	if m.activeModal == ModalConfirmDelete {
@@ -2762,9 +2839,18 @@ func (m model) View() string {
 	return lipgloss.Place(w, h, lipgloss.Left, lipgloss.Top, baseView)
 }
 
+// stripFocusIndicatorPrefix removes the drilldown indicator (▶ ) from the beginning of a string.
+// Used to extract clean IDs/names from table rows that have the visual prefix for focus indication.
+func stripFocusIndicatorPrefix(s string) string {
+	if strings.HasPrefix(s, "▶ ") {
+		return strings.TrimPrefix(s, "▶ ")
+	}
+	return s
+}
+
 func rowInstanceID(row table.Row) string {
 	if len(row) > 0 {
-		return row[0]
+		return stripFocusIndicatorPrefix(row[0])
 	}
 	return ""
 }
@@ -3100,6 +3186,26 @@ func overlayCenter(bg, fg string) string {
 		result[row] = left + fgLine + right
 	}
 	return strings.Join(result, "\n")
+}
+
+// deriveFocusBackgroundColor returns a darker shade of the accent color for focus indicator background.
+// Maps common hex colors to darker 256-color codes or returns a default dark color.
+func (m *model) deriveFocusBackgroundColor(accentColor string) string {
+	// Map of accent colors to dark background colors (256-color codes)
+	colorMap := map[string]string{
+		"#FFA500": "94",   // Orange → dark orange
+		"#00A8E1": "23",   // Blue → dark blue
+		"#00D7FF": "23",   // Cyan → dark cyan
+		"#50C878": "22",   // Green → dark green
+		"#FF6B6B": "52",   // Red → dark red
+		"#FFD700": "136",  // Gold → dark gold
+	}
+
+	if darkShade, ok := colorMap[accentColor]; ok {
+		return darkShade
+	}
+	// Default to dark blue if color not in map
+	return "23"
 }
 
 func main() {

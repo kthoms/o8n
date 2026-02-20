@@ -22,8 +22,10 @@ func TestApplyDataPopulatesTable(t *testing.T) {
 	if len(rows) != 1 {
 		t.Fatalf("expected 1 row, got %d", len(rows))
 	}
-	if rows[0][0] != "i1" {
-		t.Fatalf("expected instance id i1, got %s", rows[0][0])
+	// Account for focus indicator prefix (▶ )
+	rowValue := stripFocusIndicatorPrefix(rows[0][0])
+	if rowValue != "i1" {
+		t.Fatalf("expected instance id i1, got %s", rowValue)
 	}
 }
 
@@ -95,8 +97,13 @@ func TestFetchCmdExecutesAndLoadsData(t *testing.T) {
 		// apply and ensure table updated
 		m.applyData(mm.definitions, mm.instances)
 		rows := m.table.Rows()
-		if len(rows) != 1 || rows[0][0] != "i1" {
-			t.Fatalf("expected table to contain instance i1, got %+v", rows)
+		if len(rows) != 1 {
+			t.Fatalf("expected 1 row in table, got %d", len(rows))
+		}
+		// Account for focus indicator prefix (▶ )
+		rowValue := stripFocusIndicatorPrefix(rows[0][0])
+		if rowValue != "i1" {
+			t.Fatalf("expected table to contain instance i1, got %s", rowValue)
 		}
 	default:
 		t.Fatalf("expected dataLoadedMsg, got %T", mm)
@@ -188,8 +195,13 @@ func TestConfigDrivenDrilldownFromDefinitionToInstances(t *testing.T) {
 	res2, _ := m2.Update(fetchMsg)
 	m3 := res2.(model)
 	rows := m3.table.Rows()
-	if len(rows) != 1 || rows[0][0] != "i1" {
-		t.Fatalf("expected instance i1 after drill, got %+v", rows)
+	if len(rows) != 1 {
+		t.Fatalf("expected 1 row after drill, got %d", len(rows))
+	}
+	// Account for focus indicator prefix (▶ )
+	rowID := stripFocusIndicatorPrefix(rows[0][0])
+	if rowID != "i1" {
+		t.Fatalf("expected instance i1 after drill, got %s", rowID)
 	}
 }
 
@@ -240,8 +252,13 @@ func TestConfigDrivenDrilldownFromInstancesToVariables(t *testing.T) {
 	res2, _ := m2.Update(fetchMsg)
 	m3 := res2.(model)
 	rows := m3.table.Rows()
-	if len(rows) != 1 || rows[0][0] != "var1" {
-		t.Fatalf("expected variable 'var1' after drill, got %+v", rows)
+	if len(rows) != 1 {
+		t.Fatalf("expected 1 row after drill, got %d", len(rows))
+	}
+	// Account for focus indicator prefix (▶ )
+	varName := stripFocusIndicatorPrefix(rows[0][0])
+	if varName != "var1" {
+		t.Fatalf("expected variable 'var1' after drill, got %s", varName)
 	}
 }
 
