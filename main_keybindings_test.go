@@ -36,6 +36,10 @@ func sendKeyString(m model, keyStr string) (model, tea.Cmd) {
 		msg = tea.KeyMsg{Type: tea.KeyCtrlE}
 	case "ctrl+r":
 		msg = tea.KeyMsg{Type: tea.KeyCtrlR}
+	case "ctrl+u":
+		msg = tea.KeyMsg{Type: tea.KeyCtrlU}
+	case " ":
+		msg = tea.KeyMsg{Type: tea.KeySpace}
 	case "tab":
 		msg = tea.KeyMsg{Type: tea.KeyTab}
 	case "esc":
@@ -169,8 +173,8 @@ func TestCtrlDConfirmExecutesTerminate(t *testing.T) {
 	}
 }
 
-// TestCtrlEEnvironmentSwitch verifies ctrl+e cycles to the next environment.
-func TestCtrlEEnvironmentSwitch(t *testing.T) {
+// TestCtrlEOpensEnvPopup verifies ctrl+e opens the environment popup.
+func TestCtrlEOpensEnvPopup(t *testing.T) {
 	cfg := &config.Config{
 		Environments: map[string]config.Environment{
 			"dev":   {URL: "http://dev", UIColor: "#FFA500"},
@@ -179,12 +183,22 @@ func TestCtrlEEnvironmentSwitch(t *testing.T) {
 		Active: "local",
 	}
 	m := newModel(cfg)
-	initial := m.currentEnv
 
 	m2, _ := sendKeyString(m, "ctrl+e")
 
-	if m2.currentEnv == initial {
-		t.Errorf("expected environment to change from %q, but it did not", initial)
+	if m2.activeModal != ModalEnvironment {
+		t.Errorf("expected ModalEnvironment after ctrl+e, got %v", m2.activeModal)
+	}
+	// Cursor should be at current environment
+	currentIdx := -1
+	for i, name := range m2.envNames {
+		if name == m2.currentEnv {
+			currentIdx = i
+			break
+		}
+	}
+	if m2.envPopupCursor != currentIdx {
+		t.Errorf("expected envPopupCursor at %d (current env), got %d", currentIdx, m2.envPopupCursor)
 	}
 }
 

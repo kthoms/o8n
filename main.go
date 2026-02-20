@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -91,6 +92,9 @@ type instancesWithCountMsg struct {
 }
 
 type terminatedMsg struct{ id string }
+type suspendedMsg struct{ id string }
+type resumedMsg struct{ id string }
+type retriedMsg struct{ id string }
 
 type errMsg struct{ err error }
 
@@ -100,6 +104,9 @@ type flashOffMsg struct{}
 
 // message used to clear footer errors
 type clearErrorMsg struct{}
+
+// clearPendingGMsg resets the pendingG flag after timeout
+type clearPendingGMsg struct{}
 
 // footerStatusKind represents the type of feedback message in the footer
 type footerStatusKind int
@@ -168,6 +175,9 @@ const (
 	ModalConfirmQuit
 	ModalHelp
 	ModalEdit
+	ModalSort
+	ModalDetailView
+	ModalEnvironment
 )
 
 // editFocusArea tracks keyboard focus within the edit modal
@@ -188,6 +198,13 @@ type editSavedMsg struct {
 type editableColumn struct {
 	index int
 	def   config.ColumnDef
+}
+
+// actionItem represents a context-specific action in the actions menu
+type actionItem struct {
+	key   string // single-key shortcut
+	label string // display label
+	cmd   func(m *model) tea.Cmd
 }
 
 // viewState captures the complete state of a view for navigation history
@@ -333,6 +350,28 @@ type model struct {
 
 	// Environment connection status tracking
 	envStatus map[string]EnvironmentStatus
+
+	// Vim navigation: tracks first 'g' press for gg sequence
+	pendingG bool
+
+	// Sort state
+	sortColumn      int // index into visible columns, -1 = unsorted
+	sortAscending   bool
+	sortPopupCursor int
+
+	// Actions menu state
+	showActionsMenu   bool
+	actionsMenuItems  []actionItem
+	actionsMenuCursor int
+
+	// Detail viewer state
+	detailContent   string
+	detailScroll    int
+	detailMaxScroll int
+
+	// Environment popup state
+	showEnvPopup   bool
+	envPopupCursor int
 }
 
 // getKeyHints returns context-aware keyboard hints based on current view and terminal width
@@ -503,6 +542,7 @@ func newModel(cfg *config.Config) model {
 		pendingCursorAfterPage: -1,
 		genericParams:          make(map[string]string),
 		envStatus:              make(map[string]EnvironmentStatus),
+		sortColumn:             -1,
 	}
 
 	// edit input defaults
@@ -661,18 +701,18 @@ func (m *model) renderHelpScreen(width, height int) string {
 
 NAVIGATION              │  ACTIONS                │  GLOBAL
 ─────────────────────   │  ────────────────────   │  ──────────────────
-↑/↓      Navigate list  │  <ctrl>+e  Switch env   │  ?     This help
+↑/↓/j/k  Navigate list  │  <ctrl>+e  Switch env   │  ?     This help
 PgUp/Dn  Page up/down   │  <ctrl>-r  Auto-refresh │  :     Switch view
-Home     First item     │  <ctrl>+d  Delete item  │  <ctrl>+c Quit
-End      Last item      │  <ctrl>-R  Force refresh│
-Enter    Drill down     │                         │  CONTEXT
+gg/G     Top/bottom     │  <ctrl>+d  Delete item  │  <ctrl>+c Quit
+Ctrl+d/u Half-page      │  <ctrl>-R  Force refresh│
+Enter    Drill down     │  Space     Actions menu │  CONTEXT
 Esc      Go back        │  VIEW SPECIFIC          │  ───────────────────
                         │  (varies by view)       │  Tab      Complete
-SEARCH (Coming Soon)    │                         │  Enter    Confirm
+SEARCH                  │                         │  Enter    Confirm
 ─────────────────────   │  In Process Instances:  │  Esc      Cancel
-/        Search/filter  │  v  View variables      │
-n        Next match     │  <ctrl>+d Kill instance │
-N        Prev match     │  s  Suspend instance    │
+/        Search/filter  │  v  View variables      │  s        Sort
+Esc      Clear filter   │  <ctrl>+d Kill instance │  y        Detail view
+Enter    Lock filter    │  s  Suspend instance    │
                         │  r  Resume instance     │
 					   │  In Variables:          │
 					   │  e  Edit value          │
@@ -923,6 +963,176 @@ func (m *model) nextEnvironment() tea.Cmd {
 	}
 	// Check health of the newly selected environment
 	return m.checkEnvironmentHealthCmd(m.currentEnv)
+}
+
+// buildActionsForRoot returns context-specific action items for the current root resource.
+func (m *model) buildActionsForRoot() []actionItem {
+	root := m.currentRoot
+	if len(m.breadcrumb) > 0 {
+		root = m.breadcrumb[len(m.breadcrumb)-1]
+	}
+
+	var items []actionItem
+
+	switch root {
+	case "process-instance", "process-instances":
+		items = append(items,
+			actionItem{key: "v", label: "View Variables", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				id := stripFocusIndicatorPrefix(row[0])
+				// Trigger drilldown to variables
+				m.selectedInstanceID = id
+				m.viewMode = "variables"
+				m.breadcrumb = append(m.breadcrumb, "variables")
+				m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
+				m.table.SetCursor(0)
+				return tea.Batch(m.fetchVariablesCmd(id), flashOnCmd())
+			}},
+			actionItem{key: "s", label: "Suspend Instance", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				id := stripFocusIndicatorPrefix(row[0])
+				return m.suspendInstanceCmd(id, true)
+			}},
+			actionItem{key: "r", label: "Resume Instance", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				id := stripFocusIndicatorPrefix(row[0])
+				return m.suspendInstanceCmd(id, false)
+			}},
+			actionItem{key: "y", label: "View as JSON", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				m.detailContent = m.buildDetailContent(row)
+				m.detailScroll = 0
+				m.activeModal = ModalDetailView
+				return nil
+			}},
+		)
+	case "job", "jobs":
+		items = append(items,
+			actionItem{key: "r", label: "Retry (set retries=1)", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				id := stripFocusIndicatorPrefix(row[0])
+				return m.setJobRetriesCmd(id, 1)
+			}},
+			actionItem{key: "y", label: "View as JSON", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				m.detailContent = m.buildDetailContent(row)
+				m.detailScroll = 0
+				m.activeModal = ModalDetailView
+				return nil
+			}},
+		)
+	case "incident", "incidents":
+		items = append(items,
+			actionItem{key: "y", label: "View as JSON", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				m.detailContent = m.buildDetailContent(row)
+				m.detailScroll = 0
+				m.activeModal = ModalDetailView
+				return nil
+			}},
+		)
+	default:
+		items = append(items,
+			actionItem{key: "y", label: "View as JSON", cmd: func(m *model) tea.Cmd {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return nil
+				}
+				m.detailContent = m.buildDetailContent(row)
+				m.detailScroll = 0
+				m.activeModal = ModalDetailView
+				return nil
+			}},
+		)
+	}
+
+	return items
+}
+
+// buildDetailContent builds a JSON representation of the selected row.
+func (m *model) buildDetailContent(row table.Row) string {
+	cols := m.table.Columns()
+	data := make(map[string]string)
+	for i, col := range cols {
+		val := ""
+		if i < len(row) {
+			val = ansi.Strip(row[i])
+		}
+		data[col.Title] = val
+	}
+
+	// Pretty-print as JSON
+	b, err := json.MarshalIndent(data, "", "  ")
+	if err != nil {
+		return fmt.Sprintf("Error: %v", err)
+	}
+	return string(b)
+}
+
+// suspendInstanceCmd creates a command to suspend/resume a process instance.
+func (m model) suspendInstanceCmd(id string, suspend bool) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return nil
+	}
+	c := client.NewClient(env)
+	return func() tea.Msg {
+		if err := c.SuspendProcessInstance(id, suspend); err != nil {
+			return errMsg{err}
+		}
+		if suspend {
+			return suspendedMsg{id: id}
+		}
+		return resumedMsg{id: id}
+	}
+}
+
+// setJobRetriesCmd creates a command to set retries on a job.
+func (m model) setJobRetriesCmd(id string, retries int) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return nil
+	}
+	c := client.NewClient(env)
+	return func() tea.Msg {
+		if err := c.SetJobRetries(id, retries); err != nil {
+			return errMsg{err}
+		}
+		return retriedMsg{id: id}
+	}
+}
+
+// switchToEnvironment switches to the named environment (extracted from cycling logic).
+func (m *model) switchToEnvironment(name string) {
+	m.currentEnv = name
+	m.applyStyle()
+	if m.config != nil {
+		m.config.Active = m.currentEnv
+		if err := config.SaveConfig("config.yaml", m.config); err != nil {
+			log.Printf("warning: failed to save config active environment: %v", err)
+		}
+	}
 }
 
 func (m *model) resetViews() {
@@ -1865,6 +2075,199 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		s := msg.String()
 
+		// Handle search mode keys first (before any modal/popup checks)
+		if m.searchMode {
+			switch s {
+			case "esc":
+				m.searchMode = false
+				m.searchInput.Blur()
+				m.searchTerm = ""
+				if m.originalRows != nil {
+					m.table.SetRows(m.originalRows)
+				}
+				m.originalRows = nil
+				m.filteredRows = nil
+				return m, nil
+			case "enter":
+				m.searchMode = false
+				m.searchInput.Blur()
+				m.searchTerm = m.searchInput.Value()
+				// keep filtered rows as current table rows
+				m.originalRows = nil
+				m.filteredRows = nil
+				return m, nil
+			default:
+				var cmd tea.Cmd
+				m.searchInput, cmd = m.searchInput.Update(msg)
+				// recompute filtered rows
+				term := m.searchInput.Value()
+				m.searchTerm = term
+				if term == "" {
+					m.table.SetRows(m.originalRows)
+					m.filteredRows = nil
+				} else {
+					m.filteredRows = filterRows(m.originalRows, term)
+					m.table.SetRows(m.filteredRows)
+					m.table.SetCursor(0)
+				}
+				return m, cmd
+			}
+		}
+
+		// Handle sort popup keys
+		if m.activeModal == ModalSort {
+			switch s {
+			case "esc":
+				m.activeModal = ModalNone
+				return m, nil
+			case "up", "k":
+				if m.sortPopupCursor > 0 {
+					m.sortPopupCursor--
+				}
+				return m, nil
+			case "down", "j":
+				cols := m.table.Columns()
+				if m.sortPopupCursor < len(cols)-1 {
+					m.sortPopupCursor++
+				}
+				return m, nil
+			case "enter":
+				cols := m.table.Columns()
+				if m.sortPopupCursor >= 0 && m.sortPopupCursor < len(cols) {
+					if m.sortColumn == m.sortPopupCursor {
+						m.sortAscending = !m.sortAscending
+					} else {
+						m.sortColumn = m.sortPopupCursor
+						m.sortAscending = true
+					}
+					rows := m.table.Rows()
+					sorted := sortTableRows(rows, m.sortColumn, m.sortAscending)
+					m.table.SetRows(sorted)
+				}
+				m.activeModal = ModalNone
+				return m, nil
+			}
+			return m, nil
+		}
+
+		// Handle actions menu keys
+		if m.showActionsMenu {
+			switch s {
+			case "esc":
+				m.showActionsMenu = false
+				return m, nil
+			case "up", "k":
+				if m.actionsMenuCursor > 0 {
+					m.actionsMenuCursor--
+				}
+				return m, nil
+			case "down", "j":
+				if m.actionsMenuCursor < len(m.actionsMenuItems)-1 {
+					m.actionsMenuCursor++
+				}
+				return m, nil
+			case "enter":
+				if m.actionsMenuCursor >= 0 && m.actionsMenuCursor < len(m.actionsMenuItems) {
+					item := m.actionsMenuItems[m.actionsMenuCursor]
+					m.showActionsMenu = false
+					if item.cmd != nil {
+						return m, item.cmd(&m)
+					}
+				}
+				m.showActionsMenu = false
+				return m, nil
+			default:
+				// Check shortcut keys
+				for _, item := range m.actionsMenuItems {
+					if s == item.key {
+						m.showActionsMenu = false
+						if item.cmd != nil {
+							return m, item.cmd(&m)
+						}
+						return m, nil
+					}
+				}
+				return m, nil
+			}
+		}
+
+		// Handle detail view keys
+		if m.activeModal == ModalDetailView {
+			switch s {
+			case "esc", "q", "y":
+				m.activeModal = ModalNone
+				m.detailContent = ""
+				return m, nil
+			case "j", "down":
+				if m.detailScroll < m.detailMaxScroll {
+					m.detailScroll++
+				}
+				return m, nil
+			case "k", "up":
+				if m.detailScroll > 0 {
+					m.detailScroll--
+				}
+				return m, nil
+			case "ctrl+d":
+				m.detailScroll += 10
+				if m.detailScroll > m.detailMaxScroll {
+					m.detailScroll = m.detailMaxScroll
+				}
+				return m, nil
+			case "ctrl+u":
+				m.detailScroll -= 10
+				if m.detailScroll < 0 {
+					m.detailScroll = 0
+				}
+				return m, nil
+			case "G":
+				m.detailScroll = m.detailMaxScroll
+				return m, nil
+			case "g":
+				if m.pendingG {
+					m.pendingG = false
+					m.detailScroll = 0
+					return m, nil
+				}
+				m.pendingG = true
+				return m, tea.Tick(500*time.Millisecond, func(time.Time) tea.Msg { return clearPendingGMsg{} })
+			}
+			return m, nil
+		}
+
+		// Handle environment popup keys
+		if m.activeModal == ModalEnvironment {
+			switch s {
+			case "esc":
+				m.activeModal = ModalNone
+				return m, nil
+			case "up", "k":
+				if m.envPopupCursor > 0 {
+					m.envPopupCursor--
+				}
+				return m, nil
+			case "down", "j":
+				if m.envPopupCursor < len(m.envNames)-1 {
+					m.envPopupCursor++
+				}
+				return m, nil
+			case "enter":
+				if m.envPopupCursor >= 0 && m.envPopupCursor < len(m.envNames) {
+					targetEnv := m.envNames[m.envPopupCursor]
+					m.activeModal = ModalNone
+					if targetEnv != m.currentEnv {
+						m.switchToEnvironment(targetEnv)
+						m.resetViews()
+						m.isLoading = true
+						m.apiCallStarted = time.Now()
+						return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), m.checkEnvironmentHealthCmd(targetEnv))
+					}
+				}
+				return m, nil
+			}
+			return m, nil
+		}
+
 		// Handle modal-specific keys first
 		if m.activeModal == ModalHelp {
 			// Any key closes help screen
@@ -2008,17 +2411,40 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// Show help screen
 			m.activeModal = ModalHelp
 			return m, nil
+		case "/":
+			// Enter search/filter mode
+			if !m.showRootPopup && m.activeModal == ModalNone {
+				m.searchMode = true
+				m.originalRows = append([]table.Row{}, m.table.Rows()...)
+				m.searchInput.SetValue("")
+				m.searchTerm = ""
+				m.searchInput.Focus()
+				return m, m.searchInput.Focus()
+			}
+			// fall through to root popup input if popup active
+			if m.showRootPopup {
+				m.rootInput += s
+				return m, nil
+			}
+			return m, nil
 		case "ctrl+c":
 			// Quit via <ctrl>+c only; do not exit on plain 'q'
 			return m, tea.Quit
 		case "ctrl+e":
-			// Switch environment
-			healthCmd := m.nextEnvironment()
-			m.resetViews()
-			// refetch definitions for new env and flash
-			m.isLoading = true
-			m.apiCallStarted = time.Now()
-			return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), healthCmd)
+			// Open environment selection popup
+			if m.activeModal == ModalNone && !m.showActionsMenu {
+				m.activeModal = ModalEnvironment
+				// Set cursor to current environment
+				m.envPopupCursor = 0
+				for i, name := range m.envNames {
+					if name == m.currentEnv {
+						m.envPopupCursor = i
+						break
+					}
+				}
+				return m, nil
+			}
+			return m, nil
 		case "ctrl+r", "r":
 			// Toggle auto-refresh
 			m.autoRefresh = !m.autoRefresh
@@ -2028,14 +2454,51 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), tea.Tick(refreshInterval, func(time.Time) tea.Msg { return refreshMsg{} }))
 			}
 			return m, nil
-		case "ctrl+d":
-			// Delete/kill instance - show confirmation modal
-			if m.viewMode == "instances" {
-				row := m.table.SelectedRow()
-				if len(row) > 0 {
-					m.pendingDeleteID = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
-					m.activeModal = ModalConfirmDelete
+		case "s":
+			// Open sort popup
+			if m.showRootPopup {
+				m.rootInput += s
+				return m, nil
+			}
+			if m.activeModal == ModalNone && !m.showActionsMenu {
+				m.activeModal = ModalSort
+				m.sortPopupCursor = 0
+				if m.sortColumn >= 0 {
+					m.sortPopupCursor = m.sortColumn
 				}
+				return m, nil
+			}
+			return m, nil
+		case " ":
+			// Open context actions menu
+			if m.showRootPopup || m.activeModal != ModalNone {
+				return m, nil
+			}
+			row := m.table.SelectedRow()
+			if len(row) == 0 {
+				return m, nil
+			}
+			m.actionsMenuItems = m.buildActionsForRoot()
+			if len(m.actionsMenuItems) > 0 {
+				m.showActionsMenu = true
+				m.actionsMenuCursor = 0
+			}
+			return m, nil
+		case "y":
+			// Open detail viewer
+			if m.showRootPopup {
+				m.rootInput += s
+				return m, nil
+			}
+			if m.activeModal == ModalNone && !m.showActionsMenu {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return m, nil
+				}
+				m.detailContent = m.buildDetailContent(row)
+				m.detailScroll = 0
+				m.activeModal = ModalDetailView
+				return m, nil
 			}
 			return m, nil
 		case "e":
@@ -2420,6 +2883,80 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			}
 			return m, nil
+		case "j":
+			// Vim down — only when not in popup/modal/search
+			if !m.showRootPopup && m.activeModal == ModalNone {
+				m.table.MoveDown(1)
+				return m, nil
+			}
+			if m.showRootPopup {
+				m.rootInput += s
+			}
+			return m, nil
+		case "k":
+			// Vim up — only when not in popup/modal/search
+			if !m.showRootPopup && m.activeModal == ModalNone {
+				m.table.MoveUp(1)
+				return m, nil
+			}
+			if m.showRootPopup {
+				m.rootInput += s
+			}
+			return m, nil
+		case "G":
+			// Vim jump to bottom
+			if !m.showRootPopup && m.activeModal == ModalNone {
+				rows := m.table.Rows()
+				if len(rows) > 0 {
+					m.table.SetCursor(len(rows) - 1)
+				}
+				return m, nil
+			}
+			if m.showRootPopup {
+				m.rootInput += s
+			}
+			return m, nil
+		case "g":
+			// Vim gg sequence: first g sets pendingG, second g jumps to top
+			if m.showRootPopup {
+				m.rootInput += s
+				return m, nil
+			}
+			if m.activeModal == ModalNone {
+				if m.pendingG {
+					m.pendingG = false
+					m.table.SetCursor(0)
+					return m, nil
+				}
+				m.pendingG = true
+				return m, tea.Tick(500*time.Millisecond, func(time.Time) tea.Msg { return clearPendingGMsg{} })
+			}
+			return m, nil
+		case "ctrl+d":
+			// Half-page down OR delete (existing behavior)
+			if m.viewMode == "instances" {
+				row := m.table.SelectedRow()
+				if len(row) > 0 {
+					m.pendingDeleteID = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
+					m.activeModal = ModalConfirmDelete
+				}
+				return m, nil
+			}
+			// Half-page down for non-instances views
+			pageSize := m.getPageSize()
+			if pageSize <= 0 {
+				pageSize = 10
+			}
+			m.table.MoveDown(pageSize / 2)
+			return m, nil
+		case "ctrl+u":
+			// Vim half-page up
+			pageSize := m.getPageSize()
+			if pageSize <= 0 {
+				pageSize = 10
+			}
+			m.table.MoveUp(pageSize / 2)
+			return m, nil
 		case "1", "2", "3", "4":
 			// numeric breadcrumb navigation when popup not active
 			if !m.showRootPopup {
@@ -2589,7 +3126,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if len(cols) > 0 {
 			m.table.SetColumns(cols)
 		}
-		m.table.SetRows(normalizeRows(rows, len(cols)))
+		normalized := normalizeRows(rows, len(cols))
+		colorized := colorizeRows(msg.root, normalized, cols)
+		m.table.SetRows(colorized)
 		// restore pending cursor after page operations for generic loads
 		if m.pendingCursorAfterPage >= 0 {
 			r := m.table.Rows()
@@ -2628,6 +3167,21 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.applyDefinitions(msg.definitions)
 	case terminatedMsg:
 		m.removeInstance(msg.id)
+	case suspendedMsg:
+		msg2, kind, cmd := setFooterStatus(footerStatusSuccess, fmt.Sprintf("✓ Suspended %s", msg.id), 3*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		return m, cmd
+	case resumedMsg:
+		msg2, kind, cmd := setFooterStatus(footerStatusSuccess, fmt.Sprintf("✓ Resumed %s", msg.id), 3*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		return m, cmd
+	case retriedMsg:
+		msg2, kind, cmd := setFooterStatus(footerStatusSuccess, fmt.Sprintf("✓ Retried %s", msg.id), 3*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		return m, cmd
 	case envStatusMsg:
 		// Update environment status
 		m.envStatus[msg.env] = msg.status
@@ -2642,6 +3196,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.footerError = ""
 		m.footerStatusKind = footerStatusNone
 		m.isLoading = false
+	case clearPendingGMsg:
+		m.pendingG = false
 	}
 
 	var cmd tea.Cmd
@@ -2811,6 +3367,42 @@ func (m model) View() string {
 	if total, ok := m.pageTotals[m.currentRoot]; ok && total >= 0 {
 		title = fmt.Sprintf("%s — %d items", m.contentHeader, total)
 	}
+	// Add search filter indicator to title
+	if m.searchTerm != "" {
+		title = fmt.Sprintf("%s [/%s/]", title, m.searchTerm)
+	}
+
+	// Render search bar when in search mode
+	searchBar := ""
+	if m.searchMode {
+		searchStyle := lipgloss.NewStyle().
+			BorderStyle(lipgloss.NormalBorder()).
+			BorderForeground(lipgloss.Color(color)).
+			Width(pw - 4).
+			Padding(0, 1)
+		searchBar = searchStyle.Render(m.searchInput.View())
+	}
+
+	// Apply sort indicator to column headers if sorted
+	if m.sortColumn >= 0 {
+		cols := m.table.Columns()
+		if m.sortColumn < len(cols) {
+			// Make a copy to avoid mutating the original
+			newCols := make([]table.Column, len(cols))
+			copy(newCols, cols)
+			indicator := " ▲"
+			if !m.sortAscending {
+				indicator = " ▼"
+			}
+			// Remove any previous indicator from all columns
+			for i := range newCols {
+				newCols[i].Title = strings.TrimSuffix(strings.TrimSuffix(newCols[i].Title, " ▲"), " ▼")
+			}
+			newCols[m.sortColumn].Title = newCols[m.sortColumn].Title + indicator
+			m.table.SetColumns(newCols)
+		}
+	}
+
 	mainBox := renderBoxWithTitle(m.table.View(), pw, m.paneHeight, title, color)
 
 	// Footer (1 row with 3 columns per specification):
@@ -2912,8 +3504,8 @@ func (m model) View() string {
 
 	footerLine := leftPart + " | " + statusMessage + remotePart
 
-	// Compose final vertical layout: header, context box, main content, footer (1 row)
-	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, mainBox, footerLine)
+	// Compose final vertical layout: header, context box, search bar, main content, footer (1 row)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, searchBar, mainBox, footerLine)
 
 	// If modal is active, overlay it
 	if m.activeModal == ModalConfirmDelete {
@@ -2924,6 +3516,18 @@ func (m model) View() string {
 		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalHelp {
 		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
+	} else if m.activeModal == ModalSort {
+		return m.renderSortPopup(m.lastWidth, m.lastHeight)
+	} else if m.activeModal == ModalDetailView {
+		return m.renderDetailView(m.lastWidth, m.lastHeight)
+	} else if m.activeModal == ModalEnvironment {
+		return m.renderEnvPopup(m.lastWidth, m.lastHeight)
+	}
+
+	// If actions menu is active, overlay it
+	if m.showActionsMenu {
+		overlay := m.renderActionsMenu(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	}
 
 	// Ensure the main UI uses the full terminal area to avoid trailing space artifacts
@@ -3127,6 +3731,395 @@ func defaultColumns(n int, totalWidth int) []table.Column {
 		cols[len(cols)-1].Width += totalWidth - used
 	}
 	return cols
+}
+
+// filterRows returns rows where any cell contains the search term (case-insensitive).
+func filterRows(rows []table.Row, term string) []table.Row {
+	if term == "" {
+		return rows
+	}
+	lower := strings.ToLower(term)
+	var result []table.Row
+	for _, row := range rows {
+		for _, cell := range row {
+			if strings.Contains(strings.ToLower(cell), lower) {
+				result = append(result, row)
+				break
+			}
+		}
+	}
+	return result
+}
+
+// Status color styles for row colorization
+var (
+	statusRunningStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#50C878"))
+	statusSuspendedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700"))
+	statusFailedStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
+	statusEndedStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
+)
+
+// detectRowStatus determines the status of a row based on its resource type and column values.
+// Returns one of: "running", "suspended", "failed", "ended", "normal"
+func detectRowStatus(root string, row table.Row, columns []table.Column) string {
+	// Build a column name -> index map
+	colIdx := make(map[string]int)
+	for i, col := range columns {
+		colIdx[strings.ToLower(col.Title)] = i
+	}
+
+	getVal := func(name string) string {
+		if idx, ok := colIdx[name]; ok && idx < len(row) {
+			return strings.ToLower(strings.TrimSpace(row[idx]))
+		}
+		return ""
+	}
+
+	switch root {
+	case "process-instance", "process-instances":
+		if getVal("suspended") == "true" {
+			return "suspended"
+		}
+		if getVal("ended") == "true" {
+			return "ended"
+		}
+		return "running"
+	case "job", "jobs":
+		retries := getVal("retries")
+		if retries == "0" {
+			return "failed"
+		}
+		return "normal"
+	case "incident", "incidents":
+		return "failed"
+	case "external-task", "external-tasks":
+		if getVal("locked") == "true" || getVal("workerid") != "" {
+			return "running"
+		}
+		return "normal"
+	default:
+		return "normal"
+	}
+}
+
+// colorizeRows applies status-based color indicators to the first column of each row.
+func colorizeRows(root string, rows []table.Row, columns []table.Column) []table.Row {
+	if len(rows) == 0 || len(columns) == 0 {
+		return rows
+	}
+	result := make([]table.Row, len(rows))
+	for i, row := range rows {
+		status := detectRowStatus(root, row, columns)
+		newRow := make(table.Row, len(row))
+		copy(newRow, row)
+
+		// Apply color to all cells in the row
+		var style lipgloss.Style
+		switch status {
+		case "running":
+			style = statusRunningStyle
+		case "suspended":
+			style = statusSuspendedStyle
+		case "failed":
+			style = statusFailedStyle
+		case "ended":
+			style = statusEndedStyle
+		default:
+			result[i] = newRow
+			continue
+		}
+
+		for j, cell := range newRow {
+			newRow[j] = style.Render(cell)
+		}
+		result[i] = newRow
+	}
+	return result
+}
+
+// sortTableRows sorts table rows by a given column index.
+// It detects numeric and date values for proper sorting.
+func sortTableRows(rows []table.Row, colIndex int, ascending bool) []table.Row {
+	if colIndex < 0 || len(rows) == 0 {
+		return rows
+	}
+	sorted := make([]table.Row, len(rows))
+	copy(sorted, rows)
+
+	sort.SliceStable(sorted, func(i, j int) bool {
+		a, b := "", ""
+		if colIndex < len(sorted[i]) {
+			a = sorted[i][colIndex]
+		}
+		if colIndex < len(sorted[j]) {
+			b = sorted[j][colIndex]
+		}
+
+		// Strip ANSI escape sequences for comparison
+		a = ansi.Strip(a)
+		b = ansi.Strip(b)
+
+		// Try numeric comparison
+		af, aErr := strconv.ParseFloat(a, 64)
+		bf, bErr := strconv.ParseFloat(b, 64)
+		if aErr == nil && bErr == nil {
+			if ascending {
+				return af < bf
+			}
+			return af > bf
+		}
+
+		// Try date comparison (common ISO format)
+		for _, layout := range []string{
+			time.RFC3339,
+			"2006-01-02T15:04:05",
+			"2006-01-02 15:04:05",
+			"2006-01-02",
+		} {
+			at, aErr := time.Parse(layout, a)
+			bt, bErr := time.Parse(layout, b)
+			if aErr == nil && bErr == nil {
+				if ascending {
+					return at.Before(bt)
+				}
+				return at.After(bt)
+			}
+		}
+
+		// Lexicographic comparison
+		if ascending {
+			return strings.ToLower(a) < strings.ToLower(b)
+		}
+		return strings.ToLower(a) > strings.ToLower(b)
+	})
+
+	return sorted
+}
+
+// renderSortPopup renders the column sort selection popup.
+func (m *model) renderSortPopup(width, height int) string {
+	cols := m.table.Columns()
+
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	var b strings.Builder
+	for i, col := range cols {
+		cursor := "  "
+		if i == m.sortPopupCursor {
+			cursor = "▸ "
+		}
+		indicator := "  "
+		if i == m.sortColumn {
+			if m.sortAscending {
+				indicator = " ▲"
+			} else {
+				indicator = " ▼"
+			}
+		}
+		b.WriteString(fmt.Sprintf("%s%s%s\n", cursor, col.Title, indicator))
+	}
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(0, 1).
+		Width(30)
+
+	title := "Sort by Column"
+	content := b.String()
+	modal := modalStyle.Render(title + "\n" + content + "\nEnter: Select  Esc: Close")
+
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+}
+
+// renderDetailView renders the YAML/JSON detail viewer overlay.
+func (m *model) renderDetailView(width, height int) string {
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	// Calculate visible area
+	viewHeight := height - 6
+	if viewHeight < 3 {
+		viewHeight = 3
+	}
+
+	lines := strings.Split(m.detailContent, "\n")
+	m.detailMaxScroll = len(lines) - viewHeight
+	if m.detailMaxScroll < 0 {
+		m.detailMaxScroll = 0
+	}
+	if m.detailScroll > m.detailMaxScroll {
+		m.detailScroll = m.detailMaxScroll
+	}
+	if m.detailScroll < 0 {
+		m.detailScroll = 0
+	}
+
+	// Extract visible lines
+	end := m.detailScroll + viewHeight
+	if end > len(lines) {
+		end = len(lines)
+	}
+	visibleLines := lines[m.detailScroll:end]
+
+	// Add line numbers and syntax highlighting
+	var b strings.Builder
+	for i, line := range visibleLines {
+		lineNum := m.detailScroll + i + 1
+		b.WriteString(fmt.Sprintf("%4d │ %s\n", lineNum, syntaxHighlightJSON(line)))
+	}
+
+	scrollInfo := fmt.Sprintf("[%d/%d]", m.detailScroll+1, len(lines))
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(1, 2).
+		Width(width - 4).
+		Height(viewHeight + 2)
+
+	content := b.String()
+	title := "Detail View  " + scrollInfo + "  (j/k scroll, q/Esc close)"
+	modal := modalStyle.Render(title + "\n" + content)
+
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+}
+
+// syntaxHighlightJSON applies basic syntax highlighting to a JSON line.
+func syntaxHighlightJSON(line string) string {
+	keyStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#00BCD4"))
+	stringStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#50C878"))
+	numberStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700"))
+	boolStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("#FF69B4"))
+
+	trimmed := strings.TrimSpace(line)
+
+	// Key-value detection: "key": value
+	if idx := strings.Index(trimmed, ":"); idx > 0 {
+		key := strings.TrimSpace(trimmed[:idx])
+		if strings.HasPrefix(key, "\"") && strings.HasSuffix(key, "\"") {
+			val := strings.TrimSpace(trimmed[idx+1:])
+			val = strings.TrimSuffix(val, ",")
+			indent := line[:len(line)-len(strings.TrimLeft(line, " \t"))]
+
+			styledKey := keyStyle.Render(key)
+			styledVal := val
+			if strings.HasPrefix(val, "\"") {
+				styledVal = stringStyle.Render(val)
+			} else if val == "true" || val == "false" || val == "null" {
+				styledVal = boolStyle.Render(val)
+			} else if _, err := strconv.ParseFloat(val, 64); err == nil {
+				styledVal = numberStyle.Render(val)
+			}
+
+			trailing := ""
+			if strings.HasSuffix(strings.TrimSpace(trimmed[idx+1:]), ",") {
+				trailing = ","
+			}
+			return indent + styledKey + ": " + styledVal + trailing
+		}
+	}
+	return line
+}
+
+// renderEnvPopup renders the environment selection popup.
+func (m *model) renderEnvPopup(width, height int) string {
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	var b strings.Builder
+	for i, name := range m.envNames {
+		cursor := "  "
+		if i == m.envPopupCursor {
+			cursor = "▸ "
+		}
+
+		// Status indicator
+		status, ok := m.envStatus[name]
+		if !ok {
+			status = StatusUnknown
+		}
+		statusIcon := "○"
+		switch status {
+		case StatusOperational:
+			statusIcon = "●"
+		case StatusUnreachable:
+			statusIcon = "✗"
+		}
+
+		// Environment color
+		envColor := ""
+		if env, ok := m.config.Environments[name]; ok {
+			envColor = env.UIColor
+		}
+		envStyle := lipgloss.NewStyle()
+		if envColor != "" {
+			envStyle = envStyle.Foreground(lipgloss.Color(envColor))
+		}
+
+		url := ""
+		if env, ok := m.config.Environments[name]; ok {
+			url = env.URL
+		}
+
+		line := fmt.Sprintf("%s%s %s  %s", cursor, statusIcon, envStyle.Render(name), url)
+		b.WriteString(line + "\n")
+	}
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(0, 1).
+		Width(50)
+
+	content := "Select Environment\n\n" + b.String() + "\nEnter: Select  Esc: Close"
+	modal := modalStyle.Render(content)
+
+	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+}
+
+// renderActionsMenu renders the context actions menu popup.
+func (m *model) renderActionsMenu(width, height int) string {
+	color := ""
+	if m.config != nil {
+		if env, ok := m.config.Environments[m.currentEnv]; ok {
+			color = env.UIColor
+		}
+	}
+
+	var b strings.Builder
+	root := m.currentRoot
+	b.WriteString(fmt.Sprintf("Actions: %s\n\n", root))
+	for i, item := range m.actionsMenuItems {
+		cursor := "  "
+		if i == m.actionsMenuCursor {
+			cursor = "▸ "
+		}
+		b.WriteString(fmt.Sprintf("%s[%s] %s\n", cursor, item.key, item.label))
+	}
+	b.WriteString("\nEsc: Close")
+
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(lipgloss.Color(color)).
+		Padding(0, 1).
+		Width(35)
+
+	modal := modalStyle.Render(b.String())
+	return overlayCenter(lipgloss.Place(width, height, lipgloss.Left, lipgloss.Top, ""), modal)
 }
 
 // normalizeRows adjusts each row to have exactly colsCount columns (pad with empty strings or truncate).

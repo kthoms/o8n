@@ -299,6 +299,110 @@ func (c *Client) SetProcessVariable(ctx context.Context, instanceId, name string
 	return nil
 }
 
+// SuspendInstance suspends or resumes a process instance.
+func (c *Client) SuspendInstance(ctx context.Context, instanceId string, suspend bool) error {
+	c.logf("API: SuspendInstance(%s, %v)", instanceId, suspend)
+	body := map[string]interface{}{"suspended": suspend}
+	b, _ := json.Marshal(body)
+	var basePath string
+	if c.cfg != nil {
+		if base, err := c.cfg.ServerURLWithContext(ctx, ""); err == nil {
+			basePath = strings.TrimRight(base, "/")
+		}
+	}
+	urlStr := fmt.Sprintf("%s/process-instance/%s/suspended", basePath, instanceId)
+	r, err := http.NewRequestWithContext(ctx, http.MethodPut, urlStr, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("error suspending instance: %s", string(data))
+	}
+	return nil
+}
+
+// SetJobRetries sets the retries count on a job.
+func (c *Client) SetJobRetries(ctx context.Context, jobId string, retries int) error {
+	c.logf("API: SetJobRetries(%s, %d)", jobId, retries)
+	body := map[string]interface{}{"retries": retries}
+	b, _ := json.Marshal(body)
+	var basePath string
+	if c.cfg != nil {
+		if base, err := c.cfg.ServerURLWithContext(ctx, ""); err == nil {
+			basePath = strings.TrimRight(base, "/")
+		}
+	}
+	urlStr := fmt.Sprintf("%s/job/%s/retries", basePath, jobId)
+	r, err := http.NewRequestWithContext(ctx, http.MethodPut, urlStr, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := http.DefaultClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("error setting job retries: %s", string(data))
+	}
+	return nil
+}
+
+// SuspendProcessInstance suspends or resumes a process instance (compat wrapper).
+func (c *CompatClient) SuspendProcessInstance(instanceID string, suspend bool) error {
+	c.logf("API: SuspendProcessInstance(%s, %v)", instanceID, suspend)
+	body := map[string]interface{}{"suspended": suspend}
+	b, _ := json.Marshal(body)
+	urlStr := fmt.Sprintf("%s/process-instance/%s/suspended", strings.TrimRight(c.env.URL, "/"), instanceID)
+	r, err := http.NewRequestWithContext(c.authContext, http.MethodPut, urlStr, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := c.httpClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("error suspending instance: %s", string(data))
+	}
+	return nil
+}
+
+// SetJobRetries sets the retries count on a job (compat wrapper).
+func (c *CompatClient) SetJobRetries(jobID string, retries int) error {
+	c.logf("API: SetJobRetries(%s, %d)", jobID, retries)
+	body := map[string]interface{}{"retries": retries}
+	b, _ := json.Marshal(body)
+	urlStr := fmt.Sprintf("%s/job/%s/retries", strings.TrimRight(c.env.URL, "/"), jobID)
+	r, err := http.NewRequestWithContext(c.authContext, http.MethodPut, urlStr, bytes.NewReader(b))
+	if err != nil {
+		return err
+	}
+	r.Header.Set("Content-Type", "application/json")
+	resp, err := c.httpClient.Do(r)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode >= 400 {
+		data, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("error setting job retries: %s", string(data))
+	}
+	return nil
+}
+
 // --- Compatibility wrapper to match the previous package API used by main and tests ---
 
 // Use config package types for compatibility
