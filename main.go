@@ -244,6 +244,13 @@ type model struct {
 	editError     string
 	editFocus     editFocusArea
 
+	// Search/filter state
+	searchMode      bool
+	searchInput     textinput.Model
+	searchTerm      string
+	filteredRows    []table.Row
+	originalRows    []table.Row
+
 	// lastListIndex stores the last-known list index so we can detect
 	// selection changes even when list.Update doesn't change the index in tests.
 	lastListIndex int
@@ -505,6 +512,15 @@ func newModel(cfg *config.Config) model {
 	editInput.CharLimit = 0
 	editInput.Width = 40
 	m.editInput = editInput
+
+	// Initialize search input
+	searchInput := textinput.New()
+	searchInput.Placeholder = "search..."
+	searchInput.Prompt = "/"
+	searchInput.CharLimit = 0
+	searchInput.Width = 40
+	m.searchInput = searchInput
+
 	m.applyStyle()
 	// initialize lastListIndex
 	m.lastListIndex = m.list.Index()
