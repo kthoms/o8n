@@ -178,7 +178,7 @@ const (
 
 ### EnvConfig (o8n-env.yaml)
 
-- environments: map[string]{ url, username, password, ui_color }
+- environments: map[string]{ url, username, password, ui_color, default_timeout }
 - active: string (name of active environment)
 
 ### AppConfig (o8n-cfg.yaml)

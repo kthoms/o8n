@@ -35,6 +35,7 @@ environments:
     username: demo
     password: demo
     ui_color: "#00A8E1"
+    default_timeout: 10s
   production:
     url: https://operaton.example.com/engine-rest
     username: admin
@@ -154,6 +155,7 @@ environments:
     username: <user>
     password: <password>
     ui_color: <hex-color>  # e.g., "#00A8E1"
+    default_timeout: <duration> # e.g., "10s", "1m"
 active: <default-env-name>
 ```
 
