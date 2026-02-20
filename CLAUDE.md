@@ -2,6 +2,30 @@
 
 A k9s-inspired terminal UI for managing Operaton workflow engines, built in Go using the Charmbracelet TUI ecosystem (Bubble Tea, Bubbles, Lipgloss).
 
+---
+
+## ⚠️ CRITICAL - READ FIRST
+
+**NEVER delete or empty these files:**
+- **o8n-cfg.yaml** (760+ lines) - Table definitions, column specs, drilldown rules
+- **o8n-env.yaml** (~10 lines) - Local environment config with credentials
+
+**BEFORE EACH COMMIT:**
+```bash
+wc -l o8n-*.yaml  # Verify: ~760 cfg, ~10 env
+git diff o8n-*.yaml  # Should show NO deletions
+```
+
+**IF ACCIDENTALLY DELETED:**
+```bash
+git show HEAD~2:o8n-cfg.yaml > o8n-cfg.yaml
+# Then restore o8n-env.yaml with local settings
+```
+
+See `CRITICAL_INSTRUCTIONS.md` for details.
+
+---
+
 ## Commands
 
 ```bash
