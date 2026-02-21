@@ -20,8 +20,8 @@ func testConfigWithActions() *config.Config {
 			{
 				Name: "process-instance",
 				Columns: []config.ColumnDef{
-					{Name: "id", Visible: true, Width: "30%"},
-					{Name: "definitionId", Visible: true, Width: "30%"},
+					{Name: "id", Width: 0},
+					{Name: "definitionId", Width: 0},
 				},
 				Actions: []config.ActionDef{
 					{Key: "s", Label: "Suspend Instance", Method: "PUT", Path: "/process-instance/{id}/suspended", Body: `{"suspended":true}`},
@@ -32,7 +32,7 @@ func testConfigWithActions() *config.Config {
 			{
 				Name: "job",
 				Columns: []config.ColumnDef{
-					{Name: "id", Visible: true, Width: "30%"},
+					{Name: "id", Width: 0},
 				},
 				Actions: []config.ActionDef{
 					{Key: "r", Label: "Retry", Method: "PUT", Path: "/job/{id}/retries", Body: `{"retries":1}`},
@@ -42,7 +42,7 @@ func testConfigWithActions() *config.Config {
 			{
 				Name: "task",
 				Columns: []config.ColumnDef{
-					{Name: "id", Visible: true, Width: "30%"},
+					{Name: "id", Width: 0},
 				},
 				Actions: []config.ActionDef{
 					{Key: "c", Label: "Complete", Method: "POST", Path: "/task/{id}/complete"},

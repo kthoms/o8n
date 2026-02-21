@@ -21,8 +21,8 @@ func newFocusIndicatorTestModel(t *testing.T) model {
 			{
 				Name: "process-definition",
 				Columns: []config.ColumnDef{
-					{Name: "key", Visible: true},
-					{Name: "name", Visible: true},
+					{Name: "key"},
+					{Name: "name"},
 				},
 			},
 		},
@@ -169,8 +169,8 @@ func TestFocusIndicatorUsesEnvironmentColor(t *testing.T) {
 			{
 				Name: "process-definition",
 				Columns: []config.ColumnDef{
-					{Name: "key", Visible: true},
-					{Name: "name", Visible: true},
+					{Name: "key"},
+					{Name: "name"},
 				},
 			},
 		},
@@ -210,10 +210,10 @@ func TestFocusIndicatorHighlightsEntireRow(t *testing.T) {
 			{
 				Name: "process-definition",
 				Columns: []config.ColumnDef{
-					{Name: "key", Visible: true, Width: "20%"},
-					{Name: "name", Visible: true, Width: "40%"},
-					{Name: "version", Visible: true, Width: "20%"},
-					{Name: "status", Visible: true, Width: "20%"},
+					{Name: "key", Width: 0},
+					{Name: "name", Width: 0},
+					{Name: "version", Width: 0},
+					{Name: "status", Width: 0},
 				},
 			},
 		},

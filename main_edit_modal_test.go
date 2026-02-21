@@ -17,7 +17,7 @@ func TestRenderEditModal(t *testing.T) {
 	m := newModel(cfg)
 
 	// Prepare editable column and a row
-	col := config.ColumnDef{Name: "age", InputType: "int", Editable: true, Visible: true}
+	col := config.ColumnDef{Name: "age", InputType: "int", Editable: true}
 	m.editColumns = []editableColumn{{index: 1, def: col}}
 	m.editColumnPos = 0
 	m.editRowIndex = 0

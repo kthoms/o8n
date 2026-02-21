@@ -162,12 +162,12 @@ func TestConfigDrivenDrilldownFromDefinitionToInstances(t *testing.T) {
 		Tables: []config.TableDef{
 			{
 				Name:      "process-definition",
-				Columns:   []config.ColumnDef{{Name: "key", Visible: true}, {Name: "name", Visible: true}, {Name: "version", Visible: true}, {Name: "resource", Visible: true}},
+				Columns:   []config.ColumnDef{{Name: "key"}, {Name: "name"}, {Name: "version"}, {Name: "resource"}},
 				Drilldown: []config.DrillDownDef{{Target: "process-instance", Param: "processDefinitionKey", Column: "key"}},
 			},
 			{
 				Name:    "process-instance",
-				Columns: []config.ColumnDef{{Name: "id", Visible: true}, {Name: "definitionId", Visible: true}, {Name: "businessKey", Visible: true}, {Name: "startTime", Visible: true}},
+				Columns: []config.ColumnDef{{Name: "id"}, {Name: "definitionId"}, {Name: "businessKey"}, {Name: "startTime"}},
 			},
 		},
 	}
@@ -222,12 +222,12 @@ func TestConfigDrivenDrilldownFromInstancesToVariables(t *testing.T) {
 		Tables: []config.TableDef{
 			{
 				Name:      "process-instance",
-				Columns:   []config.ColumnDef{{Name: "id", Visible: true}, {Name: "definitionId", Visible: true}},
+				Columns:   []config.ColumnDef{{Name: "id"}, {Name: "definitionId"}},
 				Drilldown: []config.DrillDownDef{{Target: "process-variables", Param: "processInstanceId", Column: "id"}},
 			},
 			{
 				Name:    "process-variables",
-				Columns: []config.ColumnDef{{Name: "name", Visible: true}, {Name: "value", Visible: true}},
+				Columns: []config.ColumnDef{{Name: "name"}, {Name: "value"}},
 			},
 		},
 	}
@@ -290,7 +290,7 @@ func TestNavigationStackPreservesRowSelection(t *testing.T) {
 		Tables: []config.TableDef{
 			{
 				Name:      "process-definition",
-				Columns:   []config.ColumnDef{{Name: "key", Visible: true}, {Name: "name", Visible: true}},
+				Columns:   []config.ColumnDef{{Name: "key"}, {Name: "name"}},
 				Drilldown: []config.DrillDownDef{{Target: "process-instance", Param: "processDefinitionKey", Column: "key"}},
 			},
 		},
@@ -368,8 +368,8 @@ func TestEditableColumnsMarkedWithIndicator(t *testing.T) {
 			{
 				Name: "process-variables",
 				Columns: []config.ColumnDef{
-					{Name: "name", Visible: true, Width: "30%", Editable: false},
-					{Name: "value", Visible: true, Width: "70%", Editable: true, InputType: "text"},
+					{Name: "name", Width: 0, Editable: false},
+					{Name: "value", Width: 0, Editable: true, InputType: "text"},
 				},
 			},
 		},
@@ -418,9 +418,9 @@ func TestEditableColumnsFor(t *testing.T) {
 			{
 				Name: "process-variables",
 				Columns: []config.ColumnDef{
-					{Name: "name", Visible: true, Editable: false},
-					{Name: "value", Visible: true, Editable: true},
-					{Name: "type", Visible: true, Editable: false},
+					{Name: "name", Editable: false},
+					{Name: "value", Editable: true},
+					{Name: "type", Editable: false},
 				},
 			},
 		},
@@ -472,17 +472,17 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 		Tables: []config.TableDef{
 			{
 				Name:      "process-definition",
-				Columns:   []config.ColumnDef{{Name: "key", Visible: true}, {Name: "name", Visible: true}},
+				Columns:   []config.ColumnDef{{Name: "key"}, {Name: "name"}},
 				Drilldown: []config.DrillDownDef{{Target: "process-instance", Param: "processDefinitionKey", Column: "key"}},
 			},
 			{
 				Name:      "process-instance",
-				Columns:   []config.ColumnDef{{Name: "id", Visible: true}, {Name: "definitionId", Visible: true}},
+				Columns:   []config.ColumnDef{{Name: "id"}, {Name: "definitionId"}},
 				Drilldown: []config.DrillDownDef{{Target: "process-variables", Param: "processInstanceId", Column: "id"}},
 			},
 			{
 				Name:    "process-variables",
-				Columns: []config.ColumnDef{{Name: "name", Visible: true}, {Name: "value", Visible: true}},
+				Columns: []config.ColumnDef{{Name: "name"}, {Name: "value"}},
 			},
 		},
 	}

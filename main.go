@@ -1245,7 +1245,7 @@ func (m *model) visibleColumnIndex(def *config.TableDef, column string) int {
 	}
 	idx := 0
 	for _, c := range def.Columns {
-		if !c.Visible {
+		if !c.IsVisible() {
 			continue
 		}
 		if c.Name == column || strings.EqualFold(c.Name, column) {
@@ -1257,7 +1257,7 @@ func (m *model) visibleColumnIndex(def *config.TableDef, column string) int {
 	if strings.EqualFold(column, "id") {
 		idx = 0
 		for _, c := range def.Columns {
-			if !c.Visible {
+			if !c.IsVisible() {
 				continue
 			}
 			if strings.EqualFold(c.Name, "id") {
@@ -1287,7 +1287,7 @@ func (m *model) editableColumnsFor(tableKey string) []editableColumn {
 	cols := []editableColumn{}
 	idx := 0
 	for _, c := range def.Columns {
-		if !c.Visible {
+		if !c.IsVisible() {
 			continue
 		}
 		if c.Editable {
@@ -1460,7 +1460,7 @@ func (m *model) addEditableMarkers(rows []table.Row, tableName string) []table.R
 	editableIndices := make(map[int]bool)
 	visIdx := 0
 	for _, c := range def.Columns {
-		if !c.Visible {
+		if !c.IsVisible() {
 			continue
 		}
 		if c.Editable {
@@ -1489,92 +1489,95 @@ func (m *model) addEditableMarkers(rows []table.Row, tableName string) []table.R
 func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column {
 	def := m.findTableDef(tableName)
 	if def == nil {
-		// fallback: reasonable default column
 		return []table.Column{{Title: "COL", Width: 20}, {Title: "COL2", Width: 20}}
 	}
 
-	// collect visible columns
-	visible := make([]config.ColumnDef, 0, len(def.Columns))
-	for _, c := range def.Columns {
-		if c.Visible {
-			visible = append(visible, c)
-		}
+	// collect all columns that are not explicitly hidden, preserving config order
+	type colEntry struct {
+		def      config.ColumnDef
+		title    string
+		width    int // desired width
+		minWidth int // minimum width (= header title length if not configured)
 	}
-	n := len(visible)
+
+	entries := make([]colEntry, 0, len(def.Columns))
+	for _, c := range def.Columns {
+		if !c.IsVisible() {
+			continue
+		}
+		title := strings.ToUpper(c.Name)
+		if c.Editable {
+			title = title + " 🖍️"
+		}
+		headerLen := lipgloss.Width(title)
+
+		desired := c.Width
+		if desired == 0 {
+			desired = config.DefaultTypeWidth(c.Type)
+		}
+
+		minW := c.MinWidth
+		if minW == 0 {
+			minW = headerLen // implicit minimum = column header title width
+		}
+		if desired < minW {
+			desired = minW
+		}
+
+		entries = append(entries, colEntry{def: c, title: title, width: desired, minWidth: minW})
+	}
+
+	n := len(entries)
 	if n == 0 {
 		return []table.Column{{Title: "EMPTY", Width: 20}}
 	}
 
-	contentWidth := totalWidth
-	if contentWidth < n*3 {
-		contentWidth = n * 3
+	// extract ColumnDefs for hide sequence calculation
+	defs := make([]config.ColumnDef, n)
+	for i, e := range entries {
+		defs[i] = e.def
 	}
 
-	// parse percentages
-	percentTotal := 0
-	percentCols := make([]int, n)
-	unspecified := 0
-	for i, c := range visible {
-		if len(c.Width) > 0 && c.Width[len(c.Width)-1] == '%' {
-			var p int
-			fmt.Sscanf(c.Width, "%d%%", &p)
-			percentTotal += p
-			percentCols[i] = p
-		} else {
-			unspecified++
-			percentCols[i] = 0
-		}
+	// determine which columns to show given available totalWidth
+	active := make([]bool, n)
+	for i := range active {
+		active[i] = true
 	}
 
-	remaining := 100 - percentTotal
-	if remaining < 0 {
-		// normalize: scale down specified percentages proportionally
-		for i := range percentCols {
-			if percentCols[i] > 0 {
-				percentCols[i] = percentCols[i] * 100 / percentTotal
-			}
-		}
-		remaining = 100 - func() int {
+	if totalWidth > 0 {
+		totalDesired := func() int {
 			s := 0
-			for _, v := range percentCols {
-				s += v
+			for i, e := range entries {
+				if active[i] {
+					s += e.width
+				}
 			}
 			return s
-		}()
-	}
-	// distribute remaining among unspecified equally
-	if unspecified > 0 {
-		per := remaining / unspecified
-		for i := range percentCols {
-			if percentCols[i] == 0 {
-				percentCols[i] = per
+		}
+
+		hideSeq := config.HideSequence(defs)
+		for _, hideIdx := range hideSeq {
+			if totalDesired() <= totalWidth {
+				break
 			}
+			active[hideIdx] = false
 		}
 	}
 
-	// if totalWidth known, compute column widths using contentWidth
-	// Hide columns whose headers don't fit in their allocated width
+	// build final column list
 	cols := make([]table.Column, 0, n)
 	used := 0
-	for i := range visible {
-		w := contentWidth * percentCols[i] / 100
-		if w < 3 {
-			w = 3
+	for i, e := range entries {
+		if !active[i] {
+			continue
 		}
-		title := strings.ToUpper(visible[i].Name)
-		// mark editable columns with a write emoji in the header
-		if visible[i].Editable {
-			title = title + " 🖍️"
-		}
-		// Only include column if the title fits in the allocated width
-		// Use lipgloss.Width to account for emoji characters
-		if lipgloss.Width(title) <= w {
-			used += w
-			cols = append(cols, table.Column{Title: title, Width: w})
-		}
+		used += e.width
+		cols = append(cols, table.Column{Title: e.title, Width: e.width})
 	}
-	if len(cols) > 0 && used < contentWidth {
-		cols[len(cols)-1].Width += contentWidth - used
+
+	// last visible column stretches to fill any remaining space
+	if len(cols) > 0 && totalWidth > 0 && used < totalWidth {
+		cols[len(cols)-1].Width += totalWidth - used
 	}
 	return cols
 }

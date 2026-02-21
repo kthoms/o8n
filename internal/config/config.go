@@ -4,6 +4,8 @@ package config
 import (
 	"fmt"
 	"os"
+	"sort"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -18,14 +20,117 @@ type Environment struct {
 	UIColor  string `yaml:"ui_color"` // hex string like "#FF5733"
 }
 
-// ColumnDef defines a table column in the UI config
+// ColumnDef defines a table column in the UI config.
+//
+// Column visibility defaults to true (visible). Set Visible to an explicit false pointer to permanently hide.
+// Width is in characters; 0 means derive from Type. MinWidth defaults to the header title length.
+// HideOrder controls when a column is hidden when space is tight:
+//   - 0 (default/unset): eligible to be hidden first; among these, rightmost column hides first
+//   - positive N: hidden after all 0-order columns; lower N hidden before higher N
 type ColumnDef struct {
 	Name      string `yaml:"name"`
-	Visible   bool   `yaml:"visible"`
-	Width     string `yaml:"width"`                // percentage like "25%" or empty for auto
-	Align     string `yaml:"align"`                // left/right/center (currently informational)
+	Type      string `yaml:"type,omitempty"`       // string/bool/int/float/datetime/id; drives implicit width
+	Width     int    `yaml:"width,omitempty"`       // initial width in chars (0 = derive from Type)
+	MinWidth  int    `yaml:"min_width,omitempty"`   // minimum width in chars (0 = use header title length)
+	HideOrder int    `yaml:"hide_order,omitempty"`  // 0 = hidden first (rightmost first); positive = hidden later
+	Align     string `yaml:"align,omitempty"`       // left/right/center
 	Editable  bool   `yaml:"editable,omitempty"`   // whether this column can be edited
 	InputType string `yaml:"input_type,omitempty"` // text/number/bool/auto (optional)
+	Visible   *bool  `yaml:"visible,omitempty"`    // nil = visible by default; explicit false = always hidden
+}
+
+// UnmarshalYAML implements custom YAML parsing for ColumnDef.
+// It handles the legacy width format ("25%", "") by ignoring percent/empty values,
+// accepting plain integer widths in the new format.
+func (c *ColumnDef) UnmarshalYAML(value *yaml.Node) error {
+	// Use a raw struct to capture width as a string node for special handling
+	type rawCol struct {
+		Name      string    `yaml:"name"`
+		Type      string    `yaml:"type"`
+		Width     yaml.Node `yaml:"width"`
+		MinWidth  int       `yaml:"min_width"`
+		HideOrder int       `yaml:"hide_order"`
+		Align     string    `yaml:"align"`
+		Editable  bool      `yaml:"editable"`
+		InputType string    `yaml:"input_type"`
+		Visible   *bool     `yaml:"visible"`
+	}
+	var raw rawCol
+	if err := value.Decode(&raw); err != nil {
+		return err
+	}
+	c.Name = raw.Name
+	c.Type = raw.Type
+	c.MinWidth = raw.MinWidth
+	c.HideOrder = raw.HideOrder
+	c.Align = raw.Align
+	c.Editable = raw.Editable
+	c.InputType = raw.InputType
+	c.Visible = raw.Visible
+	// parse width: accept integer values; ignore percent strings ("25%") and empty
+	if raw.Width.Kind == yaml.ScalarNode {
+		v := strings.TrimSpace(raw.Width.Value)
+		if v != "" && !strings.HasSuffix(v, "%") {
+			fmt.Sscan(v, &c.Width)
+		}
+	}
+	return nil
+}
+
+// IsVisible reports whether the column should be displayed.
+// Columns with no Visible field set (nil) are visible by default.
+func (c ColumnDef) IsVisible() bool {
+	return c.Visible == nil || *c.Visible
+}
+
+// DefaultTypeWidth returns the default initial column width in characters for a given type.
+func DefaultTypeWidth(colType string) int {
+	switch strings.ToLower(colType) {
+	case "bool":
+		return 6
+	case "int":
+		return 8
+	case "float":
+		return 10
+	case "datetime":
+		return 20
+	case "id":
+		return 36
+	default: // "string" or anything else
+		return 20
+	}
+}
+
+// HideSequence returns the column indices from cols in the order they should be hidden
+// when available width is insufficient. Columns with HideOrder == 0 come first (rightmost
+// position first), followed by configured columns in ascending HideOrder (rightmost first
+// within each group).
+func HideSequence(cols []ColumnDef) []int {
+	seq := make([]int, 0, len(cols))
+	// group 0: unspecified hide_order — rightmost (highest index) first
+	for i := len(cols) - 1; i >= 0; i-- {
+		if cols[i].HideOrder == 0 {
+			seq = append(seq, i)
+		}
+	}
+	// groups > 0: ascending HideOrder, rightmost first within each group
+	groups := map[int][]int{}
+	for i, col := range cols {
+		if col.HideOrder > 0 {
+			groups[col.HideOrder] = append(groups[col.HideOrder], i)
+		}
+	}
+	keys := make([]int, 0, len(groups))
+	for k := range groups {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	for _, k := range keys {
+		idxs := groups[k]
+		sort.Sort(sort.Reverse(sort.IntSlice(idxs)))
+		seq = append(seq, idxs...)
+	}
+	return seq
 }
 
 // DrillDownDef describes a drill-down target for a table (target collection and query parameter)

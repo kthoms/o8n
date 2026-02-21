@@ -31,7 +31,7 @@ func TestGenericFetchUsesTableDefAndCount(t *testing.T) {
 
 	cfg := &config.Config{
 		Environments: map[string]config.Environment{"local": {URL: server.URL}},
-		Tables:       []config.TableDef{{Name: "widgets", Columns: []config.ColumnDef{{Name: "id", Visible: true}, {Name: "name", Visible: true}}}},
+		Tables:       []config.TableDef{{Name: "widgets", Columns: []config.ColumnDef{{Name: "id"}, {Name: "name"}}}},
 	}
 
 	m := newModel(cfg)

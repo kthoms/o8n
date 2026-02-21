@@ -253,9 +253,9 @@ func TestEditModalTabCyclesColumns(t *testing.T) {
 			{
 				Name: "process-variables",
 				Columns: []config.ColumnDef{
-					{Name: "name", Visible: true, Editable: false},
-					{Name: "value", Visible: true, Editable: true, InputType: "text"},
-					{Name: "type", Visible: true, Editable: true, InputType: "text"},
+					{Name: "name", Editable: false},
+					{Name: "value", Editable: true, InputType: "text"},
+					{Name: "type", Editable: true, InputType: "text"},
 				},
 			},
 		},
