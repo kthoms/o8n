@@ -225,6 +225,7 @@ type viewState struct {
 	cachedDefinitions     []config.ProcessDefinition
 	tableColumns          []table.Column
 	genericParams         map[string]string // drilldown filter params active at this level
+	rowData               []map[string]interface{} // raw API data per row for drilldown column lookup
 }
 
 type model struct {
@@ -354,6 +355,10 @@ type model struct {
 
 	// active filter params for the current generic collection view (e.g. drilldown filters)
 	genericParams map[string]string
+
+	// raw API data per visible row; used to resolve drilldown column values
+	// including columns that are not displayed (hidden) in the table
+	rowData []map[string]interface{}
 
 	// Version number
 	version      string
@@ -1594,11 +1599,17 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	m.cachedDefinitions = defs
 	items := make([]list.Item, 0, len(defs))
 	rows := make([]table.Row, 0, len(defs))
+	rd := make([]map[string]interface{}, 0, len(defs))
 	for _, d := range defs {
 		items = append(items, processDefinitionItem{definition: d})
 		// Add drilldown prefix to first column for focus indicator
 		rows = append(rows, table.Row{"▶ " + d.Key, d.Name, fmt.Sprintf("%d", d.Version), d.Resource})
+		rd = append(rd, map[string]interface{}{
+			"id": d.ID, "key": d.Key, "name": d.Name,
+			"version": d.Version, "resource": d.Resource,
+		})
 	}
+	m.rowData = rd
 	m.list.SetItems(items)
 	// determine available table width
 	tableWidth := m.table.Width()
@@ -1629,10 +1640,16 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		}
 	}()
 	rows := make([]table.Row, 0, len(instances))
+	rd := make([]map[string]interface{}, 0, len(instances))
 	for _, inst := range instances {
 		// Add drilldown prefix to first column for focus indicator
 		rows = append(rows, table.Row{"▶ " + inst.ID, inst.DefinitionID, inst.BusinessKey, inst.StartTime})
+		rd = append(rd, map[string]interface{}{
+			"id": inst.ID, "definitionId": inst.DefinitionID,
+			"businessKey": inst.BusinessKey, "startTime": inst.StartTime,
+		})
 	}
+	m.rowData = rd
 	tableWidth := m.table.Width()
 	if tableWidth <= 0 {
 		tableWidth = m.paneWidth - 4
@@ -2584,6 +2601,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selectedInstanceID = prevState.selectedInstanceID
 				m.cachedDefinitions = prevState.cachedDefinitions
 				m.genericParams = prevState.genericParams // restore drilldown filter params
+				m.rowData = prevState.rowData             // restore raw row data for drilldown
 
 				// restore table rows and cursor position
 				// restore columns first to ensure rows align with expected column count
@@ -2672,17 +2690,27 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					chosen = &def.Drilldown[0]
 				}
 
-				// resolve value from selected row (fall back to first cell)
+				// resolve drilldown value: prefer rowData (includes hidden columns like id),
+				// fall back to visible cell with focus-indicator prefix stripped
 				colName := chosen.Column
 				if colName == "" {
 					colName = "id"
 				}
-				idx := m.visibleColumnIndex(def, colName)
 				val := ""
-				if idx >= 0 && idx < len(row) {
-					val = fmt.Sprintf("%v", row[idx])
-				} else {
-					val = fmt.Sprintf("%v", row[0])
+				cursor := m.table.Cursor()
+				if cursor >= 0 && cursor < len(m.rowData) {
+					if v, ok := m.rowData[cursor][colName]; ok && v != nil {
+						val = fmt.Sprintf("%v", v)
+					}
+				}
+				if val == "" {
+					visIdx := m.visibleColumnIndex(def, colName)
+					if visIdx >= 0 && visIdx < len(row) {
+						val = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[visIdx]))
+					} else {
+						val = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
+					}
+					log.Printf("drilldown: column %q not in rowData at cursor %d, used visible cell: %q", colName, cursor, val)
 				}
 
 				// supported runtime targets -> dispatch
@@ -2705,6 +2733,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						tableCursor:           m.table.Cursor(),
 						cachedDefinitions:     m.cachedDefinitions,
 						tableColumns:          append([]table.Column{}, cols2...),
+						rowData:               append([]map[string]interface{}{}, m.rowData...),
 					}
 					m.navigationStack = append(m.navigationStack, currentState2)
 					// definitions -> instances (expects a process key)
@@ -2734,6 +2763,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						tableCursor:           m.table.Cursor(),
 						cachedDefinitions:     m.cachedDefinitions,
 						tableColumns:          append([]table.Column{}, colsVar...),
+						rowData:               append([]map[string]interface{}{}, m.rowData...),
 					}
 					m.navigationStack = append(m.navigationStack, currentStateVar)
 
@@ -2774,6 +2804,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						cachedDefinitions:     m.cachedDefinitions,
 						tableColumns:          append([]table.Column{}, colsGeneric...),
 						genericParams:         m.genericParams, // save current filter params
+						rowData:               append([]map[string]interface{}{}, m.rowData...),
 					}
 					m.navigationStack = append(m.navigationStack, currentStateGeneric)
 
@@ -2815,10 +2846,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					tableCursor:           m.table.Cursor(),
 					cachedDefinitions:     m.cachedDefinitions,
 					tableColumns:          append([]table.Column{}, cols3...),
+					rowData:               append([]map[string]interface{}{}, m.rowData...),
 				}
 				m.navigationStack = append(m.navigationStack, currentState3)
 
-				key := fmt.Sprintf("%v", row[0])
+				key := stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
 				m.selectedDefinitionKey = key
 				m.viewMode = "instances"
 				m.breadcrumb = []string{m.currentRoot, "process-instances"}
@@ -2844,10 +2876,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					tableCursor:           m.table.Cursor(),
 					cachedDefinitions:     m.cachedDefinitions,
 					tableColumns:          append([]table.Column{}, cols4...),
+					rowData:               append([]map[string]interface{}{}, m.rowData...),
 				}
 				m.navigationStack = append(m.navigationStack, currentState4)
 
-				id := fmt.Sprintf("%v", row[0])
+				id := stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
 				m.selectedInstanceID = id
 				m.viewMode = "variables"
 				m.breadcrumb = append(m.breadcrumb, "variables")
@@ -3144,9 +3177,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 			}
 		}
-		// Build rows from items
+		// Build rows from items; also capture raw data for drilldown column lookup
 		rows := make([]table.Row, 0, len(msg.items))
+		rd := make([]map[string]interface{}, 0, len(msg.items))
 		for _, it := range msg.items {
+			rd = append(rd, it)
 			if len(cols) == 0 {
 				// fallback: add single column with JSON representation
 				rows = append(rows, table.Row{fmt.Sprintf("%v", it)})
@@ -3172,6 +3207,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			rows = append(rows, r)
 		}
+		m.rowData = rd
 
 		if len(cols) > 0 {
 			m.table.SetColumns(cols)
@@ -4400,19 +4436,22 @@ func main() {
 	var noSplash = flag.Bool("no-splash", false, "disable splash screen")
 	flag.Parse()
 
-	// If debug is enabled, create a log file
+	// Always open debug/o8n.log for error logging.
+	// Verbose debug output additionally requires --debug.
+	os.Mkdir("debug", 0755)
+	logFile, err := os.OpenFile("debug/o8n.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("error opening log file: %v", err)
+	}
+	defer logFile.Close()
 	if *debug {
-		os.Mkdir("debug", 0755)
-		f, err := os.OpenFile("debug/o8n.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
-		if err != nil {
-			log.Fatalf("error opening file: %v", err)
-		}
-		defer f.Close()
-		log.SetOutput(f)
+		log.SetOutput(logFile)
 		log.Println("--- o8n debug session started ---")
 	} else {
-		// a nil writer discards all log output
-		log.SetOutput(io.Discard)
+		// Non-debug mode: only error-level messages go to the log file.
+		// Use a custom writer that prefixes every line so it's easy to grep.
+		log.SetOutput(logFile)
+		log.SetPrefix("[ERROR] ")
 	}
 
 	// Verify critical config files exist and are not corrupted
