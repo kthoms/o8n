@@ -394,7 +394,6 @@ type model struct {
 	// Detail viewer state
 	detailContent   string
 	detailScroll    int
-	detailMaxScroll int
 
 	// Environment popup state
 	showEnvPopup   bool
@@ -762,6 +761,11 @@ Enter    Lock filter     │                         │
                          │  In Variables:          │
                          │  e        Edit value    │
 
+STATUS COLORS
+────────────────────────────────────────────
+● Running    ● Suspended    ✗ Failed/Incident    ○ Ended
+(green)      (yellow)       (red)                (dim)
+
 Current View: ` + m.viewMode + `
 Environment: ` + m.currentEnv + `
 
@@ -794,6 +798,18 @@ func (m *model) renderEditModal(width, height int) string {
 		return ""
 	}
 	inputType, _ := m.resolveEditTypes(col.def, m.editTableKey, row)
+
+	singleColumnHeader := ""
+	if len(m.editColumns) == 1 {
+		typeLabel := inputType
+		if typeLabel == "" {
+			typeLabel = "text"
+		}
+		singleColumnHeader = fmt.Sprintf("Editing: %s  (type: %s)\n%s\n\n",
+			m.editColumns[0].def.Name,
+			typeLabel,
+			strings.Repeat("─", 36))
+	}
 
 	columnsLine := ""
 	if len(m.editColumns) > 1 {
@@ -876,7 +892,7 @@ func (m *model) renderEditModal(width, height int) string {
 			suggestionLine = "Suggestions: " + strings.Join(sugg, ", ") + "\n\n"
 		}
 	}
-	body = columnsLine + m.editInput.View() + "\n\n" + errorLine + suggestionLine
+	body = singleColumnHeader + columnsLine + m.editInput.View() + "\n\n" + errorLine + suggestionLine
 
 	// Render buttons with focus styles
 	savedFocusedStyle := saveStyle.Copy().Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#FFFFFF"))
@@ -886,7 +902,10 @@ func (m *model) renderEditModal(width, height int) string {
 	switch m.editFocus {
 	case editFocusSave:
 		if saveDisabled {
-			saveBtn = disabledSaveStyle.Copy().Border(lipgloss.NormalBorder()).Render(saveLabel)
+			saveBtn = disabledSaveStyle.Copy().
+			Border(lipgloss.NormalBorder()).
+			BorderForeground(lipgloss.Color("#FF6B6B")).
+			Render(saveLabel)
 		} else {
 			saveBtn = savedFocusedStyle.Render(saveLabel)
 		}
@@ -1139,6 +1158,15 @@ func (m *model) buildActionsForRoot() []actionItem {
 
 // buildDetailContent builds a JSON representation of the selected row.
 func (m *model) buildDetailContent(row table.Row) string {
+	// Prefer full raw API object when available
+	cursor := m.table.Cursor()
+	if cursor >= 0 && cursor < len(m.rowData) {
+		b, err := json.MarshalIndent(m.rowData[cursor], "", "  ")
+		if err == nil {
+			return string(b)
+		}
+	}
+	// Fallback: build from visible display columns
 	cols := m.table.Columns()
 	data := make(map[string]string)
 	for i, col := range cols {
@@ -1643,7 +1671,7 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	}
 	normRows := normalizeRows(rows, colsCount)
 	m.table.SetColumns(cols)
-	m.table.SetRows(normRows)
+	m.setTableRowsSorted(normRows)
 	m.viewMode = "definitions"
 }
 
@@ -1681,7 +1709,7 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 	}
 	normRows := normalizeRows(rows, colsCount)
 	m.table.SetColumns(cols)
-	m.table.SetRows(normRows)
+	m.setTableRowsSorted(normRows)
 	m.viewMode = "instances"
 	// restore cursor position requested for paging operations
 	if m.pendingCursorAfterPage >= 0 {
@@ -1730,7 +1758,7 @@ func (m *model) applyVariables(vars []config.Variable) {
 	}
 	normRows := normalizeRows(rows, colsCount)
 	m.table.SetColumns(cols)
-	m.table.SetRows(normRows)
+	m.setTableRowsSorted(normRows)
 	m.viewMode = "variables"
 }
 
@@ -2157,6 +2185,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				m.originalRows = nil
 				m.filteredRows = nil
+				if m.footerStatusKind == footerStatusInfo {
+					m.footerError = ""
+					m.footerStatusKind = footerStatusNone
+				}
 				return m, nil
 			case "enter":
 				m.searchMode = false
@@ -2191,17 +2223,34 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.activeModal = ModalNone
 				return m, nil
 			case "up", "k":
-				if m.sortPopupCursor > 0 {
+				if m.sortColumn >= 0 && m.sortPopupCursor == 0 {
+					m.sortPopupCursor = -1 // move to clear item
+				} else if m.sortPopupCursor > 0 {
 					m.sortPopupCursor--
 				}
 				return m, nil
 			case "down", "j":
-				cols := m.table.Columns()
-				if m.sortPopupCursor < len(cols)-1 {
-					m.sortPopupCursor++
+				if m.sortPopupCursor == -1 {
+					m.sortPopupCursor = 0
+				} else {
+					cols := m.table.Columns()
+					if m.sortPopupCursor < len(cols)-1 {
+						m.sortPopupCursor++
+					}
 				}
 				return m, nil
 			case "enter":
+				if m.sortPopupCursor == -1 {
+					// Clear sort: reset and re-fetch
+					m.sortColumn = -1
+					m.sortAscending = true
+					m.activeModal = ModalNone
+					root := m.currentRoot
+					if len(m.breadcrumb) > 0 {
+						root = m.breadcrumb[len(m.breadcrumb)-1]
+					}
+					return m, tea.Batch(m.fetchForRoot(root), flashOnCmd())
+				}
 				cols := m.table.Columns()
 				if m.sortPopupCursor >= 0 && m.sortPopupCursor < len(cols) {
 					if m.sortColumn == m.sortPopupCursor {
@@ -2263,13 +2312,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// Handle detail view keys
 		if m.activeModal == ModalDetailView {
+			detailLines := strings.Split(m.detailContent, "\n")
+			detailViewH := m.lastHeight - 6
+			if detailViewH < 3 { detailViewH = 3 }
+			maxDetailScroll := len(detailLines) - detailViewH
+			if maxDetailScroll < 0 { maxDetailScroll = 0 }
 			switch s {
 			case "esc", "q", "y":
 				m.activeModal = ModalNone
 				m.detailContent = ""
 				return m, nil
 			case "j", "down":
-				if m.detailScroll < m.detailMaxScroll {
+				if m.detailScroll < maxDetailScroll {
 					m.detailScroll++
 				}
 				return m, nil
@@ -2280,8 +2334,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, nil
 			case "ctrl+d":
 				m.detailScroll += 10
-				if m.detailScroll > m.detailMaxScroll {
-					m.detailScroll = m.detailMaxScroll
+				if m.detailScroll > maxDetailScroll {
+					m.detailScroll = maxDetailScroll
 				}
 				return m, nil
 			case "ctrl+u":
@@ -2291,7 +2345,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				return m, nil
 			case "G":
-				m.detailScroll = m.detailMaxScroll
+				m.detailScroll = maxDetailScroll
 				return m, nil
 			case "g":
 				if m.pendingG {
@@ -2502,6 +2556,17 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.searchInput.SetValue("")
 				m.searchTerm = ""
 				m.searchInput.Focus()
+				// Warn user if search is scoped to current page only
+				currentRoot := m.currentRoot
+				if len(m.breadcrumb) > 0 {
+					currentRoot = m.breadcrumb[len(m.breadcrumb)-1]
+				}
+				if off, ok := m.pageOffsets[currentRoot]; ok && off > 0 {
+					pageSize := m.getPageSize()
+					pg := off/pageSize + 1
+					m.footerError, m.footerStatusKind, _ = setFooterStatus(footerStatusInfo,
+						fmt.Sprintf("Search limited to current page (pg %d) — PgUp to page 1 for full results", pg), 0)
+				}
 				return m, m.searchInput.Focus()
 			}
 			// fall through to root popup input if popup active
@@ -3235,7 +3300,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 		normalized := normalizeRows(rows, len(cols))
 		colorized := colorizeRows(msg.root, normalized, cols)
-		m.table.SetRows(colorized)
+		m.setTableRowsSorted(colorized)
 		// restore pending cursor after page operations for generic loads
 		if m.pendingCursorAfterPage >= 0 {
 			r := m.table.Rows()
@@ -4008,6 +4073,14 @@ func sortTableRows(rows []table.Row, colIndex int, ascending bool) []table.Row {
 	return sorted
 }
 
+// setTableRowsSorted sets the table rows, re-applying active sort if any.
+func (m *model) setTableRowsSorted(rows []table.Row) {
+	if m.sortColumn >= 0 {
+		rows = sortTableRows(rows, m.sortColumn, m.sortAscending)
+	}
+	m.table.SetRows(rows)
+}
+
 // renderSortPopup renders the column sort selection popup.
 func (m *model) renderSortPopup(width, height int) string {
 	cols := m.table.Columns()
@@ -4020,6 +4093,14 @@ func (m *model) renderSortPopup(width, height int) string {
 	}
 
 	var b strings.Builder
+	showClear := m.sortColumn >= 0
+	if showClear {
+		cursor := "  "
+		if m.sortPopupCursor == -1 {
+			cursor = "▸ "
+		}
+		b.WriteString(fmt.Sprintf("%s— clear sort —\n", cursor))
+	}
 	for i, col := range cols {
 		cursor := "  "
 		if i == m.sortPopupCursor {
@@ -4065,12 +4146,12 @@ func (m *model) renderDetailView(width, height int) string {
 	}
 
 	lines := strings.Split(m.detailContent, "\n")
-	m.detailMaxScroll = len(lines) - viewHeight
-	if m.detailMaxScroll < 0 {
-		m.detailMaxScroll = 0
+	maxScroll := len(lines) - viewHeight
+	if maxScroll < 0 {
+		maxScroll = 0
 	}
-	if m.detailScroll > m.detailMaxScroll {
-		m.detailScroll = m.detailMaxScroll
+	if m.detailScroll > maxScroll {
+		m.detailScroll = maxScroll
 	}
 	if m.detailScroll < 0 {
 		m.detailScroll = 0
@@ -4214,7 +4295,12 @@ func (m *model) renderActionsMenu(width, height int) string {
 
 	var b strings.Builder
 	root := m.currentRoot
-	b.WriteString(fmt.Sprintf("Actions: %s\n\n", root))
+	row := m.table.SelectedRow()
+	rowLabel := ""
+	if len(row) > 0 {
+		rowLabel = "\n" + ansi.Strip(stripFocusIndicatorPrefix(row[0]))
+	}
+	b.WriteString(fmt.Sprintf("Actions: %s%s\n\n", root, rowLabel))
 	for i, item := range m.actionsMenuItems {
 		cursor := "  "
 		if i == m.actionsMenuCursor {
