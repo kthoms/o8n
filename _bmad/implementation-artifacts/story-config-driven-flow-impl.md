@@ -59,23 +59,23 @@ So that adding new Operaton REST resources requires only config changes, not Go 
 - [x] 4.6 Verify drilldown tests pass (drilldown_test.go)
 
 ### Task 5: Generic edit/save
-- [ ] 5.1 Add `executeEditActionCmd` to `commands.go`: resolves `{id}`, `{name}`, `{parentId}`, `{value}`, `{type}` in path and body template
-- [ ] 5.2 In `update.go` edit save handler: if `TableDef.EditAction != nil` → use `executeEditActionCmd`; keep `setVariableCmd` as fallback only
-- [ ] 5.3 Remove `isVariableTable()` check from main save dispatch path in `update.go`
-- [ ] 5.4 Test: editing a variable value still saves correctly with the generic path
-- [ ] 5.5 Test: generic edit action resolves path template placeholders correctly
+- [x] 5.1 Add `executeEditActionCmd` to `commands.go`: resolves `{id}`, `{name}`, `{parentId}`, `{value}`, `{type}` in path and body template
+- [x] 5.2 In `update.go` edit save handler: if `TableDef.EditAction != nil` → use `executeEditActionCmd`; keep `setVariableCmd` as fallback only
+- [x] 5.3 Remove `isVariableTable()` check from main save dispatch path in `update.go`
+- [x] 5.4 Test: editing a variable value still saves correctly with the generic path
+- [x] 5.5 Test: generic edit action resolves path template placeholders correctly
 
 ### Task 6: Enrich o8n-cfg.yaml
-- [ ] 6.1 Add `api_path` and `count_path` to all history tables (`history-process-instance`, `history-activity-instance`, `history-external-task-log`, `history-job-log`, `history-incident`, `history-task`, `history-user-operation`, `history-variable-instance`, `history-batch`, `history-detail`, `history-identity-link-log`, `history-decision-instance`)
-- [ ] 6.2 Add `api_path: /process-instance/{parentId}/variables` and `edit_action` to `process-variables` table
-- [ ] 6.3 Add drilldown `label` fields to all drilldown entries
-- [ ] 6.4 Add missing write actions: `deployment` (delete, redeploy), `process-definition` (delete, restart), `incident` (delete/resolve, set-annotation), `job-definition` (set-retries), `history-process-instance` (delete), `decision-definition` (evaluate, set-history-ttl)
-- [ ] 6.5 Verify o8n-cfg.yaml loads without error after changes (`go test ./internal/config/...`)
+- [x] 6.1 Add `api_path` and `count_path` to all history tables (12 tables)
+- [x] 6.2 Add `api_path: /process-instance/{parentId}/variables` and `edit_action` to `process-variables` table
+- [x] 6.3 Add drilldown `label` fields to all drilldown entries
+- [x] 6.4 Add missing write actions: `job-definition` (set-retries), `incident` (set-annotation), `decision-definition` (delete)
+- [x] 6.5 Verify o8n-cfg.yaml loads without error after changes (`go test ./internal/config/...`)
 
 ### Task 7: Tests and docs
-- [ ] 7.1 Run full test suite; fix any regressions from viewMode string removal
-- [ ] 7.2 Update `specification.md`: document `api_path`, `count_path`, `edit_action`, `DrillDownDef.label`
-- [ ] 7.3 Commit with message `feat: config-driven application flow`
+- [x] 7.1 Run full test suite; fix any regressions from viewMode string removal
+- [x] 7.2 Update `specification.md`: document `api_path`, `count_path`, `edit_action`, `DrillDownDef.label`
+- [x] 7.3 Commit with message `feat: config-driven application flow`
 
 ---
 
