@@ -170,9 +170,13 @@ func (m model) fetchInstancesCmd(paramName, paramValue string) tea.Cmd {
 			return errMsg{err}
 		}
 
-		// Try to load count
+		// Try to load count using the process-instance table def's count path.
 		count := -1
-		countURL := base + "/process-instance/count"
+		instanceCountPath := "/process-instance/count"
+		if def := m.findTableDef("process-instance"); def != nil && def.CountPath != "" {
+			instanceCountPath = def.CountPath
+		}
+		countURL := base + "/" + strings.TrimLeft(instanceCountPath, "/")
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel2()
 		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
@@ -277,26 +281,13 @@ func (m model) fetchDataCmd() tea.Cmd {
 }
 
 // fetchForRoot returns a command that fetches data for the given root resource.
-// It maps known root names to their corresponding fetch commands.
+// All resources are fetched via fetchGenericCmd which reads api_path and count_path from config.
 func (m model) fetchForRoot(root string) tea.Cmd {
-	// If we know the common ones, handle them specially
-	switch root {
-	case dao.ResourceProcessDefinitions:
-		return m.fetchDefinitionsCmd()
-	case dao.ResourceProcessInstances:
-		// fetch all instances (no param)
-		return m.fetchInstancesCmd("", "")
-	case dao.ResourceProcessVariables:
-		// no sensible root-level fetch for variables without an instance id
-		return nil
-	default:
-		// If we have a table definition, attempt a generic fetch of the collection
-		if def := m.findTableDef(root); def != nil {
-			return m.fetchGenericCmd(root)
-		}
-		// fallback: try definitions
-		return m.fetchDefinitionsCmd()
+	if def := m.findTableDef(root); def != nil {
+		return m.fetchGenericCmd(root)
 	}
+	// root has no table def — fall back to process-definition list
+	return m.fetchGenericCmd("process-definition")
 }
 
 // fetchGenericCmd performs a GET to the environment server for the provided
@@ -315,12 +306,21 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		m.pageTotals = make(map[string]int)
 	}
 
-	// Resolve the API path: rootContexts pluralizes names (e.g. "task" → "tasks")
-	// but the Operaton REST API uses the singular form. Use the table def name when
-	// available since it mirrors the actual API path segment.
-	apiPath := root
+	// Resolve API path: prefer TableDef.ApiPath, then fall back to /{name}.
+	apiPath := "/" + strings.TrimLeft(root, "/")
+	countPath := ""
 	if def := m.findTableDef(root); def != nil {
-		apiPath = def.Name
+		if def.ApiPath != "" {
+			apiPath = def.ApiPath
+		} else {
+			apiPath = "/" + strings.TrimLeft(def.Name, "/")
+		}
+		if def.CountPath != "" {
+			countPath = def.CountPath
+		}
+	}
+	if countPath == "" {
+		countPath = strings.TrimRight(apiPath, "/") + "/count"
 	}
 
 	// Copy active filter params for thread-safe use inside the goroutine.
@@ -377,9 +377,9 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 			return errMsg{err}
 		}
 
-		// Try to load count
+		// Try to load count using the correct count endpoint for this table.
 		count := -1
-		countURL := base + "/process-instance/count"
+		countURL := base + "/" + strings.TrimLeft(countPath, "/")
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel2()
 		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)
@@ -406,11 +406,6 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 
 		msg := genericLoadedMsg{root: root, items: items}
 		if count >= 0 {
-			// attach count via tableTotals map by returning a special msg
-			// reuse genericLoadedMsg and set global map after sending message
-			// We'll include count as an extra field by wrapping in errMsg on channel is not ideal,
-			// instead set pageTotals directly on model via a closure side-effect is not possible here
-			// So include count by encoding into items as a special item _meta_count
 			if msg.items == nil {
 				msg.items = []map[string]interface{}{}
 			}
@@ -452,6 +447,48 @@ func (m model) setVariableCmd(instanceID, varName string, value interface{}, val
 		return editSavedMsg{rowIndex: rowIndex, colIndex: colIndex, value: displayValue, dataKey: dataKey}
 	}
 }
+
+// executeEditActionCmd saves an edited value using a TableDef.EditAction template.
+// Placeholders in Path and BodyTemplate: {id}, {name}, {parentId}, {value}, {type}.
+func (m model) executeEditActionCmd(act config.EditActionDef, id, name, parentID, value, typeName string, rowIndex, colIndex int, displayValue, dataKey string) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return func() tea.Msg { return errMsg{fmt.Errorf("unknown environment %q", m.currentEnv)} }
+	}
+	replace := func(s string) string {
+		s = strings.ReplaceAll(s, "{id}", id)
+		s = strings.ReplaceAll(s, "{name}", name)
+		s = strings.ReplaceAll(s, "{parentId}", parentID)
+		s = strings.ReplaceAll(s, "{value}", value)
+		s = strings.ReplaceAll(s, "{type}", typeName)
+		return s
+	}
+	url := strings.TrimRight(env.URL, "/") + replace(act.Path)
+	body := replace(act.BodyTemplate)
+	method := act.Method
+	if method == "" {
+		method = "PUT"
+	}
+	return func() tea.Msg {
+		req, err := http.NewRequest(method, url, strings.NewReader(body))
+		if err != nil {
+			return errMsg{err}
+		}
+		req.Header.Set("Content-Type", "application/json")
+		req.SetBasicAuth(env.Username, env.Password)
+		resp, err := (&http.Client{Timeout: 10 * time.Second}).Do(req)
+		if err != nil {
+			return errMsg{err}
+		}
+		defer resp.Body.Close()
+		if resp.StatusCode >= 300 {
+			b, _ := io.ReadAll(resp.Body)
+			return errMsg{fmt.Errorf("edit action %s %s: HTTP %d: %s", method, url, resp.StatusCode, string(b))}
+		}
+		return editSavedMsg{rowIndex: rowIndex, colIndex: colIndex, value: displayValue, dataKey: dataKey}
+	}
+}
+
 
 // helper to create a command that triggers the flash indicator
 func flashOnCmd() tea.Cmd {

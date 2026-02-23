@@ -367,6 +367,35 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.editError = "No selection"
 					return m, nil
 				}
+				// Generic save via EditAction config (preferred)
+				if def := m.findTableDef(m.editTableKey); def != nil && def.EditAction != nil {
+					act := *def.EditAction
+					varName := m.variableNameForRow(m.editTableKey, row)
+					parsedValue, err := parseInputValue(m.editInput.Value(), inputType)
+					if err != nil {
+						m.editError = err.Error()
+						return m, nil
+					}
+					valueStr := fmt.Sprintf("%v", parsedValue)
+					rowIndex := m.editRowIndex
+					colIndex := col.index
+					displayValue := m.editInput.Value()
+					idCol := act.IDColumn
+					if idCol == "" {
+						idCol = "id"
+					}
+					nameCol := act.NameColumn
+					if nameCol == "" {
+						nameCol = "name"
+					}
+					id := m.resolveRowValue(row, idCol)
+					name := m.resolveRowValue(row, nameCol)
+					m.activeModal = ModalNone
+					m.editError = ""
+					m.editInput.Blur()
+					return m, tea.Batch(m.executeEditActionCmd(act, id, name, m.selectedInstanceID, valueStr, typeName, rowIndex, colIndex, displayValue, varName), flashOnCmd())
+				}
+				// Fallback: legacy variable table save
 				if isVariableTable(m.editTableKey) {
 					varName := m.variableNameForRow(m.editTableKey, row)
 					if varName == "" {
@@ -669,15 +698,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					// reset breadcrumb and header
 					m.breadcrumb = []string{rc}
 					m.contentHeader = rc
-					// reset viewMode for new context so fallback drilldown doesn't misfire
-					switch rc {
-					case "process-definitions":
-						m.viewMode = "definitions"
-					case "process-instances":
-						m.viewMode = "instances"
-					default:
-						m.viewMode = rc
-					}
+					m.viewMode = rc
 					// If we have a TableDef for this root, set columns and trigger the appropriate fetch
 					if def := m.findTableDef(rc); def != nil {
 						cols := m.buildColumnsFor(rc, m.paneWidth-4)
@@ -689,10 +710,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.apiCallStarted = time.Now()
 						return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
 					}
-					// fallback to definitions fetch
+					// fallback to process-definition fetch
 					m.isLoading = true
 					m.apiCallStarted = time.Now()
-					return m, tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
+					return m, tea.Batch(m.fetchForRoot("process-definition"), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
 				}
 				// no match: ignore
 				return m, nil
@@ -753,193 +774,62 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					log.Printf("drilldown: column %q not in rowData at cursor %d, used visible cell: %q", colName, cursor, val)
 				}
 
-				// supported runtime targets -> dispatch
-				switch chosen.Target {
-				case "process-instance", "process-instances":
-					// Save current state before performing the drilldown to instances
-					cols2 := m.table.Columns()
-					rowsCopy2 := append([]table.Row{}, m.table.Rows()...)
-					if len(cols2) > 0 {
-						norm2 := normalizeRows(rowsCopy2, len(cols2))
-						rowsCopy2 = norm2
-					}
-					currentState2 := viewState{
-						viewMode:              m.viewMode,
-						breadcrumb:            append([]string{}, m.breadcrumb...),
-						contentHeader:         m.contentHeader,
-						selectedDefinitionKey: m.selectedDefinitionKey,
-						selectedInstanceID:    m.selectedInstanceID,
-						tableRows:             rowsCopy2,
-						tableCursor:           m.table.Cursor(),
-						cachedDefinitions:     m.cachedDefinitions,
-						tableColumns:          append([]table.Column{}, cols2...),
-						rowData:               append([]map[string]interface{}{}, m.rowData...),
-					}
-					m.navigationStack = append(m.navigationStack, currentState2)
-					// definitions -> instances (expects a process key)
-					m.selectedDefinitionKey = val
-					m.viewMode = "instances"
-					m.breadcrumb = []string{m.currentRoot, "process-instances"}
-					m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, val)
-					// reset cursor to row 0
-					m.table.SetCursor(0)
-					return m, tea.Batch(m.fetchInstancesCmd(chosen.Param, val), flashOnCmd(), m.saveStateCmd())
-				case "process-variables", "variables", "variable-instance", "variable-instances":
-					// instances -> variables (expects an instance id)
-					// Save current state before performing the drilldown to variables
-					colsVar := m.table.Columns()
-					rowsCopyVar := append([]table.Row{}, m.table.Rows()...)
-					if len(colsVar) > 0 {
-						normVar := normalizeRows(rowsCopyVar, len(colsVar))
-						rowsCopyVar = normVar
-					}
-					currentStateVar := viewState{
-						viewMode:              m.viewMode,
-						breadcrumb:            append([]string{}, m.breadcrumb...),
-						contentHeader:         m.contentHeader,
-						selectedDefinitionKey: m.selectedDefinitionKey,
-						selectedInstanceID:    m.selectedInstanceID,
-						tableRows:             rowsCopyVar,
-						tableCursor:           m.table.Cursor(),
-						cachedDefinitions:     m.cachedDefinitions,
-						tableColumns:          append([]table.Column{}, colsVar...),
-						rowData:               append([]map[string]interface{}{}, m.rowData...),
-					}
-					m.navigationStack = append(m.navigationStack, currentStateVar)
-
-					m.selectedInstanceID = val
-					m.viewMode = "variables"
-					m.breadcrumb = append(m.breadcrumb, "variables")
-					m.contentHeader = fmt.Sprintf("process-instances(%s)", val)
-					// reset cursor to row 0
-					m.table.SetCursor(0)
-					// immediately set variables columns and clear rows while loading to avoid showing previous rows
-					colsVarView := m.buildColumnsFor(dao.ResourceProcessVariables, m.paneWidth-4)
-					if len(colsVarView) > 0 {
-						// set rows first to match the new column count, then set columns
-						m.table.SetRows(normalizeRows(nil, len(colsVarView)))
-						m.table.SetColumns(colsVarView)
-					} else {
-						m.table.SetRows([]table.Row{})
-					}
-					return m, tea.Batch(m.fetchVariablesCmd(val), flashOnCmd(), m.saveStateCmd())
-
-				default:
-					// Generic drilldown for any configured target
-					// Save current state before performing the drilldown
-					colsGeneric := m.table.Columns()
-					rowsCopyGeneric := append([]table.Row{}, m.table.Rows()...)
-					if len(colsGeneric) > 0 {
-						normGeneric := normalizeRows(rowsCopyGeneric, len(colsGeneric))
-						rowsCopyGeneric = normGeneric
-					}
-					currentStateGeneric := viewState{
-						viewMode:              m.viewMode,
-						breadcrumb:            append([]string{}, m.breadcrumb...),
-						contentHeader:         m.contentHeader,
-						selectedDefinitionKey: m.selectedDefinitionKey,
-						selectedInstanceID:    m.selectedInstanceID,
-						tableRows:             rowsCopyGeneric,
-						tableCursor:           m.table.Cursor(),
-						cachedDefinitions:     m.cachedDefinitions,
-						tableColumns:          append([]table.Column{}, colsGeneric...),
-						genericParams:         m.genericParams, // save current filter params
-						rowData:               append([]map[string]interface{}{}, m.rowData...),
-					}
-					m.navigationStack = append(m.navigationStack, currentStateGeneric)
-
-					// Set up the drilldown: store the filter param and navigate to target table
-					m.currentRoot = chosen.Target
-					m.genericParams = map[string]string{chosen.Param: val}
-					m.breadcrumb = append(m.breadcrumb, chosen.Target)
-					m.contentHeader = fmt.Sprintf("%s(%s=%s)", chosen.Target, chosen.Param, val)
-					// reset cursor to row 0
-					m.table.SetCursor(0)
-					// Build columns for target table and clear rows while loading
-					colsTarget := m.buildColumnsFor(chosen.Target, m.paneWidth-4)
-					if len(colsTarget) > 0 {
-						m.table.SetRows(normalizeRows(nil, len(colsTarget)))
-						m.table.SetColumns(colsTarget)
-					} else {
-						m.table.SetRows([]table.Row{})
-					}
-					return m, tea.Batch(m.fetchGenericCmd(chosen.Target), flashOnCmd(), m.saveStateCmd())
+				// supported runtime targets -> generic drilldown for all configured targets
+			{
+				// Save current state before drilldown
+				colsDrill := m.table.Columns()
+				rowsCopyDrill := append([]table.Row{}, m.table.Rows()...)
+				if len(colsDrill) > 0 {
+					rowsCopyDrill = normalizeRows(rowsCopyDrill, len(colsDrill))
 				}
+				currentStateDrill := viewState{
+					viewMode:              m.viewMode,
+					breadcrumb:            append([]string{}, m.breadcrumb...),
+					contentHeader:         m.contentHeader,
+					selectedDefinitionKey: m.selectedDefinitionKey,
+					selectedInstanceID:    m.selectedInstanceID,
+					tableRows:             rowsCopyDrill,
+					tableCursor:           m.table.Cursor(),
+					cachedDefinitions:     m.cachedDefinitions,
+					tableColumns:          append([]table.Column{}, colsDrill...),
+					genericParams:         m.genericParams,
+					rowData:               append([]map[string]interface{}{}, m.rowData...),
+				}
+				m.navigationStack = append(m.navigationStack, currentStateDrill)
+
+			// Persist values used by edit/save (variable editing needs selectedInstanceID)
+			switch chosen.Target {
+			case "process-instance":
+				m.selectedDefinitionKey = val
+			case "process-variables":
+				m.selectedInstanceID = val
 			}
 
-			// fallback: preserve previous hard-coded drill behaviour
-			if m.viewMode == "definitions" {
-				// Save current state before fallback drilldown
-				cols3 := m.table.Columns()
-				rowsCopy3 := append([]table.Row{}, m.table.Rows()...)
-				if len(cols3) > 0 {
-					norm3 := normalizeRows(rowsCopy3, len(cols3))
-					rowsCopy3 = norm3
+				// breadcrumb label: use configured label or target name
+				label := chosen.Label
+				if label == "" {
+					label = chosen.Target
 				}
-				currentState3 := viewState{
-					viewMode:              m.viewMode,
-					breadcrumb:            append([]string{}, m.breadcrumb...),
-					contentHeader:         m.contentHeader,
-					selectedDefinitionKey: m.selectedDefinitionKey,
-					selectedInstanceID:    m.selectedInstanceID,
-					tableRows:             rowsCopy3,
-					tableCursor:           m.table.Cursor(),
-					cachedDefinitions:     m.cachedDefinitions,
-					tableColumns:          append([]table.Column{}, cols3...),
-					rowData:               append([]map[string]interface{}{}, m.rowData...),
-				}
-				m.navigationStack = append(m.navigationStack, currentState3)
 
-				key := stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
-				m.selectedDefinitionKey = key
-				m.viewMode = "instances"
-				m.breadcrumb = []string{m.currentRoot, "process-instances"}
-				m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, key)
-				// reset cursor to row 0
+				m.currentRoot = chosen.Target
+				m.viewMode = chosen.Target
+				m.genericParams = map[string]string{chosen.Param: val}
+				m.breadcrumb = append(m.breadcrumb, label)
+				m.contentHeader = fmt.Sprintf("%s(%s=%s)", chosen.Target, chosen.Param, val)
 				m.table.SetCursor(0)
-				return m, tea.Batch(m.fetchInstancesCmd("processDefinitionKey", key), flashOnCmd(), m.saveStateCmd())
-			} else if m.viewMode == "instances" {
-				// Fallback instances -> variables: save state then drill
-				cols4 := m.table.Columns()
-				rowsCopy4 := append([]table.Row{}, m.table.Rows()...)
-				if len(cols4) > 0 {
-					norm4 := normalizeRows(rowsCopy4, len(cols4))
-					rowsCopy4 = norm4
-				}
-				currentState4 := viewState{
-					viewMode:              m.viewMode,
-					breadcrumb:            append([]string{}, m.breadcrumb...),
-					contentHeader:         m.contentHeader,
-					selectedDefinitionKey: m.selectedDefinitionKey,
-					selectedInstanceID:    m.selectedInstanceID,
-					tableRows:             rowsCopy4,
-					tableCursor:           m.table.Cursor(),
-					cachedDefinitions:     m.cachedDefinitions,
-					tableColumns:          append([]table.Column{}, cols4...),
-					rowData:               append([]map[string]interface{}{}, m.rowData...),
-				}
-				m.navigationStack = append(m.navigationStack, currentState4)
 
-				id := stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
-				m.selectedInstanceID = id
-				m.viewMode = "variables"
-				m.breadcrumb = append(m.breadcrumb, "variables")
-				m.contentHeader = fmt.Sprintf("process-instances(%s)", id)
-				// reset cursor to row 0
-				m.table.SetCursor(0)
-				// immediately set variables columns and clear rows while loading to avoid showing previous rows
-				colsVarView2 := m.buildColumnsFor(dao.ResourceProcessVariables, m.paneWidth-4)
-				if len(colsVarView2) > 0 {
-					// set rows first to match the new column count, then set columns
-					m.table.SetRows(normalizeRows(nil, len(colsVarView2)))
-					m.table.SetColumns(colsVarView2)
+				// Pre-set columns for target table to avoid stale columns during load
+				colsTarget := m.buildColumnsFor(chosen.Target, m.paneWidth-4)
+				if len(colsTarget) > 0 {
+					m.table.SetRows(normalizeRows(nil, len(colsTarget)))
+					m.table.SetColumns(colsTarget)
 				} else {
 					m.table.SetRows([]table.Row{})
 				}
-				return m, tea.Batch(m.fetchVariablesCmd(id), flashOnCmd(), m.saveStateCmd())
+				return m, tea.Batch(m.fetchGenericCmd(chosen.Target), flashOnCmd(), m.saveStateCmd())
+			}
 			}
 
-			return m, nil
 		case "tab":
 			if m.showRootPopup {
 				// compute matching contexts
@@ -1099,7 +989,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "ctrl+d":
 			// Half-page down OR delete (existing behavior)
-			if m.viewMode == "instances" {
+			if m.viewMode == "process-instance" {
 				row := m.table.SelectedRow()
 				if len(row) > 0 {
 					m.pendingDeleteID = stripFocusIndicatorPrefix(fmt.Sprintf("%v", row[0]))
@@ -1358,6 +1248,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if m.sortColumn >= 0 {
 			m.applySortIndicatorToColumns()
 		}
+		// Track which resource is currently displayed.
+		m.viewMode = msg.root
 		// re-apply locked search filter if active
 		if !m.searchMode && m.searchTerm != "" {
 			filtered := filterRows(m.table.Rows(), m.searchTerm)

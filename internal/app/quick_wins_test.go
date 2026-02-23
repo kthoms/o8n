@@ -69,7 +69,7 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 	m := newTestModel(t)
 
 	// Test definitions view hints
-	m.viewMode = "definitions"
+	m.viewMode = "process-definition"
 	hints := m.getKeyHints(100)
 	hasExpectedHint := false
 	for _, h := range hints {
@@ -83,7 +83,7 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 	}
 
 	// Test instances view hints
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	hints = m.getKeyHints(100)
 	hasExpectedHint = false
 	for _, h := range hints {
@@ -97,7 +97,7 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 	}
 
 	// Test variables view hints
-	m.viewMode = "variables"
+	m.viewMode = "process-variables"
 	hints = m.getKeyHints(100)
 	// Variables view should always have 'nav' hint
 	hasNavHint := false
@@ -115,7 +115,7 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 // TestWin2_KeyHintsRespectTerminalWidth tests width-dependent hints
 func TestWin2_KeyHintsRespectTerminalWidth(t *testing.T) {
 	m := newTestModel(t)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 
 	// At small width, delete hint should not appear
 	hints := m.getKeyHints(80)
@@ -242,7 +242,7 @@ func TestAllQuickWinsIntegration(t *testing.T) {
 	m.currentRoot = "process-instances"
 	m.pageTotals["process-instances"] = 24
 	m.pageOffsets["process-instances"] = 0
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.lastAPILatency = 45 * time.Millisecond
 	m.flashActive = true
 	m.table.SetRows([]table.Row{{"test"}})

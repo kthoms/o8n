@@ -165,7 +165,7 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 		filtered := filterRows(m.table.Rows(), m.searchTerm)
 		m.table.SetRows(filtered)
 	}
-	m.viewMode = "definitions"
+	m.viewMode = "process-definition"
 }
 
 func (m *model) applyInstances(instances []config.ProcessInstance) {
@@ -203,7 +203,7 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 	normRows := normalizeRows(rows, colsCount)
 	m.table.SetColumns(cols)
 	m.setTableRowsSorted(normRows)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	if m.sortColumn >= 0 {
 		m.applySortIndicatorToColumns()
 	}
@@ -268,7 +268,7 @@ func (m *model) applyVariables(vars []config.Variable) {
 		filtered := filterRows(m.table.Rows(), m.searchTerm)
 		m.table.SetRows(filtered)
 	}
-	m.viewMode = "variables"
+	m.viewMode = "process-variables"
 }
 
 // Backwards-compatible wrapper used by tests: applies both definitions and instances

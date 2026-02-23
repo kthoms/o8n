@@ -401,7 +401,7 @@ func newModel(cfg *config.Config) model {
 		currentEnv:             current,
 		list:                   l,
 		table:                  t,
-		viewMode:               "definitions",
+		viewMode:               "process-definition",
 		splashActive:           true,
 		splashFrame:            1,
 		activeModal:            ModalNone,
@@ -614,8 +614,6 @@ func (m *model) applyStyle() {
 	}
 }
 func (m model) Init() tea.Cmd {
-	// fetch definitions at start and flash, and start splash animation (150ms per frame, total 1.5s)
-	// we start with frame 1 already set; schedule frame 2 after 150ms
 	firstTick := tea.Tick(100*time.Millisecond, func(time.Time) tea.Msg { return splashFrameMsg{frame: 2} })
 
 	// Determine the initial fetch based on restored navigation state.
@@ -623,28 +621,13 @@ func (m model) Init() tea.Cmd {
 	if m.currentRoot != "" && len(m.breadcrumb) > 0 {
 		// Restore last viewed resource — re-fetch fresh data for it.
 		last := m.breadcrumb[len(m.breadcrumb)-1]
-		switch last {
-		case "process-instances":
-			if m.selectedDefinitionKey != "" {
-				initialFetch = m.fetchInstancesCmd("processDefinitionKey", m.selectedDefinitionKey)
-			} else {
-				initialFetch = m.fetchGenericCmd("process-instance")
-			}
-		case "variables":
-			if m.selectedInstanceID != "" {
-				initialFetch = m.fetchVariablesCmd(m.selectedInstanceID)
-			} else {
-				initialFetch = m.fetchDefinitionsCmd()
-			}
-		default:
-			fetchCmd := m.fetchForRoot(last)
-			if fetchCmd == nil {
-				fetchCmd = m.fetchDefinitionsCmd()
-			}
-			initialFetch = fetchCmd
+		// Use genericParams already set by restoreNavState to carry drilldown filters.
+		initialFetch = m.fetchForRoot(last)
+		if initialFetch == nil {
+			initialFetch = m.fetchForRoot(m.currentRoot)
 		}
 	} else {
-		initialFetch = m.fetchDefinitionsCmd()
+		initialFetch = m.fetchForRoot("process-definition")
 	}
 
 	// Check health of all environments

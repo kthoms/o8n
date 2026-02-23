@@ -155,11 +155,10 @@ const (
 ## Data model (Go structs used by the API client)
 - Environment { URL, Username, Password, UIColor }
 - ColumnDef { Name, Visible bool, Width string, Align string, Editable bool }
-- TableDef { Name string, DisplayName string, Columns []ColumnDef, Actions []ActionDef }
-- ActionDef { Name string, Command string, Confirmation bool }
-  - Name: display name for the action shown in key bindings header
-  - Command: key binding string to trigger the action (e.g., "ctrl+d")
-  - Confirmation: when true, execution requires a confirmation modal before executing
+- TableDef { Name, ApiPath, CountPath, Columns []ColumnDef, Drilldown []DrillDownDef, Actions []ActionDef, EditAction *EditActionDef }
+- DrillDownDef { Target, Param, Column, Label string }
+- EditActionDef { Method, Path, BodyTemplate, IDColumn, NameColumn string }
+- ActionDef { Key, Label, Method, Path, Body, IDColumn string; Confirm bool }
 - EnvConfig { Environments map[string]Environment, Active string }
 - AppConfig { Tables []TableDef }
 - Data models for application elements (e.g. Process Definition, are defined by the REST API specification
@@ -199,16 +198,32 @@ Auto-generated runtime state file. Git-ignored. Updated on every navigation tran
   - generic_params: map[string]string — additional query parameters for generic contexts
 
 ### AppConfig (o8n-cfg.yaml)
-- tables: array of TableDef (name, columns, actions)
-  - Each table definition corresponds to a resource collection endpoint, e.g.
-    `process-definition` -> `GET /process-definition`
-  - actions: array of ActionDef
-    - name: Action name displayed in the Key bindings in the header section
-    - command: Key binding to trigger the command
-    - confirmation: When true, then execution requires confirmation
+- tables: array of TableDef (name, api_path, count_path, columns, drilldown, actions, edit_action)
+  - **name**: Table identifier (also used as default REST path: `/{name}`)
+  - **api_path** *(optional)*: Explicit REST collection path. Required when the REST path differs from `/{name}` (e.g., history tables use `/history/process-instance`). Supports `{parentId}` placeholder for nested resources (e.g., `/process-instance/{parentId}/variables`).
+  - **count_path** *(optional)*: Count endpoint override. Defaults to `{api_path}/count`. Set to `""` for resources without a count endpoint.
+  - **drilldown**: Array of DrillDownDef — config-driven navigation from one table to another
+    - **target**: name of the child table to navigate to
+    - **param**: query parameter to pass to the child fetch (e.g., `processDefinitionId`)
+    - **column**: source column name whose value is used as the param value
+    - **label** *(optional)*: Display string shown in the breadcrumb. Defaults to target name.
+  - **actions**: Array of ActionDef
+    - **key**: Key binding (e.g., `s`, `ctrl+d`)
+    - **label**: Action name displayed in the Key bindings header
+    - **method**: HTTP method (PUT, POST, DELETE)
+    - **path**: URL path template with `{id}` placeholder
+    - **body** *(optional)*: JSON body to send
+    - **confirm** *(optional)*: When true, requires double-press confirmation
+    - **id_column** *(optional)*: Column to read `{id}` from (defaults to `id`)
+  - **edit_action** *(optional)*: EditActionDef — generic save configuration for editable columns
+    - **method**: HTTP method (defaults to PUT)
+    - **path**: URL path template. Supports `{id}`, `{name}`, `{parentId}`, `{value}`, `{type}` placeholders
+    - **body_template**: JSON body template with same placeholders
+    - **id_column** *(optional)*: Column mapped to `{id}` (defaults to `id`)
+    - **name_column** *(optional)*: Column mapped to `{name}` (defaults to `name`); `{parentId}` resolves from `m.selectedInstanceID`
 
-- ColumnDef: { name, visible, width (percent string like "25%"), align, editable }
-- For compatibility the application exposes LoadConfig(path) to load legacy single-file config.yaml used by tests; also provides LoadEnvConfig and LoadAppConfig and Save helpers. SaveConfig writes back to o8n-env.yaml and o8n-cfg.yaml (best-effort).
+- ColumnDef: { name, visible, width (percent string like "25%"), align, editable, input_type, type, hide_order }
+- For compatibility the application exposes LoadConfig(path) to load legacy single-file config.yaml used by tests; also provides LoadEnvConfig and LoadAppConfig and Save helpers.
 
 ## Pagination
 

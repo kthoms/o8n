@@ -53,7 +53,7 @@ func TestCursorPreservedAcrossPages(t *testing.T) {
 
 	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: server.URL}}}
 	m := newModel(cfg)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.breadcrumb = []string{m.currentRoot, dao.ResourceProcessInstances}
 
 	// deterministic page size
@@ -137,7 +137,7 @@ func TestCursorClampedAtEndPage(t *testing.T) {
 
 	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: server.URL}}}
 	m := newModel(cfg)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.breadcrumb = []string{m.currentRoot, dao.ResourceProcessInstances}
 
 	// page size 4, total 7 -> pages: [1-4], [5-7]

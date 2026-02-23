@@ -22,7 +22,7 @@ func (m *model) getKeyHints(width int) []KeyHint {
 	)
 
 	// Context-specific hints based on viewMode
-	if m.viewMode == "definitions" {
+	if m.viewMode == "process-definition" {
 		hints = append(hints,
 			KeyHint{"↑↓", "nav", 3},
 			KeyHint{"Enter", "drill", 4},
@@ -31,7 +31,7 @@ func (m *model) getKeyHints(width int) []KeyHint {
 		if width >= 85 {
 			hints = append(hints, KeyHint{"e", "Edit def", 4})
 		}
-	} else if m.viewMode == "instances" {
+	} else if m.viewMode == "process-instance" {
 		hints = append(hints,
 			KeyHint{"Esc", "back", 5},
 			KeyHint{"↑↓", "nav", 3},
@@ -41,7 +41,7 @@ func (m *model) getKeyHints(width int) []KeyHint {
 		if width >= 100 {
 			hints = append(hints, KeyHint{"Ctrl+d", "terminate", 7})
 		}
-	} else if m.viewMode == "variables" {
+	} else if m.viewMode == "process-variables" {
 		hints = append(hints,
 			KeyHint{"Esc", "back", 5},
 			KeyHint{"↑↓", "nav", 3},

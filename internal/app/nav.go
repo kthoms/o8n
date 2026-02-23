@@ -10,7 +10,6 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/x/ansi"
 	"github.com/kthoms/o8n/internal/config"
-	"github.com/kthoms/o8n/internal/dao"
 )
 
 // resolveActionID extracts the ID value from the selected row for a given action.
@@ -35,6 +34,28 @@ func (m *model) resolveActionID(action config.ActionDef) string {
 		return stripFocusIndicatorPrefix(row[0])
 	}
 	return ""
+}
+
+// resolveRowValue returns the value in a row for the given column name.
+// Falls back to the first column value if the column is not found.
+func (m *model) resolveRowValue(row []string, colName string) string {
+	if len(row) == 0 {
+		return ""
+	}
+	cols := m.table.Columns()
+	for i, col := range cols {
+		if col.Title == colName && i < len(row) {
+			return stripFocusIndicatorPrefix(row[i])
+		}
+	}
+	// check rowData for hidden columns
+	cursor := m.table.Cursor()
+	if cursor >= 0 && cursor < len(m.rowData) {
+		if v, ok := m.rowData[cursor][colName]; ok {
+			return fmt.Sprintf("%v", v)
+		}
+	}
+	return stripFocusIndicatorPrefix(row[0])
 }
 
 func (m *model) buildActionsForRoot() []actionItem {
@@ -217,9 +238,6 @@ func (m *model) visibleColumnIndex(def *config.TableDef, column string) int {
 func (m *model) currentTableKey() string {
 	if len(m.breadcrumb) > 0 {
 		last := m.breadcrumb[len(m.breadcrumb)-1]
-		if last == "variables" {
-			return dao.ResourceProcessVariables
-		}
 		return last
 	}
 	return m.currentRoot
@@ -283,38 +301,16 @@ func (m *model) navigateToBreadcrumb(idx int) tea.Cmd {
 	// truncate breadcrumb
 	m.breadcrumb = append([]string{}, m.breadcrumb[:idx+1]...)
 	last := m.breadcrumb[len(m.breadcrumb)-1]
-	switch last {
-	case "process-definitions":
-		m.viewMode = "definitions"
-		m.contentHeader = last
+	m.currentRoot = last
+	m.viewMode = last
+	m.contentHeader = last
+	// Clear drilldown-specific state when navigating up
+	if idx == 0 {
 		m.selectedDefinitionKey = ""
 		m.selectedInstanceID = ""
-		return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
-	case "process-instances":
-		if m.selectedDefinitionKey == "" {
-			m.footerError = "No definition selected to show instances"
-			return nil
-		}
-		m.viewMode = "instances"
-		m.contentHeader = fmt.Sprintf("%s(%s)", m.currentRoot, m.selectedDefinitionKey)
-		return tea.Batch(m.fetchInstancesCmd("processDefinitionKey", m.selectedDefinitionKey), flashOnCmd())
-	case "variables":
-		if m.selectedInstanceID == "" {
-			m.footerError = "No instance selected to show variables"
-			return nil
-		}
-		m.viewMode = "variables"
-		m.contentHeader = fmt.Sprintf("process-instances(%s)", m.selectedInstanceID)
-		return tea.Batch(m.fetchVariablesCmd(m.selectedInstanceID), flashOnCmd())
-	default:
-		// treat as root context switch
-		m.currentRoot = last
-		m.viewMode = "definitions"
-		m.contentHeader = last
-		m.selectedDefinitionKey = ""
-		m.selectedInstanceID = ""
-		return tea.Batch(m.fetchDefinitionsCmd(), flashOnCmd())
+		m.genericParams = nil
 	}
+	return tea.Batch(m.fetchForRoot(last), flashOnCmd())
 }
 
 // currentNavState returns the current navigation position as a serialisable NavState.
@@ -349,8 +345,6 @@ func (m *model) saveStateCmd() tea.Cmd {
 }
 
 // restoreNavState applies a persisted NavState so the app opens at the last view.
-// It sets fields that the initial fetch command will honour. If root is empty the
-// default startup behaviour (process-definitions) applies.
 func (m *model) restoreNavState(nav config.NavState) {
 	if nav.Root == "" {
 		return
@@ -362,16 +356,5 @@ func (m *model) restoreNavState(nav config.NavState) {
 	if nav.GenericParams != nil {
 		m.genericParams = nav.GenericParams
 	}
-	// Infer viewMode from the deepest breadcrumb entry.
-	if len(m.breadcrumb) > 0 {
-		last := m.breadcrumb[len(m.breadcrumb)-1]
-		switch last {
-		case "process-instances":
-			m.viewMode = "instances"
-		case "variables":
-			m.viewMode = "variables"
-		default:
-			m.viewMode = "definitions"
-		}
-	}
+	// viewMode is set by the first genericLoadedMsg received after Init.
 }

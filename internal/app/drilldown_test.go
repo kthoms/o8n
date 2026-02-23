@@ -11,7 +11,7 @@ import (
 // TestDrilldownFromDefinitionsToInstances verifies drilldown works from definitions to instances
 func TestDrilldownFromDefinitionsToInstances(t *testing.T) {
 	m := newTestModel(t)
-	m.viewMode = "definitions"
+	m.viewMode = "process-definition"
 
 	// Simulate having some definitions loaded
 	mockDefs := []config.ProcessDefinition{
@@ -41,7 +41,7 @@ func TestDrilldownFromDefinitionsToInstances(t *testing.T) {
 	m.table.SetCursor(0)
 
 	// Verify initial state
-	if m.viewMode != "definitions" {
+	if m.viewMode != "process-definition" {
 		t.Errorf("expected viewMode 'definitions', got '%s'", m.viewMode)
 	}
 
@@ -253,7 +253,7 @@ Drilldown: []config.DrillDownDef{
 }
 m := newModel(cfg)
 m.splashActive = false
-m.viewMode = "definitions"
+m.viewMode = "process-definition"
 m.currentRoot = "process-definition"
 
 // Populate rowData with the full API row (including hidden "id")

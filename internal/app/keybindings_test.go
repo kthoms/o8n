@@ -116,7 +116,7 @@ func TestHelpModalOpenAndDismiss(t *testing.T) {
 // TestCtrlDOpensConfirmModal verifies first ctrl+d opens the confirmation modal.
 func TestCtrlDOpensConfirmModal(t *testing.T) {
 	m := newTestModel(t)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.selectedInstanceID = "i1"
 	m.table.SetRows([]table.Row{{"i1", "k1", "bk1", "2020-01-01"}})
 
@@ -133,7 +133,7 @@ func TestCtrlDOpensConfirmModal(t *testing.T) {
 // TestCtrlDCancelClearsModal verifies a non-confirm key cancels the delete modal.
 func TestCtrlDCancelClearsModal(t *testing.T) {
 	m := newTestModel(t)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.selectedInstanceID = "i1"
 	m.table.SetRows([]table.Row{{"i1", "k1", "bk1", "2020-01-01"}})
 
@@ -156,7 +156,7 @@ func TestCtrlDCancelClearsModal(t *testing.T) {
 // TestCtrlDConfirmExecutesTerminate verifies second ctrl+d confirms and issues a command.
 func TestCtrlDConfirmExecutesTerminate(t *testing.T) {
 	m := newTestModel(t)
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.selectedInstanceID = "i1"
 	m.table.SetRows([]table.Row{{"i1", "k1", "bk1", "2020-01-01"}})
 
@@ -296,8 +296,8 @@ func TestEditModalEscCancels(t *testing.T) {
 func TestBreadcrumbNumericNavigation(t *testing.T) {
 	m := newTestModel(t)
 	// simulate having drilled down: breadcrumb has 2 entries
-	m.breadcrumb = []string{"process-definitions", "process-instances"}
-	m.viewMode = "instances"
+	m.breadcrumb = []string{"process-definition", "process-instance"}
+	m.viewMode = "process-instance"
 	m.showRootPopup = false
 
 	// pressing "1" should navigate to breadcrumb index 0 (process-definitions)
@@ -305,7 +305,7 @@ func TestBreadcrumbNumericNavigation(t *testing.T) {
 	m2 := res
 
 	// After navigating to level 0, viewMode should return to definitions
-	if m2.viewMode != "definitions" {
+	if m2.viewMode != "process-definition" {
 		t.Errorf("expected definitions view after pressing '1', got %q", m2.viewMode)
 	}
 }

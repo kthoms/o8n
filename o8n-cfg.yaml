@@ -18,6 +18,7 @@ tables:
           align: left
       drilldown:
         - target: history-external-task-log
+          label: History
           param: externalTaskId
           column: id
       actions:
@@ -75,6 +76,7 @@ tables:
           visible: false
       drilldown:
         - target: history-job-log
+          label: History
           param: jobId
           column: id
       actions:
@@ -134,6 +136,7 @@ tables:
           visible: false
       drilldown:
         - target: job
+          label: Jobs
           param: jobDefinitionId
           column: id
       actions:
@@ -147,6 +150,11 @@ tables:
           method: PUT
           path: /job-definition/{id}/suspended
           body: '{"suspended":false}'
+        - key: r
+          label: Set Retries
+          method: PUT
+          path: /job-definition/{id}/retries
+          body: '{"retries":3}'
     - name: process-definition
       columns:
         - name: key
@@ -166,9 +174,11 @@ tables:
         - target: process-instance
           param: processDefinitionId
           column: id
+          label: Instances
         - target: history-process-instance
           param: processDefinitionId
           column: id
+          label: History
       actions:
         - key: s
           label: Suspend Definition
@@ -209,15 +219,19 @@ tables:
         - target: process-variables
           param: processInstanceId
           column: id
+          label: Variables
         - target: task
           param: processInstanceId
           column: id
+          label: Tasks
         - target: incident
           param: processInstanceId
           column: id
+          label: Incidents
         - target: variable-instance
           param: processInstanceId
           column: id
+          label: Var Instances
       actions:
         - key: s
           label: Suspend Instance
@@ -235,6 +249,13 @@ tables:
           path: /process-instance/{id}
           confirm: true
     - name: process-variables
+      api_path: /process-instance/{parentId}/variables
+      count_path: ""
+      edit_action:
+        method: PUT
+        path: /process-instance/{parentId}/variables/{name}
+        body_template: '{"value": {value}, "type": "{type}"}'
+        name_column: name
       columns:
         - name: name
           align: left
@@ -256,9 +277,11 @@ tables:
           align: left
       drilldown:
         - target: variable-instance
+          label: Var Instances
           param: taskIdIn
           column: id
         - target: history-detail
+          label: Detail
           param: taskId
           column: id
       actions:
@@ -321,6 +344,7 @@ tables:
           align: left
       drilldown:
         - target: history-batch
+          label: History
           param: batchId
           column: id
       actions:
@@ -365,8 +389,16 @@ tables:
           align: left
       drilldown:
         - target: history-decision-instance
+          label: History
           param: decisionDefinitionKey
           column: key
+      actions:
+        - key: ctrl+d
+          label: Delete Definition
+          method: DELETE
+          path: /decision-definition/key/{id}
+          id_column: key
+          confirm: true
     - name: decision-requirements-definition
       columns:
         - name: key
@@ -393,9 +425,11 @@ tables:
           align: left
       drilldown:
         - target: process-definition
+          label: Definitions
           param: deploymentId
           column: id
         - target: decision-definition
+          label: Decisions
           param: deploymentId
           column: id
       actions:
@@ -463,6 +497,7 @@ tables:
           align: left
       drilldown:
         - target: history-identity-link-log
+          label: Identity Links
           param: groupId
           column: id
       actions:
@@ -472,6 +507,8 @@ tables:
           path: /group/{id}
           confirm: true
     - name: history-activity-instance
+      api_path: /history/activity-instance
+      count_path: /history/activity-instance/count
       columns:
         - name: id
           type: id
@@ -486,6 +523,8 @@ tables:
           type: id
           align: left
     - name: history-batch-cleanable-batch-report
+      api_path: /history/batch/cleanable-batch-report
+      count_path: /history/batch/cleanable-batch-report/count
       columns:
         - name: batchType
           align: left
@@ -499,6 +538,8 @@ tables:
           type: int
           align: center
     - name: history-batch
+      api_path: /history/batch
+      count_path: /history/batch/count
       columns:
         - name: id
           type: id
@@ -518,6 +559,8 @@ tables:
           path: /history/batch/{id}
           confirm: true
     - name: history-decision-definition-cleanable-decision-instance-report
+      api_path: /history/decision-definition/cleanable-decision-instance-report
+      count_path: /history/decision-definition/cleanable-decision-instance-report/count
       columns:
         - name: decisionDefinitionKey
           align: left
@@ -530,6 +573,8 @@ tables:
           type: int
           align: center
     - name: history-decision-instance
+      api_path: /history/decision-instance
+      count_path: /history/decision-instance/count
       columns:
         - name: id
           type: id
@@ -543,6 +588,8 @@ tables:
           type: id
           align: left
     - name: history-detail
+      api_path: /history/detail
+      count_path: /history/detail/count
       columns:
         - name: id
           type: id
@@ -556,6 +603,8 @@ tables:
           type: datetime
           align: left
     - name: history-external-task-log
+      api_path: /history/external-task-log
+      count_path: /history/external-task-log/count
       columns:
         - name: id
           type: id
@@ -569,6 +618,8 @@ tables:
           type: datetime
           align: left
     - name: history-identity-link-log
+      api_path: /history/identity-link-log
+      count_path: /history/identity-link-log/count
       columns:
         - name: time
           type: datetime
@@ -582,6 +633,8 @@ tables:
           type: id
           align: left
     - name: history-incident
+      api_path: /history/incident
+      count_path: /history/incident/count
       columns:
         - name: id
           type: id
@@ -597,6 +650,8 @@ tables:
         - name: incidentMessage
           align: left
     - name: history-job-log
+      api_path: /history/job-log
+      count_path: /history/job-log/count
       columns:
         - name: id
           type: id
@@ -610,6 +665,8 @@ tables:
         - name: jobExceptionMessage
           align: left
     - name: history-process-definition-cleanable-process-instance-report
+      api_path: /history/process-definition/cleanable-process-instance-report
+      count_path: /history/process-definition/cleanable-process-instance-report/count
       columns:
         - name: processDefinitionKey
           align: left
@@ -622,6 +679,8 @@ tables:
           type: int
           align: center
     - name: history-process-instance
+      api_path: /history/process-instance
+      count_path: /history/process-instance/count
       columns:
         - name: id
           type: id
@@ -644,6 +703,8 @@ tables:
           path: /history/process-instance/{id}
           confirm: true
     - name: history-task
+      api_path: /history/task
+      count_path: /history/task/count
       columns:
         - name: id
           type: id
@@ -656,6 +717,8 @@ tables:
           type: datetime
           align: left
     - name: history-user-operation
+      api_path: /history/user-operation
+      count_path: /history/user-operation/count
       columns:
         - name: timestamp
           type: datetime
@@ -668,6 +731,8 @@ tables:
         - name: entityType
           align: left
     - name: history-variable-instance
+      api_path: /history/variable-instance
+      count_path: /history/variable-instance/count
       columns:
         - name: name
           align: left
@@ -702,6 +767,11 @@ tables:
           method: DELETE
           path: /incident/{id}
           confirm: true
+        - key: a
+          label: Set Annotation
+          method: PUT
+          path: /incident/{id}/annotation
+          body: '{"annotation":"manual"}'
     - name: tenant
       columns:
         - name: id
@@ -711,12 +781,14 @@ tables:
           align: left
       drilldown:
         - target: process-definition
+          label: Definitions
           param: tenantIdIn
           column: id
         - target: process-instance
           param: tenantIdIn
           column: id
         - target: deployment
+          label: Deployment
           param: tenantIdIn
           column: id
       actions:
@@ -738,6 +810,7 @@ tables:
           align: left
       drilldown:
         - target: history-user-operation
+          label: Operations
           param: userId
           column: id
       actions:

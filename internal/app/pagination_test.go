@@ -56,7 +56,7 @@ func TestPaginationPageDownUp(t *testing.T) {
 	cfg := &config.Config{Environments: map[string]config.Environment{"local": {URL: server.URL}}}
 	m := newModel(cfg)
 	// set view into instances and breadcrumb so page handlers use correct root
-	m.viewMode = "instances"
+	m.viewMode = "process-instance"
 	m.breadcrumb = []string{m.currentRoot, dao.ResourceProcessInstances}
 
 	// ensure page size is small and offsets start at 0

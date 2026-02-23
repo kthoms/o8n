@@ -174,7 +174,7 @@ func TestConfigDrivenDrilldownFromDefinitionToInstances(t *testing.T) {
 	m.applyDefinitions([]config.ProcessDefinition{{ID: "d1", Key: "k1", Name: "One", Version: 1, Resource: "res"}})
 
 	// ensure we are in definitions view
-	if m.viewMode != "definitions" {
+	if m.viewMode != "process-definition" {
 		t.Fatalf("expected viewMode definitions, got %s", m.viewMode)
 	}
 
@@ -184,7 +184,7 @@ func TestConfigDrivenDrilldownFromDefinitionToInstances(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected model from Update")
 	}
-	if m2.viewMode != "instances" {
+	if m2.viewMode != "process-instance" {
 		t.Fatalf("expected viewMode instances after drill, got %s", m2.viewMode)
 	}
 	// simulate the fetch that would be scheduled by the program (fetchInstancesCmd)
@@ -232,8 +232,8 @@ func TestConfigDrivenDrilldownFromInstancesToVariables(t *testing.T) {
 	m := newModel(cfg)
 	// populate instances table and set view to instances
 	m.applyInstances([]config.ProcessInstance{{ID: "i1", DefinitionID: "d1", BusinessKey: "bk1", StartTime: "2020-01-01T00:00:00Z"}})
-	m.viewMode = "instances"
-	m.breadcrumb = []string{m.currentRoot, "process-instances"}
+	m.viewMode = "process-instance"
+	m.breadcrumb = []string{m.currentRoot, "process-instance"}
 
 	// press Enter to drill into variables (config-driven)
 	res, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
@@ -241,7 +241,7 @@ func TestConfigDrivenDrilldownFromInstancesToVariables(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected model from Update")
 	}
-	if m2.viewMode != "variables" {
+	if m2.viewMode != "process-variables" {
 		t.Fatalf("expected viewMode variables after drill, got %s", m2.viewMode)
 	}
 	// simulate the fetch that would be scheduled by the program (fetchVariablesCmd)
@@ -313,7 +313,7 @@ func TestNavigationStackPreservesRowSelection(t *testing.T) {
 	m2 := res.(model)
 
 	// verify we drilled down
-	if m2.viewMode != "instances" {
+	if m2.viewMode != "process-instance" {
 		t.Fatalf("expected instances view, got %s", m2.viewMode)
 	}
 
@@ -337,7 +337,7 @@ func TestNavigationStackPreservesRowSelection(t *testing.T) {
 	m4 := res3.(model)
 
 	// verify we're back to definitions view
-	if m4.viewMode != "definitions" {
+	if m4.viewMode != "process-definition" {
 		t.Fatalf("expected definitions view after Esc, got %s", m4.viewMode)
 	}
 
@@ -491,7 +491,7 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 	// Enter -> instances
 	res, _ := m.Update(tea.KeyMsg{Type: tea.KeyEnter})
 	m2 := res.(model)
-	if m2.viewMode != "instances" {
+	if m2.viewMode != "process-instance" {
 		t.Fatalf("expected instances, got %s", m2.viewMode)
 	}
 	// simulate fetchInstances
@@ -502,7 +502,7 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 	// Enter -> variables
 	res3, _ := m3.Update(tea.KeyMsg{Type: tea.KeyEnter})
 	m4 := res3.(model)
-	if m4.viewMode != "variables" {
+	if m4.viewMode != "process-variables" {
 		t.Fatalf("expected variables, got %s", m4.viewMode)
 	}
 	// simulate fetchVariables
@@ -522,7 +522,7 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 	// Press Esc once: should go back to instances and leave one saved state (definitions->instances)
 	res5, _ := m5.Update(tea.KeyMsg{Type: tea.KeyEsc})
 	m6 := res5.(model)
-	if m6.viewMode != "instances" {
+	if m6.viewMode != "process-instance" {
 		t.Fatalf("expected instances after Esc, got %s", m6.viewMode)
 	}
 	if len(m6.navigationStack) != 1 {
@@ -532,7 +532,7 @@ func TestExtraEntersDontPushNavigationStack(t *testing.T) {
 	// Press Esc second time: should return to definitions and have empty stack
 	res6, _ := m6.Update(tea.KeyMsg{Type: tea.KeyEsc})
 	m7 := res6.(model)
-	if m7.viewMode != "definitions" {
+	if m7.viewMode != "process-definition" {
 		t.Fatalf("expected definitions after second Esc, got %s", m7.viewMode)
 	}
 	if len(m7.navigationStack) != 0 {

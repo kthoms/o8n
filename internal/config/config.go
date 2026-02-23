@@ -138,6 +138,17 @@ type DrillDownDef struct {
 	Target string `yaml:"target"`           // target table name (e.g. process-instance)
 	Param  string `yaml:"param"`            // query parameter to set on target (e.g. processInstanceId)
 	Column string `yaml:"column,omitempty"` // source column to read the value from (defaults to id)
+	Label  string `yaml:"label,omitempty"`  // breadcrumb label for the drilldown (defaults to target name)
+}
+
+// EditActionDef describes how to save an edited cell value via a REST call.
+// Path and BodyTemplate support placeholders: {id}, {name}, {parentId}, {value}, {type}.
+type EditActionDef struct {
+	Method       string `yaml:"method"`                  // HTTP method: PUT, POST, PATCH
+	Path         string `yaml:"path"`                    // URL path template (e.g. /process-instance/{parentId}/variables/{name})
+	BodyTemplate string `yaml:"body_template"`           // JSON body template (e.g. {"value": {value}, "type": "{type}"})
+	IDColumn     string `yaml:"id_column,omitempty"`     // row column used as {id} (defaults to "id")
+	NameColumn   string `yaml:"name_column,omitempty"`   // row column used as {name} (defaults to "name")
 }
 
 // ActionDef defines an action that can be performed on a selected item
@@ -153,10 +164,13 @@ type ActionDef struct {
 
 // TableDef defines a named table and its columns
 type TableDef struct {
-	Name      string         `yaml:"name"`
-	Columns   []ColumnDef    `yaml:"columns"`
-	Drilldown []DrillDownDef `yaml:"drilldown,omitempty"`
-	Actions   []ActionDef    `yaml:"actions,omitempty"`
+	Name       string         `yaml:"name"`
+	ApiPath    string         `yaml:"api_path,omitempty"`    // REST collection path (defaults to /{name})
+	CountPath  string         `yaml:"count_path,omitempty"`  // count endpoint (defaults to {api_path}/count)
+	Columns    []ColumnDef    `yaml:"columns"`
+	Drilldown  []DrillDownDef `yaml:"drilldown,omitempty"`
+	Actions    []ActionDef    `yaml:"actions,omitempty"`
+	EditAction *EditActionDef `yaml:"edit_action,omitempty"` // generic save config for editable columns
 }
 
 // EnvConfig holds environment-specific configuration (moved to o8n-env.yaml)

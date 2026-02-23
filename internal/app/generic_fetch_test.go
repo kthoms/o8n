@@ -35,22 +35,18 @@ func TestGenericFetchUsesTableDefAndCount(t *testing.T) {
 	}
 
 	m := newModel(cfg)
-	// fetch via generic fetch path for known table
 	cmd := m.fetchForRoot("widgets")
 	if cmd == nil {
 		t.Fatalf("expected fetchForRoot to return a cmd for widgets")
 	}
 	msg := cmd()
-	// deliver message to Update and inspect model
 	res, _ := m.Update(msg)
 	m2 := res.(model)
 
-	// page total should be recorded
 	if tot, ok := m2.pageTotals["widgets"]; !ok || tot != total {
 		t.Fatalf("expected page total %d for widgets, got %v ok=%v", total, tot, ok)
 	}
 
-	// rows should contain expected values (check that any cell contains the id or name)
 	rows := m2.table.Rows()
 	if len(rows) == 0 {
 		t.Fatalf("expected rows for widgets after fetch")
@@ -69,6 +65,103 @@ func TestGenericFetchUsesTableDefAndCount(t *testing.T) {
 	}
 	if !found {
 		t.Fatalf("expected widget id or name present in rows, got %v", rows)
+	}
+}
+
+// TestGenericFetchUsesApiPath verifies that TableDef.ApiPath is used for the fetch URL.
+func TestGenericFetchUsesApiPath(t *testing.T) {
+	total := 3
+	hitList := make(map[string]int)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hitList[r.URL.Path]++
+		switch r.URL.Path {
+		case "/history/process-instance":
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]map[string]interface{}{{"id": "h1"}})
+			return
+		case "/history/process-instance/count":
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]int{"count": total})
+			return
+		default:
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+	}))
+	defer server.Close()
+
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: server.URL}},
+		Tables: []config.TableDef{{
+			Name:      "history-process-instance",
+			ApiPath:   "/history/process-instance",
+			CountPath: "/history/process-instance/count",
+			Columns:   []config.ColumnDef{{Name: "id"}},
+		}},
+	}
+
+	m := newModel(cfg)
+	cmd := m.fetchGenericCmd("history-process-instance")
+	if cmd == nil {
+		t.Fatalf("expected fetchGenericCmd to return a cmd")
+	}
+	msg := cmd()
+	res, _ := m.Update(msg)
+	m2 := res.(model)
+
+	if hitList["/history/process-instance"] == 0 {
+		t.Errorf("expected fetch to hit /history/process-instance, got hits: %v", hitList)
+	}
+	if hitList["/history/process-instance/count"] == 0 {
+		t.Errorf("expected count fetch to hit /history/process-instance/count, got hits: %v", hitList)
+	}
+	if tot, ok := m2.pageTotals["history-process-instance"]; !ok || tot != total {
+		t.Errorf("expected page total %d, got %v ok=%v", total, tot, ok)
+	}
+}
+
+// TestGenericFetchCountPathFallback verifies count URL falls back to {api_path}/count when CountPath is not set.
+func TestGenericFetchCountPathFallback(t *testing.T) {
+	hitList := make(map[string]int)
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		hitList[r.URL.Path]++
+		switch r.URL.Path {
+		case "/custom-path":
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode([]map[string]interface{}{{"id": "x1"}})
+			return
+		case "/custom-path/count":
+			w.Header().Set("Content-Type", "application/json")
+			json.NewEncoder(w).Encode(map[string]int{"count": 7})
+			return
+		default:
+			w.WriteHeader(http.StatusNotFound)
+			return
+		}
+	}))
+	defer server.Close()
+
+	cfg := &config.Config{
+		Environments: map[string]config.Environment{"local": {URL: server.URL}},
+		Tables: []config.TableDef{{
+			Name:    "my-resource",
+			ApiPath: "/custom-path",
+			// CountPath intentionally not set — should derive /custom-path/count
+			Columns: []config.ColumnDef{{Name: "id"}},
+		}},
+	}
+
+	m := newModel(cfg)
+	cmd := m.fetchGenericCmd("my-resource")
+	msg := cmd()
+	res, _ := m.Update(msg)
+	m2 := res.(model)
+
+	if hitList["/custom-path/count"] == 0 {
+		t.Errorf("expected count fetch to hit /custom-path/count, got hits: %v", hitList)
+	}
+	if tot := m2.pageTotals["my-resource"]; tot != 7 {
+		t.Errorf("expected page total 7, got %d", tot)
 	}
 }
 
