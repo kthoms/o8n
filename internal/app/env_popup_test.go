@@ -97,15 +97,15 @@ func TestEnvPopupNavigation(t *testing.T) {
 	m.envPopupCursor = 0
 
 	// Move down
-	m2, _ := sendKeyString(m, "j")
+	m2, _ := sendKeyString(m, "down")
 	if m2.envPopupCursor != 1 {
-		t.Errorf("expected envPopupCursor 1 after j, got %d", m2.envPopupCursor)
+		t.Errorf("expected envPopupCursor 1 after down, got %d", m2.envPopupCursor)
 	}
 
 	// Move up
-	m3, _ := sendKeyString(m2, "k")
+	m3, _ := sendKeyString(m2, "up")
 	if m3.envPopupCursor != 0 {
-		t.Errorf("expected envPopupCursor 0 after k, got %d", m3.envPopupCursor)
+		t.Errorf("expected envPopupCursor 0 after up, got %d", m3.envPopupCursor)
 	}
 }
 

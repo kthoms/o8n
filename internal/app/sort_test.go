@@ -113,14 +113,14 @@ func TestSortPopupNavigation(t *testing.T) {
 	m.table.SetColumns(cols)
 
 	// Move down
-	m2, _ := sendKeyString(m, "j")
+	m2, _ := sendKeyString(m, "down")
 	if m2.sortPopupCursor != 1 {
-		t.Errorf("expected sortPopupCursor 1 after j, got %d", m2.sortPopupCursor)
+		t.Errorf("expected sortPopupCursor 1 after down, got %d", m2.sortPopupCursor)
 	}
 
 	// Move up
-	m3, _ := sendKeyString(m2, "k")
+	m3, _ := sendKeyString(m2, "up")
 	if m3.sortPopupCursor != 0 {
-		t.Errorf("expected sortPopupCursor 0 after k, got %d", m3.sortPopupCursor)
+		t.Errorf("expected sortPopupCursor 0 after up, got %d", m3.sortPopupCursor)
 	}
 }

@@ -78,7 +78,7 @@ func TestSortPopupCursorCanGoToNegativeOne(t *testing.T) {
 	m.sortPopupCursor = 0
 
 	// Press Up — should move cursor to -1 (clear sort item)
-	m2, _ := sendKeyString(m, "k")
+	m2, _ := sendKeyString(m, "up")
 
 	if m2.sortPopupCursor != -1 {
 		t.Errorf("expected sortPopupCursor -1 after Up from 0 with active sort, got %d", m2.sortPopupCursor)
@@ -210,7 +210,7 @@ func TestRenderEditModalMultiColumnNoHeader(t *testing.T) {
 
 // ── T6: Detail scroll without detailMaxScroll ─────────────────────────────────
 
-func TestDetailScrollJKey(t *testing.T) {
+func TestDetailScrollDownKey(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	// Build content with many lines so scrolling is possible
@@ -223,14 +223,14 @@ func TestDetailScrollJKey(t *testing.T) {
 	m.lastHeight = 24
 	m.activeModal = ModalDetailView
 
-	m2, _ := sendKeyString(m, "j")
+	m2, _ := sendKeyString(m, "down")
 
 	if m2.detailScroll != 1 {
-		t.Errorf("expected detailScroll 1 after j, got %d", m2.detailScroll)
+		t.Errorf("expected detailScroll 1 after down, got %d", m2.detailScroll)
 	}
 }
 
-func TestDetailScrollKKey(t *testing.T) {
+func TestDetailScrollUpKey(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	lines := make([]string, 30)
@@ -242,10 +242,10 @@ func TestDetailScrollKKey(t *testing.T) {
 	m.lastHeight = 24
 	m.activeModal = ModalDetailView
 
-	m2, _ := sendKeyString(m, "k")
+	m2, _ := sendKeyString(m, "up")
 
 	if m2.detailScroll != 4 {
-		t.Errorf("expected detailScroll 4 after k, got %d", m2.detailScroll)
+		t.Errorf("expected detailScroll 4 after up, got %d", m2.detailScroll)
 	}
 }
 

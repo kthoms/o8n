@@ -241,6 +241,8 @@ type model struct {
 	pendingDeleteID    string // ID pending deletion confirmation
 	pendingDeleteLabel string // Display label for the item pending deletion
 
+	confirmFocusedBtn int // 0=confirm button focused, 1=cancel button focused (default 1=cancel)
+
 	// Pending config-driven action awaiting confirmation
 	pendingAction     *config.ActionDef // action definition awaiting confirm
 	pendingActionID   string            // resolved ID for the pending action

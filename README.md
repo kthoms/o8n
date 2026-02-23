@@ -68,7 +68,7 @@ go build -o o8n .
 - `<ctrl>+c` — Quit application
 
 **Navigation:**
-- `↑/↓` or `j/k` — Move selection up/down
+- `↑/↓` — Move selection up/down
 - `Page Up/Down` — Jump through table
 - `Enter` — Drill down (definitions → instances → variables)
 - `Esc` — Go back one level
@@ -80,7 +80,7 @@ go build -o o8n .
 - `/` — Filter/search (if implemented)
 
 **Instance Actions:**
-- `<ctrl>+d` — Delete selected instance (press twice to confirm)
+- `<ctrl>+d` — Delete selected instance; confirm with `Ctrl+d` or Tab to focus button + Enter
 
 **Variable Actions:**
 - `e` — Edit selected value (when column is editable)
@@ -108,6 +108,11 @@ go build -o o8n .
 - Auto-refresh mode with configurable intervals
 - Visual indicator for API activity
 - Error messages in footer with auto-clear
+
+**🪟 Overlay Modals**
+- All dialogs (help, sort, detail, confirm, env picker) render as true overlays — background content stays visible
+- Confirm dialogs have Tab-navigatable buttons; default focus is Cancel (safe)
+- Press `Tab` to switch between Confirm/Cancel, `Enter` to activate, `Esc` to always cancel
 
 **🔒 Multi-Environment Support**
 - Switch between environments with `<ctrl>+e`

@@ -91,14 +91,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "esc":
 				m.activeModal = ModalNone
 				return m, nil
-			case "up", "k":
+			case "up":
 				if m.sortColumn >= 0 && m.sortPopupCursor == 0 {
 					m.sortPopupCursor = -1 // move to clear item
 				} else if m.sortPopupCursor > 0 {
 					m.sortPopupCursor--
 				}
 				return m, nil
-			case "down", "j":
+			case "down":
 				if m.sortPopupCursor == -1 {
 					m.sortPopupCursor = 0
 				} else {
@@ -146,12 +146,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "esc":
 				m.showActionsMenu = false
 				return m, nil
-			case "up", "k":
+			case "up":
 				if m.actionsMenuCursor > 0 {
 					m.actionsMenuCursor--
 				}
 				return m, nil
-			case "down", "j":
+			case "down":
 				if m.actionsMenuCursor < len(m.actionsMenuItems)-1 {
 					m.actionsMenuCursor++
 				}
@@ -197,12 +197,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.activeModal = ModalNone
 				m.detailContent = ""
 				return m, nil
-			case "j", "down":
+			case "down":
 				if m.detailScroll < maxDetailScroll {
 					m.detailScroll++
 				}
 				return m, nil
-			case "k", "up":
+			case "up":
 				if m.detailScroll > 0 {
 					m.detailScroll--
 				}
@@ -240,12 +240,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			case "esc":
 				m.activeModal = ModalNone
 				return m, nil
-			case "up", "k":
+			case "up":
 				if m.envPopupCursor > 0 {
 					m.envPopupCursor--
 				}
 				return m, nil
-			case "down", "j":
+			case "down":
 				if m.envPopupCursor < len(m.envNames)-1 {
 					m.envPopupCursor++
 				}
@@ -280,12 +280,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				maxScroll = 0
 			}
 			switch s {
-			case "j", "down", "ctrl+d":
+			case "down", "ctrl+d":
 				if m.helpScroll < maxScroll {
 					m.helpScroll++
 				}
 				return m, nil
-			case "k", "up", "ctrl+u":
+			case "up", "ctrl+u":
 				if m.helpScroll > 0 {
 					m.helpScroll--
 				}
@@ -425,11 +425,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 		if m.activeModal == ModalConfirmDelete {
-			// Only <ctrl>+d confirms delete, any other key cancels
-			if s == "ctrl+d" {
-				// Confirm delete
+			confirmAction := func() (tea.Model, tea.Cmd) {
 				m.activeModal = ModalNone
-				// Config-driven action confirmation
+				m.confirmFocusedBtn = 1 // reset to cancel for next time
 				if m.pendingAction != nil {
 					act := *m.pendingAction
 					resolvedPath := m.pendingActionPath
@@ -438,13 +436,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.pendingActionPath = ""
 					return m, tea.Batch(m.executeActionCmd(act, resolvedPath), flashOnCmd())
 				}
-				// Legacy: terminate process instance
 				if m.pendingDeleteID != "" {
 					return m, tea.Batch(m.terminateInstanceCmd(m.pendingDeleteID), flashOnCmd())
 				}
-			} else {
-				// Cancel
+				return m, nil
+			}
+			cancelAction := func() (tea.Model, tea.Cmd) {
 				m.activeModal = ModalNone
+				m.confirmFocusedBtn = 1
 				m.pendingDeleteID = ""
 				m.pendingDeleteLabel = ""
 				m.pendingAction = nil
@@ -452,6 +451,47 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.pendingActionPath = ""
 				m.footerError = "Cancelled"
 				return m, tea.Tick(2*time.Second, func(time.Time) tea.Msg { return clearErrorMsg{} })
+			}
+
+			switch {
+			case s == "ctrl+d": // confirm key always confirms
+				return confirmAction()
+			case s == "tab":
+				if m.confirmFocusedBtn == 0 {
+					m.confirmFocusedBtn = 1
+				} else {
+					m.confirmFocusedBtn = 0
+				}
+			case s == "enter":
+				if m.confirmFocusedBtn == 0 {
+					return confirmAction()
+				}
+				return cancelAction()
+			case s == "esc":
+				return cancelAction()
+			}
+			return m, nil
+		}
+
+		if m.activeModal == ModalConfirmQuit {
+			switch {
+			case s == "ctrl+c": // confirm key always quits
+				return m, tea.Quit
+			case s == "tab":
+				if m.confirmFocusedBtn == 0 {
+					m.confirmFocusedBtn = 1
+				} else {
+					m.confirmFocusedBtn = 0
+				}
+			case s == "enter":
+				if m.confirmFocusedBtn == 0 {
+					return m, tea.Quit
+				}
+				m.activeModal = ModalNone
+				m.confirmFocusedBtn = 1
+			case s == "esc":
+				m.activeModal = ModalNone
+				m.confirmFocusedBtn = 1
 			}
 			return m, nil
 		}
@@ -512,10 +552,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		case "ctrl+c":
 			// Quit via <ctrl>+c only; do not exit on plain 'q'
-			if m.activeModal == ModalConfirmQuit {
-				return m, tea.Quit
-			}
 			m.activeModal = ModalConfirmQuit
+			m.confirmFocusedBtn = 1 // default Cancel focused (safer)
 			return m, nil
 		case "ctrl+e":
 			// Open environment selection popup
@@ -631,10 +669,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, nil
 		case "esc":
-			if m.activeModal == ModalConfirmQuit {
-				m.activeModal = ModalNone
-				return m, nil
-			}
 			if m.popup.mode == popupModeSkin {
 				// Revert skin to what it was before preview
 				if m.popup.previewSkin != "" {
@@ -949,48 +983,6 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				m.paneHeight = m.computePaneHeight()
 				m.table.SetHeight(m.paneHeight - 1)
-				return m, nil
-			}
-			return m, nil
-		case "j":
-			// Vim down — only when not in popup/modal/search
-			if m.popup.mode == popupModeNone && m.activeModal == ModalNone {
-				m.table.MoveDown(1)
-				return m, nil
-			}
-			if m.popup.mode != popupModeNone {
-				matchingContexts := []string{}
-				for _, rc := range m.rootContexts {
-					if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-						matchingContexts = append(matchingContexts, rc)
-					}
-				}
-				maxShow := 8
-				if len(matchingContexts) > maxShow {
-					matchingContexts = matchingContexts[:maxShow]
-				}
-				if len(matchingContexts) > 0 {
-					if m.popup.cursor < 0 {
-						m.popup.cursor = 1
-					} else if m.popup.cursor < len(matchingContexts)-1 {
-						m.popup.cursor++
-					}
-				}
-				return m, nil
-			}
-			return m, nil
-		case "k":
-			// Vim up — only when not in popup/modal/search
-			if m.popup.mode == popupModeNone && m.activeModal == ModalNone {
-				m.table.MoveUp(1)
-				return m, nil
-			}
-			if m.popup.mode != popupModeNone {
-				if m.popup.cursor > 0 {
-					m.popup.cursor--
-				} else if m.popup.cursor < 0 {
-					m.popup.cursor = 0
-				}
 				return m, nil
 			}
 			return m, nil

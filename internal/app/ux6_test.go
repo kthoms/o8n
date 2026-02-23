@@ -105,11 +105,11 @@ func TestUX6_T2_DownKeyIncrementsCursor(t *testing.T) {
 	m.popup.mode = popupModeContext
 	m.popup.cursor = -1
 
-	res, _ := sendKeyString(m, "j")
+	res, _ := sendKeyString(m, "down")
 
 	// cursor < 0 → set to 1 per implementation
 	if res.popup.cursor != 1 {
-		t.Errorf("expected rootPopupCursor=1 after first j, got %d", res.popup.cursor)
+		t.Errorf("expected rootPopupCursor=1 after first down, got %d", res.popup.cursor)
 	}
 }
 
@@ -119,7 +119,7 @@ func TestUX6_T2_UpKeyClampsAtZero(t *testing.T) {
 	m.popup.mode = popupModeContext
 	m.popup.cursor = 0
 
-	res, _ := sendKeyString(m, "k")
+	res, _ := sendKeyString(m, "up")
 
 	if res.popup.cursor != 0 {
 		t.Errorf("expected rootPopupCursor clamped at 0, got %d", res.popup.cursor)
@@ -226,7 +226,7 @@ func TestUX6_T5_PaginationStringAppearsInFooter(t *testing.T) {
 
 // ── T6: Help screen scrollable ────────────────────────────────────────────────
 
-func TestUX6_T6_HelpScrollIncrementsOnJ(t *testing.T) {
+func TestUX6_T6_HelpScrollIncrementsOnDown(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	m.lastWidth = 120
@@ -234,7 +234,7 @@ func TestUX6_T6_HelpScrollIncrementsOnJ(t *testing.T) {
 	m.activeModal = ModalHelp
 	m.helpScroll = 0
 
-	res, _ := sendKeyString(m, "j")
+	res, _ := sendKeyString(m, "down")
 
 	// With height=10, visibleH=2 so maxScroll should be positive → scroll increments
 	if res.helpScroll < 0 {
@@ -242,7 +242,7 @@ func TestUX6_T6_HelpScrollIncrementsOnJ(t *testing.T) {
 	}
 	// Modal should remain open
 	if res.activeModal != ModalHelp {
-		t.Errorf("expected ModalHelp to remain open after j, got %v", res.activeModal)
+		t.Errorf("expected ModalHelp to remain open after down, got %v", res.activeModal)
 	}
 }
 

@@ -144,7 +144,7 @@ func (m *model) renderCompactHeader(width int) string {
 
 // renderConfirmDeleteModal renders a modal for confirming delete action
 func (m *model) renderConfirmDeleteModal(width, height int) string {
-	if m.pendingDeleteID == "" {
+	if m.pendingDeleteID == "" && m.pendingAction == nil {
 		return ""
 	}
 	resourceLabel := strings.ToUpper(m.currentRoot)
@@ -154,15 +154,24 @@ func (m *model) renderConfirmDeleteModal(width, height int) string {
 		nameDetail = fmt.Sprintf("Name:          %s\n", m.pendingDeleteLabel)
 	}
 
-	modalContent := fmt.Sprintf(
+	message := fmt.Sprintf(
 		"⚠️  DELETE %s\n\n"+
 			"You are about to DELETE this item:\n\n"+
 			"ID:            %s\n"+
 			"%s\n"+
-			"⚠️  WARNING: This action CANNOT be undone!\n\n"+
-			"Ctrl+d  Confirm Delete    Esc  Cancel",
+			"⚠️  WARNING: This action CANNOT be undone!",
 		resourceLabel, m.pendingDeleteID, nameDetail)
 
+	confirmBtn := m.styles.BtnSave.Render(" Delete ")
+	cancelBtn := m.styles.BtnCancelFocused.Render(" Cancel ")
+	if m.confirmFocusedBtn == 0 {
+		confirmBtn = m.styles.BtnSaveFocused.Render(" Delete ")
+		cancelBtn = m.styles.BtnCancel.Render(" Cancel ")
+	}
+	buttons := confirmBtn + "  " + cancelBtn
+	hint := m.styles.FgMuted.Render("Tab: switch  Enter: activate  Ctrl+d: delete  Esc: cancel")
+
+	modalContent := message + "\n\n" + buttons + "\n" + hint
 
 	modalStyle := lipgloss.NewStyle().
 		Border(lipgloss.DoubleBorder()).
@@ -170,23 +179,29 @@ func (m *model) renderConfirmDeleteModal(width, height int) string {
 		Padding(1, 2).
 		Width(54)
 
-	modal := modalStyle.Render(modalContent)
-
 	// Return just the styled box — overlayCenter handles centering
-	return modal
+	return modalStyle.Render(modalContent)
 }
 
 // renderConfirmQuitModal renders a modal asking the user to confirm quitting.
 // Returns just the styled box; View() wraps it with overlayCenter.
 func (m *model) renderConfirmQuitModal(_, _ int) string {
-	modalContent := "Quit o8n?\n\nPress Ctrl+c again to confirm.\n\nCtrl+c  Quit    Esc  Cancel"
+	confirmBtn := m.styles.BtnSave.Render(" Quit ")
+	cancelBtn := m.styles.BtnCancelFocused.Render(" Cancel ")
+	if m.confirmFocusedBtn == 0 {
+		confirmBtn = m.styles.BtnSaveFocused.Render(" Quit ")
+		cancelBtn = m.styles.BtnCancel.Render(" Cancel ")
+	}
+	buttons := confirmBtn + "  " + cancelBtn
+	hint := m.styles.FgMuted.Render("Tab: switch  Enter: activate  Ctrl+c: quit  Esc: cancel")
+
+	modalContent := "Quit o8n?\n\n" + buttons + "\n" + hint
 	modalStyle := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(col(m.skin, "borderFocus")).
 		Padding(1, 2).
-		Width(40)
-	modal := modalStyle.Render(modalContent)
-	return modal
+		Width(44)
+	return modalStyle.Render(modalContent)
 }
 
 // renderHelpContentForLineCount returns the static help text for line-count purposes (scroll bound computation).
@@ -195,7 +210,7 @@ func renderHelpContentForLineCount(viewMode, currentEnv string) string {
 
 NAVIGATION               │  ACTIONS                │  GLOBAL
 ──────────────────────   │  ────────────────────   │  ──────────────────
-↑/↓/j/k  Navigate list   │  Ctrl+e  Switch env     │  ?     This help
+↑/↓      Navigate list    │  Ctrl+e  Switch env     │  ?     This help
 PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
 gg/G     Top/bottom      │  Space   Actions menu   │  Ctrl+c Quit
 Ctrl+u    Half-page up    │
@@ -221,7 +236,7 @@ STATUS COLORS
 Current View: ` + viewMode + `
 Environment: ` + currentEnv + `
 
-j/k or ↑↓: scroll  Any other key: close`
+↑/↓: scroll  Any other key: close`
 }
 
 // renderHelpScreen renders the help screen modal
@@ -230,7 +245,7 @@ func (m model) renderHelpScreen(width, height int) string {
 
 NAVIGATION               │  ACTIONS                │  GLOBAL
 ──────────────────────   │  ────────────────────   │  ──────────────────
-↑/↓/j/k  Navigate list   │  Ctrl+e  Switch env     │  ?     This help
+↑/↓      Navigate list    │  Ctrl+e  Switch env     │  ?     This help
 PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
 gg/G     Top/bottom      │  Space   Actions menu   │  Ctrl+c Quit
 Ctrl+u    Half-page up    │
@@ -256,7 +271,7 @@ STATUS COLORS
 Current View: ` + m.viewMode + `
 Environment: ` + m.currentEnv + `
 
-j/k or ↑↓: scroll  Any other key: close`
+↑/↓: scroll  Any other key: close`
 
 	// Apply scroll window
 	lines := strings.Split(helpContent, "\n")
@@ -305,8 +320,7 @@ j/k or ↑↓: scroll  Any other key: close`
 
 	modal := modalStyle.Render(helpContent)
 
-	// Center the modal
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	return modal
 }
 
 func (m *model) renderEditModal(width, height int) string {
@@ -719,13 +733,17 @@ func (m model) View() string {
 		overlay := m.renderEditModal(m.lastWidth, m.lastHeight)
 		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalHelp {
-		return m.renderHelpScreen(m.lastWidth, m.lastHeight)
+		overlay := m.renderHelpScreen(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalSort {
-		return m.renderSortPopup(m.lastWidth, m.lastHeight)
+		overlay := m.renderSortPopup(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalDetailView {
-		return m.renderDetailView(m.lastWidth, m.lastHeight)
+		overlay := m.renderDetailView(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalEnvironment {
-		return m.renderEnvPopup(m.lastWidth, m.lastHeight)
+		overlay := m.renderEnvPopup(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	} else if m.activeModal == ModalConfirmQuit {
 		overlay := m.renderConfirmQuitModal(m.lastWidth, m.lastHeight)
 		return overlayCenter(baseView, overlay)
@@ -883,7 +901,7 @@ func (m *model) renderSortPopup(width, height int) string {
 	content := b.String()
 	modal := modalStyle.Render(title + "\n" + content + "\nEnter: Select  Esc: Close")
 
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	return modal
 }
 
 // renderDetailView renders the YAML/JSON detail viewer overlay.
@@ -931,10 +949,10 @@ func (m *model) renderDetailView(width, height int) string {
 		Height(viewHeight + 2)
 
 	content := b.String()
-	title := "Detail View  " + scrollInfo + "  (j/k scroll, q/Esc close)"
+	title := "Detail View  " + scrollInfo + "  (scroll ↑↓, q/Esc close)"
 	modal := modalStyle.Render(title + "\n" + content)
 
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	return modal
 }
 
 // syntaxHighlightJSON applies basic syntax highlighting to a JSON line.
@@ -1021,7 +1039,7 @@ func (m *model) renderEnvPopup(width, height int) string {
 	content := "Select Environment\n\n" + b.String() + "\nEnter: Select  Esc: Close"
 	modal := modalStyle.Render(content)
 
-	return lipgloss.Place(width, height, lipgloss.Center, lipgloss.Center, modal)
+	return modal
 }
 
 // renderActionsMenu renders the context actions menu popup.
