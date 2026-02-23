@@ -34,7 +34,11 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		minWidth int // minimum width (= header title length if not configured)
 	}
 
+	const drilldownPrefixWidth = 2 // "▶ " is prepended to first column when drilldown exists
+	hasDrilldownPrefix := len(def.Drilldown) > 0
+
 	entries := make([]colEntry, 0, len(def.Columns))
+	firstVisible := true
 	for _, c := range def.Columns {
 		if !c.IsVisible() {
 			continue
@@ -49,11 +53,16 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 		if desired == 0 {
 			desired = config.DefaultTypeWidth(c.Type)
 		}
+		// First column needs extra room for the "▶ " drilldown prefix
+		if firstVisible && hasDrilldownPrefix {
+			desired += drilldownPrefixWidth
+		}
 
 		minW := c.MinWidth
 		if minW == 0 {
 			minW = headerLen // implicit minimum = column header title width
 		}
+		firstVisible = false
 		if desired < minW {
 			desired = minW
 		}
@@ -342,13 +351,13 @@ func filterRows(rows []table.Row, term string) []table.Row {
 	return result
 }
 
-// Status color styles for row colorization
-var (
-	statusRunningStyle   = lipgloss.NewStyle().Foreground(lipgloss.Color("#50C878"))
-	statusSuspendedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#FFD700"))
-	statusFailedStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#FF6B6B"))
-	statusEndedStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#666666"))
-)
+// RowStyles holds skin-aware styles for row status colorization.
+type RowStyles struct {
+	Running   lipgloss.Style
+	Suspended lipgloss.Style
+	Failed    lipgloss.Style
+	Ended     lipgloss.Style
+}
 
 // detectRowStatus determines the status of a row based on its resource type and column values.
 // Returns one of: "running", "suspended", "failed", "ended", "normal"
@@ -393,8 +402,8 @@ func detectRowStatus(root string, row table.Row, columns []table.Column) string 
 	}
 }
 
-// colorizeRows applies status-based color indicators to the first column of each row.
-func colorizeRows(root string, rows []table.Row, columns []table.Column) []table.Row {
+// colorizeRows applies status-based color to each row using skin-aware styles.
+func colorizeRows(root string, rows []table.Row, columns []table.Column, rs RowStyles) []table.Row {
 	if len(rows) == 0 || len(columns) == 0 {
 		return rows
 	}
@@ -404,17 +413,16 @@ func colorizeRows(root string, rows []table.Row, columns []table.Column) []table
 		newRow := make(table.Row, len(row))
 		copy(newRow, row)
 
-		// Apply color to all cells in the row
 		var style lipgloss.Style
 		switch status {
 		case "running":
-			style = statusRunningStyle
+			style = rs.Running
 		case "suspended":
-			style = statusSuspendedStyle
+			style = rs.Suspended
 		case "failed":
-			style = statusFailedStyle
+			style = rs.Failed
 		case "ended":
-			style = statusEndedStyle
+			style = rs.Ended
 		default:
 			result[i] = newRow
 			continue

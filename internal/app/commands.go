@@ -380,8 +380,16 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		}
 
 		// Try to load count using the correct count endpoint for this table.
+		// Append the same filter params so the count reflects the drilldown filter.
 		count := -1
 		countURL := base + "/" + strings.TrimLeft(countPath, "/")
+		for k, v := range paramsCopy {
+			if strings.Contains(countURL, "?") {
+				countURL = fmt.Sprintf("%s&%s=%s", countURL, k, v)
+			} else {
+				countURL = fmt.Sprintf("%s?%s=%s", countURL, k, v)
+			}
+		}
 		ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
 		defer cancel2()
 		req2, err2 := http.NewRequestWithContext(ctx2, http.MethodGet, countURL, nil)

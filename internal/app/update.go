@@ -884,7 +884,15 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.viewMode = chosen.Target
 				m.genericParams = map[string]string{chosen.Param: val}
 				m.breadcrumb = append(m.breadcrumb, label)
-				m.contentHeader = fmt.Sprintf("%s(%s=%s)", chosen.Target, chosen.Param, val)
+
+				// Build content header: use title_attribute if configured, else fallback to param value
+				titleVal := val
+				if chosen.TitleAttribute != "" && cursor >= 0 && cursor < len(m.rowData) {
+					if tv, ok := m.rowData[cursor][chosen.TitleAttribute]; ok && tv != nil && fmt.Sprintf("%v", tv) != "" {
+						titleVal = fmt.Sprintf("%v", tv)
+					}
+				}
+				m.contentHeader = fmt.Sprintf("%s — %s", chosen.Target, titleVal)
 				m.table.SetCursor(0)
 
 				// Pre-set columns for target table to avoid stale columns during load
@@ -1297,7 +1305,12 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.table.SetColumns(cols)
 		}
 		normalized := normalizeRows(rows, len(cols))
-		colorized := colorizeRows(msg.root, normalized, cols)
+		colorized := colorizeRows(msg.root, normalized, cols, RowStyles{
+				Running:   m.styles.RowRunning,
+				Suspended: m.styles.RowSuspended,
+				Failed:    m.styles.RowFailed,
+				Ended:     m.styles.RowEnded,
+			})
 		m.setTableRowsSorted(colorized)
 		if m.sortColumn >= 0 {
 			m.applySortIndicatorToColumns()

@@ -99,7 +99,7 @@ func TestColorizeRowsAppliesColor(t *testing.T) {
 		{"inst-2", "false", "false"}, // running → green
 	}
 
-	colorized := colorizeRows("process-instance", rows, cols)
+	colorized := colorizeRows("process-instance", rows, cols, RowStyles{})
 
 	if len(colorized) != 2 {
 		t.Fatalf("expected 2 rows, got %d", len(colorized))
@@ -123,7 +123,7 @@ func TestColorizeRowsAppliesColor(t *testing.T) {
 func TestColorizeRowsEmptyInput(t *testing.T) {
 	cols := []table.Column{{Title: "ID", Width: 20}}
 	var rows []table.Row
-	result := colorizeRows("process-instance", rows, cols)
+	result := colorizeRows("process-instance", rows, cols, RowStyles{})
 	if result != nil {
 		t.Errorf("expected nil for empty rows, got %v", result)
 	}
@@ -133,7 +133,7 @@ func TestColorizeRowsNormalStatus(t *testing.T) {
 	cols := []table.Column{{Title: "ID", Width: 20}}
 	rows := []table.Row{{"item-1"}}
 
-	colorized := colorizeRows("some-unknown", rows, cols)
+	colorized := colorizeRows("some-unknown", rows, cols, RowStyles{})
 
 	// Normal status should not add styling
 	if colorized[0][0] != "item-1" {

@@ -77,6 +77,12 @@ StatusOperational lipgloss.Style
 StatusUnreachable lipgloss.Style
 StatusUnknown     lipgloss.Style
 
+// Row status colors (process-instance / job / incident etc.)
+RowRunning   lipgloss.Style
+RowSuspended lipgloss.Style
+RowFailed    lipgloss.Style
+RowEnded     lipgloss.Style
+
 // Edit modal buttons
 BtnSave          lipgloss.Style
 BtnSaveFocused   lipgloss.Style
@@ -166,6 +172,12 @@ s.JSONColon = lipgloss.NewStyle().Foreground(col(skin, "fgMuted"))
 s.StatusOperational = lipgloss.NewStyle().Foreground(col(skin, "success"))
 s.StatusUnreachable = lipgloss.NewStyle().Foreground(col(skin, "danger"))
 s.StatusUnknown = lipgloss.NewStyle().Foreground(col(skin, "warning"))
+
+// ── Row status colors (table rows by resource state) ─────────────────────
+s.RowRunning = lipgloss.NewStyle().Foreground(col(skin, "success"))
+s.RowSuspended = lipgloss.NewStyle().Foreground(col(skin, "warning"))
+s.RowFailed = lipgloss.NewStyle().Foreground(col(skin, "danger"))
+s.RowEnded = lipgloss.NewStyle().Foreground(col(skin, "fgMuted"))
 
 // ── Edit modal buttons ────────────────────────────────────────────────────
 s.BtnSave = lipgloss.NewStyle().

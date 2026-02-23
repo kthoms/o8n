@@ -134,10 +134,11 @@ func HideSequence(cols []ColumnDef) []int {
 
 // DrillDownDef describes a drill-down target for a table (target collection and query parameter)
 type DrillDownDef struct {
-	Target string `yaml:"target"`           // target table name (e.g. process-instance)
-	Param  string `yaml:"param"`            // query parameter to set on target (e.g. processInstanceId)
-	Column string `yaml:"column,omitempty"` // source column to read the value from (defaults to id)
-	Label  string `yaml:"label,omitempty"`  // breadcrumb label for the drilldown (defaults to target name)
+	Target         string `yaml:"target"`                    // target table name (e.g. process-instance)
+	Param          string `yaml:"param"`                     // query parameter to set on target (e.g. processInstanceId)
+	Column         string `yaml:"column,omitempty"`          // source column to read the value from (defaults to id)
+	Label          string `yaml:"label,omitempty"`           // breadcrumb label for the drilldown (defaults to target name)
+	TitleAttribute string `yaml:"title_attribute,omitempty"` // raw data attribute to display in content header (e.g. processDefinitionKey)
 }
 
 // EditActionDef describes how to save an edited cell value via a REST call.

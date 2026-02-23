@@ -175,10 +175,12 @@ tables:
           param: processDefinitionId
           column: id
           label: Instances
+          title_attribute: key
         - target: history-process-instance
           param: processDefinitionId
           column: id
           label: History
+          title_attribute: key
       actions:
         - key: s
           label: Suspend Definition

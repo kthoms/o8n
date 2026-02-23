@@ -624,14 +624,20 @@ func (m model) View() string {
 	// Columns separated by " | "
 
 	crumbs := make([]string, 0, len(m.breadcrumb))
+	lastIdx := len(m.breadcrumb) - 1
 	for i, c := range m.breadcrumb {
 		style := lipgloss.NewStyle()
 		if i < len(m.breadcrumbStyles) {
 			style = m.breadcrumbStyles[i]
 		}
-		// prefix with index hint [1]
-		hint := fmt.Sprintf("%d", i+1)
-		crumbs = append(crumbs, style.Render(fmt.Sprintf("[%s] <%s>", hint, c)))
+		if i == lastIdx {
+			// Last crumb = current location; no hotkey needed
+			crumbs = append(crumbs, style.Render(fmt.Sprintf("<%s>", c)))
+		} else {
+			// Navigable ancestors get a [n] hotkey
+			hint := fmt.Sprintf("%d", i+1)
+			crumbs = append(crumbs, style.Render(fmt.Sprintf("[%s] <%s>", hint, c)))
+		}
 	}
 	breadcrumbRendered := strings.Join(crumbs, " ")
 
