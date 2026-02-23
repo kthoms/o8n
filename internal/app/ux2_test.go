@@ -20,8 +20,8 @@ func TestSearchOnPage2SetsFooterWarning(t *testing.T) {
 
 	m2, _ := sendKeyString(m, "/")
 
-	if !m2.searchMode {
-		t.Fatal("expected searchMode to be true")
+	if m2.popup.mode != popupModeSearch {
+		t.Fatal("expected popup.mode == popupModeSearch")
 	}
 	if m2.footerStatusKind != footerStatusInfo {
 		t.Errorf("expected footerStatusInfo, got %v", m2.footerStatusKind)
@@ -39,8 +39,8 @@ func TestSearchOnPage1NoFooterWarning(t *testing.T) {
 
 	m2, _ := sendKeyString(m, "/")
 
-	if !m2.searchMode {
-		t.Fatal("expected searchMode to be true")
+	if m2.popup.mode != popupModeSearch {
+		t.Fatal("expected popup.mode == popupModeSearch")
 	}
 	if m2.footerStatusKind == footerStatusInfo {
 		t.Errorf("expected no footerStatusInfo on page 1, got %v and %q", m2.footerStatusKind, m2.footerError)

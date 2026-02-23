@@ -283,13 +283,31 @@ func (m model) fetchDataCmd() tea.Cmd {
 }
 
 // fetchForRoot returns a command that fetches data for the given root resource.
-// All resources are fetched via fetchGenericCmd which reads api_path and count_path from config.
 func (m model) fetchForRoot(root string) tea.Cmd {
-	if def := m.findTableDef(root); def != nil {
-		return m.fetchGenericCmd(root)
+	return m.fetchGenericCmd(root)
+}
+
+// resolvePathParams substitutes {key} placeholders in urlPath with values from params.
+// Returns the resolved path and the params that were NOT consumed (to be added as query string).
+func resolvePathParams(urlPath string, params map[string]string) (string, map[string]string) {
+	remaining := make(map[string]string, len(params))
+	for k, v := range params {
+		placeholder := "{" + k + "}"
+		if strings.Contains(urlPath, placeholder) {
+			urlPath = strings.ReplaceAll(urlPath, placeholder, v)
+		} else {
+			remaining[k] = v
+		}
 	}
-	// root has no table def — fall back to process-definition list
-	return m.fetchGenericCmd("process-definition")
+	// Fallback: substitute {parentId} with the first remaining param value (e.g. processInstanceId)
+	if strings.Contains(urlPath, "{parentId}") {
+		for _, v := range remaining {
+			urlPath = strings.ReplaceAll(urlPath, "{parentId}", v)
+			remaining = make(map[string]string)
+			break
+		}
+	}
+	return urlPath, remaining
 }
 
 // fetchGenericCmd performs a GET to the environment server for the provided
@@ -339,8 +357,9 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		}
 		limit := m.getPageSize()
 		urlStr := base + "/" + strings.TrimLeft(apiPath, "/")
-		// append drilldown filter params, then paging params
-		for k, v := range paramsCopy {
+		// Substitute {placeholder} path params before appending remaining as query string
+		urlStr, queryParams := resolvePathParams(urlStr, paramsCopy)
+		for k, v := range queryParams {
 			if strings.Contains(urlStr, "?") {
 				urlStr = fmt.Sprintf("%s&%s=%s", urlStr, k, v)
 			} else {
@@ -380,10 +399,11 @@ func (m model) fetchGenericCmd(root string) tea.Cmd {
 		}
 
 		// Try to load count using the correct count endpoint for this table.
-		// Append the same filter params so the count reflects the drilldown filter.
+		// Substitute path params in count URL (same logic as main URL).
 		count := -1
 		countURL := base + "/" + strings.TrimLeft(countPath, "/")
-		for k, v := range paramsCopy {
+		countURL, cntQueryParams := resolvePathParams(countURL, paramsCopy)
+		for k, v := range cntQueryParams {
 			if strings.Contains(countURL, "?") {
 				countURL = fmt.Sprintf("%s&%s=%s", countURL, k, v)
 			} else {

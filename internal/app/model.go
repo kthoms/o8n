@@ -154,6 +154,7 @@ const (
 	popupModeNone    popupMode = iota
 	popupModeContext           // : key — switch resource context
 	popupModeSkin              // Ctrl+T key — switch skin/theme
+	popupModeSearch            // / key — filter table rows
 )
 
 // popupState holds the runtime state of the generic command palette popup.
@@ -161,6 +162,7 @@ type popupState struct {
 	mode        popupMode
 	input       string
 	cursor      int
+	offset      int      // scroll offset: index of first visible item in the list
 	items       []string // filtered/available items for current mode
 	title       string   // "context" | "skin"
 	hint        string   // hint line shown below input

@@ -13,8 +13,8 @@ func TestSearchModeActivation(t *testing.T) {
 
 	m2, _ := sendKeyString(m, "/")
 
-	if !m2.searchMode {
-		t.Error("expected searchMode to be true after pressing /")
+	if m2.popup.mode != popupModeSearch {
+		t.Error("expected popup.mode == popupModeSearch after pressing /")
 	}
 	if m2.originalRows == nil {
 		t.Error("expected originalRows to be saved")
@@ -43,17 +43,17 @@ func TestSearchEscRestoresRows(t *testing.T) {
 	original := []table.Row{{"a", "b"}, {"c", "d"}, {"e", "f"}}
 	m.table.SetRows(original)
 
-	// Enter search mode
+	// Enter search mode via popup
 	m2, _ := sendKeyString(m, "/")
-	if !m2.searchMode {
-		t.Fatal("expected search mode")
+	if m2.popup.mode != popupModeSearch {
+		t.Fatal("expected popup in search mode")
 	}
 
 	// Esc should restore original rows
 	m3, _ := sendKeyString(m2, "esc")
 
-	if m3.searchMode {
-		t.Error("expected searchMode to be false after Esc")
+	if m3.popup.mode == popupModeSearch {
+		t.Error("expected search popup to be closed after Esc")
 	}
 	if len(m3.table.Rows()) != 3 {
 		t.Errorf("expected 3 rows after Esc, got %d", len(m3.table.Rows()))

@@ -107,9 +107,9 @@ func TestUX6_T2_DownKeyIncrementsCursor(t *testing.T) {
 
 	res, _ := sendKeyString(m, "down")
 
-	// cursor < 0 → set to 1 per implementation
-	if res.popup.cursor != 1 {
-		t.Errorf("expected rootPopupCursor=1 after first down, got %d", res.popup.cursor)
+	// cursor < 0 → set to 0 (first item)
+	if res.popup.cursor != 0 {
+		t.Errorf("expected rootPopupCursor=0 after first down, got %d", res.popup.cursor)
 	}
 }
 

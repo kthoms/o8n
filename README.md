@@ -69,15 +69,28 @@ go build -o o8n .
 
 **Navigation:**
 - `↑/↓` — Move selection up/down
-- `Page Up/Down` — Jump through table
-- `Enter` — Drill down (definitions → instances → variables)
-- `Esc` — Go back one level
+- `→` / `Enter` — Drill down (definitions → instances → variables)
+- `Page Up/Down` — Jump through table pages
+- `Esc` — Go back one level (re-fetches data, restores cursor position)
+
+**Context Switcher (`:`):**
+- Type to filter, `↑/↓` to navigate all entries (scrollable, no truncation)
+- `Tab` — Auto-complete the typed prefix
+- `Enter` — Switch to selected context
+- `Esc` — Cancel
+
+**Search (`/`):**
+- Opens the command-palette popup in search mode
+- Typing filters table rows live
+- `↑/↓` — Navigate matching entries in popup list
+- `Enter` — Lock filter (close popup, keep filtered rows)
+- `Esc` — Cancel and restore original rows
 
 **View Actions:**
 - `r` — Toggle auto-refresh (5s interval)
 - `<ctrl>-r` — Manual refresh
 - `L` — Toggle request latency display in footer (default: off)
-- `/` — Filter/search (if implemented)
+- `/` — Search: opens popup in search mode (live row filtering)
 
 **Instance Actions:**
 - `<ctrl>+d` — Delete selected instance; confirm with `Ctrl+d` or Tab to focus button + Enter

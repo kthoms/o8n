@@ -517,6 +517,14 @@ func (m model) View() string {
 		if m.popup.mode == popupModeSkin {
 			items = m.skinPopupItems()
 			hint = m.popup.hint
+		} else if m.popup.mode == popupModeSearch {
+			// Search mode: list shows matching rows (first-column values)
+			for _, row := range m.table.Rows() {
+				if len(row) > 0 {
+					items = append(items, fmt.Sprintf("%v", row[0]))
+				}
+			}
+			hint = "↑↓:select  Enter:jump  Esc:cancel"
 		} else {
 			// context mode
 			for _, rc := range m.rootContexts {
@@ -528,34 +536,39 @@ func (m model) View() string {
 		}
 
 		completion := ""
-		if m.popup.input != "" && len(items) > 0 && items[0] != m.popup.input {
+		if m.popup.mode != popupModeSearch && m.popup.input != "" && len(items) > 0 && items[0] != m.popup.input {
 			completion = items[0][len(m.popup.input):]
 		}
 
-		displayText := m.styles.PopupInput.Render(m.popup.input) + m.styles.PopupCompletion.Render(completion)
+		var inputLabel string
+		if m.popup.mode == popupModeSearch {
+			inputLabel = "/"
+		}
+		displayText := m.styles.PopupInput.Render(inputLabel+m.popup.input) + m.styles.PopupCompletion.Render(completion)
 		hintLine := m.styles.PopupHint.Render(hint)
 
+		// Scrollable list: show a window of maxShow items around the cursor
+		const maxShow = 8
+		offset := m.popup.offset
+		if offset < 0 {
+			offset = 0
+		}
+		if len(items) > 0 && offset > len(items)-1 {
+			offset = len(items) - 1
+		}
+		end := offset + maxShow
+		if end > len(items) {
+			end = len(items)
+		}
+		shown := items[offset:end]
 		var listLines []string
-		maxShow := 8
-		shown := items
-		extra := 0
-		if len(shown) > maxShow {
-			extra = len(shown) - maxShow
-			shown = shown[:maxShow]
-		}
-		cursorPos := -1
-		if m.popup.cursor >= 0 && m.popup.cursor < len(shown) {
-			cursorPos = m.popup.cursor
-		}
 		for i, rc := range shown {
+			globalIdx := offset + i
 			cursor := "  "
-			if i == cursorPos {
+			if globalIdx == m.popup.cursor {
 				cursor = "\u25b8 "
 			}
 			listLines = append(listLines, fmt.Sprintf("%s%s", cursor, rc))
-		}
-		if extra > 0 {
-			listLines = append(listLines, fmt.Sprintf("  \u2026 %d more", extra))
 		}
 		listText := strings.Join(listLines, "\n")
 

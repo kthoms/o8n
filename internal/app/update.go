@@ -522,15 +522,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.helpScroll = 0
 			return m, nil
 		case "/":
-			// Enter search/filter mode
-			if m.popup.mode == popupModeNone && m.activeModal == ModalNone {
-				m.searchMode = true
+			// Open popup in search mode (replaces inline search bar)
+			if m.popup.mode == popupModeNone && m.activeModal == ModalNone && !m.searchMode {
+				// close existing inline search if active
+				m.searchMode = false
+				m.searchInput.Blur()
+				// save original rows and open popup in search mode
 				m.originalRows = append([]table.Row{}, m.table.Rows()...)
-				m.searchInput.SetValue("")
 				m.searchTerm = ""
-				m.searchInput.Focus()
-				m.paneHeight = m.computePaneHeight()
-				m.table.SetHeight(m.paneHeight - 1)
+				m.popup.mode = popupModeSearch
+				m.popup.input = ""
+				m.popup.cursor = -1
+				m.popup.offset = 0
 				// Warn user if search is scoped to current page only
 				currentRoot := m.currentRoot
 				if len(m.breadcrumb) > 0 {
@@ -542,11 +545,14 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					m.footerError, m.footerStatusKind, _ = setFooterStatus(footerStatusInfo,
 						fmt.Sprintf("Search limited to current page (pg %d) — PgUp to page 1 for full results", pg), 0)
 				}
-				return m, m.searchInput.Focus()
+				return m, nil
 			}
 			// fall through to root popup input if popup active
 			if m.popup.mode != popupModeNone {
 				m.popup.input += s
+				if m.popup.mode == popupModeSearch {
+					m.applySearchFromPopup()
+				}
 				return m, nil
 			}
 			return m, nil
@@ -683,10 +689,23 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.popup.cursor = -1
 				return m, nil
 			}
+			if m.popup.mode == popupModeSearch {
+				// Cancel search: restore original rows
+				m.popup.mode = popupModeNone
+				m.popup.input = ""
+				m.popup.cursor = -1
+				m.popup.offset = 0
+				m.searchTerm = ""
+				m.table.SetRows(m.originalRows)
+				m.footerError = ""
+				m.footerStatusKind = footerStatusNone
+				return m, nil
+			}
 			if m.popup.mode != popupModeNone {
 				m.popup.mode = popupModeNone
 				m.popup.input = ""
 				m.popup.cursor = -1
+				m.popup.offset = 0
 				return m, nil
 			}
 			// Pop from navigation stack and restore previous view state
@@ -697,6 +716,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				// restore complete state
 				m.viewMode = prevState.viewMode
+				m.currentRoot = prevState.viewMode // fix: restore currentRoot so title shows correct count
 				m.breadcrumb = append([]string{}, prevState.breadcrumb...)
 				m.contentHeader = prevState.contentHeader
 				m.selectedDefinitionKey = prevState.selectedDefinitionKey
@@ -721,10 +741,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				m.table.SetCursor(prevState.tableCursor)
 
-				return m, tea.Batch(flashOnCmd(), m.saveStateCmd())
+				// re-fetch to refresh data and count; preserve cursor after load
+				m.pendingCursorAfterPage = prevState.tableCursor
+				m.isLoading = true
+				m.apiCallStarted = time.Now()
+				return m, tea.Batch(m.fetchForRoot(m.currentRoot), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
 			}
 			return m, nil
-		case "enter":
+		case "enter", "right":
+			// right arrow only handles drilldown (not popup selection or other modals)
+			if s == "right" && (m.popup.mode != popupModeNone || m.activeModal != ModalNone || m.searchMode) {
+				return m, nil
+			}
 			if m.popup.mode == popupModeSkin {
 				// Commit current skin — already applied via live preview
 				m.popup.mode = popupModeNone
@@ -732,14 +760,18 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.popup.cursor = -1
 				return m, m.saveStateCmd()
 			}
+			if m.popup.mode == popupModeSearch {
+				// Lock the search filter and close popup
+				m.popup.mode = popupModeNone
+				m.popup.input = ""
+				m.popup.cursor = -1
+				m.popup.offset = 0
+				// searchTerm is already set; filtered rows are in the table
+				return m, nil
+			}
 			if m.popup.mode != popupModeNone {
 				// If cursor selects from popup list, use that context
-				matchingContexts := []string{}
-				for _, rc := range m.rootContexts {
-					if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-						matchingContexts = append(matchingContexts, rc)
-					}
-				}
+				matchingContexts := m.popupItems()
 				selectedContext := ""
 				if m.popup.cursor >= 0 && m.popup.cursor < len(matchingContexts) {
 					selectedContext = matchingContexts[m.popup.cursor]
@@ -779,10 +811,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 						m.apiCallStarted = time.Now()
 						return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
 					}
-					// fallback to process-definition fetch
+					// no table def: still attempt fetch using /{rc} path
 					m.isLoading = true
 					m.apiCallStarted = time.Now()
-					return m, tea.Batch(m.fetchForRoot("process-definition"), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
+					return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
 				}
 				// no match: ignore
 				return m, nil
@@ -908,14 +940,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 
 		case "tab":
-			if m.popup.mode != popupModeNone {
+			if m.popup.mode != popupModeNone && m.popup.mode != popupModeSearch {
 				// compute matching contexts
-				matchingContexts := []string{}
-				for _, rc := range m.rootContexts {
-					if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-						matchingContexts = append(matchingContexts, rc)
-					}
-				}
+				matchingContexts := m.popupItems()
 				// Only complete if user has typed something or explicitly moved cursor
 				if m.popup.cursor >= 0 && m.popup.cursor < len(matchingContexts) && len(m.popup.input) > 0 {
 					m.popup.input = matchingContexts[m.popup.cursor]
@@ -988,6 +1015,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if len(m.popup.input) > 0 {
 					m.popup.input = m.popup.input[:len(m.popup.input)-1]
 					m.popup.cursor = -1
+				}
+				if m.popup.mode == popupModeSearch {
+					m.applySearchFromPopup()
 				}
 				m.paneHeight = m.computePaneHeight()
 				m.table.SetHeight(m.paneHeight - 1)
@@ -1064,6 +1094,13 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				} else if m.popup.cursor < 0 {
 					m.popup.cursor = 0
 				}
+				// scroll up if cursor moved above visible window
+				if m.popup.cursor < m.popup.offset {
+					m.popup.offset = m.popup.cursor
+				}
+				if m.popup.mode == popupModeSearch {
+					m.applySearchFromPopup()
+				}
 				return m, nil
 			}
 			// fall through to table navigation via component update
@@ -1082,23 +1119,22 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				}
 				return m, nil
 			}
-			if m.popup.mode != popupModeNone {
-				matchingContexts := []string{}
-				for _, rc := range m.rootContexts {
-					if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-						matchingContexts = append(matchingContexts, rc)
-					}
-				}
-				maxShow := 8
-				if len(matchingContexts) > maxShow {
-					matchingContexts = matchingContexts[:maxShow]
-				}
+			if m.popup.mode != popupModeNone && m.popup.mode != popupModeSkin {
+				matchingContexts := m.popupItems()
 				if len(matchingContexts) > 0 {
 					if m.popup.cursor < 0 {
-						m.popup.cursor = 1
+						m.popup.cursor = 0
 					} else if m.popup.cursor < len(matchingContexts)-1 {
 						m.popup.cursor++
 					}
+				}
+				// scroll down if cursor moved past visible window
+				const maxShow = 8
+				if m.popup.cursor >= m.popup.offset+maxShow {
+					m.popup.offset = m.popup.cursor - maxShow + 1
+				}
+				if m.popup.mode == popupModeSearch {
+					m.applySearchFromPopup()
 				}
 				return m, nil
 			}
@@ -1126,6 +1162,9 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if len(s) == 1 {
 					m.popup.input += s
 					m.popup.cursor = -1
+					if m.popup.mode == popupModeSearch {
+						m.applySearchFromPopup()
+					}
 					m.paneHeight = m.computePaneHeight()
 					m.table.SetHeight(m.paneHeight - 1)
 				}
