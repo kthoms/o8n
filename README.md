@@ -71,13 +71,14 @@ go build -o o8n .
 
 | Key | Action |
 |---|---|
-| `Up/Down` or `j/k` | Move selection |
+| `Up` / `Down` | Move selection |
 | `Enter` or `Right` | Drill down |
 | `Esc` | Go back (restores cursor and data) |
-| `PgDn`/`PgUp` | Server-side pagination |
-| `gg` / `G` | Jump to first / last row |
-| `Ctrl+U` / `Ctrl+D` | Half-page scroll |
+| `PgDn` / `PgUp` | Server-side pagination |
+| `Home` / `End` | Jump to first / last row |
 | `1`-`4` | Jump to breadcrumb level |
+
+**Vim mode** (`--vim` flag or `vim_mode: true` in config) adds: `j`/`k` navigation, `gg`/`G` first/last, `Ctrl+U`/`Ctrl+D` half-page scroll.
 
 ### Actions
 
@@ -87,7 +88,7 @@ go build -o o8n .
 | `y` | View raw JSON detail |
 | `e` | Edit value (on editable columns) |
 | `s` | Sort by column |
-| `Ctrl+D` | Delete/terminate (context-dependent, with confirmation) |
+| `Ctrl+D` | Delete/terminate (with confirmation) |
 
 Actions are resource-specific and defined in `o8n-cfg.yaml`. Press `Space` on any row to see available actions.
 
@@ -126,7 +127,7 @@ Creates `./debug/` with:
 - `last-screen.txt` — Last rendered TUI frame
 - `screen-*.txt` — Screen dumps on panic
 
-Other flags: `--no-splash` (skip startup animation), `--skin <name>` (override theme).
+Other flags: `--no-splash` (skip startup animation), `--skin <name>` (override theme), `--vim` (enable vim keybindings).
 
 ## Development
 

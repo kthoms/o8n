@@ -493,7 +493,6 @@ High-contrast friendly skins: `stock`, `black-and-wtf`, `solarized-16`.
 +------------------------------------------------------------------+
 | o8n v0.1.0 | local ●            ? help  : switch  ↑↓ nav  / find | <- Header row 1 (status + hints)
 | Ctrl+E env  Ctrl+T skin  s sort  Space actions  r refresh        | <- Header row 2 (more hints)
-|                                                                  | <- Header row 3 (spacer)
 +------------------------------------------------------------------+
 | proc|ess-definitions                              (ghost suffix) | <- Context popup (:) - shown/hidden
 | ↑↓:select  Tab/Enter:switch  Esc:cancel                         |
@@ -512,26 +511,26 @@ High-contrast friendly skins: `stock`, `black-and-wtf`, `solarized-16`.
 ```
 
 **Key observations:**
+- Content box uses **full terminal width** — no left pane allocation
 - Context popup and search bar are **mutually exclusive overlays** — they shrink the content box
 - Content box title is embedded in the top border and adapts to state
-- Footer breadcrumb uses environment `ui_color` as background
+- Footer breadcrumb uses environment `ui_color` as background, capped at 50% width
 - All modals render **on top** of this layout — background stays visible
 
 ### Vertical Regions (in order)
 
 | Region | Height | Always Visible |
 |---|---|---|
-| Header | 3 rows + 1 spacer = 4 rows | Yes |
-| Context popup | 0 or 4-13 rows | Only when `:` pressed |
+| Header | 2 rows | Yes |
+| Context popup | 0 or 4-12 rows | Only when `:` pressed |
 | Search bar | 0 or 1 row | Only when `/` active |
-| Content box | Fills remainder | Yes |
+| Content box | Fills remainder (full terminal width) | Yes |
 | Footer | 1 row | Yes |
 
 ### Header
 
 - **Row 1 (status line):** App version, environment name with status indicator, auto-refresh badge (`circular arrow` in accent color when enabled)
 - **Row 2 (key hints):** Priority-based list of key+description pairs, space-separated
-- **Row 3:** Empty spacer
 - Full terminal width, 1-character horizontal padding, bold font, no forced background color
 
 ### Key Hint Priority System
@@ -589,21 +588,32 @@ On startup: animated ASCII logo reveal over 15 frames (~1.2s total). Version num
 | `r` / `Ctrl+R` | Toggle auto-refresh (5s interval) |
 | `L` | Toggle latency display |
 
-### Navigation
+### Navigation (Default Mode)
 
 | Key | Action |
 |---|---|
-| `Up` / `k` | Move selection up |
-| `Down` / `j` | Move selection down |
+| `Up` / `Down` | Move selection |
 | `Enter` / `Right` | Drill down |
 | `Esc` | Go back one level |
 | `PgDn` / `Ctrl+F` | Next page |
 | `PgUp` / `Ctrl+B` | Previous page |
-| `gg` | Jump to first row |
+| `Home` | Jump to first row |
+| `End` | Jump to last row |
+| `1`-`4` | Jump to breadcrumb level N |
+
+### Navigation (Vim Mode — `--vim` flag or `vim_mode: true` in config)
+
+All default keys plus:
+
+| Key | Action |
+|---|---|
+| `j` / `k` | Move selection down / up |
+| `gg` | Jump to first row (chord, 500ms timeout) |
 | `G` | Jump to last row |
 | `Ctrl+U` | Half-page scroll up |
 | `Ctrl+D` | Half-page scroll down |
-| `1`-`4` | Jump to breadcrumb level N |
+
+`Ctrl+D` for delete/terminate always takes priority over half-page scroll when a destructive action is configured for the current resource.
 
 ### View Actions
 
@@ -700,6 +710,7 @@ go build -o o8n .
 ./o8n --debug           # Enable debug logging
 ./o8n --no-splash       # Skip splash screen
 ./o8n --skin dracula    # Override skin at startup
+./o8n --vim             # Enable vim-style keybindings (j/k, gg/G, Ctrl+U/D)
 
 # Regenerate API client (requires Docker)
 ./.devenv/scripts/generate-api-client.sh
