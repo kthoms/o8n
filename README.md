@@ -1,292 +1,187 @@
 # o8n
+
 A terminal UI for Operaton
 
 ```
-         ____      
-  ____  ( __ )____ 
+         ____
+  ____  ( __ )____
  / __ \/ __  / __ \
 / /_/ / /_/ / / / /
-\____/\____/_/ /_/ 
+\____/\____/_/ /_/
 ```
 
-**o8n** is a powerful terminal UI for managing Operaton workflow engines, inspired by k9s.
+**o8n** is a keyboard-first terminal UI for managing [Operaton](https://operaton.org) workflow engines, inspired by [k9s](https://k9scli.io). Browse 35 resource types, drill into process instances, edit variables, execute actions — all without leaving your terminal.
+
+## Features
+
+- **35 resource types** — Process definitions, instances, tasks, jobs, incidents, history, deployments, and more
+- **Config-driven actions** — Suspend, resume, delete, retry, claim, complete — all defined in YAML
+- **Drill-down navigation** — Definition -> Instances -> Variables with full state restoration on back
+- **Live search & sort** — `/` to filter rows, `s` to sort by any column
+- **35 color themes** — Dracula, Nord, Gruvbox, Solarized, and more with live preview via `Ctrl+T`
+- **Multi-environment** — Switch between local, staging, production with `Ctrl+E`
+- **Auto-refresh** — Toggle with `r` for 5-second polling with visual indicator
+- **Overlay modals** — Help, edit, sort, detail view, confirmations — all rendered over live content
+- **Responsive layout** — Columns auto-hide on narrow terminals; hints adapt to width
+- **Persistent state** — Active environment, skin, and last navigation position restored on startup
+- **Two-step confirmations** — Destructive actions require double-press for safety
 
 ## Quick Start
 
-### 1. Configuration
-
-There are three config files:
-
-- `o8n-env.yaml` — Environment credentials and UI colors (keep secret, git-ignored)
-- `o8n-cfg.yaml` — UI table definitions and app settings (version-controlled)
-- `o8n-stat.yml` — Runtime state: active environment, skin, latency toggle, last view (auto-generated, git-ignored)
-
-Create your environment configuration:
+### 1. Configure
 
 ```bash
 cp o8n-env.yaml.example o8n-env.yaml
-# Edit o8n-env.yaml to add your Operaton environments
+# Edit with your Operaton environment(s)
 ```
 
-Example `o8n-env.yaml`:
 ```yaml
 environments:
   local:
     url: http://localhost:8080/engine-rest
     username: demo
     password: demo
+    ui_color: "#00A8E1"
     default_timeout: 10s
-  production:
-    url: https://operaton.example.com/engine-rest
-    username: admin
-    password: secret
 ```
 
-> Note: `active` environment and `skin` are no longer stored in `o8n-env.yaml`. They are persisted in `o8n-stat.yml`.
-
-### 2. Building
+### 2. Build & Run
 
 ```bash
 go build -o o8n .
-```
-
-### 3. Running
-
-```bash
 ./o8n
 ```
 
-## Usage
+## Keyboard Shortcuts
 
-### Keyboard Shortcuts
+### Global
 
-**Global Actions:**
-- `?` — Show help screen with all shortcuts
-- `:` — Open context switcher (process-definition, process-instance, task, job, etc.)
-- `<ctrl>+e` — Switch environment
-- `<ctrl>+t` — Open theme/skin picker (↑↓ to preview, Enter to apply, Esc to revert)
-- `<ctrl>+c` — Quit application
+| Key | Action |
+|---|---|
+| `?` | Help screen |
+| `:` | Context switcher (jump to any resource type) |
+| `/` | Search (live row filtering) |
+| `Ctrl+C` | Quit (with confirmation) |
+| `Ctrl+E` | Environment picker |
+| `Ctrl+T` | Theme picker (live preview) |
+| `r` | Toggle auto-refresh |
+| `L` | Toggle API latency display |
 
-**Navigation:**
-- `↑/↓` — Move selection up/down
-- `→` / `Enter` — Drill down (definitions → instances → variables)
-- `Page Up/Down` — Jump through table pages
-- `Esc` — Go back one level (re-fetches data, restores cursor position)
+### Navigation
 
-**Context Switcher (`:`):**
-- Type to filter, `↑/↓` to navigate all entries (scrollable, no truncation)
-- `Tab` — Auto-complete the typed prefix
-- `Enter` — Switch to selected context
-- `Esc` — Cancel
+| Key | Action |
+|---|---|
+| `Up/Down` or `j/k` | Move selection |
+| `Enter` or `Right` | Drill down |
+| `Esc` | Go back (restores cursor and data) |
+| `PgDn`/`PgUp` | Server-side pagination |
+| `gg` / `G` | Jump to first / last row |
+| `Ctrl+U` / `Ctrl+D` | Half-page scroll |
+| `1`-`4` | Jump to breadcrumb level |
 
-**Search (`/`):**
-- Opens the command-palette popup in search mode
-- Typing filters table rows live
-- `↑/↓` — Navigate matching entries in popup list
-- `Enter` — Lock filter (close popup, keep filtered rows)
-- `Esc` — Cancel and restore original rows
+### Actions
 
-**View Actions:**
-- `r` — Toggle auto-refresh (5s interval)
-- `<ctrl>-r` — Manual refresh
-- `L` — Toggle request latency display in footer (default: off)
-- `/` — Search: opens popup in search mode (live row filtering)
+| Key | Action |
+|---|---|
+| `Space` | Open actions menu for selected row |
+| `y` | View raw JSON detail |
+| `e` | Edit value (on editable columns) |
+| `s` | Sort by column |
+| `Ctrl+D` | Delete/terminate (context-dependent, with confirmation) |
 
-**Instance Actions:**
-- `<ctrl>+d` — Delete selected instance; confirm with `Ctrl+d` or Tab to focus button + Enter
+Actions are resource-specific and defined in `o8n-cfg.yaml`. Press `Space` on any row to see available actions.
 
-**Variable Actions:**
-- `e` — Edit selected value (when column is editable)
+## Configuration
 
-### Features
+Three files with distinct roles:
 
-**🎨 Theming & Skins**
-- 34+ built-in color schemes (dracula, nord, gruvbox, solarized, o8n-cyber, etc.)
-- Runtime skin switching with `<ctrl>+t` — live preview on ↑↓, Enter to apply, Esc to revert
-- No hardcoded colors — all colors driven by 25 semantic skin roles
-- Custom skin support: add a `colors:` section YAML file to `/skins` folder
+| File | Purpose | Committed |
+|---|---|---|
+| `o8n-env.yaml` | Environment URLs, credentials, accent colors | No (git-ignored) |
+| `o8n-cfg.yaml` | Table definitions, columns, actions, drilldowns | Yes |
+| `o8n-stat.yml` | Runtime state (active env, skin, last position) | No (auto-generated) |
 
-**📊 Dynamic Tables**
-- Responsive column sizing based on terminal width
-- Auto-hide low-priority columns on narrow terminals
-- Customizable column visibility and widths in `o8n-cfg.yaml`
-- Editable columns with type-aware input (opt-in)
+See [specification.md](specification.md) for the full configuration reference.
 
-**🔍 Context Switching**
-- Fast context switching with `:` key
-- Inline completion as you type
-- Access all Operaton resources (process definitions, instances, tasks, jobs, incidents, etc.)
+## Theming
 
-**⚡ Real-Time Updates**
-- Auto-refresh mode with configurable intervals
-- Visual indicator for API activity
-- Error messages in footer with auto-clear
+35 built-in skins. Switch at runtime with `Ctrl+T`:
 
-**🪟 Overlay Modals**
-- All dialogs (help, sort, detail, confirm, env picker) render as true overlays — background content stays visible
-- Confirm dialogs have Tab-navigatable buttons; default focus is Cancel (safe)
-- Press `Tab` to switch between Confirm/Cancel, `Enter` to activate, `Esc` to always cancel
+**Dark:** dracula, nord, gruvbox-dark, one-dark, nightfox, kanagawa, monokai, solarized-dark, everforest-dark, snazzy, vercel, rose-pine, rose-pine-moon, in-the-navy, and more
 
-**🔒 Multi-Environment Support**
-- Switch between environments with `<ctrl>+e`
-- Environment-specific UI colors
-- Secure credential management
+**Light:** gruvbox-light, everforest-light, solarized-light, rose-pine-dawn, and more
 
-**🎯 Drill-Down Navigation**
-- Process Definition → Process Instances → Variables
-- Breadcrumb navigation in footer
-- Intuitive back navigation with `Esc`
-- **View state restored on restart** — the app reopens at the last resource/drilldown level
+**Special:** o8n-cyber, transparent, stock, kiss
 
-**⚙️ Persistent State**
-- Active environment, skin, and latency toggle are saved in `o8n-stat.yml`
-- Last navigation position (resource type and drilldown path) is restored on startup
-- Credentials stay stable in `o8n-env.yaml` (no runtime modifications)
+Add custom skins by placing a YAML file in `skins/`. All colors use 25 semantic roles — no hardcoded values.
 
-### Debug Mode
-
-Run the application with `--debug` to enable debug diagnostics and API access logging:
+## Debug Mode
 
 ```bash
 ./o8n --debug
 ```
 
-When enabled the application creates a `./debug` directory and writes two files:
+Creates `./debug/` with:
+- `o8n.log` — Error and debug messages
+- `last-screen.txt` — Last rendered TUI frame
+- `screen-*.txt` — Screen dumps on panic
 
-- `./debug/last-screen.txt` — a dump of the last rendered TUI frame (useful for reproducing layout issues)
-- `./debug/access.log` — an append-only log of API calls. Each API call is logged as two lines:
-
-Example:
-
-```
-2026-02-17T02:11:25+01:00 API: FetchVariables instanceID="076899d8-0b54-11f1-b360-0242ac110002"
-2026-02-17T02:11:25+01:00 API: GET /process-instance/{id}/variables
-```
-
-Query parameters are shown as a URL query string when present, e.g.:
-
-```
-2026-02-17T02:24:34+01:00 API: GET /process-instance?processDefinitionKey=invoice
-```
-
-The debug files are intended for troubleshooting and are safe to remove after use.
-
-### Configuration Files
-
-**o8n-env.yaml** (Environment Configuration):
-```yaml
-environments:
-  <env-name>:
-    url: <operaton-rest-api-url>
-    username: <user>
-    password: <password>
-    ui_color: <hex-color>  # e.g., "#00A8E1"
-    default_timeout: <duration> # e.g., "10s", "1m"
-```
-
-**o8n-stat.yml** (Runtime State — auto-generated, git-ignored):
-```yaml
-active_env: local
-skin: dracula
-show_latency: false
-navigation:
-  root: process-instance
-  breadcrumb:
-    - process-definitions
-    - process-instances
-  selected_definition_key: my-process
-```
-
-**o8n-cfg.yaml** (UI Configuration):
-```yaml
-tables:
-  - name: process-definition
-    columns:
-      - name: key
-        visible: true
-        width: 20%
-        align: left
-      - name: name
-        visible: true
-        width: 40%
-        align: left
-      - name: version
-        visible: true
-        width: 15%
-        align: center
-      - name: resource
-        visible: true
-        width: 25%
-        align: left
-  - name: process-variables
-    columns:
-      - name: name
-        visible: true
-        width: 30%
-        align: left
-      - name: value
-        visible: true
-        width: 70%
-        align: left
-        editable: true
-        input_type: auto
-```
-
-### Security Note
-
-⚠️ **Important**: The environment file contains sensitive credentials.
-
-- Add `o8n-env.yaml` to `.gitignore` (already configured)
-- Never commit your actual `o8n-env.yaml` to version control
-- Use appropriate file permissions: `chmod 600 o8n-env.yaml`
-- Consider using environment variables for production deployments
+Other flags: `--no-splash` (skip startup animation), `--skin <name>` (override theme).
 
 ## Development
 
 ### Prerequisites
-- Go 1.24 or higher
+
+- Go 1.24+
 - Docker (for API client generation)
 
-### API Client Generation
+### Commands
 
-Regenerate the Operaton REST API client:
+```bash
+make build      # Build binary to execs/o8n
+make test       # Clear cache and run all tests
+make cover      # HTML coverage report
+go vet ./...    # Static analysis
+gofmt -w .      # Format code
+```
+
+### API Client Regeneration
 
 ```bash
 ./.devenv/scripts/generate-api-client.sh
 ```
 
-### Testing
-
-```bash
-go test ./... -v
-```
+Generates Go client from `resources/operaton-rest-api.json` into `internal/operaton/`. Do not edit generated files manually.
 
 ### Project Structure
 
 ```
 o8n/
-├── main.go              # Entry point (calls internal/app)
+├── main.go                  # Entry point
 ├── internal/
-│   ├── app/             # TUI application logic (model, update, view)
-│   ├── client/          # Operaton REST API client
-│   ├── config/          # Config structs and loaders
-│   └── ...
-├── o8n-env.yaml         # Environment credentials (git-ignored)
-├── o8n-cfg.yaml         # UI table definitions
-├── o8n-stat.yml         # Runtime state (git-ignored, auto-generated)
-├── resources/           # OpenAPI spec
-├── skins/               # Color schemes
-└── _bmad/core/prds/     # Design specifications
+│   ├── app/                 # TUI logic (model, update, view, nav, commands)
+│   ├── client/              # Operaton REST API client wrapper
+│   ├── config/              # Config structs and loaders
+│   ├── validation/          # Input validation (bool/int/float/json/text)
+│   ├── contentassist/       # User suggestion cache
+│   ├── dao/                 # Data access interfaces
+│   └── operaton/            # Auto-generated OpenAPI client
+├── skins/                   # 35 color theme YAML files
+├── resources/               # OpenAPI specification
+├── o8n-env.yaml             # Environment credentials (git-ignored)
+├── o8n-cfg.yaml             # UI table definitions (version-controlled)
+└── o8n-stat.yml             # Runtime state (auto-generated)
 ```
 
 ## Documentation
 
-- [specification.md](specification.md) — Complete technical specification
-- [Splash Screen Design](_bmad/core/prds/splash-screen-design.md)
-- [Compact Header Design](_bmad/core/prds/compact-header-design.md)
-- [Layout Design](_bmad/core/prds/layout-design-optimized.md)
-- [Modal Confirmation Design](_bmad/core/prds/modal-confirmation-design.md)
-- [Help Screen Design](_bmad/core/prds/help-screen-design.md)
+- [specification.md](specification.md) — Complete technical specification (architecture, behavior, configuration reference)
+
+## Security
+
+- `o8n-env.yaml` is git-ignored and should have `chmod 600` permissions
+- Never commit credentials to version control
+- Use `o8n-env.yaml.example` as a template
 
 ## License
 
@@ -294,4 +189,4 @@ See [LICENSE](LICENSE) file.
 
 ## Contributing
 
-Contributions welcome! Please read the specification.md for architecture details before submitting PRs.
+Contributions welcome. Read [specification.md](specification.md) for architecture details before submitting PRs.

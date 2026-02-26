@@ -22,7 +22,7 @@ git show HEAD~2:o8n-cfg.yaml > o8n-cfg.yaml
 # Then restore o8n-env.yaml with local settings
 ```
 
-See `CRITICAL_INSTRUCTIONS.md` for details.
+See the critical section above for details.
 
 ---
 
@@ -46,9 +46,8 @@ gofmt -w .      # Format code
 
 | File | Purpose |
 |------|---------|
-| `main.go` | Bubble Tea model, all UI logic and event handling (~2200 lines) |
-| `api.go` | Legacy HTTP client wrapper for Operaton REST API |
-| `config.go` | Configuration loading/saving |
+| `main.go` | Thin entry point, calls `internal/app.Run()` |
+| `internal/app/` | All TUI logic: model, update, view, nav, commands, skin, styles, table, edit |
 | `internal/client/` | Modern API client with reflection-based parameter binding |
 | `internal/config/` | Domain models and config structs |
 | `internal/dao/` | DAO interfaces (`DAO`, `HierarchicalDAO`, `ReadOnlyDAO`) |
