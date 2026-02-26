@@ -487,32 +487,27 @@ func newModel(cfg *config.Config) model {
 			m.lastHeight = h
 		}
 	}
-	// compute default paneWidth as remaining width after left column + margins
-	leftW := m.lastWidth / 4
-	if leftW < 12 {
-		leftW = 12
+	// full terminal width — no ghost left pane
+	m.paneWidth = m.lastWidth
+	if m.paneWidth < 10 {
+		m.paneWidth = 10
 	}
-	m.paneWidth = m.lastWidth - leftW - 4
-	if m.paneWidth < 20 {
-		m.paneWidth = m.lastWidth - 4
-	}
-	// compute content height reserving header/context/footer lines so header is visible
-	// compactHeader (2 lines) + content header (1 line) = 3 header lines total
-	headerLines := 3
-	footerLines := 2 // breadcrumb line + status line
+	// compute content height reserving header/footer lines
+	// compactHeader 2 rows + contextSelection 1 row + footer 1 row
+	headerLines := 2
+	footerLines := 1
+	contextLines := 1
 	searchBarLines := 0
 	if m.searchMode {
 		searchBarLines = 1
 	}
-	// reserve an extra safe line to avoid off-by-one overflow
-	contentHeight := m.lastHeight - headerLines - m.contextPopupHeight() - searchBarLines - footerLines - 1
+	contentHeight := m.lastHeight - headerLines - contextLines - searchBarLines - footerLines
 	if contentHeight < 3 {
 		contentHeight = 3
 	}
 	m.paneHeight = contentHeight
 
-	// initialize list/table sizes to match detected terminal size
-	m.list.SetSize(leftW-2, contentHeight-1)
+	// initialize table sizes to match detected terminal size
 	tableInner := m.paneWidth - 4
 	if tableInner < 10 {
 		tableInner = 10

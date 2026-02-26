@@ -267,7 +267,7 @@ func (m *model) contextPopupHeight() int {
 
 // computePaneHeight recalculates the table pane height based on current overlay state.
 func (m *model) computePaneHeight() int {
-	h := m.lastHeight - 3 - 2 - 1 // header(3) - footer(2) - safe(1)
+	h := m.lastHeight - 2 - 2 - 1 // header(2) - footer(2) - safe(1)
 	h -= m.contextPopupHeight()
 	if m.searchMode {
 		h -= 1

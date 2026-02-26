@@ -1222,8 +1222,8 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		// store terminal size for View footer alignment
 		m.lastWidth = width
 		m.lastHeight = height
-		// Reserve lines: compact header is 3 rows, context selection 1 line (when active), footer 1 line
-		headerLines := 3 // compactHeader placed at 3 rows
+		// Reserve lines: compact header is 2 rows, context selection 1 line (when active), footer 1 line
+		headerLines := 2 // compactHeader placed at 2 rows
 		contextSelectionLines := 1
 		footerLines := 1
 		// content height = terminal height minus header, context box, and footer
@@ -1231,17 +1231,12 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		if contentHeight < 3 {
 			contentHeight = 3
 		}
-		// compute left column width and content pane width
-		leftW := width / 4
-		if leftW < 12 {
-			leftW = 12
-		}
-		m.paneWidth = width - leftW - 4
+		// full terminal width — no ghost left pane
+		m.paneWidth = width
 		if m.paneWidth < 10 {
 			m.paneWidth = 10
 		}
 		m.paneHeight = contentHeight
-		m.list.SetSize(leftW-2, contentHeight-1)
 		// table inner width should be pane inner width minus border(2) and padding(2)
 		tableInner := m.paneWidth - 4
 		if tableInner < 10 {

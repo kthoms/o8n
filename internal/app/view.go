@@ -88,7 +88,7 @@ func (m *model) getKeyHints(width int) []KeyHint {
 	return hints
 }
 
-// renderCompactHeader renders a 3-row header
+// renderCompactHeader renders a 2-row header
 func (m *model) renderCompactHeader(width int) string {
 	if width <= 0 {
 		width = 80
@@ -513,7 +513,7 @@ func (m model) View() string {
 	// Main UI - use compact 3-row header
 	compactHeader := m.renderCompactHeader(m.lastWidth)
 	// Ensure compact header occupies exactly 3 rows
-	compactHeader = lipgloss.Place(m.lastWidth, 3, lipgloss.Left, lipgloss.Center, compactHeader)
+	compactHeader = lipgloss.Place(m.lastWidth, 2, lipgloss.Left, lipgloss.Center, compactHeader)
 
 	// get border color
 
@@ -664,6 +664,11 @@ func (m model) View() string {
 		}
 	}
 	breadcrumbRendered := strings.Join(crumbs, " ")
+	// Cap breadcrumb at 50% terminal width using ANSI-aware clipping
+	maxBreadcrumbW := m.lastWidth / 2
+	if lipgloss.Width(breadcrumbRendered) > maxBreadcrumbW && maxBreadcrumbW > 0 {
+		breadcrumbRendered = lipgloss.NewStyle().MaxWidth(maxBreadcrumbW).Inline(true).Render(breadcrumbRendered)
+	}
 
 	// Render remote flash as a fixed-width symbol on the right, plus latency and pagination if available
 	remoteSymbol := " "
@@ -923,8 +928,23 @@ func (m *model) renderSortPopup(width, height int) string {
 	modalStyle := lipgloss.NewStyle().
 		Border(lipgloss.RoundedBorder()).
 		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(0, 1).
-		Width(30)
+		Padding(0, 1)
+
+	// Dynamic width: max(30, longestColumnName+8), capped at terminalWidth-10
+	longestName := 14 // len("Sort by Column") as minimum content
+	for _, tableCol := range cols {
+		if len(tableCol.Title) > longestName {
+			longestName = len(tableCol.Title)
+		}
+	}
+	sortWidth := longestName + 8
+	if sortWidth < 30 {
+		sortWidth = 30
+	}
+	if m.lastWidth > 10 && sortWidth > m.lastWidth-10 {
+		sortWidth = m.lastWidth - 10
+	}
+	modalStyle = modalStyle.Width(sortWidth)
 
 	title := "Sort by Column"
 	content := b.String()

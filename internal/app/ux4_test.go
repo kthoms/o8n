@@ -147,8 +147,8 @@ func TestComputePaneHeightBase(t *testing.T) {
 	m.searchMode = false
 
 	h := m.computePaneHeight()
-	// 30 - 3 (header) - 2 (footer) - 1 (safe) = 24
-	want := 24
+	// 30 - 2 (header) - 2 (footer) - 1 (safe) = 25
+	want := 25
 	if h != want {
 		t.Errorf("expected pane height %d, got %d", want, h)
 	}
@@ -162,7 +162,7 @@ func TestComputePaneHeightWithPopup(t *testing.T) {
 	m.searchMode = false
 
 	h := m.computePaneHeight()
-	want := 20 // 30 - 3(header) - 2(footer) - 1(safe) - 4(popup)
+	want := 21 // 30 - 2(header) - 2(footer) - 1(safe) - 4(popup)
 	if h != want {
 		t.Errorf("expected pane height %d with popup, got %d", want, h)
 	}
@@ -175,7 +175,7 @@ func TestComputePaneHeightWithSearch(t *testing.T) {
 	m.searchMode = true
 
 	h := m.computePaneHeight()
-	want := 23
+	want := 24
 	if h != want {
 		t.Errorf("expected pane height %d with search, got %d", want, h)
 	}
@@ -189,7 +189,7 @@ func TestComputePaneHeightBothActive(t *testing.T) {
 	m.searchMode = true
 
 	h := m.computePaneHeight()
-	want := 19 // 30 - 3 - 2 - 1 - 4(popup) - 1(search)
+	want := 20 // 30 - 2 - 2 - 1 - 4(popup) - 1(search)
 	if h != want {
 		t.Errorf("expected pane height %d with both active, got %d", want, h)
 	}
