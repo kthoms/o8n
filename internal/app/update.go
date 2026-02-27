@@ -791,7 +791,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, nil
 			}
 			// Task claim: only active on task table with no modal/menu open
-			if m.currentTableKey() == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
+			if def := m.findTableDef(m.currentTableKey()); def != nil && def.Name == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
 				row := m.table.SelectedRow()
 				if len(row) == 0 {
 					return m, nil
@@ -824,7 +824,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, nil
 			}
 			// Task unclaim: only active on task table with no modal/menu open
-			if m.currentTableKey() == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
+			if def := m.findTableDef(m.currentTableKey()); def != nil && def.Name == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
 				row := m.table.SelectedRow()
 				if len(row) == 0 {
 					return m, nil
@@ -1002,7 +1002,11 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			}
 
 			// Task table: intercept Enter to open completion dialog (instead of drilldown)
-			if s == "enter" && m.currentTableKey() == "task" && m.popup.mode == popupModeNone {
+			if s == "enter" && m.popup.mode == popupModeNone {
+				if def := m.findTableDef(m.currentTableKey()); def == nil || def.Name != "task" {
+					return m, nil
+				}
+
 				row := m.table.SelectedRow()
 				if len(row) == 0 {
 					return m, nil
