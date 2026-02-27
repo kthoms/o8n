@@ -15,6 +15,7 @@ import (
 	"github.com/kthoms/o8n/internal/client"
 	"github.com/kthoms/o8n/internal/config"
 	"github.com/kthoms/o8n/internal/dao"
+	"github.com/kthoms/o8n/internal/operaton"
 
 	tea "github.com/charmbracelet/bubbletea"
 )
@@ -45,8 +46,9 @@ func (m model) executeActionCmd(action config.ActionDef, resolvedPath string) te
 	}
 	c := client.NewClient(env, m.debugEnabled)
 	label := action.Label
+	body := strings.ReplaceAll(action.Body, "{currentUser}", env.Username)
 	return func() tea.Msg {
-		if err := c.ExecuteAction(action.Method, resolvedPath, action.Body); err != nil {
+		if err := c.ExecuteAction(action.Method, resolvedPath, body); err != nil {
 			return errMsg{err}
 		}
 		return actionExecutedMsg{label: label}
@@ -599,5 +601,113 @@ func listSkinsCmd() tea.Cmd {
 		}
 		sort.Strings(names)
 		return skinsLoadedMsg{names: names}
+	}
+}
+
+// fetchTaskVariablesCmd fetches both task variables and form variables in parallel.
+// Returns taskVariablesLoadedMsg with both sets when both complete.
+func (m model) fetchTaskVariablesCmd(taskID, taskName string) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return func() tea.Msg { return errMsg{fmt.Errorf("unknown environment %q", m.currentEnv)} }
+	}
+	c := client.NewClient(env, m.debugEnabled)
+	return func() tea.Msg {
+		// Fetch input variables: GET /task/{id}/variables
+		inputRaw, _, err := c.OperatonAPI().TaskVariableAPI.
+			GetTaskVariables(c.AuthContext(), taskID).Execute()
+		if err != nil {
+			return errMsg{fmt.Errorf("fetch task variables: %w", err)}
+		}
+		// Fetch form (output) variables: GET /task/{id}/form-variables
+		formRaw, _, err := c.OperatonAPI().TaskAPI.
+			GetFormVariables(c.AuthContext(), taskID).Execute()
+		if err != nil {
+			return errMsg{fmt.Errorf("fetch form variables: %w", err)}
+		}
+
+		inputVars := make(map[string]variableValue, len(*inputRaw))
+		for name, v := range *inputRaw {
+			inputVars[name] = variableValue{
+				Value:    v.Value,
+				TypeName: getVarTypeName(v),
+			}
+		}
+		formVars := make(map[string]variableValue, len(*formRaw))
+		for name, v := range *formRaw {
+			formVars[name] = variableValue{
+				Value:    v.Value,
+				TypeName: getVarTypeName(v),
+			}
+		}
+		return taskVariablesLoadedMsg{
+			taskID:    taskID,
+			taskName:  taskName,
+			inputVars: inputVars,
+			formVars:  formVars,
+		}
+	}
+}
+
+// getVarTypeName extracts the type name string from a VariableValueDto.
+func getVarTypeName(v operaton.VariableValueDto) string {
+	if v.HasType() {
+		return v.GetType()
+	}
+	return ""
+}
+
+// claimTaskCmd calls POST /task/{id}/claim with the given userId.
+func (m model) claimTaskCmd(taskID, userID, taskName string) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return func() tea.Msg { return errMsg{fmt.Errorf("unknown environment %q", m.currentEnv)} }
+	}
+	c := client.NewClient(env, m.debugEnabled)
+	label := "Claimed: " + taskName
+	return func() tea.Msg {
+		dto := operaton.UserIdDto{}
+		dto.SetUserId(userID)
+		_, err := c.OperatonAPI().TaskAPI.Claim(c.AuthContext(), taskID).UserIdDto(dto).Execute()
+		if err != nil {
+			return errMsg{fmt.Errorf("claim task: %w", err)}
+		}
+		return actionExecutedMsg{label: label}
+	}
+}
+
+// unclaimTaskCmd calls POST /task/{id}/unclaim.
+func (m model) unclaimTaskCmd(taskID, taskName string) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return func() tea.Msg { return errMsg{fmt.Errorf("unknown environment %q", m.currentEnv)} }
+	}
+	c := client.NewClient(env, m.debugEnabled)
+	label := "Unclaimed: " + taskName
+	return func() tea.Msg {
+		_, err := c.OperatonAPI().TaskAPI.Unclaim(c.AuthContext(), taskID).Execute()
+		if err != nil {
+			return errMsg{fmt.Errorf("unclaim task: %w", err)}
+		}
+		return actionExecutedMsg{label: label}
+	}
+}
+
+// completeTaskCmd calls POST /task/{id}/complete with the provided variable values.
+func (m model) completeTaskCmd(taskID, taskName string, vars map[string]operaton.VariableValueDto) tea.Cmd {
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return func() tea.Msg { return errMsg{fmt.Errorf("unknown environment %q", m.currentEnv)} }
+	}
+	c := client.NewClient(env, m.debugEnabled)
+	label := "Completed: " + taskName
+	return func() tea.Msg {
+		dto := operaton.CompleteTaskDto{}
+		dto.SetVariables(vars)
+		_, _, err := c.OperatonAPI().TaskAPI.Complete(c.AuthContext(), taskID).CompleteTaskDto(dto).Execute()
+		if err != nil {
+			return errMsg{fmt.Errorf("complete task: %w", err)}
+		}
+		return actionExecutedMsg{label: label, closeTaskDialog: true}
 	}
 }

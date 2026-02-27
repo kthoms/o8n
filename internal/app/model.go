@@ -52,7 +52,8 @@ type retriedMsg struct{ id string }
 
 // actionExecutedMsg is sent when a config-driven action completes successfully
 type actionExecutedMsg struct {
-	label string // the action label for feedback
+	label           string // the action label for feedback
+	closeTaskDialog bool   // when true, close ModalTaskComplete and clear its state
 }
 
 type errMsg struct{ err error }
@@ -145,7 +146,40 @@ const (
 	ModalSort
 	ModalDetailView
 	ModalEnvironment
+	ModalTaskComplete
 )
+
+// taskCompleteFocusArea tracks keyboard focus within the task completion modal
+type taskCompleteFocusArea int
+
+const (
+	focusTaskField    taskCompleteFocusArea = iota // a form field is focused
+	focusTaskComplete                              // [Complete] button focused
+	focusTaskBack                                  // [Back] button focused
+)
+
+// taskCompleteField represents one editable output variable in the completion dialog
+type taskCompleteField struct {
+	name     string
+	varType  string // lowercased: "string", "boolean", "integer", "double", "json"
+	origType string // original casing from API for submission (e.g. "String", "Boolean")
+	input    textinput.Model
+	error    string
+}
+
+// variableValue holds a variable's value and type name as returned by the API
+type variableValue struct {
+	Value    interface{}
+	TypeName string // original casing from API (e.g. "String", "Boolean", "Integer")
+}
+
+// taskVariablesLoadedMsg is sent when both task variable fetches complete
+type taskVariablesLoadedMsg struct {
+	taskID    string
+	taskName  string
+	inputVars map[string]variableValue // from GET /task/{id}/variables
+	formVars  map[string]variableValue // from GET /task/{id}/form-variables
+}
 
 // popupMode identifies the active command palette mode.
 type popupMode int
@@ -378,6 +412,14 @@ type model struct {
 
 	// Help scroll offset
 	helpScroll int
+
+	// Task completion dialog state
+	taskCompleteTaskID   string
+	taskCompleteTaskName string
+	taskInputVars        map[string]variableValue // from GET /task/{id}/variables (for pre-fill)
+	taskCompleteFields   []taskCompleteField      // editable output fields (form variables)
+	taskCompletePos      int                      // index of focused field (when focusTaskField)
+	taskCompleteFocus    taskCompleteFocusArea
 
 	// Environment popup state
 	showEnvPopup   bool

@@ -10,9 +10,12 @@ import (
 	"time"
 
 	"github.com/charmbracelet/bubbles/table"
+	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/kthoms/o8n/internal/config"
 	"github.com/kthoms/o8n/internal/dao"
+	"github.com/kthoms/o8n/internal/operaton"
+	"github.com/kthoms/o8n/internal/validation"
 )
 
 func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
@@ -550,6 +553,59 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			return m, nil
 		}
 
+		if m.activeModal == ModalTaskComplete {
+			switch s {
+			case "esc":
+				m.closeTaskCompleteDialog()
+				return m, nil
+			case "tab":
+				m.taskCompleteTabForward()
+				return m, nil
+			case "shift+tab", "backtab":
+				m.taskCompleteTabBackward()
+				return m, nil
+			case " ", "space":
+				if m.taskCompleteFocus == focusTaskField && len(m.taskCompleteFields) > 0 {
+					f := &m.taskCompleteFields[m.taskCompletePos]
+					if f.varType == "bool" {
+						current := strings.TrimSpace(strings.ToLower(f.input.Value()))
+						if current == "true" {
+							f.input.SetValue("false")
+						} else {
+							f.input.SetValue("true")
+						}
+						f.input.CursorEnd()
+						f.error = ""
+					}
+				}
+				return m, nil
+			case "enter":
+				switch m.taskCompleteFocus {
+				case focusTaskField:
+					// Advance focus to [Complete] button
+					m.blurCurrentTaskField()
+					m.taskCompleteFocus = focusTaskComplete
+				case focusTaskComplete:
+					if cmd := m.submitTaskComplete(); cmd != nil {
+						return m, cmd
+					}
+				case focusTaskBack:
+					m.closeTaskCompleteDialog()
+				}
+				return m, nil
+			default:
+				// Feed printable keystrokes to the focused field
+				if m.taskCompleteFocus == focusTaskField && len(m.taskCompleteFields) > 0 {
+					var cmd tea.Cmd
+					f := &m.taskCompleteFields[m.taskCompletePos]
+					f.input, cmd = f.input.Update(msg)
+					f.error = m.validateTaskFieldValue(*f)
+					return m, cmd
+				}
+			}
+			return m, nil
+		}
+
 		// handle colon typed as a key string so it works across terminals
 		if s == ":" {
 			if m.popup.mode == popupModeNone {
@@ -729,6 +785,72 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, cmd
 			}
 			return m, nil
+		case "c":
+			if m.popup.mode != popupModeNone {
+				m.popup.input += s
+				return m, nil
+			}
+			// Task claim: only active on task table with no modal/menu open
+			if m.currentTableKey() == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return m, nil
+				}
+				assignee := m.resolveRowValue(row, "assignee")
+				taskID := m.resolveRowValue(row, "id")
+				taskName := m.resolveRowValue(row, "name")
+				currentUser := m.currentUsername()
+				if assignee != "" && assignee != currentUser {
+					msg2, kind, cmd := setFooterStatus(footerStatusError, fmt.Sprintf("Already claimed by %s", assignee), 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				if assignee == currentUser && currentUser != "" {
+					msg2, kind, cmd := setFooterStatus(footerStatusInfo, "You already own this task — press Enter to complete", 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				// assignee is empty — claim it
+				m.isLoading = true
+				m.apiCallStarted = time.Now()
+				return m, tea.Batch(m.claimTaskCmd(taskID, currentUser, taskName), spinnerTickCmd())
+			}
+			return m, nil
+		case "u":
+			if m.popup.mode != popupModeNone {
+				m.popup.input += s
+				return m, nil
+			}
+			// Task unclaim: only active on task table with no modal/menu open
+			if m.currentTableKey() == "task" && m.activeModal == ModalNone && !m.showActionsMenu {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return m, nil
+				}
+				assignee := m.resolveRowValue(row, "assignee")
+				taskID := m.resolveRowValue(row, "id")
+				taskName := m.resolveRowValue(row, "name")
+				currentUser := m.currentUsername()
+				if assignee == "" {
+					msg2, kind, cmd := setFooterStatus(footerStatusError, "Task is not claimed", 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				if assignee != currentUser {
+					msg2, kind, cmd := setFooterStatus(footerStatusError, fmt.Sprintf("Task is assigned to %s, not you", assignee), 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				// assignee == currentUser — unclaim
+				m.isLoading = true
+				m.apiCallStarted = time.Now()
+				return m, tea.Batch(m.unclaimTaskCmd(taskID, taskName), spinnerTickCmd())
+			}
+			return m, nil
 		case "esc":
 			if m.popup.mode == popupModeSkin {
 				// Revert skin to what it was before preview
@@ -877,6 +999,35 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				}
 				// no match: ignore
 				return m, nil
+			}
+
+			// Task table: intercept Enter to open completion dialog (instead of drilldown)
+			if s == "enter" && m.currentTableKey() == "task" && m.popup.mode == popupModeNone {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return m, nil
+				}
+				assignee := m.resolveRowValue(row, "assignee")
+				taskID := m.resolveRowValue(row, "id")
+				taskName := m.resolveRowValue(row, "name")
+				currentUser := m.currentUsername()
+				if assignee == "" {
+					msg2, kind, cmd := setFooterStatus(footerStatusError, "Claim this task first (c)", 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				if assignee != currentUser {
+					msg2, kind, cmd := setFooterStatus(footerStatusError, fmt.Sprintf("Task is assigned to %s", assignee), 5*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				// Own task — fetch variables and open dialog
+				m.isLoading = true
+				m.apiCallStarted = time.Now()
+				m.footerError, m.footerStatusKind, _ = setFooterStatus(footerStatusLoading, "Loading task variables…", 0)
+				return m, tea.Batch(m.fetchTaskVariablesCmd(taskID, taskName), spinnerTickCmd())
 			}
 
 			// identify the current table (use last breadcrumb entry when available)
@@ -1394,6 +1545,25 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			m.apiCallStarted = time.Time{}
 		}
 		m.isLoading = false
+	case taskVariablesLoadedMsg:
+		m.isLoading = false
+		if !m.apiCallStarted.IsZero() {
+			m.lastAPILatency = time.Since(m.apiCallStarted)
+			m.apiCallStarted = time.Time{}
+		}
+		m.taskCompleteTaskID = msg.taskID
+		m.taskCompleteTaskName = msg.taskName
+		m.taskInputVars = msg.inputVars
+		m.taskCompleteFields = m.buildTaskCompleteFields(msg.formVars, msg.inputVars)
+		m.taskCompletePos = 0
+		m.taskCompleteFocus = focusTaskField
+		if len(m.taskCompleteFields) > 0 {
+			m.taskCompleteFields[0].input.Focus()
+		}
+		m.footerError = ""
+		m.footerStatusKind = footerStatusNone
+		m.activeModal = ModalTaskComplete
+		return m, nil
 	case instancesWithCountMsg:
 		// set known total for instances root
 		m.pageTotals[dao.ResourceProcessInstances] = msg.count
@@ -1595,6 +1765,9 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		}
 		return m, tea.Batch(statusCmd, fetchCmd, spinnerTickCmd())
 	case actionExecutedMsg:
+		if msg.closeTaskDialog {
+			m.closeTaskCompleteDialog()
+		}
 		msg2, kind, statusCmd := setFooterStatus(footerStatusSuccess, fmt.Sprintf("✓ %s", msg.label), 3*time.Second)
 		m.footerError = msg2
 		m.footerStatusKind = kind
@@ -1614,8 +1787,11 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			m.popup.items = m.availableSkins
 		}
 	case errMsg:
-		// Clear stale table rows so old data doesn't persist alongside the error
-		m.table.SetRows([]table.Row{})
+		// Clear stale table rows so old data doesn't persist alongside the error.
+		// Exception: preserve rows when the task complete dialog is open (keeps context visible).
+		if m.activeModal != ModalTaskComplete {
+			m.table.SetRows([]table.Row{})
+		}
 		m.isLoading = false
 		// Log error always (not just in debug mode) — stack trace only in debug mode
 		id := fmt.Sprintf("%d", time.Now().UnixNano())
@@ -1679,4 +1855,183 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 	m.selectedInstanceID = rowInstanceID(m.table.SelectedRow())
 
 	return m, tea.Batch(cmds...)
+}
+
+// currentUsername returns the username for the active environment.
+func (m *model) currentUsername() string {
+	if m.config == nil {
+		return ""
+	}
+	env, ok := m.config.Environments[m.currentEnv]
+	if !ok {
+		return ""
+	}
+	return env.Username
+}
+
+// closeTaskCompleteDialog resets all task completion state and closes the modal.
+func (m *model) closeTaskCompleteDialog() {
+	m.activeModal = ModalNone
+	m.taskCompleteTaskID = ""
+	m.taskCompleteTaskName = ""
+	m.taskInputVars = nil
+	m.taskCompleteFields = nil
+	m.taskCompletePos = 0
+	m.taskCompleteFocus = focusTaskField
+}
+
+// blurCurrentTaskField removes focus from the currently focused text input.
+func (m *model) blurCurrentTaskField() {
+	if len(m.taskCompleteFields) > 0 && m.taskCompletePos < len(m.taskCompleteFields) {
+		m.taskCompleteFields[m.taskCompletePos].input.Blur()
+	}
+}
+
+// focusCurrentTaskField sets focus on the current task field.
+func (m *model) focusCurrentTaskField() {
+	if len(m.taskCompleteFields) > 0 && m.taskCompletePos < len(m.taskCompleteFields) {
+		m.taskCompleteFields[m.taskCompletePos].input.Focus()
+	}
+}
+
+// taskCompleteTabForward advances focus: field → ... → Complete → Back → field.
+func (m *model) taskCompleteTabForward() {
+	switch m.taskCompleteFocus {
+	case focusTaskField:
+		if m.taskCompletePos < len(m.taskCompleteFields)-1 {
+			m.blurCurrentTaskField()
+			m.taskCompletePos++
+			m.focusCurrentTaskField()
+		} else {
+			m.blurCurrentTaskField()
+			m.taskCompleteFocus = focusTaskComplete
+		}
+	case focusTaskComplete:
+		m.taskCompleteFocus = focusTaskBack
+	case focusTaskBack:
+		m.taskCompleteFocus = focusTaskField
+		m.taskCompletePos = 0
+		m.focusCurrentTaskField()
+	}
+}
+
+// taskCompleteTabBackward reverses the Tab cycle.
+func (m *model) taskCompleteTabBackward() {
+	switch m.taskCompleteFocus {
+	case focusTaskField:
+		if m.taskCompletePos > 0 {
+			m.blurCurrentTaskField()
+			m.taskCompletePos--
+			m.focusCurrentTaskField()
+		} else {
+			m.blurCurrentTaskField()
+			m.taskCompleteFocus = focusTaskBack
+		}
+	case focusTaskComplete:
+		m.taskCompleteFocus = focusTaskField
+		if len(m.taskCompleteFields) > 0 {
+			m.taskCompletePos = len(m.taskCompleteFields) - 1
+		}
+		m.focusCurrentTaskField()
+	case focusTaskBack:
+		m.taskCompleteFocus = focusTaskComplete
+	}
+}
+
+// validateTaskFieldValue validates a task field's current input value.
+// Returns empty string when valid, or an error message.
+func (m *model) validateTaskFieldValue(f taskCompleteField) string {
+	val := f.input.Value()
+	if val == "" {
+		return "" // empty is allowed (will submit as empty string)
+	}
+	_, err := validation.ValidateAndParse(val, f.varType)
+	if err != nil {
+		return err.Error()
+	}
+	return ""
+}
+
+// taskCompleteHasErrors returns true if any field has a validation error.
+func (m *model) taskCompleteHasErrors() bool {
+	for _, f := range m.taskCompleteFields {
+		if f.error != "" {
+			return true
+		}
+		// live-validate each field
+		if err := m.validateTaskFieldValue(f); err != "" {
+			return true
+		}
+	}
+	return false
+}
+
+// submitTaskComplete builds the variable map and dispatches completeTaskCmd.
+// Returns nil if validation fails (Complete button should be disabled).
+func (m *model) submitTaskComplete() tea.Cmd {
+	if m.taskCompleteHasErrors() {
+		return nil
+	}
+	vars := make(map[string]operaton.VariableValueDto, len(m.taskCompleteFields))
+	for _, f := range m.taskCompleteFields {
+		parsedVal, _ := validation.ValidateAndParse(f.input.Value(), f.varType)
+		v := operaton.VariableValueDto{}
+		v.SetValue(parsedVal)
+		v.SetType(f.origType)
+		vars[f.name] = v
+	}
+	m.isLoading = true
+	m.apiCallStarted = time.Now()
+	return tea.Batch(m.completeTaskCmd(m.taskCompleteTaskID, m.taskCompleteTaskName, vars), spinnerTickCmd())
+}
+
+// mapAPITypeToVarType maps an Operaton API type name to the internal validation type string.
+func mapAPITypeToVarType(apiType string) string {
+	switch strings.ToLower(apiType) {
+	case "boolean":
+		return "bool"
+	case "integer", "long", "short":
+		return "int"
+	case "double", "float":
+		return "float"
+	case "json", "object":
+		return "json"
+	default:
+		return "text"
+	}
+}
+
+// buildTaskCompleteFields constructs the slice of editable form fields from the
+// form variable definitions, pre-filling values from matching input variables.
+func (m *model) buildTaskCompleteFields(formVars, inputVars map[string]variableValue) []taskCompleteField {
+	names := make([]string, 0, len(formVars))
+	for name := range formVars {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+
+	fields := make([]taskCompleteField, 0, len(names))
+	for _, name := range names {
+		fv := formVars[name]
+		origType := fv.TypeName
+		varType := mapAPITypeToVarType(origType)
+
+		ti := textinput.New()
+		// Pre-fill: input variable with same name takes priority, then form var default value
+		prefill := ""
+		if iv, ok := inputVars[name]; ok && iv.Value != nil {
+			prefill = fmt.Sprintf("%v", iv.Value)
+		} else if fv.Value != nil {
+			prefill = fmt.Sprintf("%v", fv.Value)
+		}
+		ti.SetValue(prefill)
+
+		fields = append(fields, taskCompleteField{
+			name:     name,
+			varType:  varType,
+			origType: origType,
+			input:    ti,
+		})
+	}
+	return fields
 }

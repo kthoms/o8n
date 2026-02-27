@@ -820,6 +820,9 @@ func (m model) View() string {
 	} else if m.activeModal == ModalConfirmQuit {
 		overlay := m.renderConfirmQuitModal(m.lastWidth, m.lastHeight)
 		return overlayCenter(baseView, overlay)
+	} else if m.activeModal == ModalTaskComplete {
+		overlay := m.renderTaskCompleteModal(m.lastWidth, m.lastHeight)
+		return overlayCenter(baseView, overlay)
 	}
 
 	// If actions menu is active, overlay it
@@ -1156,6 +1159,116 @@ func (m *model) renderActionsMenu(width, height int) string {
 
 	modal := modalStyle.Render(b.String())
 	return overlayCenter(lipgloss.Place(width, height, lipgloss.Left, lipgloss.Top, ""), modal)
+}
+
+// renderTaskCompleteModal renders the full-screen task completion dialog.
+func (m *model) renderTaskCompleteModal(width, height int) string {
+	const sep = "────────────────────────────────────"
+
+	var sb strings.Builder
+
+	// Title + subtitle
+	sb.WriteString("Complete Task\n")
+	sb.WriteString(m.styles.FgMuted.Render(m.taskCompleteTaskName) + "\n")
+	sb.WriteString(sep + "\n\n")
+
+	// INPUT VARIABLES section
+	sb.WriteString("INPUT VARIABLES\n")
+	if len(m.taskInputVars) == 0 {
+		sb.WriteString(m.styles.FgMuted.Render("  No context variables") + "\n")
+	} else {
+		// Sort alphabetically
+		names := make([]string, 0, len(m.taskInputVars))
+		for n := range m.taskInputVars {
+			names = append(names, n)
+		}
+		sortStrings(names)
+		for _, n := range names {
+			v := m.taskInputVars[n]
+			val := ""
+			if v.Value != nil {
+				val = fmt.Sprintf("%v", v.Value)
+			}
+			sb.WriteString(m.styles.FgMuted.Render(fmt.Sprintf("  %s : %s", n, val)) + "\n")
+		}
+	}
+	sb.WriteString("\n" + sep + "\n\n")
+
+	// OUTPUT VARIABLES section
+	sb.WriteString("OUTPUT VARIABLES\n")
+	if len(m.taskCompleteFields) == 0 {
+		sb.WriteString(m.styles.FgMuted.Render("  No output variables defined for this task") + "\n")
+	} else {
+		for i, f := range m.taskCompleteFields {
+			focused := m.taskCompleteFocus == focusTaskField && m.taskCompletePos == i
+			_ = focused
+			inputView := f.input.View()
+			sb.WriteString(fmt.Sprintf("  %s │ %s\n", f.name, inputView))
+			if f.error != "" {
+				sb.WriteString(m.styles.ValidationError.Render("  ⚠ "+f.error) + "\n")
+			}
+		}
+	}
+	sb.WriteString("\n" + sep + "\n\n")
+
+	// Buttons
+	completeDisabled := m.taskCompleteHasErrors()
+	var completeBtn, backBtn string
+	switch m.taskCompleteFocus {
+	case focusTaskComplete:
+		if completeDisabled {
+			completeBtn = m.styles.BtnDisabled.Copy().
+				Border(lipgloss.NormalBorder()).
+				BorderForeground(col(m.skin, "danger")).
+				Render("  Complete  ")
+		} else {
+			completeBtn = m.styles.BtnSaveFocused.Render("  Complete  ")
+		}
+		backBtn = m.styles.BtnCancel.Render("  Back  ")
+	case focusTaskBack:
+		if completeDisabled {
+			completeBtn = m.styles.BtnDisabled.Render("  Complete  ")
+		} else {
+			completeBtn = m.styles.BtnSave.Render("  Complete  ")
+		}
+		backBtn = m.styles.BtnCancelFocused.Render("  Back  ")
+	default:
+		if completeDisabled {
+			completeBtn = m.styles.BtnDisabled.Render("  Complete  ")
+		} else {
+			completeBtn = m.styles.BtnSave.Render("  Complete  ")
+		}
+		backBtn = m.styles.BtnCancel.Render("  Back  ")
+	}
+	sb.WriteString(completeBtn + "  " + backBtn + "\n\n")
+
+	// Hint line
+	sb.WriteString(m.styles.FgMuted.Render("Tab: next  Space: toggle bool  Esc: back"))
+
+	// Wrap in modal style
+	modalW := width - 8
+	if modalW < 60 {
+		modalW = 60
+	}
+	if modalW > 100 {
+		modalW = 100
+	}
+	modalStyle := lipgloss.NewStyle().
+		Border(lipgloss.RoundedBorder()).
+		BorderForeground(col(m.skin, "borderFocus")).
+		Padding(1, 2).
+		Width(modalW)
+
+	return modalStyle.Render(sb.String())
+}
+
+// sortStrings sorts a string slice in place (helper to avoid importing sort in view.go).
+func sortStrings(ss []string) {
+	for i := 1; i < len(ss); i++ {
+		for j := i; j > 0 && ss[j] < ss[j-1]; j-- {
+			ss[j], ss[j-1] = ss[j-1], ss[j]
+		}
+	}
 }
 
 // overlayCenter places the fg string centered over the bg string.

@@ -288,15 +288,10 @@ tables:
           column: id
       actions:
         - key: c
-          label: Complete Task
-          method: POST
-          path: /task/{id}/complete
-          body: '{}'
-        - key: k
           label: Claim Task
           method: POST
           path: /task/{id}/claim
-          body: '{}'
+          body: '{"userId": "{currentUser}"}'
         - key: u
           label: Unclaim Task
           method: POST

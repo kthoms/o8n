@@ -443,6 +443,16 @@ func (c *CompatClient) logf(format string, args ...interface{}) {
 	fmt.Fprintf(w, format+"\n", args...)
 }
 
+// OperatonAPI returns the underlying generated API client for direct SDK access.
+func (c *CompatClient) OperatonAPI() *operaton.APIClient {
+	return c.operatonAPI
+}
+
+// AuthContext returns the auth-enriched context for SDK calls.
+func (c *CompatClient) AuthContext() context.Context {
+	return c.authContext
+}
+
 // NewClient creates a CompatClient from the environment config.
 // When debug is true, all HTTP requests are logged to ./debug/access.log.
 func NewClient(env cfgpkg.Environment, debug bool) *CompatClient {

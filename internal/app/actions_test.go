@@ -43,11 +43,11 @@ func testConfigWithActions() *config.Config {
 				Name: "task",
 				Columns: []config.ColumnDef{
 					{Name: "id", Width: 0},
+					{Name: "assignee", Width: 0},
 				},
 				Actions: []config.ActionDef{
-					{Key: "c", Label: "Complete", Method: "POST", Path: "/task/{id}/complete"},
-					{Key: "k", Label: "Claim", Method: "POST", Path: "/task/{id}/claim"},
-					{Key: "u", Label: "Unclaim", Method: "POST", Path: "/task/{id}/unclaim"},
+					{Key: "c", Label: "Claim Task", Method: "POST", Path: "/task/{id}/claim", Body: `{"userId": "{currentUser}"}`},
+					{Key: "u", Label: "Unclaim Task", Method: "POST", Path: "/task/{id}/unclaim"},
 				},
 			},
 		},
@@ -134,19 +134,22 @@ func TestActionsMenuItemsForTask(t *testing.T) {
 
 	items := m.buildActionsForRoot()
 
-	// Should have: Complete, Claim, Unclaim + View as JSON
-	if len(items) < 4 {
-		t.Errorf("expected at least 4 items for task, got %d", len(items))
+	// Should have: Claim, Unclaim + View as JSON (Complete is now a dialog-driven flow)
+	if len(items) < 3 {
+		t.Errorf("expected at least 3 items for task, got %d", len(items))
 	}
 
 	keys := make(map[string]bool)
 	for _, item := range items {
 		keys[item.key] = true
 	}
-	for _, expected := range []string{"c", "k", "u", "y"} {
+	for _, expected := range []string{"c", "u", "y"} {
 		if !keys[expected] {
 			t.Errorf("expected key %q in task actions menu", expected)
 		}
+	}
+	if keys["k"] {
+		t.Error("key 'k' should no longer be in task actions (renamed to 'c' for Claim)")
 	}
 }
 
