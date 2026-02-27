@@ -553,7 +553,12 @@ func newModelEnvApp(envCfg *config.EnvConfig, appCfg *config.AppConfig, skinName
 	m.appConfig = appCfg
 	m.activeSkin = skinName
 
-	skin, err := loadSkin(skinName)
+	// Normalize skin filename: accept either bare name (e.g. "narsingh") or full filename ("narsingh.yaml").
+	skinFile := skinName
+	if skinFile != "" && !strings.HasSuffix(skinFile, ".yaml") {
+		skinFile = skinFile + ".yaml"
+	}
+	skin, err := loadSkin(skinFile)
 	if err != nil {
 		log.Printf("Falling back to stock skin. Could not load skin: %v", err)
 		skin, _ = loadSkin("stock.yaml")
