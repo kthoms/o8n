@@ -118,7 +118,11 @@ func (m *model) renderCompactHeader(width int) string {
 		row1 = row1 + " " + badge
 	}
 	if lipgloss.Width(row1) > width-4 {
-		row1 = truncateString(row1, width-7) + "..."
+		plain := ansi.Strip(row1)
+		if lipgloss.Width(plain) > width-7 {
+			plain = truncateString(plain, width-7) + "..."
+		}
+		row1 = plain
 	}
 
 	// Row 2: Key hints (priority-based)
@@ -130,7 +134,11 @@ func (m *model) renderCompactHeader(width int) string {
 	}
 	row2 := strings.Join(row2Parts, "  ")
 	if lipgloss.Width(row2) > width-4 {
-		row2 = truncateString(row2, width-7) + "..."
+		plain := ansi.Strip(row2)
+		if lipgloss.Width(plain) > width-7 {
+			plain = truncateString(plain, width-7) + "..."
+		}
+		row2 = plain
 	}
 
 	// Join rows
