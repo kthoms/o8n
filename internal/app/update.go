@@ -1003,35 +1003,34 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 
 			// Task table: intercept Enter to open completion dialog (instead of drilldown)
 			if s == "enter" && m.popup.mode == popupModeNone {
-				if def := m.findTableDef(m.currentTableKey()); def == nil || def.Name != "task" {
-					return m, nil
+				// Only intercept Enter for the explicit "task" TableDef; otherwise fall through to generic drilldown
+				if def := m.findTableDef(m.currentTableKey()); def != nil && def.Name == "task" {
+					row := m.table.SelectedRow()
+					if len(row) == 0 {
+						return m, nil
+					}
+					assignee := m.resolveRowValue(row, "assignee")
+					taskID := m.resolveRowValue(row, "id")
+					taskName := m.resolveRowValue(row, "name")
+					currentUser := m.currentUsername()
+					if assignee == "" {
+						msg2, kind, cmd := setFooterStatus(footerStatusError, "Claim this task first (c)", 5*time.Second)
+						m.footerError = msg2
+						m.footerStatusKind = kind
+						return m, cmd
+					}
+					if assignee != currentUser {
+						msg2, kind, cmd := setFooterStatus(footerStatusError, fmt.Sprintf("Task is assigned to %s", assignee), 5*time.Second)
+						m.footerError = msg2
+						m.footerStatusKind = kind
+						return m, cmd
+					}
+					// Own task — fetch variables and open dialog
+					m.isLoading = true
+					m.apiCallStarted = time.Now()
+					m.footerError, m.footerStatusKind, _ = setFooterStatus(footerStatusLoading, "Loading task variables…", 0)
+					return m, tea.Batch(m.fetchTaskVariablesCmd(taskID, taskName), spinnerTickCmd())
 				}
-
-				row := m.table.SelectedRow()
-				if len(row) == 0 {
-					return m, nil
-				}
-				assignee := m.resolveRowValue(row, "assignee")
-				taskID := m.resolveRowValue(row, "id")
-				taskName := m.resolveRowValue(row, "name")
-				currentUser := m.currentUsername()
-				if assignee == "" {
-					msg2, kind, cmd := setFooterStatus(footerStatusError, "Claim this task first (c)", 5*time.Second)
-					m.footerError = msg2
-					m.footerStatusKind = kind
-					return m, cmd
-				}
-				if assignee != currentUser {
-					msg2, kind, cmd := setFooterStatus(footerStatusError, fmt.Sprintf("Task is assigned to %s", assignee), 5*time.Second)
-					m.footerError = msg2
-					m.footerStatusKind = kind
-					return m, cmd
-				}
-				// Own task — fetch variables and open dialog
-				m.isLoading = true
-				m.apiCallStarted = time.Now()
-				m.footerError, m.footerStatusKind, _ = setFooterStatus(footerStatusLoading, "Loading task variables…", 0)
-				return m, tea.Batch(m.fetchTaskVariablesCmd(taskID, taskName), spinnerTickCmd())
 			}
 
 			// identify the current table (use last breadcrumb entry when available)
@@ -1631,17 +1630,29 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			for i, col := range cols {
 				// prefer original column name from TableDef when available
 				key := strings.ToLower(col.Title)
-				// If title contains spaces or was uppercased, try original key forms
 				val := ""
-				if v, ok := it[key]; ok {
-					val = fmt.Sprintf("%v", v)
-				} else {
-					// try lowercase and camel-case variants
-					if v, ok := it[strings.ToLower(col.Title)]; ok {
-						val = fmt.Sprintf("%v", v)
-					} else if v, ok := it[col.Title]; ok {
+				var v interface{}
+				var found bool
+				if vv, ok := it[key]; ok {
+					v = vv
+					found = true
+				} else if vv, ok := it[strings.ToLower(col.Title)]; ok {
+					v = vv
+					found = true
+				} else if vv, ok := it[col.Title]; ok {
+					v = vv
+					found = true
+				}
+				if found {
+					if v == nil {
+						val = ""
+					} else if s, ok := v.(string); ok {
+						val = s
+					} else {
 						val = fmt.Sprintf("%v", v)
 					}
+				} else {
+					val = ""
 				}
 				r[i] = val
 			}

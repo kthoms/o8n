@@ -44,7 +44,12 @@ func (m *model) resolveRowValue(row []string, colName string) string {
 	}
 	cols := m.table.Columns()
 	for i, col := range cols {
-		if col.Title == colName && i < len(row) {
+		// normalize title (remove editable marker)
+		title := col.Title
+		if strings.HasSuffix(title, " ✎") {
+			title = strings.TrimSuffix(title, " ✎")
+		}
+		if strings.EqualFold(title, colName) && i < len(row) {
 			return stripFocusIndicatorPrefix(row[i])
 		}
 	}
@@ -52,6 +57,12 @@ func (m *model) resolveRowValue(row []string, colName string) string {
 	cursor := m.table.Cursor()
 	if cursor >= 0 && cursor < len(m.rowData) {
 		if v, ok := m.rowData[cursor][colName]; ok {
+			if v == nil {
+				return ""
+			}
+			if s, ok := v.(string); ok {
+				return s
+			}
 			return fmt.Sprintf("%v", v)
 		}
 	}
