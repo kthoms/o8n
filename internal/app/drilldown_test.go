@@ -237,69 +237,69 @@ func TestInstancesCountEndpoint(t *testing.T) {
 // using a column not visible in the table (e.g. "id" on process-definition)
 // reads the correct value from rowData rather than falling back to row[0].
 func TestDrilldownResolvesHiddenColumnFromRowData(t *testing.T) {
-cfg := &config.Config{
-Tables: []config.TableDef{
-{
-Name: "process-definition",
-Columns: []config.ColumnDef{
-{Name: "key"},
-{Name: "name"},
-},
-Drilldown: []config.DrillDownDef{
-{Target: "process-instance", Param: "processDefinitionId", Column: "id"},
-},
-},
-},
-}
-m := newModel(cfg)
-m.splashActive = false
-m.viewMode = "process-definition"
-m.currentRoot = "process-definition"
+	cfg := &config.Config{
+		Tables: []config.TableDef{
+			{
+				Name: "process-definition",
+				Columns: []config.ColumnDef{
+					{Name: "key"},
+					{Name: "name"},
+				},
+				Drilldown: []config.DrillDownDef{
+					{Target: "process-instance", Param: "processDefinitionId", Column: "id"},
+				},
+			},
+		},
+	}
+	m := newModel(cfg)
+	m.splashActive = false
+	m.viewMode = "process-definition"
+	m.currentRoot = "process-definition"
 
-// Populate rowData with the full API row (including hidden "id")
-m.rowData = []map[string]interface{}{
-{"id": "invoice:1:abc-123", "key": "invoice", "name": "Invoice Process"},
-{"id": "review:1:def-456", "key": "review", "name": "Review Process"},
-}
+	// Populate rowData with the full API row (including hidden "id")
+	m.rowData = []map[string]interface{}{
+		{"id": "invoice:1:abc-123", "key": "invoice", "name": "Invoice Process"},
+		{"id": "review:1:def-456", "key": "review", "name": "Review Process"},
+	}
 
-// Table shows only key + name (id is hidden)
-m.table.SetColumns([]table.Column{{Title: "KEY", Width: 20}, {Title: "NAME", Width: 30}})
-m.table.SetRows([]table.Row{
-{"▶ invoice", "Invoice Process"},
-{"▶ review", "Review Process"},
-})
-m.table.SetCursor(0)
+	// Table shows only key + name (id is hidden)
+	m.table.SetColumns([]table.Column{{Title: "KEY", Width: 20}, {Title: "NAME", Width: 30}})
+	m.table.SetRows([]table.Row{
+		{"▶ invoice", "Invoice Process"},
+		{"▶ review", "Review Process"},
+	})
+	m.table.SetCursor(0)
 
-// Resolve the drilldown value the same way the Enter handler does
-def := m.findTableDef("process-definition")
-if def == nil || len(def.Drilldown) == 0 {
-t.Fatal("expected process-definition drilldown config")
-}
-chosen := &def.Drilldown[0]
-colName := chosen.Column
+	// Resolve the drilldown value the same way the Enter handler does
+	def := m.findTableDef("process-definition")
+	if def == nil || len(def.Drilldown) == 0 {
+		t.Fatal("expected process-definition drilldown config")
+	}
+	chosen := &def.Drilldown[0]
+	colName := chosen.Column
 
-val := ""
-cursor := m.table.Cursor()
-if cursor >= 0 && cursor < len(m.rowData) {
-if v, ok := m.rowData[cursor][colName]; ok && v != nil {
-val = fmt.Sprintf("%v", v)
-}
-}
+	val := ""
+	cursor := m.table.Cursor()
+	if cursor >= 0 && cursor < len(m.rowData) {
+		if v, ok := m.rowData[cursor][colName]; ok && v != nil {
+			val = fmt.Sprintf("%v", v)
+		}
+	}
 
-if val != "invoice:1:abc-123" {
-t.Errorf("expected drilldown value %q from rowData, got %q", "invoice:1:abc-123", val)
-}
+	if val != "invoice:1:abc-123" {
+		t.Errorf("expected drilldown value %q from rowData, got %q", "invoice:1:abc-123", val)
+	}
 }
 
 // TestDrilldownFocusPrefixStripped verifies that the focus indicator prefix
 // is stripped when falling back to a visible cell for drilldown value.
 func TestDrilldownFocusPrefixStripped(t *testing.T) {
-raw := "▶ some-id-value"
-stripped := stripFocusIndicatorPrefix(raw)
-if stripped == raw {
-t.Errorf("expected focus indicator to be stripped from %q", raw)
-}
-if stripped != "some-id-value" {
-t.Errorf("stripped value = %q, want %q", stripped, "some-id-value")
-}
+	raw := "▶ some-id-value"
+	stripped := stripFocusIndicatorPrefix(raw)
+	if stripped == raw {
+		t.Errorf("expected focus indicator to be stripped from %q", raw)
+	}
+	if stripped != "some-id-value" {
+		t.Errorf("stripped value = %q, want %q", stripped, "some-id-value")
+	}
 }

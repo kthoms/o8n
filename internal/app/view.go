@@ -943,7 +943,6 @@ func renderBoxWithTitle(content string, totalWidth, totalHeight int, title strin
 func (m *model) renderSortPopup(width, height int) string {
 	cols := m.table.Columns()
 
-
 	var b strings.Builder
 	showClear := m.sortColumn >= 0
 	if showClear {

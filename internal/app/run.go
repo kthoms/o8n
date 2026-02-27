@@ -102,11 +102,13 @@ func Run() {
 		m.splashActive = false
 	}
 
-	if _, err := tea.NewProgram(m).Run(); err != nil {
+	finalModel, err := tea.NewProgram(m).Run()
+	if err != nil {
 		log.Fatalf("failed to run program: %v", err)
 	}
 
-	// Persist state on clean exit.
-	_ = config.SaveAppState(statePath, m.currentAppState())
+	// Persist state on clean exit using the final model, not the initial one.
+	if fm, ok := finalModel.(model); ok {
+		_ = config.SaveAppState(statePath, fm.currentAppState())
+	}
 }
-

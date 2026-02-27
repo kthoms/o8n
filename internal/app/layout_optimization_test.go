@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	"github.com/charmbracelet/bubbles/table"
-	"github.com/charmbracelet/lipgloss"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 )
 
 // helper: strip ANSI escape codes
@@ -162,4 +162,3 @@ func TestSortModalMinWidth30(t *testing.T) {
 		t.Errorf("expected sort modal >= 28 chars wide for min width, got %d", modalW)
 	}
 }
-

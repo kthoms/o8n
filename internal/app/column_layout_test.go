@@ -18,9 +18,9 @@ func buildTestModel(tables []config.TableDef) model {
 // TestBuildColumnsDefaultTypeWidths verifies implicit widths from column types.
 func TestBuildColumnsDefaultTypeWidths(t *testing.T) {
 	cases := []struct {
-		colType  string
-		wantMin  int
-		wantMax  int
+		colType string
+		wantMin int
+		wantMax int
 	}{
 		{"bool", 6, 6},
 		{"int", 8, 8},
@@ -172,7 +172,7 @@ func TestBuildColumnsMinWidthEnforced(t *testing.T) {
 	m := buildTestModel([]config.TableDef{{
 		Name: "t",
 		Columns: []config.ColumnDef{
-			{Name: "id", Width: 36},     // needs 36 chars
+			{Name: "id", Width: 36},      // needs 36 chars
 			{Name: "longname", Width: 8}, // needs 8 chars (header = "LONGNAME" = 8)
 		},
 	}})
@@ -274,9 +274,9 @@ func TestColumnDefIsVisible(t *testing.T) {
 		col  config.ColumnDef
 		want bool
 	}{
-		{config.ColumnDef{Name: "a"}, true},             // nil Visible = visible by default
-		{config.ColumnDef{Name: "b", Visible: &visible}, true},  // explicit true
-		{config.ColumnDef{Name: "c", Visible: &hidden}, false},  // explicit false
+		{config.ColumnDef{Name: "a"}, true},                    // nil Visible = visible by default
+		{config.ColumnDef{Name: "b", Visible: &visible}, true}, // explicit true
+		{config.ColumnDef{Name: "c", Visible: &hidden}, false}, // explicit false
 	}
 	for _, tc := range cases {
 		got := tc.col.IsVisible()

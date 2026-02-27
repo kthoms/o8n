@@ -523,7 +523,6 @@ func (m model) executeEditActionCmd(act config.EditActionDef, id, name, parentID
 	}
 }
 
-
 // helper to create a command that triggers the flash indicator
 func flashOnCmd() tea.Cmd {
 	return func() tea.Msg { return flashOnMsg{} }
@@ -587,18 +586,18 @@ func (m model) fetchGenericWithParamCmd(root, paramName, paramValue string) tea.
 
 // listSkinsCmd scans the skins/ directory and returns available skin file names.
 func listSkinsCmd() tea.Cmd {
-return func() tea.Msg {
-entries, err := os.ReadDir("skins")
-if err != nil {
-return skinsLoadedMsg{names: nil}
-}
-var names []string
-for _, e := range entries {
-if !e.IsDir() && strings.HasSuffix(e.Name(), ".yaml") {
-names = append(names, strings.TrimSuffix(e.Name(), ".yaml"))
-}
-}
-sort.Strings(names)
-return skinsLoadedMsg{names: names}
-}
+	return func() tea.Msg {
+		entries, err := os.ReadDir("skins")
+		if err != nil {
+			return skinsLoadedMsg{names: nil}
+		}
+		var names []string
+		for _, e := range entries {
+			if !e.IsDir() && strings.HasSuffix(e.Name(), ".yaml") {
+				names = append(names, strings.TrimSuffix(e.Name(), ".yaml"))
+			}
+		}
+		sort.Strings(names)
+		return skinsLoadedMsg{names: names}
+	}
 }

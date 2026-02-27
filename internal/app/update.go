@@ -935,68 +935,68 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				}
 
 				// supported runtime targets -> generic drilldown for all configured targets
-			{
-				// Save current state before drilldown, then clear sort/search for new view
-				m.prepareStateTransition(transitionDrilldown)
-				colsDrill := m.table.Columns()
-				rowsCopyDrill := append([]table.Row{}, m.table.Rows()...)
-				if len(colsDrill) > 0 {
-					rowsCopyDrill = normalizeRows(rowsCopyDrill, len(colsDrill))
-				}
-				currentStateDrill := viewState{
-					viewMode:              m.viewMode,
-					breadcrumb:            append([]string{}, m.breadcrumb...),
-					contentHeader:         m.contentHeader,
-					selectedDefinitionKey: m.selectedDefinitionKey,
-					selectedInstanceID:    m.selectedInstanceID,
-					tableRows:             rowsCopyDrill,
-					tableCursor:           m.table.Cursor(),
-					cachedDefinitions:     m.cachedDefinitions,
-					tableColumns:          append([]table.Column{}, colsDrill...),
-					genericParams:         m.genericParams,
-					rowData:               append([]map[string]interface{}{}, m.rowData...),
-				}
-				m.navigationStack = append(m.navigationStack, currentStateDrill)
-
-			// Persist values used by edit/save (variable editing needs selectedInstanceID)
-			switch chosen.Target {
-			case "process-instance":
-				m.selectedDefinitionKey = val
-			case "process-variables":
-				m.selectedInstanceID = val
-			}
-
-				// breadcrumb label: use configured label or target name
-				label := chosen.Label
-				if label == "" {
-					label = chosen.Target
-				}
-
-				m.currentRoot = chosen.Target
-				m.viewMode = chosen.Target
-				m.genericParams = map[string]string{chosen.Param: val}
-				m.breadcrumb = append(m.breadcrumb, label)
-
-				// Build content header: use title_attribute if configured, else fallback to param value
-				titleVal := val
-				if chosen.TitleAttribute != "" && cursor >= 0 && cursor < len(m.rowData) {
-					if tv, ok := m.rowData[cursor][chosen.TitleAttribute]; ok && tv != nil && fmt.Sprintf("%v", tv) != "" {
-						titleVal = fmt.Sprintf("%v", tv)
+				{
+					// Save current state before drilldown, then clear sort/search for new view
+					m.prepareStateTransition(transitionDrilldown)
+					colsDrill := m.table.Columns()
+					rowsCopyDrill := append([]table.Row{}, m.table.Rows()...)
+					if len(colsDrill) > 0 {
+						rowsCopyDrill = normalizeRows(rowsCopyDrill, len(colsDrill))
 					}
-				}
-				m.contentHeader = fmt.Sprintf("%s — %s", chosen.Target, titleVal)
-				m.table.SetCursor(0)
+					currentStateDrill := viewState{
+						viewMode:              m.viewMode,
+						breadcrumb:            append([]string{}, m.breadcrumb...),
+						contentHeader:         m.contentHeader,
+						selectedDefinitionKey: m.selectedDefinitionKey,
+						selectedInstanceID:    m.selectedInstanceID,
+						tableRows:             rowsCopyDrill,
+						tableCursor:           m.table.Cursor(),
+						cachedDefinitions:     m.cachedDefinitions,
+						tableColumns:          append([]table.Column{}, colsDrill...),
+						genericParams:         m.genericParams,
+						rowData:               append([]map[string]interface{}{}, m.rowData...),
+					}
+					m.navigationStack = append(m.navigationStack, currentStateDrill)
 
-				// Pre-set columns for target table to avoid stale columns during load
-				colsTarget := m.buildColumnsFor(chosen.Target, m.paneWidth-4)
-				if len(colsTarget) > 0 {
-					m.table.SetRows(normalizeRows(nil, len(colsTarget)))
-					m.table.SetColumns(colsTarget)
-				} else {
-					m.table.SetRows([]table.Row{})
+					// Persist values used by edit/save (variable editing needs selectedInstanceID)
+					switch chosen.Target {
+					case "process-instance":
+						m.selectedDefinitionKey = val
+					case "process-variables":
+						m.selectedInstanceID = val
+					}
+
+					// breadcrumb label: use configured label or target name
+					label := chosen.Label
+					if label == "" {
+						label = chosen.Target
+					}
+
+					m.currentRoot = chosen.Target
+					m.viewMode = chosen.Target
+					m.genericParams = map[string]string{chosen.Param: val}
+					m.breadcrumb = append(m.breadcrumb, label)
+
+					// Build content header: use title_attribute if configured, else fallback to param value
+					titleVal := val
+					if chosen.TitleAttribute != "" && cursor >= 0 && cursor < len(m.rowData) {
+						if tv, ok := m.rowData[cursor][chosen.TitleAttribute]; ok && tv != nil && fmt.Sprintf("%v", tv) != "" {
+							titleVal = fmt.Sprintf("%v", tv)
+						}
+					}
+					m.contentHeader = fmt.Sprintf("%s — %s", chosen.Target, titleVal)
+					m.table.SetCursor(0)
+
+					// Pre-set columns for target table to avoid stale columns during load
+					colsTarget := m.buildColumnsFor(chosen.Target, m.paneWidth-4)
+					if len(colsTarget) > 0 {
+						m.table.SetRows(normalizeRows(nil, len(colsTarget)))
+						m.table.SetColumns(colsTarget)
+					} else {
+						m.table.SetRows([]table.Row{})
+					}
+					return m, tea.Batch(m.fetchGenericCmd(chosen.Target), flashOnCmd(), m.saveStateCmd())
 				}
-				return m, tea.Batch(m.fetchGenericCmd(chosen.Target), flashOnCmd(), m.saveStateCmd())
-			}
 			}
 
 		case "tab":
@@ -1483,11 +1483,11 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		}
 		normalized := normalizeRows(rows, len(cols))
 		colorized := colorizeRows(msg.root, normalized, cols, RowStyles{
-				Running:   m.styles.RowRunning,
-				Suspended: m.styles.RowSuspended,
-				Failed:    m.styles.RowFailed,
-				Ended:     m.styles.RowEnded,
-			})
+			Running:   m.styles.RowRunning,
+			Suspended: m.styles.RowSuspended,
+			Failed:    m.styles.RowFailed,
+			Ended:     m.styles.RowEnded,
+		})
 		m.setTableRowsSorted(colorized)
 		if m.sortColumn >= 0 {
 			m.applySortIndicatorToColumns()

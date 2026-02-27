@@ -13,7 +13,7 @@ func newFocusIndicatorTestModel(t *testing.T) model {
 	cfg := &config.Config{
 		Environments: map[string]config.Environment{
 			"local": {
-				URL:     "http://localhost:8080",  // Blue accent
+				URL: "http://localhost:8080", // Blue accent
 			},
 		},
 		Tables: []config.TableDef{
@@ -160,7 +160,7 @@ func TestFocusIndicatorUsesEnvironmentColor(t *testing.T) {
 	cfg := &config.Config{
 		Environments: map[string]config.Environment{
 			"local": {
-				URL:     "http://localhost:8080",  // Orange accent
+				URL: "http://localhost:8080", // Orange accent
 			},
 		},
 		Tables: []config.TableDef{
@@ -408,11 +408,11 @@ func TestDeriveBackgroundColorMapping(t *testing.T) {
 		accentColor string
 		expectDark  string
 	}{
-		{"#FFA500", "94"},   // Orange
-		{"#00A8E1", "23"},   // Blue
-		{"#50C878", "22"},   // Green
-		{"#FF6B6B", "52"},   // Red
-		{"#UNKNOWN", "23"},  // Unknown → default to dark blue
+		{"#FFA500", "94"},  // Orange
+		{"#00A8E1", "23"},  // Blue
+		{"#50C878", "22"},  // Green
+		{"#FF6B6B", "52"},  // Red
+		{"#UNKNOWN", "23"}, // Unknown → default to dark blue
 	}
 
 	for _, tt := range tests {

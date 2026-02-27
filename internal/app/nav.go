@@ -367,35 +367,35 @@ func (m *model) restoreNavState(nav config.NavState) {
 // For skin mode: all skin names.
 // For search mode: first-column values of current table rows.
 func (m *model) popupItems() []string {
-switch m.popup.mode {
-case popupModeSkin:
-return m.skinPopupItems()
-case popupModeSearch:
-var out []string
-for _, row := range m.table.Rows() {
-if len(row) > 0 {
-out = append(out, fmt.Sprintf("%v", row[0]))
-}
-}
-return out
-default: // popupModeContext
-var out []string
-for _, rc := range m.rootContexts {
-if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-out = append(out, rc)
-}
-}
-return out
-}
+	switch m.popup.mode {
+	case popupModeSkin:
+		return m.skinPopupItems()
+	case popupModeSearch:
+		var out []string
+		for _, row := range m.table.Rows() {
+			if len(row) > 0 {
+				out = append(out, fmt.Sprintf("%v", row[0]))
+			}
+		}
+		return out
+	default: // popupModeContext
+		var out []string
+		for _, rc := range m.rootContexts {
+			if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
+				out = append(out, rc)
+			}
+		}
+		return out
+	}
 }
 
 // applySearchFromPopup filters the table rows using popup.input as the search term.
 func (m *model) applySearchFromPopup() {
-m.searchTerm = m.popup.input
-if m.popup.input == "" {
-m.table.SetRows(m.originalRows)
-} else {
-filtered := filterRows(m.originalRows, m.popup.input)
-m.table.SetRows(filtered)
-}
+	m.searchTerm = m.popup.input
+	if m.popup.input == "" {
+		m.table.SetRows(m.originalRows)
+	} else {
+		filtered := filterRows(m.originalRows, m.popup.input)
+		m.table.SetRows(filtered)
+	}
 }

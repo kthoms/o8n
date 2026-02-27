@@ -29,10 +29,10 @@ type Environment struct {
 type ColumnDef struct {
 	Name      string `yaml:"name"`
 	Type      string `yaml:"type,omitempty"`       // string/bool/int/float/datetime/id; drives implicit width
-	Width     int    `yaml:"width,omitempty"`       // initial width in chars (0 = derive from Type)
-	MinWidth  int    `yaml:"min_width,omitempty"`   // minimum width in chars (0 = use header title length)
-	HideOrder int    `yaml:"hide_order,omitempty"`  // 0 = hidden first (rightmost first); positive = hidden later
-	Align     string `yaml:"align,omitempty"`       // left/right/center
+	Width     int    `yaml:"width,omitempty"`      // initial width in chars (0 = derive from Type)
+	MinWidth  int    `yaml:"min_width,omitempty"`  // minimum width in chars (0 = use header title length)
+	HideOrder int    `yaml:"hide_order,omitempty"` // 0 = hidden first (rightmost first); positive = hidden later
+	Align     string `yaml:"align,omitempty"`      // left/right/center
 	Editable  bool   `yaml:"editable,omitempty"`   // whether this column can be edited
 	InputType string `yaml:"input_type,omitempty"` // text/number/bool/auto (optional)
 	Visible   *bool  `yaml:"visible,omitempty"`    // nil = visible by default; explicit false = always hidden
@@ -144,11 +144,11 @@ type DrillDownDef struct {
 // EditActionDef describes how to save an edited cell value via a REST call.
 // Path and BodyTemplate support placeholders: {id}, {name}, {parentId}, {value}, {type}.
 type EditActionDef struct {
-	Method       string `yaml:"method"`                  // HTTP method: PUT, POST, PATCH
-	Path         string `yaml:"path"`                    // URL path template (e.g. /process-instance/{parentId}/variables/{name})
-	BodyTemplate string `yaml:"body_template"`           // JSON body template (e.g. {"value": {value}, "type": "{type}"})
-	IDColumn     string `yaml:"id_column,omitempty"`     // row column used as {id} (defaults to "id")
-	NameColumn   string `yaml:"name_column,omitempty"`   // row column used as {name} (defaults to "name")
+	Method       string `yaml:"method"`                // HTTP method: PUT, POST, PATCH
+	Path         string `yaml:"path"`                  // URL path template (e.g. /process-instance/{parentId}/variables/{name})
+	BodyTemplate string `yaml:"body_template"`         // JSON body template (e.g. {"value": {value}, "type": "{type}"})
+	IDColumn     string `yaml:"id_column,omitempty"`   // row column used as {id} (defaults to "id")
+	NameColumn   string `yaml:"name_column,omitempty"` // row column used as {name} (defaults to "name")
 }
 
 // ActionDef defines an action that can be performed on a selected item
@@ -157,16 +157,16 @@ type ActionDef struct {
 	Label    string `yaml:"label"`               // display label (e.g. "Suspend Instance")
 	Method   string `yaml:"method"`              // HTTP method: GET, PUT, POST, DELETE
 	Path     string `yaml:"path"`                // URL path with {id} placeholder (e.g. /process-instance/{id}/suspended)
-	Body     string `yaml:"body,omitempty"`       // optional JSON body to send
-	Confirm  bool   `yaml:"confirm,omitempty"`    // require double-press confirmation
-	IDColumn string `yaml:"id_column,omitempty"`  // column to read ID from (defaults to "id")
+	Body     string `yaml:"body,omitempty"`      // optional JSON body to send
+	Confirm  bool   `yaml:"confirm,omitempty"`   // require double-press confirmation
+	IDColumn string `yaml:"id_column,omitempty"` // column to read ID from (defaults to "id")
 }
 
 // TableDef defines a named table and its columns
 type TableDef struct {
 	Name        string         `yaml:"name"`
-	ApiPath     string         `yaml:"api_path,omitempty"`    // REST collection path (defaults to /{name})
-	CountPath   string         `yaml:"count_path,omitempty"`  // count endpoint (defaults to {api_path}/count)
+	ApiPath     string         `yaml:"api_path,omitempty"`     // REST collection path (defaults to /{name})
+	CountPath   string         `yaml:"count_path,omitempty"`   // count endpoint (defaults to {api_path}/count)
 	SearchParam string         `yaml:"search_param,omitempty"` // query param name for server-side text search
 	Columns     []ColumnDef    `yaml:"columns"`
 	Drilldown   []DrillDownDef `yaml:"drilldown,omitempty"`
@@ -225,11 +225,11 @@ type ButtonStyle struct {
 
 // NavState captures the user's last navigation position for state restore.
 type NavState struct {
-	Root                 string            `yaml:"root,omitempty"`
-	Breadcrumb           []string          `yaml:"breadcrumb,omitempty"`
-	SelectedDefinitionKey string           `yaml:"selected_definition_key,omitempty"`
-	SelectedInstanceID   string            `yaml:"selected_instance_id,omitempty"`
-	GenericParams        map[string]string `yaml:"generic_params,omitempty"`
+	Root                  string            `yaml:"root,omitempty"`
+	Breadcrumb            []string          `yaml:"breadcrumb,omitempty"`
+	SelectedDefinitionKey string            `yaml:"selected_definition_key,omitempty"`
+	SelectedInstanceID    string            `yaml:"selected_instance_id,omitempty"`
+	GenericParams         map[string]string `yaml:"generic_params,omitempty"`
 }
 
 // AppState holds mutable runtime state persisted to o8n-stat.yml.
@@ -269,7 +269,6 @@ func SaveAppState(path string, s *AppState) error {
 	}
 	return nil
 }
-
 
 func LoadEnvConfig(path string) (*EnvConfig, error) {
 	data, err := os.ReadFile(path)

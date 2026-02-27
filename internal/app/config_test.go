@@ -57,4 +57,3 @@ func TestLoadConfig(t *testing.T) {
 		t.Errorf("Expected password 'testpass', got '%s'", testEnv.Password)
 	}
 }
-

@@ -87,4 +87,3 @@ func TestT1_EnvPopupIsOverlay(t *testing.T) {
 		t.Error("expected base view content visible behind env popup overlay")
 	}
 }
-
