@@ -156,6 +156,7 @@ tables:
           path: /job-definition/{id}/retries
           body: '{"retries":3}'
     - name: process-definition
+      search_param: nameLike
       columns:
         - name: key
           hide_order: 5
@@ -201,6 +202,7 @@ tables:
           id_column: key
           confirm: true
     - name: process-instance
+      search_param: businessKeyLike
       columns:
         - name: id
           type: id
@@ -266,6 +268,7 @@ tables:
           editable: true
           input_type: auto
     - name: task
+      search_param: nameLike
       columns:
         - name: id
           type: id
@@ -408,6 +411,7 @@ tables:
         - name: resource
           align: left
     - name: deployment
+      search_param: nameLike
       columns:
         - name: id
           type: id
@@ -484,6 +488,7 @@ tables:
           path: /filter/{id}
           confirm: true
     - name: group
+      search_param: idLike
       columns:
         - name: id
           type: id
@@ -739,6 +744,7 @@ tables:
           type: id
           align: left
     - name: incident
+      search_param: incidentMessage
       columns:
         - name: id
           type: id
@@ -795,6 +801,7 @@ tables:
           path: /tenant/{id}
           confirm: true
     - name: user
+      search_param: idLike
       columns:
         - name: id
           type: id
@@ -821,11 +828,18 @@ tables:
           path: /user/{id}
           confirm: true
     - name: variable-instance
+      edit_action:
+        method: PUT
+        path: /variable-instance/{id}
+        body_template: '{"value": {value}, "type": "{type}"}'
+        name_column: id
       columns:
         - name: name
           align: left
         - name: value
           align: left
+          editable: true
+          input_type: auto
         - name: processInstanceId
           type: id
           align: left

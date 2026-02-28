@@ -24,6 +24,8 @@ func (m *model) prepareStateTransition(scope transitionScope, depth ...int) {
 
 	// Clear search state for all transitions
 	m.searchTerm = ""
+	m.searchMode = false
+	m.searchInput.Blur()
 	m.originalRows = nil
 	m.filteredRows = nil
 

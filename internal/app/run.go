@@ -79,7 +79,9 @@ func Run() {
 	if skinName == "" {
 		skinName = envCfg.Skin
 	}
-	log.Printf("DEBUG: skinName resolved to: %s", skinName)
+	if *debug {
+		log.Printf("DEBUG: skinName resolved to: %s", skinName)
+	}
 
 	m := newModelEnvApp(envCfg, appCfg, skinName)
 	m.debugEnabled = *debug
