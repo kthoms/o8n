@@ -300,7 +300,7 @@ tables:
           label: Delegate Task
           method: POST
           path: /task/{id}/delegate
-          body: '{}'
+          body: '{"userId": "{currentUser}"}'
         - key: ctrl+d
           label: Delete Task
           method: DELETE
