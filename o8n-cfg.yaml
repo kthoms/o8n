@@ -17,7 +17,7 @@ tables:
           hide_order: 2
           align: left
       drilldown:
-        - target: history-external-task-log
+        target: history-external-task-log
           label: History
           param: externalTaskId
           column: id
@@ -75,7 +75,7 @@ tables:
         - name: batchId
           visible: false
       drilldown:
-        - target: history-job-log
+        target: history-job-log
           label: History
           param: jobId
           column: id
@@ -135,7 +135,7 @@ tables:
         - name: deploymentId
           visible: false
       drilldown:
-        - target: job
+        target: job
           label: Jobs
           param: jobDefinitionId
           column: id
@@ -172,15 +172,10 @@ tables:
           hide_order: 2
           align: left
       drilldown:
-        - target: process-instance
+        target: process-instance
           param: processDefinitionId
           column: id
           label: Instances
-          title_attribute: key
-        - target: history-process-instance
-          param: processDefinitionId
-          column: id
-          label: History
           title_attribute: key
       actions:
         - key: s
@@ -220,22 +215,10 @@ tables:
           hide_order: 3
           align: left
       drilldown:
-        - target: process-variables
+        target: process-variables
           param: processInstanceId
           column: id
           label: Variables
-        - target: task
-          param: processInstanceId
-          column: id
-          label: Tasks
-        - target: incident
-          param: processInstanceId
-          column: id
-          label: Incidents
-        - target: variable-instance
-          param: processInstanceId
-          column: id
-          label: Var Instances
       actions:
         - key: s
           label: Suspend Instance
@@ -281,13 +264,9 @@ tables:
           hide_order: 4
           align: left
       drilldown:
-        - target: variable-instance
+        target: variable-instance
           label: Var Instances
           param: taskIdIn
-          column: id
-        - target: history-detail
-          label: Detail
-          param: taskId
           column: id
       actions:
         - key: c
@@ -343,7 +322,7 @@ tables:
           type: id
           align: left
       drilldown:
-        - target: history-batch
+        target: history-batch
           label: History
           param: batchId
           column: id
@@ -388,7 +367,7 @@ tables:
         - name: resource
           align: left
       drilldown:
-        - target: history-decision-instance
+        target: history-decision-instance
           label: History
           param: decisionDefinitionKey
           column: key
@@ -425,12 +404,8 @@ tables:
           type: id
           align: left
       drilldown:
-        - target: process-definition
+        target: process-definition
           label: Definitions
-          param: deploymentId
-          column: id
-        - target: decision-definition
-          label: Decisions
           param: deploymentId
           column: id
       actions:
@@ -498,7 +473,7 @@ tables:
         - name: type
           align: left
       drilldown:
-        - target: history-identity-link-log
+        target: history-identity-link-log
           label: Identity Links
           param: groupId
           column: id
@@ -783,15 +758,8 @@ tables:
         - name: name
           align: left
       drilldown:
-        - target: process-definition
+        target: process-definition
           label: Definitions
-          param: tenantIdIn
-          column: id
-        - target: process-instance
-          param: tenantIdIn
-          column: id
-        - target: deployment
-          label: Deployment
           param: tenantIdIn
           column: id
       actions:
