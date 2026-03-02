@@ -43,14 +43,14 @@
 |---|---|---|---|
 | bmad-master | BMad Master | BMad Master Executor, Knowledge Custodian, and Workflow Orchestrator | runtime resource management, workflow orchestration, task execution, knowledge custodian |
 | analyst | Mary | Business Analyst | market research, competitive analysis, requirements elicitation, domain expertise |
-| architect | Winston | Architect | distributed systems, cloud infrastructure, API design, scalable patterns |
-| dev | Amelia | Developer Agent | story execution, test-driven development, code implementation |
-| pm | John | Product Manager | PRD creation, requirements discovery, stakeholder alignment, user interviews |
-| qa | Quinn | QA Engineer | test automation, API testing, E2E testing, coverage analysis |
+| architect | Lt. Commander Data | Architect | distributed systems, cloud infrastructure, API design, scalable patterns |
+| dev | Lt. Commander Geordi La Forge | Developer Agent | story execution, test-driven development, code implementation |
+| pm | Captain Jean-Luc Picard | Product Manager | PRD creation, requirements discovery, stakeholder alignment, user interviews |
+| qa | Lt. Worf | QA Engineer | test automation, API testing, E2E testing, coverage analysis |
 | quick-flow-solo-dev | Barry | Quick Flow Solo Dev | rapid spec creation, lean implementation, minimum ceremony |
-| sm | Bob | Scrum Master | sprint planning, story preparation, agile ceremonies, backlog management |
+| sm | Commander William Riker | Scrum Master | sprint planning, story preparation, agile ceremonies, backlog management |
 | tech-writer | Paige | Technical Writer | documentation, Mermaid diagrams, standards compliance, concept explanation |
-| ux-designer | Sally | UX Designer | user research, interaction design, UI patterns, experience strategy |
+| ux-designer | Counselor Deanna Troi | UX Designer | user research, interaction design, UI patterns, experience strategy |
 
 ## Slash Commands
 
