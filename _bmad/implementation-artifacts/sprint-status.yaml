@@ -1,0 +1,81 @@
+# generated: 2026-03-04
+# project: o8n
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# WORKFLOW NOTES:
+# ===============
+# - Epic transitions to 'in-progress' automatically when first story is created
+# - Stories can be worked in parallel if team capacity allows
+# - SM typically creates next story after previous one is 'done' to incorporate learnings
+# - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
+
+generated: 2026-03-04
+project: o8n
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad/implementation-artifacts
+
+development_status:
+  epic-1: in-progress
+  1-1-modal-factory-foundation: done
+  1-2-state-transition-contract: backlog
+  1-3-environment-and-context-switching-correctness: backlog
+  1-4-consistent-modal-ux-esc-enter-type-validation: backlog
+  1-5-startup-state-restoration-firstrunmodal-and-api-resilience: backlog
+  epic-1-retrospective: optional
+
+  epic-2: backlog
+  2-1-footer-hint-push-model: backlog
+  2-2-per-view-hint-functions: backlog
+  2-3-action-dialog-via-ctrl-space-modalactionmenu: backlog
+  2-4-full-key-binding-reference: backlog
+  epic-2-retrospective: optional
+
+  epic-3: backlog
+  3-1-resource-navigation-and-context-switcher: backlog
+  3-2-drill-down-navigation-and-breadcrumb: backlog
+  3-3-action-execution-with-feedback: backlog
+  3-4-incident-operations-retry-and-annotate: backlog
+  3-5-task-claim-unclaim-and-complete: backlog
+  3-6-process-variable-inspection-editing-and-json-view: backlog
+  3-7-search-filter-and-auto-refresh: backlog
+  epic-3-retrospective: optional
+
+  epic-4: backlog
+  4-1-120x20-rendering-validation: backlog
+  4-2-responsive-column-and-hint-visibility: backlog
+  4-3-terminal-resize-handling: backlog
+  4-4-color-skins-and-environment-identity: backlog
+  4-5-vim-style-key-bindings-toggle: backlog
+  epic-4-retrospective: optional
+
+  epic-5: backlog
+  5-1-multi-environment-configuration: backlog
+  5-2-credential-security: backlog
+  5-3-config-driven-resource-extensibility: backlog
+  5-4-specification-and-documentation-accuracy: backlog
+  epic-5-retrospective: optional

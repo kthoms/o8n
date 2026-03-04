@@ -192,14 +192,7 @@ func (m *model) renderConfirmDeleteModal(width, height int) string {
 
 	modalContent := message + "\n\n" + buttons + "\n" + hint
 
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.DoubleBorder()).
-		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(1, 2).
-		Width(54)
-
-	// Return just the styled box — overlayCenter handles centering
-	return modalStyle.Render(modalContent)
+	return modalContent
 }
 
 // renderConfirmQuitModal renders a modal asking the user to confirm quitting.
@@ -215,12 +208,7 @@ func (m *model) renderConfirmQuitModal(_, _ int) string {
 	hint := m.styles.FgMuted.Render("Tab: switch  Enter: activate  Ctrl+c: quit  Esc: cancel")
 
 	modalContent := "Quit o8n?\n\n" + buttons + "\n" + hint
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(1, 2).
-		Width(44)
-	return modalStyle.Render(modalContent)
+	return modalContent
 }
 
 // renderHelpContentForLineCount returns the static help text for line-count purposes (scroll bound computation).
@@ -323,7 +311,7 @@ Esc      Go back         │  SEARCH                 │  CONTEXT
                           │  Esc     Clear filter   │  Enter  Confirm
                           │  Enter   Lock filter    │  Esc    Cancel
                           │                         │  s      Sort
-                          │                         │  y      Detail view`, enterLine, arrowLine, breadcrumbLine) +		vimSection + resourceActionsSection + viewsSection + `
+                          │                         │  y      Detail view`, enterLine, arrowLine, breadcrumbLine) + vimSection + resourceActionsSection + viewsSection + `
 
 STATUS INDICATORS
 ────────────────────────────────────────────
@@ -383,6 +371,154 @@ Environment: ` + m.currentEnv + `
 	modal := modalStyle.Render(helpContent)
 
 	return modal
+}
+
+// modalHelpBody returns the scrolled help text content without border or hint line.
+// Used by the modal factory as the OverlayLarge body renderer for ModalHelp.
+// The factory appends HintLine separately below the content.
+func (m model) modalHelpBody() string {
+	vimSection := ""
+	if m.vimMode {
+		vimSection = `
+VIM NAVIGATION (vim mode active)
+──────────────────────────────────
+j/k      Navigate rows
+gg/G     Top/bottom
+Ctrl+u   Half-page up
+Ctrl+d   Half-page dn`
+	}
+
+	def := m.findTableDef(m.currentRoot)
+	var actionLines []string
+	var navLines []string
+	if def != nil && len(def.Actions) > 0 {
+		for _, act := range def.Actions {
+			line := fmt.Sprintf("%-10s %s", act.Key, act.Label)
+			if act.Type == "navigate" {
+				navLines = append(navLines, line)
+			} else {
+				actionLines = append(actionLines, line)
+			}
+		}
+	}
+	resourceActionsSection := ""
+	if len(actionLines) > 0 {
+		resourceActionsSection = "\nRESOURCE ACTIONS (" + m.currentRoot + ")\n" +
+			"──────────────────────────────────\n" +
+			strings.Join(actionLines, "\n")
+	}
+	viewsSection := ""
+	if len(navLines) > 0 {
+		viewsSection = "\nVIEWS (" + m.currentRoot + ")\n" +
+			"──────────────────────────────────\n" +
+			strings.Join(navLines, "\n")
+	}
+
+	enterLine := "Enter    Drill down      │  Ctrl+a  Search all pg  │"
+	arrowLine := "→        Drill down      │                         │"
+	if def == nil || def.Drilldown == nil {
+		enterLine = "                          │  Ctrl+a  Search all pg  │"
+		arrowLine = "                          │                         │"
+	}
+
+	breadcrumbLine := ""
+	if len(m.breadcrumb) > 1 {
+		n := len(m.breadcrumb) - 1
+		breadcrumbLine = fmt.Sprintf("1–%d      Jump to level  │                         │", n)
+	}
+
+	helpContent := fmt.Sprintf(`o8n Help
+
+NAVIGATION               │  ACTIONS                │  GLOBAL
+─────────────────────   │  ────────────────────   │  ──────────────────
+↑/↓      Navigate list   │  Ctrl+e  Switch env     │  ?     This help
+PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
+Home/End First/last row  │  Space   Actions menu   │  Ctrl+c Quit
+%s
+%s
+%s
+Esc      Go back         │  SEARCH                 │  CONTEXT
+                          │  ────────────────────   │  ──────────────────
+                          │  /       Search/filter  │  Tab    Complete
+                          │  Esc     Clear filter   │  Enter  Confirm
+                          │  Enter   Lock filter    │  Esc    Cancel
+                          │                         │  s      Sort
+                          │                         │  y      Detail view`, enterLine, arrowLine, breadcrumbLine) +
+		vimSection + resourceActionsSection + viewsSection + `
+
+STATUS INDICATORS
+────────────────────────────────────────────
+● Running    ● Suspended    ✗ Failed/Incident    ○ Ended
+(symbol + position differentiate, not color alone)
+
+Current View: ` + m.currentRoot + `
+Environment: ` + m.currentEnv
+
+	// Apply scroll window
+	lines := strings.Split(helpContent, "\n")
+	visibleH := m.lastHeight - 8
+	if visibleH < 5 {
+		visibleH = 5
+	}
+	maxScroll := len(lines) - visibleH
+	if maxScroll < 0 {
+		maxScroll = 0
+	}
+	scroll := m.helpScroll
+	if scroll > maxScroll {
+		scroll = maxScroll
+	}
+	start := scroll
+	end := start + visibleH
+	if end > len(lines) {
+		end = len(lines)
+	}
+	visibleLines := make([]string, end-start)
+	copy(visibleLines, lines[start:end])
+	if scroll > 0 {
+		visibleLines[0] = "  ↑ more above"
+	}
+	if end < len(lines) {
+		visibleLines = append(visibleLines, "  ↓ more below")
+	}
+	return strings.Join(visibleLines, "\n")
+}
+
+// modalDetailViewBody returns the detail view content without border or hint in the title.
+// Used by the modal factory as the OverlayLarge body renderer for ModalDetailView.
+func (m *model) modalDetailViewBody() string {
+	viewHeight := m.lastHeight - 6
+	if viewHeight < 3 {
+		viewHeight = 3
+	}
+
+	lines := strings.Split(m.detailContent, "\n")
+	maxScroll := len(lines) - viewHeight
+	if maxScroll < 0 {
+		maxScroll = 0
+	}
+	if m.detailScroll > maxScroll {
+		m.detailScroll = maxScroll
+	}
+	if m.detailScroll < 0 {
+		m.detailScroll = 0
+	}
+
+	end := m.detailScroll + viewHeight
+	if end > len(lines) {
+		end = len(lines)
+	}
+	visibleLines := lines[m.detailScroll:end]
+
+	var b strings.Builder
+	for i, line := range visibleLines {
+		lineNum := m.detailScroll + i + 1
+		b.WriteString(fmt.Sprintf("%4d │ %s\n", lineNum, m.syntaxHighlightJSON(line)))
+	}
+
+	scrollInfo := fmt.Sprintf("[%d/%d]", m.detailScroll+1, len(lines))
+	title := "Detail View  " + scrollInfo
+	return title + "\n" + b.String()
 }
 
 func (m *model) renderEditModal(width, height int) string {
@@ -500,21 +636,7 @@ func (m *model) renderEditModal(width, height int) string {
 
 	modalBody := body + "\n" + buttons
 
-	modalBorderColor := col(m.skin, "borderFocus")
-	if m.config != nil && m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.BorderColor != "" {
-		modalBorderColor = lipgloss.Color(m.config.UI.EditModal.BorderColor)
-	}
-
-	modalStyle := lipgloss.NewStyle().Border(lipgloss.RoundedBorder()).BorderForeground(modalBorderColor).Padding(1, 2)
-	if m.config != nil && m.config.UI != nil && m.config.UI.EditModal != nil && m.config.UI.EditModal.Width > 0 {
-		modalStyle = modalStyle.Width(m.config.UI.EditModal.Width)
-	} else {
-		modalStyle = modalStyle.Width(60)
-	}
-
-	modal := modalStyle.Render(modalBody)
-	// Return just the styled box — overlayCenter handles centering
-	return modal
+	return modalBody
 }
 
 func (m model) asciiArt() string {
@@ -858,31 +980,21 @@ func (m model) View() string {
 	// Compose final vertical layout: header, context box, search bar, main content, footer (1 row)
 	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, searchBar, mainBox, footerLine)
 
-	// If modal is active, overlay it
-	if m.activeModal == ModalConfirmDelete {
-		overlay := m.renderConfirmDeleteModal(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalEdit {
-		overlay := m.renderEditModal(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalHelp {
-		overlay := m.renderHelpScreen(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalSort {
-		overlay := m.renderSortPopup(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalDetailView {
-		overlay := m.renderDetailView(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalEnvironment {
-		overlay := m.renderEnvPopup(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalConfirmQuit {
-		overlay := m.renderConfirmQuitModal(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
-	} else if m.activeModal == ModalTaskComplete {
-		overlay := m.renderTaskCompleteModal(m.lastWidth, m.lastHeight)
-		return overlayCenter(baseView, overlay)
+	// If modal is active, dispatch through factory registry
+	if m.activeModal != ModalNone {
+		if cfg, ok := modalRegistry[m.activeModal]; ok {
+			overlay := renderModal(m, cfg)
+			if overlay != "" {
+				switch cfg.SizeHint {
+				case OverlayLarge:
+					return overlayLarge(baseView, overlay)
+				case FullScreen:
+					return overlayFullscreen(baseView, overlay, m.lastWidth, m.lastHeight)
+				default: // OverlayCenter
+					return overlayCenter(baseView, overlay)
+				}
+			}
+		}
 	}
 
 	// If actions menu is active, overlay it
@@ -1025,13 +1137,9 @@ func (m *model) renderSortPopup(width, height int) string {
 		b.WriteString(fmt.Sprintf("%s%s%s\n", cursor, tableCol.Title, indicator))
 	}
 
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(0, 1)
-
-	// Dynamic width: max(30, longestColumnName+8), capped at terminalWidth-10
-	longestName := 14 // len("Sort by Column") as minimum content
+	title := "Sort by Column"
+	content := b.String()
+	longestName := 14
 	for _, tableCol := range cols {
 		if len(tableCol.Title) > longestName {
 			longestName = len(tableCol.Title)
@@ -1044,13 +1152,7 @@ func (m *model) renderSortPopup(width, height int) string {
 	if m.lastWidth > 10 && sortWidth > m.lastWidth-10 {
 		sortWidth = m.lastWidth - 10
 	}
-	modalStyle = modalStyle.Width(sortWidth)
-
-	title := "Sort by Column"
-	content := b.String()
-	modal := modalStyle.Render(title + "\n" + content + "\nEnter: Select  Esc: Close")
-
-	return modal
+	return lipgloss.NewStyle().Width(sortWidth).Render(title + "\n" + content + "\nEnter: Select  Esc: Close")
 }
 
 // renderDetailView renders the YAML/JSON detail viewer overlay.
@@ -1179,16 +1281,8 @@ func (m *model) renderEnvPopup(width, height int) string {
 		b.WriteString(line + "\n")
 	}
 
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(0, 1).
-		Width(50)
-
 	content := "Select Environment\n\n" + b.String() + "\nEnter: Select  Esc: Close"
-	modal := modalStyle.Render(content)
-
-	return modal
+	return content
 }
 
 // renderActionsMenu renders the context actions menu popup.
