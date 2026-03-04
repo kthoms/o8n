@@ -126,10 +126,17 @@ func TestVimKeysDisabledInModal(t *testing.T) {
 		t.Error("expected table cursor to stay at 0 (down consumed by help scroll)")
 	}
 
-	// space (default key) should dismiss help modal
+	// space (and other non-close keys) should be swallowed while help modal is open
+	// — vim keys must not trigger actions when a modal is active
 	m3, _ := sendKeyString(m, " ")
-	if m3.activeModal != ModalNone {
-		t.Error("expected help modal to be dismissed by space")
+	if m3.activeModal != ModalHelp {
+		t.Error("expected help modal to remain open when space is pressed (non-close key swallowed)")
+	}
+
+	// Esc is the explicit close key for ModalHelp
+	m4, _ := sendKeyString(m3, "esc")
+	if m4.activeModal != ModalNone {
+		t.Error("expected help modal to be dismissed by Esc")
 	}
 }
 

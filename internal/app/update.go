@@ -347,11 +347,12 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 					m.helpScroll--
 				}
 				return m, nil
-			default:
+			case "esc", "q":
 				m.activeModal = ModalNone
 				m.helpScroll = 0
 				return m, nil
 			}
+			return m, nil // swallow all other keys while Help is open
 		}
 
 		if m.activeModal == ModalEdit {

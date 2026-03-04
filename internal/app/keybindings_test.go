@@ -133,7 +133,7 @@ func TestTabNoPopupIsNoOp(t *testing.T) {
 	_ = m2 // must not panic
 }
 
-// TestHelpModalOpenAndDismiss verifies ? opens ModalHelp and any key closes it.
+// TestHelpModalOpenAndDismiss verifies ? opens ModalHelp and Esc/q close it.
 func TestHelpModalOpenAndDismiss(t *testing.T) {
 	m := newTestModel(t)
 
@@ -142,10 +142,10 @@ func TestHelpModalOpenAndDismiss(t *testing.T) {
 		t.Fatalf("expected ModalHelp after '?', got %v", m2.activeModal)
 	}
 
-	// Any key should dismiss the help modal
-	m3, _ := sendKeyString(m2, "x")
+	// Esc should dismiss the help modal (only Esc and q are explicit close keys)
+	m3, _ := sendKeyString(m2, "esc")
 	if m3.activeModal != ModalNone {
-		t.Fatalf("expected ModalNone after key in help modal, got %v", m3.activeModal)
+		t.Fatalf("expected ModalNone after Esc in help modal, got %v", m3.activeModal)
 	}
 }
 

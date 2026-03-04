@@ -377,3 +377,313 @@ func TestRegisterModal_Override(t *testing.T) {
 		t.Error("expected original OverlayCenter restored")
 	}
 }
+
+// ── Esc key handler tests (AC 1) ──────────────────────────────────────────────
+
+// TestModalEsc_ConfirmDelete verifies Esc dismisses ModalConfirmDelete without executing the action.
+func TestModalEsc_ConfirmDelete(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalConfirmDelete
+	m.pendingDeleteID = "proc-123"
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalConfirmDelete, got %v", m2.activeModal)
+	}
+}
+
+// TestModalEsc_ConfirmQuit verifies Esc dismisses ModalConfirmQuit without quitting.
+func TestModalEsc_ConfirmQuit(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalConfirmQuit
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalConfirmQuit, got %v", m2.activeModal)
+	}
+	if m2.quitting {
+		t.Fatal("expected quitting=false after Esc on ModalConfirmQuit")
+	}
+}
+
+// TestModalEsc_Sort verifies Esc dismisses ModalSort.
+func TestModalEsc_Sort(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalSort
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalSort, got %v", m2.activeModal)
+	}
+}
+
+// TestModalEsc_Help verifies Esc dismisses ModalHelp and resets scroll position.
+func TestModalEsc_Help(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalHelp
+	m.helpScroll = 5
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalHelp, got %v", m2.activeModal)
+	}
+	if m2.helpScroll != 0 {
+		t.Fatalf("expected helpScroll=0 after Esc on ModalHelp, got %d", m2.helpScroll)
+	}
+}
+
+// TestModalEsc_Edit verifies Esc dismisses ModalEdit and clears editError.
+func TestModalEsc_Edit(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalEdit
+	m.editError = "enter an integer"
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalEdit, got %v", m2.activeModal)
+	}
+	if m2.editError != "" {
+		t.Fatalf("expected editError cleared after Esc on ModalEdit, got %q", m2.editError)
+	}
+}
+
+// TestModalEsc_Environment verifies Esc dismisses ModalEnvironment.
+func TestModalEsc_Environment(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalEnvironment
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalEnvironment, got %v", m2.activeModal)
+	}
+}
+
+// TestModalEsc_DetailView verifies Esc dismisses ModalDetailView.
+func TestModalEsc_DetailView(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalDetailView
+	m.detailContent = `{"id": "test-123"}`
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalDetailView, got %v", m2.activeModal)
+	}
+}
+
+// TestModalEsc_TaskComplete verifies Esc dismisses ModalTaskComplete via closeTaskCompleteDialog.
+func TestModalEsc_TaskComplete(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalTaskComplete
+	m.taskCompleteTaskName = "Review Invoice"
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc on ModalTaskComplete, got %v", m2.activeModal)
+	}
+}
+
+// ── ModalHelp key behavior tests ──────────────────────────────────────────────
+
+// TestModalHelp_QCloses verifies 'q' closes ModalHelp (consistent with ModalDetailView convention).
+func TestModalHelp_QCloses(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalHelp
+	m.helpScroll = 3
+
+	m2, _ := sendKeyString(m, "q")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after 'q' on ModalHelp, got %v", m2.activeModal)
+	}
+	if m2.helpScroll != 0 {
+		t.Fatalf("expected helpScroll=0 after 'q' on ModalHelp, got %d", m2.helpScroll)
+	}
+}
+
+// TestModalHelp_EnterSwallowed verifies Enter does NOT close ModalHelp —
+// only Esc and 'q' are explicit close keys; other keys are silently swallowed.
+func TestModalHelp_EnterSwallowed(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalHelp
+
+	m2, _ := sendKeyString(m, "enter")
+
+	if m2.activeModal != ModalHelp {
+		t.Fatalf("expected ModalHelp to stay open after Enter (only Esc/q close), got %v", m2.activeModal)
+	}
+}
+
+// TestModalHelp_HintShowsQEsc verifies the ModalHelp HintLine accurately reflects that q/Esc closes it.
+func TestModalHelp_HintShowsQEsc(t *testing.T) {
+	cfg, ok := modalRegistry[ModalHelp]
+	if !ok {
+		t.Fatal("ModalHelp not in registry")
+	}
+	hasClose := false
+	for _, h := range cfg.HintLine {
+		if strings.Contains(h.Key, "q") && strings.Contains(h.Key, "Esc") {
+			hasClose = true
+		}
+	}
+	if !hasClose {
+		t.Error("expected ModalHelp HintLine to contain 'q/Esc' close key (hint matches actual behavior)")
+	}
+}
+
+// ── Enter / confirm handler tests (AC 2) ─────────────────────────────────────
+
+// TestModalEnter_ConfirmQuit_QuitButton verifies Enter on the Quit button triggers quit.
+func TestModalEnter_ConfirmQuit_QuitButton(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalConfirmQuit
+	m.confirmFocusedBtn = 0 // Quit button
+
+	m2, _ := sendKeyString(m, "enter")
+
+	if !m2.quitting {
+		t.Fatal("expected quitting=true after Enter on Quit button of ModalConfirmQuit")
+	}
+}
+
+// TestModalEnter_ConfirmQuit_CancelButton verifies Enter on the Cancel button dismisses without quitting.
+func TestModalEnter_ConfirmQuit_CancelButton(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalConfirmQuit
+	m.confirmFocusedBtn = 1 // Cancel button
+
+	m2, _ := sendKeyString(m, "enter")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Enter on Cancel button of ModalConfirmQuit, got %v", m2.activeModal)
+	}
+	if m2.quitting {
+		t.Fatal("expected quitting=false after Enter on Cancel button of ModalConfirmQuit")
+	}
+}
+
+// TestModalEnter_Sort_ClosesModal verifies Enter applies sort and closes ModalSort.
+func TestModalEnter_Sort_ClosesModal(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalSort
+	m.sortPopupCursor = -1 // clear-sort option
+
+	m2, _ := sendKeyString(m, "enter")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Enter on ModalSort (clear sort), got %v", m2.activeModal)
+	}
+	if m2.sortColumn != -1 {
+		t.Fatalf("expected sortColumn=-1 after clearing sort, got %d", m2.sortColumn)
+	}
+	if !m2.sortAscending {
+		t.Fatal("expected sortAscending=true after clearing sort")
+	}
+}
+
+// ── Type validation tests (AC 3) ─────────────────────────────────────────────
+
+// TestParseInputValue_IntegerRejectsText verifies parseInputValue returns an error for non-integer text.
+func TestParseInputValue_IntegerRejectsText(t *testing.T) {
+	_, err := parseInputValue("abc", "integer")
+	if err == nil {
+		t.Fatal("expected error when parsing 'abc' as integer, got nil")
+	}
+}
+
+// TestParseInputValue_IntegerAcceptsNumber verifies parseInputValue accepts a valid integer string.
+func TestParseInputValue_IntegerAcceptsNumber(t *testing.T) {
+	_, err := parseInputValue("42", "integer")
+	if err != nil {
+		t.Fatalf("expected no error when parsing '42' as integer, got: %v", err)
+	}
+}
+
+// TestParseInputValue_BoolRejectsInvalid verifies parseInputValue rejects non-boolean strings.
+func TestParseInputValue_BoolRejectsInvalid(t *testing.T) {
+	_, err := parseInputValue("yes", "bool")
+	if err == nil {
+		t.Fatal("expected error when parsing 'yes' as bool, got nil")
+	}
+}
+
+// TestParseInputValue_BoolAcceptsTrue verifies parseInputValue accepts "true".
+func TestParseInputValue_BoolAcceptsTrue(t *testing.T) {
+	_, err := parseInputValue("true", "bool")
+	if err != nil {
+		t.Fatalf("expected no error when parsing 'true' as bool, got: %v", err)
+	}
+}
+
+// TestParseInputValue_BoolAcceptsFalse verifies parseInputValue accepts "false".
+func TestParseInputValue_BoolAcceptsFalse(t *testing.T) {
+	_, err := parseInputValue("false", "bool")
+	if err != nil {
+		t.Fatalf("expected no error when parsing 'false' as bool, got: %v", err)
+	}
+}
+
+// TestParseInputValue_JsonRejectsInvalid verifies parseInputValue rejects malformed JSON.
+func TestParseInputValue_JsonRejectsInvalid(t *testing.T) {
+	_, err := parseInputValue("{not valid json}", "json")
+	if err == nil {
+		t.Fatal("expected error when parsing invalid JSON, got nil")
+	}
+}
+
+// TestParseInputValue_JsonAcceptsValid verifies parseInputValue accepts well-formed JSON.
+func TestParseInputValue_JsonAcceptsValid(t *testing.T) {
+	_, err := parseInputValue(`{"key": "value"}`, "json")
+	if err != nil {
+		t.Fatalf("expected no error when parsing valid JSON, got: %v", err)
+	}
+}
+
+// TestParseInputValue_TextAlwaysPasses verifies parseInputValue accepts any string as text type.
+func TestParseInputValue_TextAlwaysPasses(t *testing.T) {
+	cases := []string{"anything", "123", "true", "{broken", ""}
+	for _, input := range cases {
+		_, err := parseInputValue(input, "text")
+		if err != nil {
+			t.Errorf("expected no error for text type with input %q, got: %v", input, err)
+		}
+	}
+}
+
+// TestModalEdit_EscClearsErrorAndDismisses verifies the ModalEdit Esc handler
+// clears any pending editError before dismissing (prevents stale error on next open).
+func TestModalEdit_EscClearsErrorAndDismisses(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.activeModal = ModalEdit
+	m.editError = "enter an integer"
+
+	m2, _ := sendKeyString(m, "esc")
+
+	if m2.activeModal != ModalNone {
+		t.Fatalf("expected ModalNone after Esc, got %v", m2.activeModal)
+	}
+	if m2.editError != "" {
+		t.Fatalf("expected editError cleared after Esc, got %q", m2.editError)
+	}
+}

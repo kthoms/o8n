@@ -378,11 +378,12 @@ All modals are **overlays** on top of the main UI — the background table remai
 | `ModalNone` | — | No modal |
 | `ModalConfirmDelete` | Destructive action key | `overlayCenter(baseView, modal)` |
 | `ModalConfirmQuit` | `Ctrl+C` | `overlayCenter(baseView, modal)` |
-| `ModalHelp` | `?` | Full-screen `lipgloss.Place` (scrollable) |
+| `ModalHelp` | `?` | `OverlayLarge` (scrollable, ~80% terminal) |
 | `ModalEdit` | `e` | `overlayCenter(baseView, modal)` |
-| `ModalSort` | `s` | Full-screen `lipgloss.Place` (centered) |
-| `ModalDetailView` | `y` | Full-screen `lipgloss.Place` (centered, scrollable) |
-| `ModalEnvironment` | `Ctrl+E` | Full-screen `lipgloss.Place` (centered) |
+| `ModalSort` | `s` | `overlayCenter(baseView, modal)` |
+| `ModalDetailView` | `y` | `OverlayLarge` (scrollable, ~80% terminal) |
+| `ModalEnvironment` | `Ctrl+E` | `overlayCenter(baseView, modal)` |
+| `ModalTaskComplete` | Task completion flow | `FullScreen` custom layout |
 
 ### Edit Modal
 
@@ -403,7 +404,7 @@ All modals are **overlays** on top of the main UI — the background table remai
 
 ### Help Screen
 
-Full-screen three-column layout. Scrollable with `j`/`k`/`Up`/`Down`/`Ctrl+D`/`Ctrl+U`. Scroll indicators: `^ more above` / `v more below`. Any other key closes.
+Three-column layout rendered as `OverlayLarge` (~80% terminal). Scrollable with `↑`/`↓`/`Ctrl+D`/`Ctrl+U`. Scroll indicators: `^ more above` / `v more below`. Only `q` or `Esc` closes; all other keys are swallowed while the modal is open. Hint line shows `q/Esc  close`.
 
 ### Detail View
 
@@ -420,6 +421,29 @@ Lists all configured environments with:
 - Environment accent color applied to name
 - `check` marker on currently active environment
 - URL shown inline
+
+### Modal Keyboard Contract
+
+All 8 modal types dismiss on `Esc`. This is the universal close key — no modal is closed by pressing arbitrary keys.
+
+| Modal | Esc | Enter | Other close key | Notes |
+|---|---|---|---|---|
+| `ModalConfirmDelete` | Cancel with "Cancelled" feedback | Confirm (execute delete) | — | Focus: Cancel button safe default |
+| `ModalConfirmQuit` | Cancel | Confirm (quit) | — | Focus: Cancel button safe default |
+| `ModalHelp` | Close + reset scroll | Swallowed (no-op) | `q` | Only `q`/`Esc` close; all other keys swallowed |
+| `ModalEdit` | Close without saving; clears inline error | Validate + save via API | — | Modal stays open on validation error |
+| `ModalSort` | Cancel (no sort change) | Apply selected sort | — | `↑`/`↓` to navigate columns |
+| `ModalDetailView` | Close | Swallowed | `q` | Scroll with `↑`/`↓` |
+| `ModalEnvironment` | Cancel (no env change) | Switch to selected environment | — | `↑`/`↓` to navigate environments |
+| `ModalTaskComplete` | Cancel (close without completing) | Confirm task completion | — | Tab switches focus between form fields |
+
+**Type validation in ModalEdit:**
+- `bool`/`boolean` — accepts `true`/`false` only; rejects other input
+- `int`/`integer` — numeric integer only; rejects non-numeric
+- `number`/`double`/`float` — decimal number; rejects non-numeric
+- `json` — must parse as valid JSON; rejects malformed syntax
+- `text` — free-form, no validation
+- Validation errors display inline in the modal; modal stays open until corrected or cancelled
 
 ---
 
