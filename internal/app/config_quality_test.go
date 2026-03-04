@@ -62,7 +62,7 @@ func TestSearchModeClearedOnDrilldown(t *testing.T) {
 	}
 	m := newModelEnvApp(envCfg, appCfg, "")
 	m.searchMode = true
-	m.prepareStateTransition(transitionDrilldown)
+	m.prepareStateTransition(TransitionDrillDown)
 	if m.searchMode {
 		t.Fatalf("expected searchMode false after drilldown, got true")
 	}

@@ -1,6 +1,6 @@
 # Story 1.2: State Transition Contract
 
-Status: ready-for-dev
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -26,48 +26,48 @@ So that every navigation action uses a single, auditable gate that eliminates st
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Define exported `TransitionType` enum in `transition.go` (AC: 1)
-  - [ ] Add `type TransitionType int` with constants `TransitionFull`, `TransitionDrillDown`, `TransitionPop` (exported, PascalCase)
-  - [ ] Remove (or deprecate) the unexported `transitionScope` type and its 5 constants after all callers are migrated
+- [x] Task 1: Define exported `TransitionType` enum in `transition.go` (AC: 1)
+  - [x] Add `type TransitionType int` with constants `TransitionFull`, `TransitionDrillDown`, `TransitionPop` (exported, PascalCase)
+  - [x] Remove (or deprecate) the unexported `transitionScope` type and its 5 constants after all callers are migrated
 
-- [ ] Task 2: Refactor `prepareStateTransition` to accept `TransitionType` (AC: 1)
-  - [ ] Change signature from `(scope transitionScope, depth ...int)` to `(t TransitionType)` (pointer receiver stays)
-  - [ ] `TransitionFull` implementation: clears `activeModal`, `footerError`, `searchTerm`, `searchMode`, `sortColumn`, `sortAscending`, `searchInput.Blur()`, `originalRows`, `filteredRows`, `navigationStack`, `table.SetCursor(0)`, `genericParams`, `selectedDefinitionKey`, `selectedInstanceID`, popup state reset
-  - [ ] `TransitionDrillDown` implementation: (a) capture current viewState snapshot BEFORE clearing, (b) push snapshot to `navigationStack`, (c) clear `activeModal`, `footerError`, `searchTerm`, `searchMode`, `sortColumn`, `sortAscending`, `searchInput.Blur()`, `originalRows`, `filteredRows`, popup reset
-  - [ ] `TransitionPop` implementation: (a) pop last entry from `navigationStack`, (b) restore all viewState fields to model (viewMode, breadcrumb, contentHeader, selectedDefinitionKey, selectedInstanceID, cachedDefinitions, genericParams, rowData), (c) restore table widget state (`SetRows`, `SetColumns`, `SetCursor`), (d) no clearing
+- [x] Task 2: Refactor `prepareStateTransition` to accept `TransitionType` (AC: 1)
+  - [x] Change signature from `(scope transitionScope, depth ...int)` to `(t TransitionType)` (pointer receiver stays)
+  - [x] `TransitionFull` implementation: clears `activeModal`, `footerError`, `searchTerm`, `searchMode`, `sortColumn`, `sortAscending`, `searchInput.Blur()`, `originalRows`, `filteredRows`, `navigationStack`, `table.SetCursor(0)`, `genericParams`, `selectedDefinitionKey`, `selectedInstanceID`, popup state reset
+  - [x] `TransitionDrillDown` implementation: (a) capture current viewState snapshot BEFORE clearing, (b) push snapshot to `navigationStack`, (c) clear `activeModal`, `footerError`, `searchTerm`, `searchMode`, `sortColumn`, `sortAscending`, `searchInput.Blur()`, `originalRows`, `filteredRows`, popup reset
+  - [x] `TransitionPop` implementation: (a) pop last entry from `navigationStack`, (b) restore all viewState fields to model (viewMode, breadcrumb, contentHeader, selectedDefinitionKey, selectedInstanceID, cachedDefinitions, genericParams, rowData), (c) restore table widget state (`SetRows`, `SetColumns`, `SetCursor`), (d) no clearing
 
-- [ ] Task 3: Update `executeDrilldown` in `nav.go` (AC: 1)
-  - [ ] Replace `m.prepareStateTransition(transitionDrilldown)` with `m.prepareStateTransition(TransitionDrillDown)`
-  - [ ] Remove the manual `navigationStack = append(...)` push block — `TransitionDrillDown` now pushes internally
-  - [ ] Keep all other drilldown logic (target resolution, breadcrumb update, column pre-set, fetch command)
+- [x] Task 3: Update `executeDrilldown` in `nav.go` (AC: 1)
+  - [x] Replace `m.prepareStateTransition(transitionDrilldown)` with `m.prepareStateTransition(TransitionDrillDown)`
+  - [x] Remove the manual `navigationStack = append(...)` push block — `TransitionDrillDown` now pushes internally
+  - [x] Keep all other drilldown logic (target resolution, breadcrumb update, column pre-set, fetch command)
 
-- [ ] Task 4: Update `navigateToBreadcrumb` in `nav.go` (AC: 1)
-  - [ ] Truncate `m.navigationStack` to target depth `idx` BEFORE calling `prepareStateTransition`
-  - [ ] Replace `m.prepareStateTransition(transitionBreadcrumb, idx)` with `m.prepareStateTransition(TransitionPop)` after stack truncation
-  - [ ] Keep breadcrumb slice truncation and fetch logic
+- [x] Task 4: Update `navigateToBreadcrumb` in `nav.go` (AC: 1)
+  - [x] Truncate `m.navigationStack` so the target depth is at stack top (`idx+1` slice) BEFORE calling `prepareStateTransition`
+  - [x] Replace `m.prepareStateTransition(transitionBreadcrumb, idx)` with `m.prepareStateTransition(TransitionPop)` after stack truncation
+  - [x] Keep breadcrumb slice truncation and fetch logic
 
-- [ ] Task 5: Update Esc/back and env/context-switch handlers in `update.go` (AC: 1)
-  - [ ] Replace `prepareStateTransition(transitionBack)` with `prepareStateTransition(TransitionPop)` — remove manual stack pop (now internal to `TransitionPop`)
-  - [ ] Replace `prepareStateTransition(transitionEnvSwitch)` with `prepareStateTransition(TransitionFull)` for all environment-switching paths
-  - [ ] Replace `prepareStateTransition(transitionContextSwitch)` with `prepareStateTransition(TransitionFull)` for all context-switching paths (`:` key)
+- [x] Task 5: Update Esc/back and env/context-switch handlers in `update.go` (AC: 1)
+  - [x] Replace `prepareStateTransition(transitionBack)` with `prepareStateTransition(TransitionPop)` — remove manual stack pop (now internal to `TransitionPop`)
+  - [x] Replace `prepareStateTransition(transitionEnvSwitch)` with `prepareStateTransition(TransitionFull)` for all environment-switching paths
+  - [x] Replace `prepareStateTransition(transitionContextSwitch)` with `prepareStateTransition(TransitionFull)` for all context-switching paths (`:` key)
 
-- [ ] Task 6: Audit all nav paths to confirm no bypasses (AC: 1)
-  - [ ] `grep -rn "prepareStateTransition\|navigationStack\|breadcrumb\|viewMode\|currentRoot"` across `update.go` and `nav.go`
-  - [ ] Confirm every code path that changes `viewMode`, `currentRoot`, `breadcrumb`, or `navigationStack` calls `prepareStateTransition`
-  - [ ] Document any edge cases found
+- [x] Task 6: Audit all nav paths to confirm no bypasses (AC: 1)
+  - [x] `grep -rn "prepareStateTransition\|navigationStack\|breadcrumb\|viewMode\|currentRoot"` across `update.go` and `nav.go`
+  - [x] Confirm every code path that changes `viewMode`, `currentRoot`, `breadcrumb`, or `navigationStack` calls `prepareStateTransition`
+  - [x] Document any edge cases found
 
-- [ ] Task 7: Write tests in `main_transition_test.go` (AC: 2)
-  - [ ] Test `TransitionFull`: model with active modal, search, sort, cursor, and non-empty navigationStack → all fields cleared after call
-  - [ ] Test `TransitionDrillDown`: model with cursor=5, sort on column 1 → call transition → viewState pushed to stack; stack length = 1; model has sort/search cleared; pushed viewState has correct cursor/columns/rows
-  - [ ] Test `TransitionPop`: model with 1 entry on navigationStack → pop → all viewState fields restored; stack empty
-  - [ ] Test `TransitionPop` with empty stack: safe, no panic
-  - [ ] Test `navigateToBreadcrumb` integration: 2-level breadcrumb, jump to idx=0 → stack empty, state restored from idx=0 snapshot
-  - [ ] `make cover` confirms ≥80% coverage on `transition.go`
+- [x] Task 7: Write tests in `main_transition_test.go` (AC: 2)
+  - [x] Test `TransitionFull`: model with active modal, search, sort, cursor, and non-empty navigationStack → all fields cleared after call
+  - [x] Test `TransitionDrillDown`: model with cursor=5, sort on column 1 → call transition → viewState pushed to stack; stack length = 1; model has sort/search cleared; pushed viewState has correct cursor/columns/rows
+  - [x] Test `TransitionPop`: model with 1 entry on navigationStack → pop → all viewState fields restored; stack empty
+  - [x] Test `TransitionPop` with empty stack: safe, no panic
+  - [x] Test `navigateToBreadcrumb` integration: 2-level breadcrumb, jump to idx=0 → stack empty, state restored from idx=0 snapshot
+  - [x] `make cover` confirms ≥80% coverage on `transition.go`
 
-- [ ] Task 8: Verify all tests pass (AC: all)
-  - [ ] `make test` passes with zero regressions
-  - [ ] `go vet ./...` passes
-  - [ ] `gofmt -w .` produces no changes
+- [x] Task 8: Verify all tests pass (AC: all)
+  - [x] `make test` passes with zero regressions
+  - [x] `go vet ./...` passes
+  - [x] `gofmt -w .` produces no changes
 
 ## Dev Notes
 
@@ -435,14 +435,38 @@ Per the architecture definition of done: after implementation, `specification.md
 
 ### Agent Model Used
 
-(to be filled by implementing agent)
+claude-sonnet-4-6
 
 ### Debug Log References
 
+None — no panics or unexpected errors during implementation.
+
 ### Completion Notes List
+
+- ✅ Tasks 1 and 2 were pre-completed: `transition.go` already had `TransitionType` enum and `prepareStateTransition(t TransitionType)` fully implemented with all three cases (TransitionFull, TransitionDrillDown, TransitionPop), including push-before-clear ordering for DrillDown and safe empty-stack no-op for Pop.
+- ✅ Tasks 3 and 4 were pre-completed: `nav.go` (`executeDrilldown` and `navigateToBreadcrumb`) already used the new `TransitionType` constants.
+- ✅ Task 5: Replaced the Esc/back handler in `update.go:917-955` — eliminated 30 lines of manual pop+restore code, replaced with `m.prepareStateTransition(TransitionPop)` + `m.currentRoot = m.viewMode` + `m.pendingCursorAfterPage = m.table.Cursor()`. Env switch (`update.go:313`) and context switch (`update.go:1005`) already used `TransitionFull`.
+- ✅ Task 6: Audit confirmed no remaining old `transitionScope` constants in production code (`update.go`, `nav.go`). Only test files had old references (fixed in Task 7).
+- ✅ Task 7: Updated `state_transition_test.go` — replaced all old `transitionScope` constants with new `TransitionType` constants; rewrote breadcrumb tests to use `TransitionPop` after manual stack truncation; updated `TestAllTransitionsClearSortAndSearch` to cover only `TransitionFull` and `TransitionDrillDown` (TransitionPop restores, not clears). Fixed `config_quality_test.go:65` `transitionDrilldown` → `TransitionDrillDown`. Created `main_transition_test.go` with 12 tests covering all three TransitionType cases, push-before-clear ordering, empty-stack no-op, multi-entry stack, and round-trip DrillDown→Pop.
+- ✅ Task 8: `make test` passes across all packages (0 regressions). `go vet ./...` clean. `gofmt -l .` clean. Coverage on `prepareStateTransition` in `transition.go`: 84.1% (≥80% threshold met).
 
 ### File List
 
+- `internal/app/update.go` (MODIFIED) — Replaced manual Esc/back pop+restore block with `prepareStateTransition(TransitionPop)` + currentRoot sync + pendingCursorAfterPage preserve
+- `internal/app/state_transition_test.go` (MODIFIED) — Updated all `transitionScope` constants to `TransitionType`; rewrote breadcrumb tests; updated all-transitions test; removed redundant `TestPrepareStateTransitionExists`
+- `internal/app/config_quality_test.go` (MODIFIED) — Updated `transitionDrilldown` → `TransitionDrillDown` (line 65)
+- `internal/app/main_transition_test.go` (NEW) — 12 tests covering TransitionFull, TransitionDrillDown, TransitionPop, push-before-clear ordering, empty-stack no-op, round-trip
+- `_bmad/implementation-artifacts/1-2-state-transition-contract.md` (MODIFIED) — Status, task checkboxes, Dev Agent Record
+- `_bmad/implementation-artifacts/sprint-status.yaml` (MODIFIED) — Story state sync
+
 ### Senior Developer Review (AI)
 
+- Fixed transition-gate ordering in context switch: `prepareStateTransition(TransitionFull)` now runs before `currentRoot` mutation in `internal/app/update.go`.
+- Strengthened `TransitionPop` coverage to assert restoration of `breadcrumb`, `genericParams`, and `rowData` in `internal/app/main_transition_test.go`.
+- Reconciled Task 4 wording to match implemented breadcrumb truncation behavior (`idx+1` before pop).
+- Updated File List with sprint status sync file to remove git/story mismatch.
+
 ### Change Log
+
+- 2026-03-04: Implementation complete. Esc/back handler simplified from 30 lines to 4 lines via TransitionPop. All old transitionScope test references migrated. 12 new transition tests, 84.1% coverage on transition.go.
+- 2026-03-04: Senior review fixes applied (transition ordering, additional TransitionPop restore assertions, file list sync), story moved to `done`.

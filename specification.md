@@ -226,7 +226,17 @@ Examples of config-driven drilldown chains:
 - `Enter` switches context (requires exact match or selected popup item)
 - `Esc` cancels and clears input
 - `Up/Down` moves popup cursor
-- On switch: resets navigation stack, clears errors, fetches new root resource
+- On switch sequence: close popup UI state -> `prepareStateTransition(TransitionFull)` -> set `currentRoot/viewMode/contentHeader/breadcrumb` -> fetch new root resource
+
+### Transition Gate Contract
+
+- All navigation/state changes pass through `prepareStateTransition(t TransitionType)`.
+- `TransitionType` values:
+  - `TransitionFull`: clears modal, footer status, search/sort state, cursor, and `navigationStack`
+  - `TransitionDrillDown`: pushes `viewState` snapshot first, then clears child-view state
+  - `TransitionPop`: restores the top `viewState` from stack without clearing fields
+- Environment switch sequence is: `switchToEnvironment(target)` -> `prepareStateTransition(TransitionFull)` -> breadcrumb reset -> fetch definitions.
+- Edge case: pressing `Esc` immediately after env switch is a safe no-op when `navigationStack` is empty (no stale restore).
 
 ---
 

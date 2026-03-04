@@ -915,41 +915,14 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			}
 			// Pop from navigation stack and restore previous view state
 			if len(m.navigationStack) > 0 {
-				// clear sort/search state before restoring parent state
-				m.prepareStateTransition(transitionBack)
-				// pop last state
-				prevState := m.navigationStack[len(m.navigationStack)-1]
-				m.navigationStack = m.navigationStack[:len(m.navigationStack)-1]
+				// TransitionPop pops the top viewState and restores all fields:
+				// viewMode, breadcrumb, contentHeader, selectedKeys, genericParams,
+				// rowData, and table (columns, rows, cursor).
+				m.prepareStateTransition(TransitionPop)
+				m.currentRoot = m.viewMode                  // sync currentRoot with restored viewMode
+				m.pendingCursorAfterPage = m.table.Cursor() // preserve restored cursor across re-fetch
 
-				// restore complete state
-				m.viewMode = prevState.viewMode
-				m.currentRoot = prevState.viewMode // fix: restore currentRoot so title shows correct count
-				m.breadcrumb = append([]string{}, prevState.breadcrumb...)
-				m.contentHeader = prevState.contentHeader
-				m.selectedDefinitionKey = prevState.selectedDefinitionKey
-				m.selectedInstanceID = prevState.selectedInstanceID
-				m.cachedDefinitions = prevState.cachedDefinitions
-				m.genericParams = prevState.genericParams // restore drilldown filter params
-				m.rowData = prevState.rowData             // restore raw row data for drilldown
-
-				// restore table rows and cursor position
-				// restore columns first to ensure rows align with expected column count
-				if len(prevState.tableColumns) > 0 {
-					m.table.SetColumns(prevState.tableColumns)
-				}
-				// normalize rows to the restored column count (defensive)
-				cols := m.table.Columns()
-				rows := prevState.tableRows
-				if len(cols) > 0 {
-					norm := normalizeRows(rows, len(cols))
-					m.table.SetRows(norm)
-				} else {
-					m.table.SetRows(rows)
-				}
-				m.table.SetCursor(prevState.tableCursor)
-
-				// re-fetch to refresh data and count; preserve cursor after load
-				m.pendingCursorAfterPage = prevState.tableCursor
+				// re-fetch to refresh data and count
 				m.isLoading = true
 				m.apiCallStarted = time.Now()
 				return m, tea.Batch(m.fetchForRoot(m.currentRoot), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
@@ -995,7 +968,6 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				}
 				if selectedContext != "" {
 					rc := selectedContext
-					m.currentRoot = rc
 					m.popup.mode = popupModeNone
 					m.popup.input = ""
 					m.popup.cursor = -1
@@ -1003,6 +975,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 					m.footerError = ""
 					// centralized state cleanup for context switch
 					m.prepareStateTransition(TransitionFull)
+					m.currentRoot = rc
 					// reset breadcrumb and header
 					m.breadcrumb = []string{rc}
 					m.contentHeader = rc

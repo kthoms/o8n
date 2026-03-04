@@ -7,31 +7,17 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-// ── Task 1: prepareStateTransition exists ──────────────────────────────────
-
-func TestPrepareStateTransitionExists(t *testing.T) {
-	m := newTestModel(t)
-	m.splashActive = false
-	// Should not panic — just verify all scopes can be called
-	m.prepareStateTransition(transitionEnvSwitch)
-	m.prepareStateTransition(transitionContextSwitch)
-	m.prepareStateTransition(transitionDrilldown)
-	m.prepareStateTransition(transitionBack)
-	m.prepareStateTransition(transitionBreadcrumb, 0)
-}
-
-// ── Task 2: Environment switch clears all leaking state ────────────────────
+// ── TransitionFull: environment switch clears all leaking state ────────────
 
 func TestEnvSwitchClearsNavigationStack(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	// simulate a drilldown push
 	m.navigationStack = []viewState{{viewMode: "process-definition"}}
 
-	m.prepareStateTransition(transitionEnvSwitch)
+	m.prepareStateTransition(TransitionFull)
 
 	if m.navigationStack != nil {
-		t.Errorf("expected navigationStack nil after env switch, got %v", m.navigationStack)
+		t.Errorf("expected navigationStack nil after TransitionFull, got %v", m.navigationStack)
 	}
 }
 
@@ -40,10 +26,10 @@ func TestEnvSwitchClearsGenericParams(t *testing.T) {
 	m.splashActive = false
 	m.genericParams = map[string]string{"processInstanceId": "abc"}
 
-	m.prepareStateTransition(transitionEnvSwitch)
+	m.prepareStateTransition(TransitionFull)
 
 	if len(m.genericParams) != 0 {
-		t.Errorf("expected empty genericParams after env switch, got %v", m.genericParams)
+		t.Errorf("expected empty genericParams after TransitionFull, got %v", m.genericParams)
 	}
 }
 
@@ -52,7 +38,7 @@ func TestEnvSwitchClearsSelectedKeys(t *testing.T) {
 	m.selectedDefinitionKey = "my-process"
 	m.selectedInstanceID = "inst-123"
 
-	m.prepareStateTransition(transitionEnvSwitch)
+	m.prepareStateTransition(TransitionFull)
 
 	if m.selectedDefinitionKey != "" {
 		t.Errorf("expected empty selectedDefinitionKey, got %q", m.selectedDefinitionKey)
@@ -62,7 +48,7 @@ func TestEnvSwitchClearsSelectedKeys(t *testing.T) {
 	}
 }
 
-// ── Task 3: Context switch clears sort state ───────────────────────────────
+// ── TransitionFull: context switch clears sort and nav state ──────────────
 
 func TestContextSwitchClearsSortState(t *testing.T) {
 	m := newTestModel(t)
@@ -70,13 +56,13 @@ func TestContextSwitchClearsSortState(t *testing.T) {
 	m.sortColumn = 3
 	m.sortAscending = false
 
-	m.prepareStateTransition(transitionContextSwitch)
+	m.prepareStateTransition(TransitionFull)
 
 	if m.sortColumn != -1 {
-		t.Errorf("expected sortColumn -1 after context switch, got %d", m.sortColumn)
+		t.Errorf("expected sortColumn -1 after TransitionFull, got %d", m.sortColumn)
 	}
 	if !m.sortAscending {
-		t.Errorf("expected sortAscending true after context switch")
+		t.Errorf("expected sortAscending true after TransitionFull")
 	}
 }
 
@@ -84,14 +70,14 @@ func TestContextSwitchClearsNavStack(t *testing.T) {
 	m := newTestModel(t)
 	m.navigationStack = []viewState{{viewMode: "process-definition"}, {viewMode: "process-instance"}}
 
-	m.prepareStateTransition(transitionContextSwitch)
+	m.prepareStateTransition(TransitionFull)
 
 	if m.navigationStack != nil {
-		t.Errorf("expected nil navigationStack after context switch, got %v", m.navigationStack)
+		t.Errorf("expected nil navigationStack after TransitionFull, got %v", m.navigationStack)
 	}
 }
 
-// ── Task 4: Breadcrumb navigation truncates navStack ──────────────────────
+// ── Breadcrumb navigation: TransitionFull (root) and TransitionPop (depth) ─
 
 func TestBreadcrumbNavToRootClearsNavStack(t *testing.T) {
 	m := newTestModel(t)
@@ -102,75 +88,95 @@ func TestBreadcrumbNavToRootClearsNavStack(t *testing.T) {
 		{viewMode: "c"},
 	}
 
-	m.prepareStateTransition(transitionBreadcrumb, 0)
+	// Root breadcrumb navigation uses TransitionFull (full reset)
+	m.prepareStateTransition(TransitionFull)
 
 	if m.navigationStack != nil {
-		t.Errorf("expected nil navStack after breadcrumb(0), got %v", m.navigationStack)
+		t.Errorf("expected nil navStack after TransitionFull (breadcrumb root), got %v", m.navigationStack)
 	}
 }
 
-func TestBreadcrumbNavToDepth1TruncatesNavStack(t *testing.T) {
+func TestBreadcrumbNavToDepthRestoresState(t *testing.T) {
 	m := newTestModel(t)
 	m.navigationStack = []viewState{
-		{viewMode: "a"}, // depth 0→1 transition saved here
-		{viewMode: "b"}, // depth 1→2
-		{viewMode: "c"}, // depth 2→3
+		{viewMode: "a", tableCursor: 3},
+		{viewMode: "b", tableCursor: 7},
+		{viewMode: "c", tableCursor: 1},
 	}
 
-	m.prepareStateTransition(transitionBreadcrumb, 1)
+	// Breadcrumb jump to depth 1: caller truncates stack so target is at top, then calls TransitionPop
+	m.navigationStack = m.navigationStack[:2] // keep entries 0 and 1 (idx+1=2)
+	m.prepareStateTransition(TransitionPop)
 
+	// TransitionPop pops the top (entry 1: viewMode="b", tableCursor=7)
 	if len(m.navigationStack) != 1 {
-		t.Errorf("expected navStack len 1 after breadcrumb(1), got %d", len(m.navigationStack))
+		t.Errorf("expected navStack len 1 after truncate+pop, got %d", len(m.navigationStack))
+	}
+	if m.viewMode != "b" {
+		t.Errorf("expected viewMode=b, got %q", m.viewMode)
 	}
 }
 
-// ── Task 5: All transitions clear sort and search ─────────────────────────
+// ── TransitionFull and TransitionDrillDown clear sort and search ──────────
 
-func TestAllTransitionsClearSortAndSearch(t *testing.T) {
-	scopes := []transitionScope{
-		transitionEnvSwitch,
-		transitionContextSwitch,
-		transitionDrilldown,
-		transitionBack,
+func TestTransitionFullClearsSortAndSearch(t *testing.T) {
+	m := newTestModel(t)
+	m.sortColumn = 2
+	m.sortAscending = false
+	m.searchTerm = "myterm"
+	m.originalRows = []table.Row{{"id1"}}
+
+	m.prepareStateTransition(TransitionFull)
+
+	if m.sortColumn != -1 {
+		t.Errorf("TransitionFull: expected sortColumn -1, got %d", m.sortColumn)
 	}
-	for _, scope := range scopes {
-		m := newTestModel(t)
-		m.sortColumn = 2
-		m.sortAscending = false
-		m.searchTerm = "myterm"
-		m.originalRows = []table.Row{{"id1"}}
-
-		m.prepareStateTransition(scope)
-
-		if m.sortColumn != -1 {
-			t.Errorf("scope %d: expected sortColumn -1, got %d", scope, m.sortColumn)
-		}
-		if !m.sortAscending {
-			t.Errorf("scope %d: expected sortAscending true", scope)
-		}
-		if m.searchTerm != "" {
-			t.Errorf("scope %d: expected empty searchTerm, got %q", scope, m.searchTerm)
-		}
-		if m.originalRows != nil {
-			t.Errorf("scope %d: expected nil originalRows", scope)
-		}
+	if !m.sortAscending {
+		t.Errorf("TransitionFull: expected sortAscending true")
+	}
+	if m.searchTerm != "" {
+		t.Errorf("TransitionFull: expected empty searchTerm, got %q", m.searchTerm)
+	}
+	if m.originalRows != nil {
+		t.Errorf("TransitionFull: expected nil originalRows")
 	}
 }
 
-// ── Task 6: Cursor bounds after row deletion ──────────────────────────────
+func TestTransitionDrillDownClearsSortAndSearch(t *testing.T) {
+	m := newTestModel(t)
+	m.sortColumn = 2
+	m.sortAscending = false
+	m.searchTerm = "myterm"
+	m.originalRows = []table.Row{{"id1"}}
+
+	m.prepareStateTransition(TransitionDrillDown)
+
+	if m.sortColumn != -1 {
+		t.Errorf("TransitionDrillDown: expected sortColumn -1, got %d", m.sortColumn)
+	}
+	if !m.sortAscending {
+		t.Errorf("TransitionDrillDown: expected sortAscending true")
+	}
+	if m.searchTerm != "" {
+		t.Errorf("TransitionDrillDown: expected empty searchTerm, got %q", m.searchTerm)
+	}
+	if m.originalRows != nil {
+		t.Errorf("TransitionDrillDown: expected nil originalRows")
+	}
+}
+
+// ── Cursor bounds after row deletion ─────────────────────────────────────
 
 func TestCursorBoundsAfterTerminate(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 
-	// Set up table with 3 rows, cursor at row 2 (last)
 	cols := []table.Column{{Title: "ID", Width: 10}}
 	rows := []table.Row{{"row1"}, {"row2"}, {"row3"}}
 	m.table.SetColumns(cols)
 	m.table.SetRows(rows)
 	m.table.SetCursor(2)
 
-	// Terminate the row at index 2 — after removal only 2 rows remain
 	m2raw, _ := m.Update(terminatedMsg{id: "row3"})
 	m2 := m2raw.(model)
 
@@ -205,14 +211,13 @@ func TestCursorBoundsAfterDeleteOnlyRow(t *testing.T) {
 func TestEscAfterEnvSwitchDoesNotRestoreOldStack(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	// Simulate drilled-in state in env A
 	m.navigationStack = []viewState{{viewMode: "process-definition"}}
 	m.genericParams = map[string]string{"processInstanceId": "abc"}
 
-	// Simulate env switch (what prepareStateTransition(envSwitch) does)
-	m.prepareStateTransition(transitionEnvSwitch)
+	// Simulate env switch (TransitionFull clears navStack)
+	m.prepareStateTransition(TransitionFull)
 
-	// Now press Esc — should NOT pop the old stack
+	// Now press Esc — should NOT pop (stack is nil after TransitionFull)
 	m2raw, _ := m.Update(tea.KeyMsg{Type: tea.KeyEsc})
 	m2 := m2raw.(model)
 
