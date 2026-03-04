@@ -64,16 +64,16 @@ func TestWin1_APILatencyDisplaysInFooter(t *testing.T) {
 	}
 }
 
-// TestWin2_ContextAwareKeyHints tests that hints change by view mode
+// TestWin2_ContextAwareKeyHints tests that hints change by view mode.
 func TestWin2_ContextAwareKeyHints(t *testing.T) {
 	m := newTestModel(t)
 
 	// Test definitions view hints
 	m.viewMode = "process-definition"
-	hints := m.getKeyHints(100)
+	hints := currentViewHints(m)
 	hasExpectedHint := false
 	for _, h := range hints {
-		if strings.Contains(h.Description, "drill") || strings.Contains(h.Description, "Edit") {
+		if strings.Contains(h.Label, "drill") || strings.Contains(h.Label, "edit") {
 			hasExpectedHint = true
 			break
 		}
@@ -84,10 +84,10 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 
 	// Test instances view hints - should have drilldown hint (to variables)
 	m.viewMode = "process-instance"
-	hints = m.getKeyHints(100)
+	hints = currentViewHints(m)
 	hasExpectedHint = false
 	for _, h := range hints {
-		if strings.Contains(h.Description, "drill") {
+		if strings.Contains(h.Label, "drill") {
 			hasExpectedHint = true
 			break
 		}
@@ -98,11 +98,11 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 
 	// Test variables view hints
 	m.viewMode = "process-variables"
-	hints = m.getKeyHints(100)
+	hints = currentViewHints(m)
 	// Variables view should always have 'nav' hint
 	hasNavHint := false
 	for _, h := range hints {
-		if strings.Contains(h.Description, "nav") || strings.Contains(h.Description, "↑↓") {
+		if strings.Contains(h.Label, "nav") || strings.Contains(h.Key, "↑↓") {
 			hasNavHint = true
 			break
 		}
@@ -112,16 +112,16 @@ func TestWin2_ContextAwareKeyHints(t *testing.T) {
 	}
 }
 
-// TestWin2_KeyHintsRespectTerminalWidth tests width-dependent hints
+// TestWin2_KeyHintsRespectTerminalWidth tests width-dependent hints.
 func TestWin2_KeyHintsRespectTerminalWidth(t *testing.T) {
 	m := newTestModel(t)
 	m.viewMode = "process-instance"
 
 	// At small width, refresh hint should not appear (Ctrl+r appears at width >= 90)
-	hints := m.getKeyHints(80)
+	hints := filterHints(currentViewHints(m), 80)
 	hasRefresh := false
 	for _, h := range hints {
-		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Description, "refresh") {
+		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Label, "refresh") {
 			hasRefresh = true
 		}
 	}
@@ -130,10 +130,10 @@ func TestWin2_KeyHintsRespectTerminalWidth(t *testing.T) {
 	}
 
 	// At large width, refresh hint should appear
-	hints = m.getKeyHints(100)
+	hints = filterHints(currentViewHints(m), 100)
 	hasRefresh = false
 	for _, h := range hints {
-		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Description, "refresh") {
+		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Label, "refresh") {
 			hasRefresh = true
 		}
 	}
@@ -263,9 +263,9 @@ func TestAllQuickWinsIntegration(t *testing.T) {
 			return m.flashActive
 		}},
 		{"Context-aware hints", func() bool {
-			hints := m.getKeyHints(100)
+			hints := filterHints(currentViewHints(m), 100)
 			for _, h := range hints {
-				if strings.Contains(h.Description, "drill") || strings.Contains(h.Description, "nav") {
+				if strings.Contains(h.Label, "drill") || strings.Contains(h.Label, "nav") {
 					return true
 				}
 			}

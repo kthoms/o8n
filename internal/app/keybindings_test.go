@@ -72,6 +72,10 @@ func sendKeyString(m model, keyStr string) (model, tea.Cmd) {
 		msg = tea.KeyMsg{Type: tea.KeyCtrlE}
 	case "ctrl+r":
 		msg = tea.KeyMsg{Type: tea.KeyCtrlR}
+	case "ctrl+space":
+		msg = tea.KeyMsg{Type: tea.KeyCtrlAt}
+	case "ctrl+h":
+		msg = tea.KeyMsg{Type: tea.KeyCtrlH}
 	case "ctrl+u":
 		msg = tea.KeyMsg{Type: tea.KeyCtrlU}
 	case " ":

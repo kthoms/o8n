@@ -707,6 +707,22 @@ On startup, the app restores:
 - The last active skin (or falls back to `stock`)
 - The last navigation position (root context and drilldown state)
 
+### First-Run Home Context Modal
+
+When no saved navigation state exists (fresh install or state cleared), the app opens a **Home Context Selection modal** instead of going directly to the default root:
+
+- **Trigger:** `appState.Navigation.Root == ""` detected in `run.go`
+- **Key bindings:** `↑`/`k` / `↓`/`j` navigate list; printable characters filter; `Backspace` removes last char; `Enter` confirms selection
+- **Esc behaviour:** Intentionally swallowed — selection is required before the app is usable (documented exception to the universal Esc contract from Story 1.4)
+- **Ctrl+H** reopens the modal at any time to switch home context
+- On selection, a full `TransitionFull` state transition fires and the selected root is persisted via `saveStateCmd()`
+
+### API Resilience
+
+- `genericLoadedMsg` with `nil` items produces a "No results" placeholder row (via `normalizeRows`) — no panic
+- Unknown root keys in `genericLoadedMsg` are handled gracefully: columns are inferred from data keys, no crash
+- Nil field values in item maps are rendered as empty strings
+
 ### Debug Mode
 
 - `--debug` flag enables verbose logging

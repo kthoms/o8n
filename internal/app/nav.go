@@ -161,7 +161,7 @@ func (m *model) buildActionsForRoot() []actionItem {
 	}
 
 	// Always add "View as JSON" as the last action
-	items = append(items, actionItem{key: "y", label: "View as JSON", cmd: func(m *model) tea.Cmd {
+	items = append(items, actionItem{key: "J", label: "View as JSON", cmd: func(m *model) tea.Cmd {
 		row := m.table.SelectedRow()
 		if len(row) == 0 {
 			return nil
@@ -494,6 +494,21 @@ func (m *model) restoreNavState(nav config.NavState) {
 		m.genericParams = nav.GenericParams
 	}
 	// viewMode is set by the first genericLoadedMsg received after Init.
+}
+
+// filteredFirstRunContexts returns m.rootContexts filtered by m.firstRunInput.
+// Returns all contexts when input is empty; filters by substring match otherwise.
+func (m *model) filteredFirstRunContexts() []string {
+	if m.firstRunInput == "" {
+		return m.rootContexts
+	}
+	var out []string
+	for _, rc := range m.rootContexts {
+		if strings.Contains(rc, m.firstRunInput) {
+			out = append(out, rc)
+		}
+	}
+	return out
 }
 
 // popupItems returns the list of items for the current popup mode.

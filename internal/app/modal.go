@@ -119,6 +119,13 @@ func init() {
 			{Key: "Esc", Label: "cancel", Priority: 2},
 		},
 	})
+
+	registerModal(ModalFirstRun, ModalConfig{
+		SizeHint: OverlayCenter,
+		BodyRenderer: func(m model) string {
+			return m.renderFirstRunModal(m.lastWidth, m.lastHeight)
+		},
+	})
 }
 
 // renderModal is the factory entry point for all modal rendering.

@@ -64,10 +64,10 @@ func TestActionsMenuOpensOnSpace(t *testing.T) {
 	m.table.SetRows([]table.Row{{"inst-1"}})
 	m.table.SetCursor(0)
 
-	m2, _ := sendKeyString(m, " ")
+	m2, _ := sendKeyString(m, "ctrl+space")
 
 	if !m2.showActionsMenu {
-		t.Error("expected showActionsMenu to be true after Space")
+		t.Error("expected showActionsMenu to be true after Ctrl+Space")
 	}
 	if len(m2.actionsMenuItems) == 0 {
 		t.Error("expected actions menu items to be populated")
@@ -92,7 +92,7 @@ func TestActionsMenuItemsForProcessInstance(t *testing.T) {
 	for _, item := range items {
 		keys[item.key] = true
 	}
-	for _, expected := range []string{"s", "r", "ctrl+d", "y"} {
+	for _, expected := range []string{"s", "r", "ctrl+d", "J"} {
 		if !keys[expected] {
 			t.Errorf("expected key %q in actions menu", expected)
 		}
@@ -120,8 +120,8 @@ func TestActionsMenuItemsForJob(t *testing.T) {
 	if !keys["r"] {
 		t.Error("expected 'r' (retry) in job actions")
 	}
-	if !keys["y"] {
-		t.Error("expected 'y' (view) in job actions")
+	if !keys["J"] {
+		t.Error("expected 'J' (view) in job actions")
 	}
 }
 
@@ -143,7 +143,7 @@ func TestActionsMenuItemsForTask(t *testing.T) {
 	for _, item := range items {
 		keys[item.key] = true
 	}
-	for _, expected := range []string{"c", "u", "y"} {
+	for _, expected := range []string{"c", "u", "J"} {
 		if !keys[expected] {
 			t.Errorf("expected key %q in task actions menu", expected)
 		}
@@ -208,8 +208,8 @@ func TestActionsDefaultViewAsJSON(t *testing.T) {
 	if len(items) < 1 {
 		t.Error("expected at least 1 action (View as JSON)")
 	}
-	if items[len(items)-1].key != "y" {
-		t.Errorf("expected last action key to be 'y', got %q", items[len(items)-1].key)
+	if items[len(items)-1].key != "J" {
+		t.Errorf("expected last action key to be 'J', got %q", items[len(items)-1].key)
 	}
 }
 

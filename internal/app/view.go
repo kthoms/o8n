@@ -3,7 +3,6 @@ package app
 import (
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 	"strings"
 
@@ -16,72 +15,6 @@ import (
 // lastRenderedView holds the most recently rendered frame, used for screen dumps on errors.
 // Package-level because View() has a value receiver and cannot mutate model fields.
 var lastRenderedView string
-
-// getKeyHints returns context-aware keyboard hints based on current view and terminal width
-func (m *model) getKeyHints(width int) []KeyHint {
-	hints := []KeyHint{}
-
-	// Global hints (always relevant)
-	hints = append(hints,
-		KeyHint{"?", "help", 1},
-		KeyHint{":", "switch", 2},
-	)
-
-	// Config-driven context hints based on current table definition
-	// Always show navigation hint
-	hints = append(hints, KeyHint{"↑↓", "nav", 3})
-
-	// Search hint — always visible per spec
-	hints = append(hints, KeyHint{"/", "find", 3})
-
-	// Look up current table definition to derive context hints
-	def := m.findTableDef(m.currentRoot)
-	if def != nil {
-		// Show drilldown hint if table has a drilldown target
-		if def.Drilldown != nil {
-			hints = append(hints, KeyHint{"Enter", "drill", 4})
-		}
-
-		// Show edit hint if current table has editable columns
-		if m.hasEditableColumns() {
-			hints = append(hints, KeyHint{"e", "edit", 4})
-		}
-	}
-
-	// Show back hint if we've drilled down (navigation stack non-empty)
-	if len(m.navigationStack) > 0 {
-		hints = append(hints, KeyHint{"Esc", "back", 5})
-	}
-
-	// Breadcrumb hotkey hint - show when user has drilled down (breadcrumb depth > 1)
-	if len(m.breadcrumb) > 1 {
-		n := len(m.breadcrumb) - 1
-		hints = append(hints, KeyHint{fmt.Sprintf("1–%d", n), "back", 5})
-	}
-
-	// Add other hints based on width thresholds
-	if width >= 88 && m.activeModal == ModalNone {
-		hints = append(hints, KeyHint{"s", "sort", 5})
-	}
-	if width >= 100 && m.activeModal == ModalNone {
-		hints = append(hints, KeyHint{"Space", "actions", 6})
-	}
-	if width >= 112 && m.activeModal == ModalNone {
-		hints = append(hints, KeyHint{"y", "detail", 6})
-	}
-	if width >= 90 {
-		hints = append(hints, KeyHint{"Ctrl+r", "refresh", 6})
-		hints = append(hints, KeyHint{"Ctrl+T", "skin", 6})
-		hints = append(hints, KeyHint{"Ctrl+e", "env", 6})
-	}
-	// Latency hint intentionally removed from header hints — keep toggle available via help/README
-	hints = append(hints, KeyHint{"PgDn/PgUp", "page", 3})
-	if width >= 110 {
-		hints = append(hints, KeyHint{"Ctrl+c", "quit", 8})
-	}
-
-	return hints
-}
 
 // renderCompactHeader renders a 2-row header
 func (m *model) renderCompactHeader(width int) string {
@@ -127,11 +60,7 @@ func (m *model) renderCompactHeader(width int) string {
 	}
 
 	// Row 2: Key hints (priority-based)
-	hints := m.getKeyHints(width)
-	// Sort by priority so lower-priority-number hints (more important) appear first and survive truncation
-	sort.Slice(hints, func(i, j int) bool {
-		return hints[i].Priority < hints[j].Priority
-	})
+	hints := filterHints(currentViewHints(*m), width)
 	row2Parts := []string{}
 
 	// Add active filter badge if filter is locked
@@ -141,7 +70,7 @@ func (m *model) renderCompactHeader(width int) string {
 	}
 
 	for _, hint := range hints {
-		part := fmt.Sprintf("%s %s", hint.Key, hint.Description)
+		part := fmt.Sprintf("%s %s", hint.Key, hint.Label)
 		row2Parts = append(row2Parts, part)
 	}
 	row2 := strings.Join(row2Parts, "  ")
@@ -219,7 +148,7 @@ NAVIGATION               │  ACTIONS                │  GLOBAL
 ──────────────────────   │  ────────────────────   │  ──────────────────
 ↑/↓      Navigate list   │  Ctrl+e  Switch env     │  ?     This help
 PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
-Home/End First/last row  │  Space   Actions menu   │  Ctrl+c Quit
+Home/End First/last row  │  Ctrl+Space Actions menu │  Ctrl+c Quit
 Enter    Drill down      │
 →        Drill down      │
 Esc      Go back         │
@@ -230,7 +159,7 @@ SEARCH                   │  CONTEXT
 Esc      Clear filter    │  Enter  Confirm
 Enter    Lock filter     │  Esc    Cancel
 Ctrl+a   Search all pgs  │  s      Sort
-                         │  y      Detail view
+                         │  J      JSON view
 
 STATUS INDICATORS
 ────────────────────────────────────────────
@@ -301,7 +230,7 @@ NAVIGATION               │  ACTIONS                │  GLOBAL
 ─────────────────────   │  ────────────────────   │  ──────────────────
 ↑/↓      Navigate list   │  Ctrl+e  Switch env     │  ?     This help
 PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
-Home/End First/last row  │  Space   Actions menu   │  Ctrl+c Quit
+Home/End First/last row  │  Ctrl+Space Actions menu │  Ctrl+c Quit
 %s
 %s
 %s
@@ -311,7 +240,7 @@ Esc      Go back         │  SEARCH                 │  CONTEXT
                           │  Esc     Clear filter   │  Enter  Confirm
                           │  Enter   Lock filter    │  Esc    Cancel
                           │                         │  s      Sort
-                          │                         │  y      Detail view`, enterLine, arrowLine, breadcrumbLine) + vimSection + resourceActionsSection + viewsSection + `
+                          │                         │  J      JSON view`, enterLine, arrowLine, breadcrumbLine) + vimSection + resourceActionsSection + viewsSection + `
 
 STATUS INDICATORS
 ────────────────────────────────────────────
@@ -433,7 +362,7 @@ NAVIGATION               │  ACTIONS                │  GLOBAL
 ─────────────────────   │  ────────────────────   │  ──────────────────
 ↑/↓      Navigate list   │  Ctrl+e  Switch env     │  ?     This help
 PgUp/Dn  Page up/down    │  Ctrl+r  Auto-refresh   │  :     Switch view
-Home/End First/last row  │  Space   Actions menu   │  Ctrl+c Quit
+Home/End First/last row  │  Ctrl+Space Actions menu │  Ctrl+c Quit
 %s
 %s
 %s
@@ -443,7 +372,7 @@ Esc      Go back         │  SEARCH                 │  CONTEXT
                           │  Esc     Clear filter   │  Enter  Confirm
                           │  Enter   Lock filter    │  Esc    Cancel
                           │                         │  s      Sort
-                          │                         │  y      Detail view`, enterLine, arrowLine, breadcrumbLine) +
+                          │                         │  J      JSON view`, enterLine, arrowLine, breadcrumbLine) +
 		vimSection + resourceActionsSection + viewsSection + `
 
 STATUS INDICATORS
@@ -1607,4 +1536,34 @@ func overlayCenter(bg, fg string) string {
 		result[row] = left + fgLine + right
 	}
 	return strings.Join(result, "\n")
+}
+
+// renderFirstRunModal renders the home-context selection modal body.
+// Called by the ModalFirstRun entry in the modal registry (OverlayCenter).
+// The factory wraps this content in a rounded border at ~50% terminal width.
+func (m *model) renderFirstRunModal(_, _ int) string {
+	var b strings.Builder
+
+	b.WriteString("Select Your Home Context\n\n")
+	b.WriteString(m.styles.FgMuted.Render("Type to filter  ↑↓ navigate  Enter select"))
+	b.WriteString("\n\n")
+
+	// Filter input line
+	b.WriteString(m.styles.PopupInput.Render("> "+m.firstRunInput) + "▍\n\n")
+
+	contexts := m.filteredFirstRunContexts()
+	if len(contexts) == 0 {
+		b.WriteString(m.styles.FgMuted.Render("No matching contexts"))
+	} else {
+		for i, ctx := range contexts {
+			if i == m.firstRunCursor {
+				b.WriteString(m.styles.PopupCursor.Render("► " + ctx))
+			} else {
+				b.WriteString(m.styles.PopupItem.Render("  " + ctx))
+			}
+			b.WriteString("\n")
+		}
+	}
+
+	return b.String()
 }

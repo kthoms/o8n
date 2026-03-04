@@ -1,6 +1,6 @@
 # Story 1.4: Consistent Modal UX — Esc/Enter + Type Validation
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 

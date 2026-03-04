@@ -6,7 +6,7 @@ import (
 	"github.com/charmbracelet/bubbles/table"
 )
 
-func TestDetailViewerOpensOnY(t *testing.T) {
+func TestDetailViewerOpensOnJ(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	cols := []table.Column{{Title: "ID", Width: 10}, {Title: "NAME", Width: 20}}
@@ -14,10 +14,10 @@ func TestDetailViewerOpensOnY(t *testing.T) {
 	m.table.SetRows([]table.Row{{"inst-1", "MyProcess"}})
 	m.table.SetCursor(0)
 
-	m2, _ := sendKeyString(m, "y")
+	m2, _ := sendKeyString(m, "J")
 
 	if m2.activeModal != ModalDetailView {
-		t.Errorf("expected ModalDetailView after 'y', got %v", m2.activeModal)
+		t.Errorf("expected ModalDetailView after 'J', got %v", m2.activeModal)
 	}
 	if m2.detailContent == "" {
 		t.Error("expected non-empty detailContent")
@@ -106,15 +106,15 @@ func TestSyntaxHighlightJSON(t *testing.T) {
 	}
 }
 
-func TestDetailViewerYKeyCloses(t *testing.T) {
+func TestDetailViewerJKeyCloses(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	m.activeModal = ModalDetailView
 	m.detailContent = "content"
 
-	m2, _ := sendKeyString(m, "y")
+	m2, _ := sendKeyString(m, "J")
 	if m2.activeModal != ModalNone {
-		t.Errorf("expected ModalNone after y in detail view, got %v", m2.activeModal)
+		t.Errorf("expected ModalNone after J in detail view, got %v", m2.activeModal)
 	}
 }
 
@@ -123,7 +123,7 @@ func TestDetailViewerNoRowNoOpen(t *testing.T) {
 	m.splashActive = false
 	m.table.SetRows([]table.Row{})
 
-	m2, _ := sendKeyString(m, "y")
+	m2, _ := sendKeyString(m, "J")
 
 	if m2.activeModal == ModalDetailView {
 		t.Error("expected ModalDetailView NOT to open with no rows")

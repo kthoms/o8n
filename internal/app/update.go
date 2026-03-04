@@ -204,6 +204,75 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			}
 		}
 
+		// Handle FirstRun modal keys — Esc is intentionally swallowed (selection required)
+		if m.activeModal == ModalFirstRun {
+			switch s {
+			case "esc":
+				// Selection is required — Esc cannot dismiss FirstRunModal (AC 2 deviation from Story 1.4)
+				return m, nil
+			case "enter":
+				filtered := m.filteredFirstRunContexts()
+				if len(filtered) == 0 {
+					return m, nil
+				}
+				if m.firstRunCursor >= len(filtered) {
+					m.firstRunCursor = len(filtered) - 1
+				}
+				if m.firstRunCursor < 0 {
+					m.firstRunCursor = 0
+				}
+				selected := filtered[m.firstRunCursor]
+				m.activeModal = ModalNone
+				m.firstRunNeeded = false
+				m.firstRunInput = ""
+				m.firstRunCursor = 0
+				m.prepareStateTransition(TransitionFull)
+				m.currentRoot = selected
+				m.breadcrumb = []string{selected}
+				m.contentHeader = selected
+				m.viewMode = selected
+				return m, tea.Batch(m.fetchForRoot(selected), m.saveStateCmd())
+			case "up", "k":
+				if m.firstRunCursor > 0 {
+					m.firstRunCursor--
+				}
+				return m, nil
+			case "down", "j":
+				filtered := m.filteredFirstRunContexts()
+				if m.firstRunCursor < len(filtered)-1 {
+					m.firstRunCursor++
+				}
+				return m, nil
+			case "backspace":
+				if len(m.firstRunInput) > 0 {
+					runes := []rune(m.firstRunInput)
+					m.firstRunInput = string(runes[:len(runes)-1])
+					filtered := m.filteredFirstRunContexts()
+					if m.firstRunCursor >= len(filtered) {
+						if len(filtered) > 0 {
+							m.firstRunCursor = len(filtered) - 1
+						} else {
+							m.firstRunCursor = 0
+						}
+					}
+				}
+				return m, nil
+			default:
+				if msg.Type == tea.KeyRunes {
+					m.firstRunInput += string(msg.Runes)
+					filtered := m.filteredFirstRunContexts()
+					if m.firstRunCursor >= len(filtered) {
+						if len(filtered) > 0 {
+							m.firstRunCursor = len(filtered) - 1
+						} else {
+							m.firstRunCursor = 0
+						}
+					}
+				}
+				return m, nil
+			}
+		}
+
 		// Handle detail view keys
 		if m.activeModal == ModalDetailView {
 			detailLines := strings.Split(m.detailContent, "\n")
@@ -216,7 +285,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				maxDetailScroll = 0
 			}
 			switch s {
-			case "esc", "q", "y":
+			case "esc", "q", "J":
 				m.activeModal = ModalNone
 				m.detailContent = ""
 				return m, nil
@@ -715,6 +784,12 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, nil
 			}
 			return m, nil
+		case "ctrl+h":
+			// Open FirstRunModal to select/change home context
+			m.activeModal = ModalFirstRun
+			m.firstRunInput = ""
+			m.firstRunCursor = 0
+			return m, nil
 		case "ctrl+t":
 			// Open skin/theme picker
 			if m.activeModal == ModalNone && m.popup.mode == popupModeNone {
@@ -769,7 +844,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, nil
 			}
 			return m, nil
-		case " ":
+		case "ctrl+space", "ctrl+@":
 			// Open context actions menu
 			if m.popup.mode != popupModeNone || m.activeModal != ModalNone {
 				return m, nil
@@ -784,7 +859,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.actionsMenuCursor = 0
 			}
 			return m, nil
-		case "y":
+		case "J":
 			// Open detail viewer
 			if m.popup.mode != popupModeNone {
 				m.popup.input += s
@@ -1727,7 +1802,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		if m.activeModal == ModalTaskComplete {
 			m.taskCompleteError = friendlyError(m.currentEnv, msg.err)
 		}
-		msg2, kind, cmd := setFooterStatus(footerStatusError, errText, 8*time.Second)
+		msg2, kind, cmd := setFooterStatus(footerStatusError, errText, 5*time.Second)
 		m.footerError = msg2
 		m.footerStatusKind = kind
 		return m, cmd
@@ -1737,6 +1812,11 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		m.isLoading = false
 	case clearPendingGMsg:
 		m.pendingG = false
+	case openFirstRunMsg:
+		m.activeModal = ModalFirstRun
+		m.firstRunInput = ""
+		m.firstRunCursor = 0
+		return m, nil
 	}
 
 	var cmd tea.Cmd

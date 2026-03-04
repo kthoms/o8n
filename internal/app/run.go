@@ -99,6 +99,8 @@ func Run() {
 
 	// Restore last navigation position (root resource + drilldown path).
 	m.restoreNavState(appState.Navigation)
+	// Detect first run: no saved navigation state means the user has never chosen a home context.
+	m.firstRunNeeded = (appState.Navigation.Root == "")
 
 	if *noSplash {
 		m.splashActive = false

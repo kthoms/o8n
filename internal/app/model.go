@@ -70,6 +70,9 @@ type clearErrorMsg struct{}
 // clearPendingGMsg resets the pendingG flag after timeout
 type clearPendingGMsg struct{}
 
+// openFirstRunMsg triggers the FirstRunModal after startup (first run or Ctrl+H)
+type openFirstRunMsg struct{}
+
 type spinnerTickMsg struct{}
 
 // footerStatusKind represents the type of feedback message in the footer
@@ -127,13 +130,6 @@ func (i processDefinitionItem) FilterValue() string {
 	return i.definition.Key
 }
 
-// KeyHint represents a keyboard shortcut with priority
-type KeyHint struct {
-	Key         string
-	Description string
-	Priority    int // 1=always visible, 9=only on wide terminals
-}
-
 // Modal types
 type ModalType int
 
@@ -147,6 +143,7 @@ const (
 	ModalDetailView
 	ModalEnvironment
 	ModalTaskComplete
+	ModalFirstRun // home context selection on first run (or Ctrl+H to revisit)
 )
 
 // taskCompleteFocusArea tracks keyboard focus within the task completion modal
@@ -432,6 +429,11 @@ type model struct {
 	skin        *Skin
 	showLatency bool   // toggleable latency display (default off)
 	statePath   string // path to o8n-stat.yml
+
+	// FirstRunModal state
+	firstRunNeeded bool   // set true by run.go when no saved navigation state (fresh start)
+	firstRunInput  string // filter text typed in FirstRunModal
+	firstRunCursor int    // selected item index in filtered FirstRunModal list
 }
 
 func newModel(cfg *config.Config) model {
@@ -702,6 +704,12 @@ func (m model) Init() tea.Cmd {
 		cmds = append(cmds, m.checkEnvironmentHealthCmd(envName))
 	}
 	cmds = append(cmds, tea.Tick(60*time.Second, func(time.Time) tea.Msg { return healthTickMsg{} }))
+
+	// On first run (no saved nav state), queue FirstRunModal after startup.
+	// The modal will appear after the splash; meanwhile, the default data fetch runs in the background.
+	if m.firstRunNeeded {
+		cmds = append(cmds, func() tea.Msg { return openFirstRunMsg{} })
+	}
 
 	return tea.Batch(cmds...)
 }

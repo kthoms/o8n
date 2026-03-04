@@ -65,6 +65,7 @@ go build -o o8n .
 | `Ctrl+C` | Quit (with confirmation) |
 | `Ctrl+E` | Environment picker |
 | `Ctrl+T` | Theme picker (live preview) |
+| `Ctrl+H` | Home context picker (reopens first-run selection) |
 | `r` | Toggle auto-refresh |
 | `L` | Toggle API latency display |
 
@@ -85,8 +86,8 @@ go build -o o8n .
 
 | Key | Action |
 |---|---|
-| `Space` | Open actions menu for selected row |
-| `y` | View raw JSON detail |
+| `Ctrl+Space` | Open actions menu for selected row |
+| `J` | View raw JSON detail |
 | `e` | Edit value (on editable columns) |
 | `s` | Sort by column |
 | `Ctrl+D` | Delete/terminate (with confirmation) |
