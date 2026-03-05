@@ -1,6 +1,6 @@
 # Story 2.4: Full Key Binding Reference
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -126,5 +126,30 @@ Claude Sonnet 4.6 (claude-sonnet-4.6)
 - `internal/app/update.go` — added `"?"` to `esc/q` case in ModalHelp handler
 - `internal/app/keybindings_test.go` — added `TestHelpModalToggleWithQuestionMark`
 - `specification.md` — updated ModalHelp modal behavior table row (added `?` as close key)
-- `_bmad/implementation-artifacts/2-4-full-key-binding-reference.md` — story file (status → review)
-- `_bmad/implementation-artifacts/sprint-status.yaml` — 2-4 status → review
+- `internal/app/modal.go` — updated ModalHelp hint to `q/?/Esc close` for UI consistency
+- `internal/app/main_hints_test.go` — updated ModalHelp hint expectation to `q/?/Esc`
+- `README.md` — documented `?` toggles help closed when already open
+- `_bmad/implementation-artifacts/2-4-full-key-binding-reference.md` — story file (status → done)
+- `_bmad/implementation-artifacts/sprint-status.yaml` — 2-4 status → done
+
+## Senior Developer Review (AI)
+
+### Reviewer
+
+Karsten (AI-assisted) on 2026-03-05
+
+### Findings Summary
+
+- Fixed 2 medium issues and 1 low issue from review:
+  - Help modal hint line now reflects actual close keys (`q/?/Esc`)
+  - README global shortcut row now documents `?` toggles close
+  - Stale test comment corrected; hint test updated to match current behavior
+- ACs verified as implemented and tests/vet green.
+
+### Outcome
+
+Approve — story complete.
+
+## Change Log
+
+- 2026-03-05: Applied review fixes for help hint consistency and docs accuracy; set story status to done.

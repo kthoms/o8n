@@ -116,7 +116,7 @@ func init() {
 		},
 		HintLine: []Hint{
 			{Key: "↑↓", Label: "scroll", Priority: 1},
-			{Key: "q/Esc", Label: "close", Priority: 1},
+			{Key: "q/?/Esc", Label: "close", Priority: 1},
 		},
 	})
 

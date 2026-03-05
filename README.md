@@ -59,7 +59,7 @@ go build -o o8n .
 
 | Key | Action |
 |---|---|
-| `?` | Help screen |
+| `?` | Help screen (press `?` again to close) |
 | `:` | Context switcher (jump to any resource type) |
 | `/` | Search (live row filtering) |
 | `Ctrl+C` | Quit (with confirmation) |

@@ -146,7 +146,7 @@ func TestHelpModalOpenAndDismiss(t *testing.T) {
 		t.Fatalf("expected ModalHelp after '?', got %v", m2.activeModal)
 	}
 
-	// Esc should dismiss the help modal (only Esc and q are explicit close keys)
+	// Esc should dismiss the help modal.
 	m3, _ := sendKeyString(m2, "esc")
 	if m3.activeModal != ModalNone {
 		t.Fatalf("expected ModalNone after Esc in help modal, got %v", m3.activeModal)

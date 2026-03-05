@@ -197,8 +197,8 @@ func TestCurrentViewHints_ModalHelpActive(t *testing.T) {
 	if _, ok := findHint(hints, "↑↓", "scroll"); !ok {
 		t.Fatal("expected ↑↓ scroll hint for ModalHelp")
 	}
-	if _, ok := findHint(hints, "q/Esc", "close"); !ok {
-		t.Fatal("expected q/Esc close hint for ModalHelp")
+	if _, ok := findHint(hints, "q/?/Esc", "close"); !ok {
+		t.Fatal("expected q/?/Esc close hint for ModalHelp")
 	}
 	if _, ok := findHint(hints, "?", "help"); ok {
 		t.Fatal("did not expect table help hint while ModalHelp is active")

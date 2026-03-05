@@ -52,7 +52,7 @@ development_status:
   2-1-footer-hint-push-model: done
   2-2-per-view-hint-functions: review
   2-3-action-dialog-via-ctrl-space-modalactionmenu: done
-  2-4-full-key-binding-reference: review
+  2-4-full-key-binding-reference: done
   epic-2-retrospective: optional
 
   epic-3: backlog
