@@ -394,6 +394,7 @@ All modals are **overlays** on top of the main UI — the background table remai
 | `ModalTaskComplete` | Task completion flow | `FullScreen` custom layout |
 | `ModalFirstRun` | First launch / `Ctrl+H` | `OverlayCenter` (context selection, no Esc) |
 | `ModalActionMenu` | `Ctrl+Space` | `OverlayCenter` (context-sensitive action list) |
+| `ModalContextSwitcher` | `:` | `OverlayCenter` (searchable resource list) |
 
 ### Edit Modal
 
@@ -446,6 +447,7 @@ All 8 modal types dismiss on `Esc`. This is the universal close key — no modal
 | `ModalDetailView` | Close | Swallowed | `q` | Scroll with `↑`/`↓` |
 | `ModalEnvironment` | Cancel (no env change) | Switch to selected environment | — | `↑`/`↓` to navigate environments |
 | `ModalTaskComplete` | Cancel (close without completing) | Confirm task completion | — | Tab switches focus between form fields |
+| `ModalContextSwitcher` | Close + clear filter | Select highlighted resource (TransitionFull) | — | Type to filter; `↑`/`↓` navigate; `Tab` completes to first match |
 
 **Type validation in ModalEdit:**
 - `bool`/`boolean` — accepts `true`/`false` only; rejects other input

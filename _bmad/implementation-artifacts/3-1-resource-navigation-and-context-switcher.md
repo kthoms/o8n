@@ -1,6 +1,6 @@
 # Story 3.1: Resource Navigation & Context Switcher
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -28,27 +28,27 @@ so that I can reach any operational view in seconds from anywhere in the applica
 
 ## Tasks / Subtasks
 
-- [ ] Migrate `popupModeContext` legacy logic to `ModalContextSwitcher` factory modal (AC: 1, 2)
-  - [ ] Add `ModalContextSwitcher` to `ModalType` in `internal/app/model.go`
-  - [ ] Update `update.go` to set `m.activeModal = ModalContextSwitcher` on `:` instead of setting `popupModeContext`
-  - [ ] Remove `popupModeContext` from `popupMode` enum and clean up associated legacy logic in `model.go`, `update.go`, `view.go`, `nav.go`
-- [ ] Implement `ModalContextSwitcher` registration in `modal.go` (AC: 1)
-  - [ ] Register with `SizeHint: OverlayCenter`
-  - [ ] Register body renderer `renderContextSwitcherBody`
-  - [ ] Define `HintLine` showing `↑↓ Nav`, `Enter Select`, `Esc Close`
-- [ ] Create `renderContextSwitcherBody` in `internal/app/view.go` (AC: 1)
-  - [ ] Reuse `m.rootContexts` (filtered by `m.popup.input`) as items
-  - [ ] Use `lipgloss.Place` to render a centered list with current skin styles
-- [ ] Handle selection and navigation in `internal/app/update.go` (AC: 2, 3)
-  - [ ] In `ModalContextSwitcher` key handler, call `prepareStateTransition(TransitionFull)` on `Enter`
-  - [ ] Update `m.currentRoot`, `m.breadcrumb`, and `m.viewMode` to the selected resource
-  - [ ] Dispatch `m.fetchForRoot(selected)` cmd
-  - [ ] Ensure `m.table.SetCursor(0)` is called for the new context
-- [ ] Tests and Validation (AC: 1, 2, 3)
-  - [ ] Create `internal/app/main_context_switcher_test.go`
-  - [ ] Test `:` trigger, partial name search, selection, and transition state clearing
-- [ ] Documentation (AC: 3)
-  - [ ] Update `specification.md` modal keyboard behavior table with `ModalContextSwitcher`
+- [x] Migrate `popupModeContext` legacy logic to `ModalContextSwitcher` factory modal (AC: 1, 2)
+  - [x] Add `ModalContextSwitcher` to `ModalType` in `internal/app/model.go`
+  - [x] Update `update.go` to set `m.activeModal = ModalContextSwitcher` on `:` instead of setting `popupModeContext`
+  - [x] Remove `popupModeContext` from `popupMode` enum and clean up associated legacy logic in `model.go`, `update.go`, `view.go`, `nav.go`
+- [x] Implement `ModalContextSwitcher` registration in `modal.go` (AC: 1)
+  - [x] Register with `SizeHint: OverlayCenter`
+  - [x] Register body renderer `renderContextSwitcherBody`
+  - [x] Define `HintLine` showing `↑↓ Nav`, `Enter Select`, `Esc Close`
+- [x] Create `renderContextSwitcherBody` in `internal/app/view.go` (AC: 1)
+  - [x] Reuse `m.rootContexts` (filtered by `m.popup.input`) as items
+  - [x] Use `lipgloss.Place` to render a centered list with current skin styles
+- [x] Handle selection and navigation in `internal/app/update.go` (AC: 2, 3)
+  - [x] In `ModalContextSwitcher` key handler, call `prepareStateTransition(TransitionFull)` on `Enter`
+  - [x] Update `m.currentRoot`, `m.breadcrumb`, and `m.viewMode` to the selected resource
+  - [x] Dispatch `m.fetchForRoot(selected)` cmd
+  - [x] Ensure `m.table.SetCursor(0)` is called for the new context
+- [x] Tests and Validation (AC: 1, 2, 3)
+  - [x] Create `internal/app/main_context_switcher_test.go`
+  - [x] Test `:` trigger, partial name search, selection, and transition state clearing
+- [x] Documentation (AC: 3)
+  - [x] Update `specification.md` modal keyboard behavior table with `ModalContextSwitcher`
 
 ## Dev Notes
 
@@ -74,10 +74,31 @@ so that I can reach any operational view in seconds from anywhere in the applica
 
 ### Agent Model Used
 
-Gemini 2.0 Flash
+claude-sonnet-4-6 (Claude Code)
 
 ### Debug Log References
 
+N/A — audited committed implementation (commit 48f6040) and completed missing deliverables.
+
 ### Completion Notes List
 
+- Core implementation was committed in 48f6040 by Gemini 2.0 Flash: ModalContextSwitcher registered in modal.go, renderContextSwitcherBody in view.go, key handling in update.go, popupModeContext removed, popupItems() updated for ModalContextSwitcher
+- Added missing deliverables in this session:
+  - Created `internal/app/main_context_switcher_test.go` with 18 tests covering `:` trigger, partial name search/filtering, arrow key navigation, selection via cursor, transition state clearing, and renderContextSwitcherBody rendering
+  - Updated `specification.md`: added ModalContextSwitcher to modal types table and modal keyboard contract table
+- Note: 3 pre-existing test failures in ui_test.go are not related to this story
+- Note: `:` key when ModalContextSwitcher is active appends to filter input (not toggle-close); the toggle code in update.go line 829 is unreachable dead code
+
 ### File List
+
+- `internal/app/model.go` — ModalContextSwitcher added to ModalType enum
+- `internal/app/modal.go` — ModalContextSwitcher registered with OverlayCenter, renderContextSwitcherBody, HintLine
+- `internal/app/view.go` — renderContextSwitcherBody() implemented
+- `internal/app/update.go` — `:` key handler sets ModalContextSwitcher; Enter handler calls prepareStateTransition(TransitionFull) + fetch + SetCursor(0)
+- `internal/app/nav.go` — popupItems() updated to handle ModalContextSwitcher; popupModeContext removed
+- `internal/app/main_context_switcher_test.go` — NEW: 18 tests for ModalContextSwitcher
+- `specification.md` — ModalContextSwitcher added to modal types table and keyboard contract table
+
+## Change Log
+
+- 2026-03-06: Story completed — tests and documentation added for implementation committed in 48f6040
