@@ -44,12 +44,13 @@ func TestColonKey_WhenModalOpenAppendsToFilter(t *testing.T) {
 }
 
 // TestContextSwitcher_EscClosesModal verifies that Esc dismisses ModalContextSwitcher
-// and resets popup input and cursor.
+// and resets popup input, cursor, and offset.
 func TestContextSwitcher_EscClosesModal(t *testing.T) {
 	m := newTestModel(t)
 	m.activeModal = ModalContextSwitcher
 	m.popup.input = "proc"
 	m.popup.cursor = 2
+	m.popup.offset = 4
 
 	m2, _ := sendKeyString(m, "esc")
 
@@ -61,6 +62,9 @@ func TestContextSwitcher_EscClosesModal(t *testing.T) {
 	}
 	if m2.popup.cursor != -1 {
 		t.Fatalf("expected popup.cursor -1, got %d", m2.popup.cursor)
+	}
+	if m2.popup.offset != 0 {
+		t.Fatalf("expected popup.offset 0 after Esc, got %d", m2.popup.offset)
 	}
 }
 
@@ -176,7 +180,7 @@ func TestContextSwitcher_UpKeyWrapsAround(t *testing.T) {
 }
 
 // TestPopupItems_ContextSwitcher_FiltersByPrefix verifies that popupItems returns only
-// items whose names have the popup.input as a prefix when ModalContextSwitcher is active.
+// items whose names contain popup.input when ModalContextSwitcher is active.
 func TestPopupItems_ContextSwitcher_FiltersByPrefix(t *testing.T) {
 	m := newTestModel(t)
 	m.rootContexts = []string{"process-definition", "process-instance", "task", "incident"}
@@ -189,9 +193,24 @@ func TestPopupItems_ContextSwitcher_FiltersByPrefix(t *testing.T) {
 		t.Fatalf("expected 2 items matching 'process', got %d: %v", len(items), items)
 	}
 	for _, item := range items {
-		if !strings.HasPrefix(item, "process") {
-			t.Errorf("expected item with 'process' prefix, got %q", item)
+		if !strings.Contains(item, "process") {
+			t.Errorf("expected item containing 'process', got %q", item)
 		}
+	}
+}
+
+// TestPopupItems_ContextSwitcher_FiltersByContains verifies that popupItems uses
+// contains-matching so partial middle/suffix terms find resources.
+func TestPopupItems_ContextSwitcher_FiltersByContains(t *testing.T) {
+	m := newTestModel(t)
+	m.rootContexts = []string{"process-definition", "process-instance", "task"}
+	m.activeModal = ModalContextSwitcher
+	m.popup.input = "instance" // not a prefix of "process-instance"
+
+	items := m.popupItems()
+
+	if len(items) != 1 || items[0] != "process-instance" {
+		t.Fatalf("expected ['process-instance'] via contains match, got %v", items)
 	}
 }
 
@@ -338,5 +357,60 @@ func TestContextSwitcher_BreadcrumbUpdatedOnSelection(t *testing.T) {
 
 	if len(m2.breadcrumb) != 1 || m2.breadcrumb[0] != "task" {
 		t.Fatalf("expected breadcrumb=[task], got %v", m2.breadcrumb)
+	}
+}
+
+// TestContextSwitcher_TabCompletesToFirstMatch verifies that Tab with cursor=-1 and
+// matching items completes popup.input to the first item in the filtered list.
+func TestContextSwitcher_TabCompletesToFirstMatch(t *testing.T) {
+	m := newTestModel(t)
+	m.rootContexts = []string{"process-definition", "process-instance", "task"}
+	m.activeModal = ModalContextSwitcher
+	m.popup.input = "proc"
+	m.popup.cursor = -1
+
+	m2, _ := sendKeyString(m, "tab")
+
+	if m2.popup.input != "process-definition" {
+		t.Fatalf("expected popup.input 'process-definition' after Tab, got %q", m2.popup.input)
+	}
+	if m2.popup.cursor != -1 {
+		t.Fatalf("expected cursor -1 after Tab, got %d", m2.popup.cursor)
+	}
+	// Tab should not close the modal
+	if m2.activeModal != ModalContextSwitcher {
+		t.Fatalf("expected modal still open after Tab, got %v", m2.activeModal)
+	}
+}
+
+// TestContextSwitcher_TabCompletesToCursorItem verifies that Tab with a valid cursor
+// completes to the cursor's item rather than always the first item.
+func TestContextSwitcher_TabCompletesToCursorItem(t *testing.T) {
+	m := newTestModel(t)
+	m.rootContexts = []string{"process-definition", "process-instance", "task"}
+	m.activeModal = ModalContextSwitcher
+	m.popup.input = "proc"
+	m.popup.cursor = 1 // "process-instance"
+
+	m2, _ := sendKeyString(m, "tab")
+
+	if m2.popup.input != "process-instance" {
+		t.Fatalf("expected popup.input 'process-instance' after Tab on cursor=1, got %q", m2.popup.input)
+	}
+}
+
+// TestContextSwitcher_TabNoopOnEmptyInput verifies that Tab with empty input and
+// no items is a no-op.
+func TestContextSwitcher_TabNoopOnEmptyInput(t *testing.T) {
+	m := newTestModel(t)
+	m.rootContexts = []string{"process-definition"}
+	m.activeModal = ModalContextSwitcher
+	m.popup.input = "" // empty input → items returned, but Tab requires len(input) > 0
+	m.popup.cursor = -1
+
+	m2, _ := sendKeyString(m, "tab")
+
+	if m2.popup.input != "" {
+		t.Fatalf("expected popup.input unchanged (empty) after Tab with empty input, got %q", m2.popup.input)
 	}
 }

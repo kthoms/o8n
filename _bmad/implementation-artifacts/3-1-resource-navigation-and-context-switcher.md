@@ -1,6 +1,6 @@
 # Story 3.1: Resource Navigation & Context Switcher
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -86,7 +86,7 @@ N/A — audited committed implementation (commit 48f6040) and completed missing 
 - Added missing deliverables in this session:
   - Created `internal/app/main_context_switcher_test.go` with 18 tests covering `:` trigger, partial name search/filtering, arrow key navigation, selection via cursor, transition state clearing, and renderContextSwitcherBody rendering
   - Updated `specification.md`: added ModalContextSwitcher to modal types table and modal keyboard contract table
-- Note: 3 pre-existing test failures in ui_test.go are not related to this story
+- Note: 5 pre-existing test failures in ui_test.go are not related to this story (TestFocusIndicatorPersistsAfterDataReload, TestConfigDrivenDrilldownFromDefinitionToInstances, TestConfigDrivenDrilldownFromInstancesToVariables, TestNavigationStackPreservesRowSelection, TestExtraEntersDontPushNavigationStack)
 - Note: `:` key when ModalContextSwitcher is active appends to filter input (not toggle-close); the toggle code in update.go line 829 is unreachable dead code
 
 ### File List
@@ -102,3 +102,10 @@ N/A — audited committed implementation (commit 48f6040) and completed missing 
 ## Change Log
 
 - 2026-03-06: Story completed — tests and documentation added for implementation committed in 48f6040
+- 2026-03-06: Code review — 1 High, 2 Medium, 3 Low issues found and fixed:
+  - [H1] Corrected pre-existing failure count in Completion Notes (3 → 5)
+  - [M1] Removed unreachable dead code in update.go (else-if toggle-close branch for ModalContextSwitcher on `:` key)
+  - [M2] Fixed Esc handler not resetting popup.offset; updated TestContextSwitcher_EscClosesModal to assert offset reset
+  - [L1] Changed filter from prefix-only (HasPrefix) to contains (Contains) in nav.go popupItems(); added TestPopupItems_ContextSwitcher_FiltersByContains
+  - [L2] Updated specification.md Tab behaviour description to be accurate (cursor item or first match)
+  - [L3] Added 4 Tab key tests: TestContextSwitcher_TabCompletesToFirstMatch, TestContextSwitcher_TabCompletesToCursorItem, TestContextSwitcher_TabNoopOnEmptyInput

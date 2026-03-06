@@ -447,7 +447,7 @@ All 8 modal types dismiss on `Esc`. This is the universal close key — no modal
 | `ModalDetailView` | Close | Swallowed | `q` | Scroll with `↑`/`↓` |
 | `ModalEnvironment` | Cancel (no env change) | Switch to selected environment | — | `↑`/`↓` to navigate environments |
 | `ModalTaskComplete` | Cancel (close without completing) | Confirm task completion | — | Tab switches focus between form fields |
-| `ModalContextSwitcher` | Close + clear filter | Select highlighted resource (TransitionFull) | — | Type to filter; `↑`/`↓` navigate; `Tab` completes to first match |
+| `ModalContextSwitcher` | Close + clear filter | Select highlighted resource (TransitionFull) | — | Type to filter (contains match); `↑`/`↓` navigate; `Tab` completes to selected item or first match |
 
 **Type validation in ModalEdit:**
 - `bool`/`boolean` — accepts `true`/`false` only; rejects other input

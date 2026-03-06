@@ -528,7 +528,7 @@ func (m *model) popupItems() []string {
 	if m.activeModal == ModalContextSwitcher {
 		var out []string
 		for _, rc := range m.rootContexts {
-			if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
+			if m.popup.input == "" || strings.Contains(rc, m.popup.input) {
 				out = append(out, rc)
 			}
 		}

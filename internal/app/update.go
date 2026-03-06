@@ -280,6 +280,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.activeModal = ModalNone
 				m.popup.input = ""
 				m.popup.cursor = -1
+				m.popup.offset = 0
 				return m, nil
 			case "enter":
 				items := m.popupItems()
@@ -826,8 +827,6 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.popup.input = ""
 				m.popup.cursor = -1
 				m.footerError = ""
-			} else if m.activeModal == ModalContextSwitcher {
-				m.activeModal = ModalNone
 			}
 			return m, nil
 		}
