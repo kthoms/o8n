@@ -48,7 +48,7 @@ development_status:
   1-5-startup-state-restoration-firstrunmodal-and-api-resilience: done
   epic-1-retrospective: optional
 
-  epic-2: in-progress
+  epic-2: done
   2-1-footer-hint-push-model: done
   2-2-per-view-hint-functions: review
   2-3-action-dialog-via-ctrl-space-modalactionmenu: done
