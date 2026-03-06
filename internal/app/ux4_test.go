@@ -110,7 +110,7 @@ func TestContextBoxShowsMatchingContexts(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	m.rootContexts = []string{"process-definition", "process-instance", "task", "user-task"}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = "task"
 	m.lastWidth = 120
 	m.lastHeight = 30
@@ -118,7 +118,7 @@ func TestContextBoxShowsMatchingContexts(t *testing.T) {
 	out := m.View()
 
 	if !strings.Contains(out, "task") {
-		t.Errorf("expected View() output to contain 'task' when rootInput='task', got:\n%s", out)
+		t.Errorf("expected View() output to contain 'task' when popup.input='task', got:\n%s", out)
 	}
 }
 
@@ -126,15 +126,15 @@ func TestContextBoxShowsHintLine(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	m.rootContexts = []string{"process-definition", "task"}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = ""
 	m.lastWidth = 120
 	m.lastHeight = 30
 
 	out := m.View()
 
-	if !strings.Contains(out, "↑↓:select") {
-		t.Errorf("expected '↑↓:select' hint in context popup, got:\n%s", out)
+	if !strings.Contains(out, "↑↓ nav") { // Modal factory uses its own HintLine
+		t.Errorf("expected '↑↓ nav' hint in context switcher modal, got:\n%s", out)
 	}
 }
 
@@ -154,11 +154,11 @@ func TestComputePaneHeightBase(t *testing.T) {
 	}
 }
 
-func TestComputePaneHeightWithPopup(t *testing.T) {
+func TestComputePaneHeightWithSkinPopup(t *testing.T) {
 	m := newTestModel(t)
 	m.lastHeight = 30
-	m.popup.mode = popupModeContext
-	m.rootContexts = nil // no contexts → popup height = 4 (2 borders + input + hint)
+	m.popup.mode = popupModeSkin
+	m.rootContexts = nil // no items → popup height = 4 (2 borders + input + hint)
 	m.searchMode = false
 
 	h := m.computePaneHeight()
@@ -184,14 +184,27 @@ func TestComputePaneHeightWithSearch(t *testing.T) {
 func TestComputePaneHeightBothActive(t *testing.T) {
 	m := newTestModel(t)
 	m.lastHeight = 30
-	m.popup.mode = popupModeContext
-	m.rootContexts = nil // no contexts → popup height = 4
+	m.popup.mode = popupModeSkin
+	m.rootContexts = nil // no items → popup height = 4
 	m.searchMode = true
 
 	h := m.computePaneHeight()
 	want := 20 // 30 - 2 - 2 - 1 - 4(popup) - 1(search)
 	if h != want {
 		t.Errorf("expected pane height %d with both active, got %d", want, h)
+	}
+}
+
+func TestComputePaneHeightModalContextSwitcherDoesNotAffectHeight(t *testing.T) {
+	m := newTestModel(t)
+	m.lastHeight = 30
+	m.activeModal = ModalContextSwitcher
+	m.searchMode = false
+
+	h := m.computePaneHeight()
+	want := 25 // Should be same as Base because it's an overlay
+	if h != want {
+		t.Errorf("expected pane height %d when ModalContextSwitcher active, got %d", want, h)
 	}
 }
 

@@ -17,7 +17,7 @@ import (
 func TestPopupSelectedRowForeground(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.cursor = 0
 	m.popup.offset = 0
 	m.popup.input = ""
@@ -39,7 +39,7 @@ func TestPopupSelectedRowForeground(t *testing.T) {
 func TestPopupNonSelectedRowNoExtraStyle(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.cursor = 0
 	m.popup.offset = 0
 	m.rootContexts = []string{"process-definition", "process-instance"}

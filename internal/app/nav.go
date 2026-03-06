@@ -450,11 +450,10 @@ func (m model) executeDrilldown(d *config.DrillDownDef) (model, tea.Cmd) {
 
 	// Pre-set columns for target table to avoid stale columns during load
 	colsTarget := m.buildColumnsFor(d.Target, m.paneWidth-4)
+	m.table.SetRows([]table.Row{})
 	if len(colsTarget) > 0 {
-		m.table.SetRows(normalizeRows(nil, len(colsTarget)))
 		m.table.SetColumns(colsTarget)
-	} else {
-		m.table.SetRows([]table.Row{})
+		m.table.SetRows(normalizeRows(nil, len(colsTarget)))
 	}
 
 	return m, tea.Batch(m.fetchGenericCmd(d.Target), flashOnCmd(), m.saveStateCmd())
@@ -526,6 +525,16 @@ func (m *model) filteredFirstRunContexts() []string {
 // For skin mode: all skin names.
 // For search mode: first-column values of current table rows.
 func (m *model) popupItems() []string {
+	if m.activeModal == ModalContextSwitcher {
+		var out []string
+		for _, rc := range m.rootContexts {
+			if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
+				out = append(out, rc)
+			}
+		}
+		return out
+	}
+
 	switch m.popup.mode {
 	case popupModeSkin:
 		return m.skinPopupItems()
@@ -537,14 +546,8 @@ func (m *model) popupItems() []string {
 			}
 		}
 		return out
-	default: // popupModeContext
-		var out []string
-		for _, rc := range m.rootContexts {
-			if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-				out = append(out, rc)
-			}
-		}
-		return out
+	default:
+		return nil
 	}
 }
 

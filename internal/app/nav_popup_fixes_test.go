@@ -115,13 +115,13 @@ func TestArrowRightDrillsDown(t *testing.T) {
 func TestArrowRightIgnoredInPopup(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 
 	m2, _ := sendKeyString(m, "right")
 
-	// popup should remain open, no drilldown
-	if m2.popup.mode == popupModeNone {
-		t.Error("expected popup to remain open after right-arrow in popup mode")
+	// modal should remain open, no drilldown
+	if m2.activeModal != ModalContextSwitcher {
+		t.Error("expected context switcher modal to remain open after right-arrow")
 	}
 }
 
@@ -134,7 +134,7 @@ func TestPopupScrollOffset_DownMovesOffset(t *testing.T) {
 	for i := 0; i < 12; i++ {
 		m.rootContexts = append(m.rootContexts, strings.Repeat("ctx-", 1)+string(rune('a'+i)))
 	}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.cursor = 7 // at maxShow boundary
 
 	m2, _ := sendKeyString(m, "down")
@@ -157,7 +157,7 @@ func TestPopupViewNoTruncation(t *testing.T) {
 	for i := 0; i < 15; i++ {
 		m.rootContexts = append(m.rootContexts, strings.Repeat("ctx-", 1)+string(rune('a'+i)))
 	}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.cursor = -1
 
 	out := m.View()
@@ -249,15 +249,15 @@ func TestSearchPopupEnterLocksFilter(t *testing.T) {
 	}
 }
 
-func TestSearchPopupNotOpenedWhenPopupActive(t *testing.T) {
+func TestSearchPopupNotOpenedWhenModalActive(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 
 	m2, _ := sendKeyString(m, "/")
 
-	if m2.popup.mode != popupModeContext {
-		t.Errorf("expected popup mode unchanged (context), got %v", m2.popup.mode)
+	if m2.activeModal != ModalContextSwitcher {
+		t.Errorf("expected activeModal unchanged (context switcher), got %v", m2.activeModal)
 	}
 	// "/" typed into context input
 	if m2.popup.input != "/" {

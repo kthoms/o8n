@@ -216,8 +216,8 @@ func TestContextSwitch_DifferentColumnCount_NoPanic(t *testing.T) {
 	m.currentRoot = "alpha"
 	m.viewMode = "alpha"
 
-	// Open context popup and switch to "beta" (which has 4 columns).
-	m.popup.mode = popupModeContext
+	// Open context modal and switch to "beta" (which has 4 columns).
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = "beta"
 	m.popup.cursor = -1
 

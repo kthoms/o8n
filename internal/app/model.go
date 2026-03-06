@@ -145,6 +145,7 @@ const (
 	ModalTaskComplete
 	ModalFirstRun   // home context selection on first run (or Ctrl+H to revisit)
 	ModalActionMenu // Ctrl+Space context-sensitive action menu
+	ModalContextSwitcher
 )
 
 // taskCompleteFocusArea tracks keyboard focus within the task completion modal
@@ -184,7 +185,6 @@ type popupMode int
 
 const (
 	popupModeNone    popupMode = iota
-	popupModeContext           // : key — switch resource context
 	popupModeSkin              // Ctrl+T key — switch skin/theme
 	popupModeSearch            // / key — filter table rows
 )

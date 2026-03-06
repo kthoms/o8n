@@ -127,20 +127,20 @@ func TestCurrentViewHints_EditHintOnlyWhenEditableColumns(t *testing.T) {
 
 // --- Per-view dispatch tests (AC 2–5) ---
 
-func TestCurrentViewHints_ContextSwitcherPopup(t *testing.T) {
+func TestCurrentViewHints_ModalContextSwitcherActive(t *testing.T) {
 	m := newTestModel(t)
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 
 	hints := currentViewHints(m)
 
-	if _, ok := findHint(hints, "Tab/Enter", "switch"); !ok {
-		t.Fatal("expected Tab/Enter switch hint for context switcher")
+	if _, ok := findHint(hints, "Enter", "select"); !ok {
+		t.Fatal("expected Enter select hint for context switcher")
 	}
-	if _, ok := findHint(hints, "↑↓", "select"); !ok {
-		t.Fatal("expected ↑↓ select hint for context switcher")
+	if _, ok := findHint(hints, "↑↓", "nav"); !ok {
+		t.Fatal("expected ↑↓ nav hint for context switcher")
 	}
-	if _, ok := findHint(hints, "Esc", "cancel"); !ok {
-		t.Fatal("expected Esc cancel hint for context switcher")
+	if _, ok := findHint(hints, "Esc", "close"); !ok {
+		t.Fatal("expected Esc close hint for context switcher")
 	}
 	// Table hints must NOT appear when context switcher is open
 	if _, ok := findHint(hints, "?", "help"); ok {

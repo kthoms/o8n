@@ -100,13 +100,13 @@ func sendKeyString(m model, keyStr string) (model, tea.Cmd) {
 func TestTabCompletionInContextPopup(t *testing.T) {
 	m := newTestModel(t)
 	m.rootContexts = []string{"process-definition", "process-instance", "task"}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = "proc"
 
 	m2, _ := sendKeyString(m, "tab")
 
-	if m2.popup.mode == popupModeNone {
-		t.Error("expected popup to remain open after Tab")
+	if m2.activeModal != ModalContextSwitcher {
+		t.Error("expected context switcher modal to remain open after Tab")
 	}
 	if m2.popup.input != "process-definition" {
 		t.Errorf("expected rootInput completed to 'process-definition', got %q", m2.popup.input)
@@ -117,7 +117,7 @@ func TestTabCompletionInContextPopup(t *testing.T) {
 func TestTabCompletionRequiresInput(t *testing.T) {
 	m := newTestModel(t)
 	m.rootContexts = []string{"process-definition"}
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = ""
 
 	m2, _ := sendKeyString(m, "tab")

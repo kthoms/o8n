@@ -40,8 +40,6 @@ func currentViewHints(m model) []Hint {
 	}
 	// Active popup mode → per-popup hints
 	switch m.popup.mode {
-	case popupModeContext:
-		return contextSwitcherHints()
 	case popupModeSearch:
 		return searchPopupHints()
 	case popupModeSkin:
@@ -81,14 +79,6 @@ func tableViewHints(m model) []Hint {
 	}
 
 	return hints
-}
-
-func contextSwitcherHints() []Hint {
-	return []Hint{
-		{Key: "↑↓", Label: "select", MinWidth: 0, Priority: 1},
-		{Key: "Tab/Enter", Label: "switch", MinWidth: 0, Priority: 1},
-		{Key: "Esc", Label: "cancel", MinWidth: 0, Priority: 2},
-	}
 }
 
 func searchPopupHints() []Hint {

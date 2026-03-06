@@ -16,7 +16,7 @@ func applyEnvSwitchSequence(m *model, targetEnv string) {
 }
 
 func applyContextSwitchSequence(m *model, root string) {
-	m.popup.mode = popupModeNone
+	m.activeModal = ModalNone
 	m.popup.input = ""
 	m.popup.cursor = -1
 	m.popup.offset = 0
@@ -200,7 +200,7 @@ func TestContextSwitch_KeyHandler_ClearsStateAndSetsRoot(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
 	m.rootContexts = append(m.rootContexts, "incidents")
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = "incidents"
 	m.popup.cursor = -1
 	m.popup.offset = 3
@@ -222,7 +222,7 @@ func TestContextSwitch_KeyHandler_ClearsStateAndSetsRoot(t *testing.T) {
 	if len(m2.navigationStack) != 0 {
 		t.Fatalf("expected navigationStack cleared, got %d", len(m2.navigationStack))
 	}
-	if m2.popup.mode != popupModeNone || m2.popup.offset != 0 {
-		t.Fatalf("expected popup closed/reset, got mode=%v offset=%d", m2.popup.mode, m2.popup.offset)
+	if m2.activeModal != ModalNone || m2.popup.offset != 0 {
+		t.Fatalf("expected modal closed/reset, got modal=%v offset=%d", m2.activeModal, m2.popup.offset)
 	}
 }

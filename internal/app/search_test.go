@@ -148,18 +148,18 @@ func TestSearchEmptyTerm(t *testing.T) {
 	}
 }
 
-func TestSearchNotActiveInRootPopup(t *testing.T) {
+func TestSearchNotActiveInModalContextSwitcher(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.popup.mode = popupModeContext
+	m.activeModal = ModalContextSwitcher
 	m.popup.input = ""
 
 	m2, _ := sendKeyString(m, "/")
 
 	if m2.searchMode {
-		t.Error("expected searchMode to remain false when root popup is active")
+		t.Error("expected searchMode to remain false when context switcher modal is active")
 	}
 	if m2.popup.input != "/" {
-		t.Errorf("expected rootInput '/', got %q", m2.popup.input)
+		t.Errorf("expected popupInput '/', got %q", m2.popup.input)
 	}
 }

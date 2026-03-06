@@ -163,8 +163,9 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
-	normRows := normalizeRows(rows, colsCount)
+	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
+	normRows := normalizeRows(rows, colsCount)
 	m.setTableRowsSorted(normRows)
 	if m.sortColumn >= 0 {
 		m.applySortIndicatorToColumns()
@@ -209,8 +210,9 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
-	normRows := normalizeRows(rows, colsCount)
+	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
+	normRows := normalizeRows(rows, colsCount)
 	m.setTableRowsSorted(normRows)
 	m.viewMode = "process-instance"
 	if m.sortColumn >= 0 {
@@ -266,8 +268,9 @@ func (m *model) applyVariables(vars []config.Variable) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
-	normRows := normalizeRows(rows, colsCount)
+	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
+	normRows := normalizeRows(rows, colsCount)
 	m.setTableRowsSorted(normRows)
 	if m.sortColumn >= 0 {
 		m.applySortIndicatorToColumns()

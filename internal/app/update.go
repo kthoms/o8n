@@ -273,6 +273,121 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 			}
 		}
 
+		// Handle ContextSwitcher modal keys
+		if m.activeModal == ModalContextSwitcher {
+			switch s {
+			case "esc":
+				m.activeModal = ModalNone
+				m.popup.input = ""
+				m.popup.cursor = -1
+				return m, nil
+			case "enter":
+				items := m.popupItems()
+				if len(items) == 0 {
+					return m, nil
+				}
+				selected := ""
+				if m.popup.cursor >= 0 && m.popup.cursor < len(items) {
+					selected = items[m.popup.cursor]
+				} else if len(m.popup.input) > 0 {
+					// try to find exact match if cursor not set
+					for _, it := range items {
+						if it == m.popup.input {
+							selected = it
+							break
+						}
+					}
+				}
+
+				if selected != "" {
+					m.activeModal = ModalNone
+					m.popup.input = ""
+					m.popup.cursor = -1
+					m.popup.offset = 0
+
+					m.prepareStateTransition(TransitionFull)
+					m.currentRoot = selected
+					m.breadcrumb = []string{selected}
+					m.contentHeader = selected
+					m.viewMode = selected
+
+					// Set columns immediately if table def exists
+					if def := m.findTableDef(selected); def != nil {
+						cols := m.buildColumnsFor(selected, m.paneWidth-4)
+						if len(cols) > 0 {
+							m.table.SetRows([]table.Row{})
+							m.table.SetColumns(cols)
+							m.table.SetRows(normalizeRows(nil, len(cols)))
+						}
+					}
+					m.table.SetCursor(0)
+
+					m.isLoading = true
+					m.apiCallStarted = time.Now()
+					return m, tea.Batch(m.fetchForRoot(selected), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
+				}
+				return m, nil
+			case "up", "k":
+				items := m.popupItems()
+				if len(items) > 0 {
+					if m.popup.cursor > 0 {
+						m.popup.cursor--
+					} else {
+						m.popup.cursor = len(items) - 1
+					}
+					// scroll up if needed
+					if m.popup.cursor < m.popup.offset {
+						m.popup.offset = m.popup.cursor
+					} else if m.popup.cursor >= m.popup.offset+8 {
+						m.popup.offset = m.popup.cursor - 7
+					}
+				}
+				return m, nil
+			case "down", "j":
+				items := m.popupItems()
+				if len(items) > 0 {
+					if m.popup.cursor < len(items)-1 {
+						m.popup.cursor++
+					} else {
+						m.popup.cursor = 0
+					}
+					// scroll down if needed
+					if m.popup.cursor >= m.popup.offset+8 {
+						m.popup.offset = m.popup.cursor - 7
+					} else if m.popup.cursor < m.popup.offset {
+						m.popup.offset = m.popup.cursor
+					}
+				}
+				return m, nil
+			case "backspace":
+				if len(m.popup.input) > 0 {
+					runes := []rune(m.popup.input)
+					m.popup.input = string(runes[:len(runes)-1])
+					m.popup.cursor = -1
+					m.popup.offset = 0
+				}
+				return m, nil
+			case "tab":
+				items := m.popupItems()
+				if len(items) > 0 && len(m.popup.input) > 0 {
+					if m.popup.cursor >= 0 && m.popup.cursor < len(items) {
+						m.popup.input = items[m.popup.cursor]
+					} else {
+						m.popup.input = items[0]
+					}
+					m.popup.cursor = -1
+				}
+				return m, nil
+			default:
+				if msg.Type == tea.KeyRunes {
+					m.popup.input += string(msg.Runes)
+					m.popup.cursor = -1
+					m.popup.offset = 0
+				}
+				return m, nil
+			}
+		}
+
 		// Handle detail view keys
 		if m.activeModal == ModalDetailView {
 			detailLines := strings.Split(m.detailContent, "\n")
@@ -706,17 +821,14 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 
 		// handle colon typed as a key string so it works across terminals
 		if s == ":" {
-			if m.popup.mode == popupModeNone {
-				m.popup.mode = popupModeContext
+			if m.activeModal == ModalNone {
+				m.activeModal = ModalContextSwitcher
 				m.popup.input = ""
 				m.popup.cursor = -1
 				m.footerError = ""
-			} else {
-				m.popup.mode = popupModeNone
-				m.popup.cursor = -1
+			} else if m.activeModal == ModalContextSwitcher {
+				m.activeModal = ModalNone
 			}
-			m.paneHeight = m.computePaneHeight()
-			m.table.SetHeight(m.paneHeight - 1)
 			return m, nil
 		}
 
@@ -1029,54 +1141,6 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.table.SetHeight(m.paneHeight - 1)
 				return m, nil
 			}
-			if m.popup.mode != popupModeNone {
-				// If cursor selects from popup list, use that context
-				matchingContexts := m.popupItems()
-				selectedContext := ""
-				if m.popup.cursor >= 0 && m.popup.cursor < len(matchingContexts) {
-					selectedContext = matchingContexts[m.popup.cursor]
-				} else {
-					// fall back to exact match on input
-					for _, rc := range m.rootContexts {
-						if rc == m.popup.input {
-							selectedContext = rc
-							break
-						}
-					}
-				}
-				if selectedContext != "" {
-					rc := selectedContext
-					m.popup.mode = popupModeNone
-					m.popup.input = ""
-					m.popup.cursor = -1
-					m.popup.offset = 0
-					// centralized state cleanup for context switch
-					m.prepareStateTransition(TransitionFull)
-					m.currentRoot = rc
-					// reset breadcrumb and header
-					m.breadcrumb = []string{rc}
-					m.contentHeader = rc
-					m.viewMode = rc
-					// If we have a TableDef for this root, set columns and trigger the appropriate fetch
-					if def := m.findTableDef(rc); def != nil {
-						cols := m.buildColumnsFor(rc, m.paneWidth-4)
-						if len(cols) > 0 {
-							m.table.SetRows([]table.Row{})
-							m.table.SetColumns(cols)
-							m.table.SetRows(normalizeRows(nil, len(cols)))
-						}
-						m.isLoading = true
-						m.apiCallStarted = time.Now()
-						return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
-					}
-					// no table def: still attempt fetch using /{rc} path
-					m.isLoading = true
-					m.apiCallStarted = time.Now()
-					return m, tea.Batch(m.fetchForRoot(rc), flashOnCmd(), spinnerTickCmd(), m.saveStateCmd())
-				}
-				// no match: ignore
-				return m, nil
-			}
 
 			// Task table: intercept Enter to open completion dialog (instead of drilldown)
 			if s == "enter" && m.popup.mode == popupModeNone {
@@ -1130,18 +1194,6 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m.executeDrilldown(d)
 			}
 
-		case "tab":
-			if m.popup.mode != popupModeNone && m.popup.mode != popupModeSearch {
-				// compute matching contexts
-				matchingContexts := m.popupItems()
-				// Only complete if user has typed something or explicitly moved cursor
-				if m.popup.cursor >= 0 && m.popup.cursor < len(matchingContexts) && len(m.popup.input) > 0 {
-					m.popup.input = matchingContexts[m.popup.cursor]
-				} else if len(m.popup.input) > 0 && len(matchingContexts) > 0 {
-					m.popup.input = matchingContexts[0]
-				}
-			}
-			return m, nil
 		case "pgdown", "pagedown", "pgdn", "ctrl+f":
 			// Page down: advance offset by visible rows and refetch
 			root := m.currentRoot

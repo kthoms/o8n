@@ -633,7 +633,7 @@ func (m model) View() string {
 		if m.popup.mode == popupModeSkin {
 			items = m.skinPopupItems()
 			hint = m.popup.hint
-		} else if m.popup.mode == popupModeSearch {
+		} else { // popupModeSearch
 			// Search mode: list shows matching rows (first-column values)
 			for _, row := range m.table.Rows() {
 				if len(row) > 0 {
@@ -651,14 +651,6 @@ func (m model) View() string {
 					hint = hint + "  Ctrl+A:search all pages"
 				}
 			}
-		} else {
-			// context mode
-			for _, rc := range m.rootContexts {
-				if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
-					items = append(items, rc)
-				}
-			}
-			hint = "↑↓:select  Tab/Enter:switch  Esc:cancel"
 		}
 
 		completion := ""
@@ -1545,6 +1537,44 @@ func (m *model) renderFirstRunModal(_, _ int) string {
 				b.WriteString(m.styles.PopupCursor.Render("► " + ctx))
 			} else {
 				b.WriteString(m.styles.PopupItem.Render("  " + ctx))
+			}
+			b.WriteString("\n")
+		}
+	}
+
+	return b.String()
+}
+
+// renderContextSwitcherBody renders the inner content of the resource context switcher.
+func (m model) renderContextSwitcherBody() string {
+	var b strings.Builder
+
+	b.WriteString("Switch Resource Context\n\n")
+
+	// Filter input line
+	b.WriteString(m.styles.PopupInput.Render(": "+m.popup.input) + "▍\n\n")
+
+	items := m.popupItems()
+	if len(items) == 0 {
+		b.WriteString(m.styles.FgMuted.Render("No matching resources"))
+	} else {
+		// show a scrollable window of maxShow items around the cursor
+		const maxShow = 8
+		offset := m.popup.offset
+		if offset < 0 {
+			offset = 0
+		}
+		end := offset + maxShow
+		if end > len(items) {
+			end = len(items)
+		}
+
+		for i := offset; i < end; i++ {
+			item := items[i]
+			if i == m.popup.cursor {
+				b.WriteString(m.styles.PopupCursor.Render("► " + item))
+			} else {
+				b.WriteString(m.styles.PopupItem.Render("  " + item))
 			}
 			b.WriteString("\n")
 		}
