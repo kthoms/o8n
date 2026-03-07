@@ -57,7 +57,7 @@ func TestT1_DetailViewIsOverlay(t *testing.T) {
 	m.splashActive = false
 	m.lastWidth = 120
 	m.lastHeight = 15 // small enough that modal (height=9) fits with footer visible
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	m.detailContent = `{"id": "test-123"}`
 
 	output := m.View()

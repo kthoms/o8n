@@ -5,6 +5,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/charmbracelet/lipgloss"
 	"github.com/charmbracelet/x/ansi"
@@ -414,7 +415,7 @@ Environment: ` + m.currentEnv
 }
 
 // modalDetailViewBody returns the detail view content without border or hint in the title.
-// Used by the modal factory as the OverlayLarge body renderer for ModalDetailView.
+// Used by the modal factory as the OverlayLarge body renderer for ModalJSONView.
 func (m *model) modalDetailViewBody() string {
 	viewHeight := m.lastHeight - 6
 	if viewHeight < 3 {
@@ -754,6 +755,9 @@ func (m model) View() string {
 	title := baseTitle
 
 	// Render search bar when in search mode
+	// Render filter bar when search term is active (from popup or inline search)
+	filterBar := m.renderFilterBar()
+
 	searchBar := ""
 	if m.searchMode {
 		searchStyle := lipgloss.NewStyle().
@@ -811,7 +815,39 @@ func (m model) View() string {
 		breadcrumbRendered = lipgloss.NewStyle().MaxWidth(maxBreadcrumbW).Inline(true).Render(breadcrumbRendered)
 	}
 
-	// Render remote flash as a fixed-width symbol on the right, plus latency and pagination if available
+	// Render right-side indicators: pagination, loading (when > 500ms), auto-refresh, API status, latency, flash
+
+	// API status indicator (● green, ✗ red, ○ muted)
+	apiStatusSymbol := "○"
+	apiStatusStyle := m.styles.FlashBase.Foreground(col(m.skin, "fgMuted"))
+	if status, ok := m.envStatus[m.currentEnv]; ok {
+		switch status {
+		case StatusOperational:
+			apiStatusSymbol = "●"
+			apiStatusStyle = m.styles.FlashBase.Foreground(col(m.skin, "success"))
+		case StatusUnreachable:
+			apiStatusSymbol = "✗"
+			apiStatusStyle = m.styles.FlashBase.Foreground(col(m.skin, "error"))
+		}
+	}
+
+	// Loading indicator (only if > 500ms elapsed)
+	loadingStr := ""
+	if m.isLoading && time.Since(m.apiCallStarted) > 500*time.Millisecond {
+		loadingStr = spinnerFrames[m.spinnerFrame%len(spinnerFrames)] + " "
+	}
+
+	// Auto-refresh indicator (⟳ with flash effect)
+	refreshStr := ""
+	if m.autoRefresh {
+		if m.flashActive {
+			refreshStr = "⟳ "
+		} else {
+			refreshStr = "  "
+		}
+	}
+
+	// Flash symbol for remote connectivity
 	remoteSymbol := " "
 	rpStyle := m.styles.FlashBase
 	if m.flashActive {
@@ -821,6 +857,7 @@ func (m model) View() string {
 		remoteSymbol = " "
 		rpStyle = rpStyle.Foreground(col(m.skin, "fgMuted"))
 	}
+
 	latencyStr := ""
 	if m.showLatency && m.lastAPILatency > 0 {
 		latencyStr = fmt.Sprintf(" %dms", m.lastAPILatency.Milliseconds())
@@ -839,7 +876,13 @@ func (m model) View() string {
 	if paginationStr != "" {
 		pageIndicator = m.styles.PageCounter.Render(paginationStr) + " "
 	}
-	rightPart := pageIndicator + rpStyle.Render(remoteSymbol+latencyStr)
+
+	// Compose right part: pagination | loading | auto-refresh | api-status | remote
+	rightPart := pageIndicator +
+		m.styles.LoadingFooter.Render(loadingStr) +
+		refreshStr +
+		apiStatusStyle.Render(apiStatusSymbol) + " " +
+		rpStyle.Render(remoteSymbol+latencyStr)
 
 	// Layout footer: [breadcrumb] | [status] | [remote]
 	// Format: leftPart | middlePart | rightPart (all separated by " | ")
@@ -898,8 +941,11 @@ func (m model) View() string {
 
 	footerLine := leftPart + " | " + statusMessage + remotePart
 
-	// Compose final vertical layout: header, context box (always 1 row), search bar (only when active), main content, footer (1 row)
+	// Compose final vertical layout: header, context box (always 1 row), filter/search bars, main content, footer (1 row)
 	layoutParts := []string{headerStack, contextSelectionBox}
+	if filterBar != "" {
+		layoutParts = append(layoutParts, filterBar)
+	}
 	if searchBar != "" {
 		layoutParts = append(layoutParts, searchBar)
 	}
@@ -1161,6 +1207,37 @@ func (m *model) syntaxHighlightJSON(line string) string {
 		}
 	}
 	return line
+}
+
+// renderFilterBar renders a filter status bar when an active filter is applied.
+// Shows one of the 5 UX states: Hidden, Active input, Locked/applied, Server-side active, or Clearing.
+func (m *model) renderFilterBar() string {
+	// State 1: No filter → hidden
+	if m.popup.mode != popupModeSearch && m.searchTerm == "" {
+		return ""
+	}
+
+	// State 2 & 3: Popup search mode or inline search mode → show filter status
+	if m.popup.mode == popupModeSearch {
+		// Popup search is open - show "Filter: {term}" or "Filter: (searching...)"
+		if m.popup.input == "" {
+			return lipgloss.NewStyle().
+				Foreground(lipgloss.Color("8")). // muted
+				Render("⊦ Filter: (type to filter)")
+		}
+		return lipgloss.NewStyle().
+			Foreground(col(m.skin, "success")).
+			Render(fmt.Sprintf("⊦ Filter: %s", m.popup.input))
+	}
+
+	// State 5: Clearing (brief transition) or applied filter
+	if m.searchTerm != "" {
+		return lipgloss.NewStyle().
+			Foreground(col(m.skin, "success")).
+			Render(fmt.Sprintf("⊦ Filter: %s  (/ to change, Esc to clear)", m.searchTerm))
+	}
+
+	return ""
 }
 
 // renderEnvPopup renders the environment selection popup.

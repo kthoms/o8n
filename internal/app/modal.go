@@ -120,7 +120,7 @@ func init() {
 		},
 	})
 
-	registerModal(ModalDetailView, ModalConfig{
+	registerModal(ModalJSONView, ModalConfig{
 		SizeHint: OverlayLarge,
 		BodyRenderer: func(m model) string {
 			return m.modalDetailViewBody()

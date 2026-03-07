@@ -15,7 +15,7 @@ func TestModalRegistry_AllTypesRegistered(t *testing.T) {
 		ModalEnvironment,
 		ModalEdit,
 		ModalHelp,
-		ModalDetailView,
+		ModalJSONView,
 		ModalTaskComplete,
 	}
 	for _, mt := range expected {
@@ -139,7 +139,7 @@ func TestModalSizeHint_OverlayLargeHelp(t *testing.T) {
 	}
 }
 
-// TestModalSizeHint_OverlayLargeDetailView verifies that ModalDetailView uses
+// TestModalSizeHint_OverlayLargeDetailView verifies that ModalJSONView uses
 // OverlayLarge size hint and has a populated HintLine.
 func TestModalSizeHint_OverlayLargeDetailView(t *testing.T) {
 	m := newTestModel(t)
@@ -147,23 +147,23 @@ func TestModalSizeHint_OverlayLargeDetailView(t *testing.T) {
 	m.lastHeight = 24
 	m.detailContent = `{"id": "test-123", "state": "ACTIVE"}`
 
-	cfg, ok := modalRegistry[ModalDetailView]
+	cfg, ok := modalRegistry[ModalJSONView]
 	if !ok {
-		t.Fatal("ModalDetailView not in registry")
+		t.Fatal("ModalJSONView not in registry")
 	}
 	if cfg.SizeHint != OverlayLarge {
-		t.Errorf("expected OverlayLarge for ModalDetailView, got %d", cfg.SizeHint)
+		t.Errorf("expected OverlayLarge for ModalJSONView, got %d", cfg.SizeHint)
 	}
 	if len(cfg.HintLine) == 0 {
-		t.Error("expected non-empty HintLine for ModalDetailView (required for OverlayLarge)")
+		t.Error("expected non-empty HintLine for ModalJSONView (required for OverlayLarge)")
 	}
 
 	output := renderModal(m, cfg)
 	if output == "" {
-		t.Error("expected non-empty output for ModalDetailView")
+		t.Error("expected non-empty output for ModalJSONView")
 	}
 	if !strings.Contains(output, "Detail View") {
-		t.Error("expected 'Detail View' in ModalDetailView output")
+		t.Error("expected 'Detail View' in ModalJSONView output")
 	}
 }
 
@@ -265,7 +265,7 @@ func TestModalFactory_ViewDispatch(t *testing.T) {
 		ModalSort,
 		ModalEnvironment,
 		ModalHelp,
-		ModalDetailView,
+		ModalJSONView,
 	}
 
 	for _, mt := range registeredTypes {
@@ -278,7 +278,7 @@ func TestModalFactory_ViewDispatch(t *testing.T) {
 		if mt == ModalConfirmDelete {
 			m.pendingDeleteID = "test-id"
 		}
-		if mt == ModalDetailView {
+		if mt == ModalJSONView {
 			m.detailContent = `{"key": "value"}`
 		}
 
@@ -470,17 +470,17 @@ func TestModalEsc_Environment(t *testing.T) {
 	}
 }
 
-// TestModalEsc_DetailView verifies Esc dismisses ModalDetailView.
+// TestModalEsc_DetailView verifies Esc dismisses ModalJSONView.
 func TestModalEsc_DetailView(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	m.detailContent = `{"id": "test-123"}`
 
 	m2, _ := sendKeyString(m, "esc")
 
 	if m2.activeModal != ModalNone {
-		t.Fatalf("expected ModalNone after Esc on ModalDetailView, got %v", m2.activeModal)
+		t.Fatalf("expected ModalNone after Esc on ModalJSONView, got %v", m2.activeModal)
 	}
 }
 
@@ -500,7 +500,7 @@ func TestModalEsc_TaskComplete(t *testing.T) {
 
 // ── ModalHelp key behavior tests ──────────────────────────────────────────────
 
-// TestModalHelp_QCloses verifies 'q' closes ModalHelp (consistent with ModalDetailView convention).
+// TestModalHelp_QCloses verifies 'q' closes ModalHelp (consistent with ModalJSONView convention).
 func TestModalHelp_QCloses(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false

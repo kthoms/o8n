@@ -221,7 +221,7 @@ func TestDetailScrollDownKey(t *testing.T) {
 	m.detailContent = strings.Join(lines, "\n")
 	m.detailScroll = 0
 	m.lastHeight = 24
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 
 	m2, _ := sendKeyString(m, "down")
 
@@ -240,7 +240,7 @@ func TestDetailScrollUpKey(t *testing.T) {
 	m.detailContent = strings.Join(lines, "\n")
 	m.detailScroll = 5
 	m.lastHeight = 24
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 
 	m2, _ := sendKeyString(m, "up")
 
@@ -260,7 +260,7 @@ func TestDetailScrollGKey(t *testing.T) {
 	m.detailContent = strings.Join(lines, "\n")
 	m.detailScroll = 0
 	m.lastHeight = 24
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 
 	m2, _ := sendKeyString(m, "G")
 

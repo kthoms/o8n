@@ -140,7 +140,7 @@ const (
 	ModalHelp
 	ModalEdit
 	ModalSort
-	ModalDetailView
+	ModalJSONView
 	ModalEnvironment
 	ModalTaskComplete
 	ModalFirstRun   // home context selection on first run (or Ctrl+H to revisit)

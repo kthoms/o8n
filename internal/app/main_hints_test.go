@@ -97,7 +97,7 @@ func TestCurrentViewHints_EnterDrillOnlyWhenTableHasDrilldown(t *testing.T) {
 func TestCurrentViewHints_RefreshHintMinWidthNinety(t *testing.T) {
 	m := newTestModel(t)
 	hints := currentViewHints(m)
-	h, ok := findHint(hints, "Ctrl+r", "refresh")
+	h, ok := findHint(hints, "Ctrl+Shift+r", "refresh")
 	if !ok {
 		t.Fatal("expected refresh hint")
 	}

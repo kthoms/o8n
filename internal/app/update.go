@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/table"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
@@ -390,7 +391,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 		}
 
 		// Handle detail view keys
-		if m.activeModal == ModalDetailView {
+		if m.activeModal == ModalJSONView {
 			detailLines := strings.Split(m.detailContent, "\n")
 			detailViewH := m.lastHeight - 6
 			if detailViewH < 3 {
@@ -405,6 +406,13 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.activeModal = ModalNone
 				m.detailContent = ""
 				return m, nil
+			case "ctrl+j":
+				// Copy JSON content from modal
+				_ = clipboard.WriteAll(m.detailContent)
+				msg2, kind, cmd := setFooterStatus(footerStatusSuccess, "✓ Copied to clipboard", 3*time.Second)
+				m.footerError = msg2
+				m.footerStatusKind = kind
+				return m, cmd
 			case "down":
 				if m.detailScroll < maxDetailScroll {
 					m.detailScroll++
@@ -916,8 +924,8 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.table.SetHeight(m.paneHeight - 1)
 			}
 			return m, nil
-		case "ctrl+r", "r":
-			// Toggle auto-refresh
+		case "ctrl+shift+r", "r":
+			// Toggle auto-refresh (Ctrl+Shift+R per story 3.7, or just R as shortcut)
 			m.autoRefresh = !m.autoRefresh
 			if m.autoRefresh {
 				m.isLoading = true
@@ -983,7 +991,7 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				}
 				m.detailContent = m.buildDetailContent(row)
 				m.detailScroll = 0
-				m.activeModal = ModalDetailView
+				m.activeModal = ModalJSONView
 				return m, nil
 			}
 			return m, nil

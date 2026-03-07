@@ -250,7 +250,7 @@ func TestFilterHints_At120Cols_WidthGatedHintsPresent(t *testing.T) {
 
 	// All hints in tableViewHints have MaxWidth <= 112, which is <= 120.
 	// So all standard hints should be visible at 120 columns.
-	expectedVisible := []string{"s", "Ctrl+r", "Ctrl+t", "Ctrl+e", "Ctrl+Space", "J", "Ctrl+c"}
+	expectedVisible := []string{"s", "Ctrl+Shift+r", "Ctrl+t", "Ctrl+e", "Ctrl+Space", "J", "Ctrl+c"}
 	for _, key := range expectedVisible {
 		if !keys[key] {
 			t.Errorf("expected hint %q (MinWidth<=120) to be visible at width=120", key)
@@ -270,8 +270,8 @@ func TestFilterHints_At80Cols_NarrowHintsHidden(t *testing.T) {
 		keys[h.Key] = true
 	}
 
-	// s (MinWidth=88), Ctrl+r (90), Ctrl+Space (100), J (112) should be hidden at 80.
-	hiddenKeys := []string{"s", "Ctrl+r", "Ctrl+t", "Ctrl+e", "Ctrl+Space", "J", "Ctrl+c"}
+	// s (MinWidth=88), Ctrl+Shift+r (90), Ctrl+Space (100), J (112) should be hidden at 80.
+	hiddenKeys := []string{"s", "Ctrl+Shift+r", "Ctrl+t", "Ctrl+e", "Ctrl+Space", "J", "Ctrl+c"}
 	for _, key := range hiddenKeys {
 		if keys[key] {
 			t.Errorf("expected hint %q to be hidden at width=80, but it was visible", key)

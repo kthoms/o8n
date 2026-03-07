@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/atotto/clipboard"
 	"github.com/charmbracelet/bubbles/list"
@@ -183,7 +184,7 @@ func (m *model) buildActionsForRoot() []actionItem {
 		}
 		m.detailContent = m.buildDetailContent(row)
 		m.detailScroll = 0
-		m.activeModal = ModalDetailView
+		m.activeModal = ModalJSONView
 		return nil
 	}})
 	items = append(items, actionItem{key: "ctrl+j", label: "Copy as JSON", cmd: func(m *model) tea.Cmd {
@@ -193,7 +194,11 @@ func (m *model) buildActionsForRoot() []actionItem {
 		}
 		content := m.buildDetailContent(row)
 		_ = clipboard.WriteAll(content)
-		return nil
+		// Show success feedback
+		msg2, kind, cmd := setFooterStatus(footerStatusSuccess, "✓ Copied to clipboard", 3*time.Second)
+		m.footerError = msg2
+		m.footerStatusKind = kind
+		return cmd
 	}})
 
 	return items

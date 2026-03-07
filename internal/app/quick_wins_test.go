@@ -117,11 +117,11 @@ func TestWin2_KeyHintsRespectTerminalWidth(t *testing.T) {
 	m := newTestModel(t)
 	m.viewMode = "process-instance"
 
-	// At small width, refresh hint should not appear (Ctrl+r appears at width >= 90)
+	// At small width, refresh hint should not appear (Ctrl+Shift+r appears at width >= 90)
 	hints := filterHints(currentViewHints(m), 80)
 	hasRefresh := false
 	for _, h := range hints {
-		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Label, "refresh") {
+		if strings.Contains(h.Key, "Ctrl+Shift+r") && strings.Contains(h.Label, "refresh") {
 			hasRefresh = true
 		}
 	}
@@ -133,7 +133,7 @@ func TestWin2_KeyHintsRespectTerminalWidth(t *testing.T) {
 	hints = filterHints(currentViewHints(m), 100)
 	hasRefresh = false
 	for _, h := range hints {
-		if strings.Contains(h.Key, "Ctrl+r") && strings.Contains(h.Label, "refresh") {
+		if strings.Contains(h.Key, "Ctrl+Shift+r") && strings.Contains(h.Label, "refresh") {
 			hasRefresh = true
 		}
 	}

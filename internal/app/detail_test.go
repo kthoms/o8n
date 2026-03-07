@@ -16,8 +16,8 @@ func TestDetailViewerOpensOnJ(t *testing.T) {
 
 	m2, _ := sendKeyString(m, "J")
 
-	if m2.activeModal != ModalDetailView {
-		t.Errorf("expected ModalDetailView after 'J', got %v", m2.activeModal)
+	if m2.activeModal != ModalJSONView {
+		t.Errorf("expected ModalJSONView after 'J', got %v", m2.activeModal)
 	}
 	if m2.detailContent == "" {
 		t.Error("expected non-empty detailContent")
@@ -27,7 +27,7 @@ func TestDetailViewerOpensOnJ(t *testing.T) {
 func TestDetailViewerScrolling(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	// Create content with many lines
 	content := ""
 	for i := 0; i < 50; i++ {
@@ -53,7 +53,7 @@ func TestDetailViewerScrolling(t *testing.T) {
 func TestDetailViewerEscCloses(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	m.detailContent = "some content"
 
 	m2, _ := sendKeyString(m, "esc")
@@ -69,7 +69,7 @@ func TestDetailViewerEscCloses(t *testing.T) {
 func TestDetailViewerQCloses(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	m.detailContent = "some content"
 
 	m2, _ := sendKeyString(m, "q")
@@ -109,7 +109,7 @@ func TestSyntaxHighlightJSON(t *testing.T) {
 func TestDetailViewerJKeyCloses(t *testing.T) {
 	m := newTestModel(t)
 	m.splashActive = false
-	m.activeModal = ModalDetailView
+	m.activeModal = ModalJSONView
 	m.detailContent = "content"
 
 	m2, _ := sendKeyString(m, "J")
@@ -125,7 +125,7 @@ func TestDetailViewerNoRowNoOpen(t *testing.T) {
 
 	m2, _ := sendKeyString(m, "J")
 
-	if m2.activeModal == ModalDetailView {
-		t.Error("expected ModalDetailView NOT to open with no rows")
+	if m2.activeModal == ModalJSONView {
+		t.Error("expected ModalJSONView NOT to open with no rows")
 	}
 }
