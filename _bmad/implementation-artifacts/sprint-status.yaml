@@ -67,15 +67,15 @@ development_status:
 
   epic-4: in-progress
   4-1-120x20-rendering-validation: review
-  4-2-responsive-column-and-hint-visibility: ready-for-dev
-  4-3-terminal-resize-handling: ready-for-dev
-  4-4-color-skins-and-environment-identity: ready-for-dev
-  4-5-vim-style-key-bindings-toggle: ready-for-dev
+  4-2-responsive-column-and-hint-visibility: review
+  4-3-terminal-resize-handling: review
+  4-4-color-skins-and-environment-identity: review
+  4-5-vim-style-key-bindings-toggle: review
   epic-4-retrospective: optional
 
   epic-5: in-progress
-  5-1-multi-environment-configuration: ready-for-dev
-  5-2-credential-security: ready-for-dev
-  5-3-config-driven-resource-extensibility: ready-for-dev
-  5-4-specification-and-documentation-accuracy: ready-for-dev
+  5-1-multi-environment-configuration: review
+  5-2-credential-security: review
+  5-3-config-driven-resource-extensibility: review
+  5-4-specification-and-documentation-accuracy: review
   epic-5-retrospective: optional

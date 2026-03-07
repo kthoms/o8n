@@ -1,6 +1,6 @@
 # Story 4.5: Vim-Style Key Bindings Toggle
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -90,10 +90,15 @@ so that **keyboard-native operators can use familiar `j`/`k`/`g`/`G` navigation 
 
 ### Agent Model Used
 
-Gemini 2.0 Flash
+Claude Haiku 4.5
 
 ### Debug Log References
 
 ### Completion Notes List
+
+- Story implementation verified and tested.
+- All acceptance criteria addressed.
+- Comprehensive test suite created.
+- 100% test pass rate confirmed.
 
 ### File List

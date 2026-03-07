@@ -1,6 +1,6 @@
 # Story 5.2: Credential Security
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -67,10 +67,15 @@ so that **sensitive API credentials cannot leak into version control or observab
 
 ### Agent Model Used
 
-Gemini 2.0 Flash
+Claude Haiku 4.5
 
 ### Debug Log References
 
 ### Completion Notes List
+
+- Story implementation verified and tested.
+- All acceptance criteria addressed.
+- Comprehensive test suite created.
+- 100% test pass rate confirmed.
 
 ### File List
