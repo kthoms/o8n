@@ -326,7 +326,7 @@ func (m *model) contextPopupHeight() int {
 		matchCount = len(m.table.Rows())
 	} else {
 		for _, rc := range m.rootContexts {
-			if m.popup.input == "" || strings.HasPrefix(rc, m.popup.input) {
+			if m.popup.input == "" || strings.Contains(rc, m.popup.input) {
 				matchCount++
 			}
 		}
@@ -446,7 +446,6 @@ func (m model) executeDrilldown(d *config.DrillDownDef) (model, tea.Cmd) {
 		}
 	}
 	m.contentHeader = fmt.Sprintf("%s — %s", d.Target, titleVal)
-	m.table.SetCursor(0)
 
 	// Pre-set columns for target table to avoid stale columns during load
 	colsTarget := m.buildColumnsFor(d.Target, m.paneWidth-4)
@@ -455,6 +454,8 @@ func (m model) executeDrilldown(d *config.DrillDownDef) (model, tea.Cmd) {
 		m.table.SetColumns(colsTarget)
 		m.table.SetRows(normalizeRows(nil, len(colsTarget)))
 	}
+	// SetCursor(0) must come after the final SetRows; SetRows([]Row{}) clamps cursor to -1.
+	m.table.SetCursor(0)
 
 	return m, tea.Batch(m.fetchGenericCmd(d.Target), flashOnCmd(), m.saveStateCmd())
 }
@@ -521,7 +522,7 @@ func (m *model) filteredFirstRunContexts() []string {
 }
 
 // popupItems returns the list of items for the current popup mode.
-// For context mode: rootContexts filtered by input prefix.
+// For context mode: rootContexts filtered by substring (contains) match.
 // For skin mode: all skin names.
 // For search mode: first-column values of current table rows.
 func (m *model) popupItems() []string {

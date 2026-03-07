@@ -98,9 +98,22 @@ func (m *model) buildColumnsFor(tableName string, totalWidth int) []table.Column
 			return s
 		}
 
+		activeCount := func() int {
+			c := 0
+			for _, a := range active {
+				if a {
+					c++
+				}
+			}
+			return c
+		}
 		hideSeq := config.HideSequence(defs)
 		for _, hideIdx := range hideSeq {
 			if totalDesired() <= totalWidth {
+				break
+			}
+			// Never hide the last visible column
+			if activeCount() <= 1 {
 				break
 			}
 			active[hideIdx] = false
@@ -163,6 +176,7 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
+	savedCursor := m.table.Cursor()
 	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
 	normRows := normalizeRows(rows, colsCount)
@@ -174,6 +188,16 @@ func (m *model) applyDefinitions(defs []config.ProcessDefinition) {
 	if !m.searchMode && m.searchTerm != "" {
 		filtered := filterRows(m.table.Rows(), m.searchTerm)
 		m.table.SetRows(filtered)
+	}
+	// Restore cursor: SetRows([]Row{}) clamps cursor to -1; preserve position across reloads.
+	if n := len(m.table.Rows()); n > 0 {
+		pos := savedCursor
+		if pos < 0 {
+			pos = 0
+		} else if pos >= n {
+			pos = n - 1
+		}
+		m.table.SetCursor(pos)
 	}
 	m.viewMode = "process-definition"
 }
@@ -210,6 +234,7 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
+	savedCursor := m.table.Cursor()
 	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
 	normRows := normalizeRows(rows, colsCount)
@@ -223,7 +248,7 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		filtered := filterRows(m.table.Rows(), m.searchTerm)
 		m.table.SetRows(filtered)
 	}
-	// restore cursor position requested for paging operations
+	// restore cursor position requested for paging operations (takes priority over saved cursor)
 	if m.pendingCursorAfterPage >= 0 {
 		last := len(normRows) - 1
 		pos := m.pendingCursorAfterPage
@@ -235,6 +260,15 @@ func (m *model) applyInstances(instances []config.ProcessInstance) {
 		}
 		m.table.SetCursor(pos)
 		m.pendingCursorAfterPage = -1
+	} else if n := len(m.table.Rows()); n > 0 {
+		// Restore cursor: SetRows([]Row{}) clamps cursor to -1; preserve position across reloads.
+		pos := savedCursor
+		if pos < 0 {
+			pos = 0
+		} else if pos >= n {
+			pos = n - 1
+		}
+		m.table.SetCursor(pos)
 	}
 }
 
@@ -268,6 +302,7 @@ func (m *model) applyVariables(vars []config.Variable) {
 		cols = defaultColumns(len(rows[0]), tableWidth)
 		colsCount = len(cols)
 	}
+	savedCursor := m.table.Cursor()
 	m.table.SetRows([]table.Row{})
 	m.table.SetColumns(cols)
 	normRows := normalizeRows(rows, colsCount)
@@ -279,6 +314,16 @@ func (m *model) applyVariables(vars []config.Variable) {
 	if !m.searchMode && m.searchTerm != "" {
 		filtered := filterRows(m.table.Rows(), m.searchTerm)
 		m.table.SetRows(filtered)
+	}
+	// Restore cursor: SetRows([]Row{}) clamps cursor to -1; preserve position across reloads.
+	if n := len(m.table.Rows()); n > 0 {
+		pos := savedCursor
+		if pos < 0 {
+			pos = 0
+		} else if pos >= n {
+			pos = n - 1
+		}
+		m.table.SetCursor(pos)
 	}
 	m.viewMode = "process-variables"
 }

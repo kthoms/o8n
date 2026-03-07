@@ -207,7 +207,7 @@ Examples of config-driven drilldown chains:
 
 ### Navigation Stack
 
-- **`viewState`** struct: captures a complete snapshot — viewMode, breadcrumb, contentHeader, selectedDefinitionKey, selectedInstanceID, tableRows, tableCursor, cachedDefinitions, tableColumns
+- **`viewState`** struct: captures a complete snapshot — viewMode, breadcrumb, contentHeader, selectedDefinitionKey, selectedInstanceID, tableRows, tableCursor, cachedDefinitions, tableColumns, genericParams, rowData
 - **`navigationStack []viewState`** — LIFO stack. Enter pushes, Esc pops
 - **Full state restoration** on Esc: rows, cursor position, columns, filters all restored
 - **State persisted to `o6n-stat.yml`** — the app reopens at the last resource/drilldown level

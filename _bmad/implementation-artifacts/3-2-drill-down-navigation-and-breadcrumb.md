@@ -1,6 +1,6 @@
 # Story 3.2: Drill-Down Navigation & Breadcrumb
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -26,24 +26,24 @@ so that I can traverse resource hierarchies (e.g., process definition → instan
 
 ## Tasks / Subtasks
 
-- [ ] Audit and Refine `executeDrilldown` in `internal/app/nav.go` (AC: 1)
-  - [ ] Verify `prepareStateTransition(TransitionDrillDown)` is called correctly.
-  - [ ] Ensure `m.navigationStack` correctly captures the `viewState` (rows, cursor, filters, etc.) before the transition.
-  - [ ] Verify `m.genericParams` is correctly populated with the drill-down filter.
-  - [ ] Ensure child columns are pre-set to avoid "column flash" from parent.
-- [ ] Audit and Refine `navigateToBreadcrumb` and Escape handling (AC: 2, 3)
-  - [ ] Verify `prepareStateTransition(TransitionPop)` is used when popping.
-  - [ ] Ensure `navigationStack` is correctly truncated and the restored state is applied to the model.
-  - [ ] Verify cursor position and search filters are correctly restored.
-- [ ] Add breadcrumb level selection logic (AC: 3)
-  - [ ] Ensure `navigateToBreadcrumb(idx)` correctly handles stack restoration for any previous level.
-- [ ] Tests and Validation (AC: 1, 2, 3)
-  - [ ] Create `internal/app/main_drilldown_nav_test.go`
-  - [ ] Test DrillDown: verify stack push and state clearing (except stack).
-  - [ ] Test Pop (Escape): verify stack pop and full state restoration.
-  - [ ] Test Jump: verify jumping to an early breadcrumb level restores the correct state.
-- [ ] Documentation (AC: 1, 2, 3)
-  - [ ] Ensure `specification.md` accurately describes the `TransitionDrillDown` and `TransitionPop` behavior.
+- [x] Audit and Refine `executeDrilldown` in `internal/app/nav.go` (AC: 1)
+  - [x] Verify `prepareStateTransition(TransitionDrillDown)` is called correctly.
+  - [x] Ensure `m.navigationStack` correctly captures the `viewState` (rows, cursor, filters, etc.) before the transition.
+  - [x] Verify `m.genericParams` is correctly populated with the drill-down filter.
+  - [x] Ensure child columns are pre-set to avoid "column flash" from parent.
+- [x] Audit and Refine `navigateToBreadcrumb` and Escape handling (AC: 2, 3)
+  - [x] Verify `prepareStateTransition(TransitionPop)` is used when popping.
+  - [x] Ensure `navigationStack` is correctly truncated and the restored state is applied to the model.
+  - [x] Verify cursor position and search filters are correctly restored.
+- [x] Add breadcrumb level selection logic (AC: 3)
+  - [x] Ensure `navigateToBreadcrumb(idx)` correctly handles stack restoration for any previous level.
+- [x] Tests and Validation (AC: 1, 2, 3)
+  - [x] Create `internal/app/main_drilldown_nav_test.go`
+  - [x] Test DrillDown: verify stack push and state clearing (except stack).
+  - [x] Test Pop (Escape): verify stack pop and full state restoration.
+  - [x] Test Jump: verify jumping to an early breadcrumb level restores the correct state.
+- [x] Documentation (AC: 1, 2, 3)
+  - [x] Ensure `specification.md` accurately describes the `TransitionDrillDown` and `TransitionPop` behavior.
 
 ## Dev Notes
 
@@ -67,10 +67,23 @@ so that I can traverse resource hierarchies (e.g., process definition → instan
 
 ### Agent Model Used
 
-Gemini 2.0 Flash
+Claude Sonnet 4.6 (implementation); Gemini 2.0 Flash (story creation)
 
 ### Debug Log References
 
+N/A
+
 ### Completion Notes List
 
+- **Root cause fixed: cursor clamped to -1 by SetRows([]Row{})**: Bubbles table v1.0.0 `SetRows(r)` clamps `cursor` to `len(r)-1`. When `r` is empty, cursor becomes -1. Subsequent `SetRows(rows)` only clamps downward, so cursor stays -1. Fixed by saving/restoring cursor around the clear-and-reload pattern in `applyDefinitions`, `applyInstances`, and `applyVariables`.
+- **executeDrilldown: SetCursor(0) moved after final SetRows**: `SetCursor(0)` was called before `SetRows([]Row{})` in `executeDrilldown`, which would immediately be overridden to -1. Moved `SetCursor(0)` to after the final `SetRows` call.
+- **Pre-existing test failures fixed**: 4 tests in `ui_test.go` were failing before this story (confirmed via investigation) — `TestConfigDrivenDrilldownFromDefinitionToInstances`, `TestConfigDrivenDrilldownFromInstancesToVariables`, `TestNavigationStackPreservesRowSelection`, `TestExtraEntersDontPushNavigationStack`. All now pass.
+- **specification.md updated**: Added `genericParams` and `rowData` to the viewState field list at line 210.
+- **navigateToBreadcrumb audited**: Logic is correct — idx=0 uses TransitionFull, idx>0 truncates stack and uses TransitionPop. No code changes needed.
+
 ### File List
+
+- `internal/app/nav.go` — FIX: moved SetCursor(0) to after final SetRows in executeDrilldown
+- `internal/app/table.go` — FIX: cursor save/restore in applyDefinitions, applyInstances, applyVariables
+- `internal/app/main_drilldown_nav_test.go` — NEW: 12 navigation stack tests (AC 1, 2, 3)
+- `specification.md` — DOC: added genericParams, rowData to viewState field list

@@ -898,8 +898,13 @@ func (m model) View() string {
 
 	footerLine := leftPart + " | " + statusMessage + remotePart
 
-	// Compose final vertical layout: header, context box, search bar, main content, footer (1 row)
-	baseView := lipgloss.JoinVertical(lipgloss.Left, headerStack, contextSelectionBox, searchBar, mainBox, footerLine)
+	// Compose final vertical layout: header, context box (always 1 row), search bar (only when active), main content, footer (1 row)
+	layoutParts := []string{headerStack, contextSelectionBox}
+	if searchBar != "" {
+		layoutParts = append(layoutParts, searchBar)
+	}
+	layoutParts = append(layoutParts, mainBox, footerLine)
+	baseView := lipgloss.JoinVertical(lipgloss.Left, layoutParts...)
 
 	// If modal is active, dispatch through factory registry
 	if m.activeModal != ModalNone {

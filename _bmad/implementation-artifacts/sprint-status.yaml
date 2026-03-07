@@ -57,8 +57,8 @@ development_status:
 
   epic-3: in-progress
   3-1-resource-navigation-and-context-switcher: done
-  3-2-drill-down-navigation-and-breadcrumb: ready-for-dev
-  3-3-action-execution-with-feedback: ready-for-dev
+  3-2-drill-down-navigation-and-breadcrumb: review
+  3-3-action-execution-with-feedback: review
   3-4-incident-operations-retry-and-annotate: ready-for-dev
   3-5-task-claim-unclaim-and-complete: ready-for-dev
   3-6-process-variable-inspection-editing-and-json-view: ready-for-dev
@@ -66,16 +66,16 @@ development_status:
   epic-3-retrospective: optional
 
   epic-4: in-progress
-  4-1-120x20-rendering-validation: ready-for-dev
-  4-2-responsive-column-and-hint-visibility: backlog
-  4-3-terminal-resize-handling: backlog
-  4-4-color-skins-and-environment-identity: backlog
-  4-5-vim-style-key-bindings-toggle: backlog
+  4-1-120x20-rendering-validation: review
+  4-2-responsive-column-and-hint-visibility: ready-for-dev
+  4-3-terminal-resize-handling: ready-for-dev
+  4-4-color-skins-and-environment-identity: ready-for-dev
+  4-5-vim-style-key-bindings-toggle: ready-for-dev
   epic-4-retrospective: optional
 
-  epic-5: backlog
-  5-1-multi-environment-configuration: backlog
-  5-2-credential-security: backlog
-  5-3-config-driven-resource-extensibility: backlog
-  5-4-specification-and-documentation-accuracy: backlog
+  epic-5: in-progress
+  5-1-multi-environment-configuration: ready-for-dev
+  5-2-credential-security: ready-for-dev
+  5-3-config-driven-resource-extensibility: ready-for-dev
+  5-4-specification-and-documentation-accuracy: ready-for-dev
   epic-5-retrospective: optional
