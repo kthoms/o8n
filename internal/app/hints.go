@@ -71,6 +71,17 @@ func tableViewHints(m model) []Hint {
 	if m.hasEditableColumns() {
 		hints = append(hints, Hint{Key: "e", Label: "edit", MinWidth: 0, Priority: 4})
 	}
+
+	// Append hints from table actions (resource-specific hints)
+	if def := m.findTableDef(m.currentRoot); def != nil {
+		for _, action := range def.Actions {
+			// Skip complex key combinations and special keys as hints (only single-char common keys)
+			if len(action.Key) == 1 && action.Label != "" && action.Key != "?" && action.Key != ":" {
+				hints = append(hints, Hint{Key: action.Key, Label: action.Label, MinWidth: 0, Priority: 4})
+			}
+		}
+	}
+
 	if len(m.navigationStack) > 0 {
 		hints = append(hints, Hint{Key: "Esc", Label: "back", MinWidth: 0, Priority: 5})
 	}

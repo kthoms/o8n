@@ -775,17 +775,33 @@ tables:
         - name: incidentMessage
           hide_order: 5
           align: left
+        - name: jobId
+          visible: false
+        - name: annotation
+          editable: true
+      edit_action:
+        method: PUT
+        path: /incident/{id}/annotation
+        body_template: '{"annotation": "{value}"}'
+        name_column: id
+      drilldown:
+        target: process-instance
+        param: id
+        column: processInstanceId
       actions:
         - key: ctrl+d
           label: Resolve Incident
           method: DELETE
           path: /incident/{id}
           confirm: true
-        - key: a
-          label: Set Annotation
+        - key: r
+          label: Retry
           method: PUT
-          path: /incident/{id}/annotation
-          body: '{"annotation":"manual"}'
+          path: /job/{jobId}/retries
+          body: '{"retries": 1}'
+          id_column: jobId
+        - key: a
+          label: Annotate
     - name: tenant
       columns:
         - name: id

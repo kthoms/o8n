@@ -16,6 +16,7 @@ import (
 
 // resolveActionID extracts the ID value from the selected row for a given action.
 // It uses the action's IDColumn (defaults to "id") and finds the matching table column.
+// For hidden columns, it checks m.rowData as a fallback.
 func (m *model) resolveActionID(action config.ActionDef) string {
 	row := m.table.SelectedRow()
 	if len(row) == 0 {
@@ -29,6 +30,19 @@ func (m *model) resolveActionID(action config.ActionDef) string {
 	for i, col := range cols {
 		if col.Title == idCol && i < len(row) {
 			return stripFocusIndicatorPrefix(row[i])
+		}
+	}
+	// Fallback: check m.rowData for hidden columns
+	cursor := m.table.Cursor()
+	if cursor >= 0 && cursor < len(m.rowData) {
+		if v, ok := m.rowData[cursor][idCol]; ok {
+			if v == nil {
+				return ""
+			}
+			if s, ok := v.(string); ok {
+				return s
+			}
+			return fmt.Sprintf("%v", v)
 		}
 	}
 	// Fallback: use first column
