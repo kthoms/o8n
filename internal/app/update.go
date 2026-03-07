@@ -1066,6 +1066,28 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				return m, tea.Batch(m.unclaimTaskCmd(taskID, taskName), spinnerTickCmd())
 			}
 			return m, nil
+		case "o":
+			if m.popup.mode != popupModeNone {
+				m.popup.input += s
+				return m, nil
+			}
+			// Task complete: only active on task table with no modal/menu open
+			if def := m.findTableDef(m.currentTableKey()); def != nil && def.Name == "task" && m.activeModal == ModalNone {
+				row := m.table.SelectedRow()
+				if len(row) == 0 {
+					return m, nil
+				}
+				taskID := m.resolveRowValue(row, "id")
+				taskName := m.resolveRowValue(row, "name")
+				// Open task completion modal and fetch variables
+				m.activeModal = ModalTaskComplete
+				m.taskCompleteTaskID = taskID
+				m.taskCompleteTaskName = taskName
+				m.isLoading = true
+				m.apiCallStarted = time.Now()
+				return m, m.fetchTaskVariablesCmd(taskID, taskName)
+			}
+			return m, nil
 		case "esc":
 			if m.popup.mode == popupModeSkin {
 				// Revert skin to what it was before preview

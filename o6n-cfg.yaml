@@ -293,6 +293,10 @@ tables:
           label: Unclaim Task
           method: POST
           path: /task/{id}/unclaim
+        - key: o
+          label: Complete
+          method: POST
+          path: /task/{id}/complete
         - key: d
           label: Delegate Task
           method: POST
