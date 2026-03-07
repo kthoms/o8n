@@ -57,7 +57,7 @@ development_status:
 
   epic-3: in-progress
   3-1-resource-navigation-and-context-switcher: done
-  3-2-drill-down-navigation-and-breadcrumb: review
+  3-2-drill-down-navigation-and-breadcrumb: done
   3-3-action-execution-with-feedback: review
   3-4-incident-operations-retry-and-annotate: review
   3-5-task-claim-unclaim-and-complete: review
