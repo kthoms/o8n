@@ -68,6 +68,14 @@ func tableViewHints(m model) []Hint {
 	if def := m.findTableDef(m.currentRoot); def != nil && def.Drilldown != nil {
 		hints = append(hints, Hint{Key: "Enter", Label: "drill", MinWidth: 0, Priority: 4})
 	}
+
+	// Vim mode hints (only shown when vim mode is active)
+	if m.vimMode {
+		hints = append(hints,
+			Hint{Key: "j/k", Label: "nav", MinWidth: 0, Priority: 3},
+			Hint{Key: "gg/G", Label: "top/bot", MinWidth: 88, Priority: 5},
+		)
+	}
 	if m.hasEditableColumns() {
 		hints = append(hints, Hint{Key: "e", Label: "edit", MinWidth: 0, Priority: 4})
 	}

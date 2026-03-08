@@ -379,6 +379,40 @@ For destructive actions (`confirm: true`):
 
 All modals are **overlays** on top of the main UI — the background table remains visible. Never blank-canvas replacements.
 
+### Modal Factory Pattern
+
+All modal rendering goes through the **Modal Factory**:
+
+```go
+// ModalConfig describes all rendering parameters for a modal type.
+type ModalConfig struct {
+    SizeHint     SizeHint          // OverlayCenter | OverlayLarge | FullScreen
+    Title        string            // optional display title
+    BodyRenderer func(m model) string
+    ConfirmLabel string
+    CancelLabel  string
+    HintLine     []Hint            // rendered at modal bottom; required for OverlayLarge/FullScreen
+}
+
+// renderModal is the single factory entry point.
+func renderModal(m model, cfg ModalConfig) string
+```
+
+**Size classes:**
+
+| SizeHint | Dimensions | Body Contract |
+|---|---|---|
+| `OverlayCenter` | ~50% terminal width, auto-height | Renderer returns complete styled modal box |
+| `OverlayLarge` | ~80% width × ~80% height | Renderer returns raw inner content; factory applies border + HintLine |
+| `FullScreen` | 100% terminal viewport | Renderer returns complete custom-layout string |
+
+**Adding a new modal type:**
+1. Add a `ModalType` constant in `model.go`
+2. Call `registerModal(MyModalType, ModalConfig{...})` in a `init()` block in `modal.go`
+3. Handle open/close in `Update()` — no new `switch` cases needed in `View()`
+
+The `View()` function dispatches via `modalRegistry[m.activeModal]` — never via per-modal `switch` statements.
+
 ### Modal Types
 
 | Type | Trigger | Rendering |
@@ -475,13 +509,28 @@ All 8 modal types dismiss on `Esc`. This is the universal close key — no modal
 
 ### Semantic Color Roles
 
-All colors driven by 25 semantic roles — no hardcoded values:
-- `border`, `borderFocus`, `fg`, `bg`
-- `accent` (environment-specific via `ui_color`)
-- `success`, `warning`, `danger`, `muted`
-- Body fg/bg, logo color, header colors, etc.
+All colors driven by 25 semantic roles — no hardcoded values. The `Skin.Color(role string) string` function is the only access path to color values.
 
-Environment `ui_color` always overrides the border accent color.
+**Key roles:**
+
+| Role | Purpose | Override source |
+|---|---|---|
+| `fg` / `bg` | Body text and background | Skin file |
+| `accent` | Primary UI accent (borders, badges) | Skin file; overridden by `ui_color` from `o6n-env.yaml` |
+| `env_name` | Environment name label in the fixed top-right header position | **Primary identity signal** — set per skin, never overridden by `ui_color` |
+| `borderFg` / `borderFocus` | Table and modal borders (normal / focused) | Skin file |
+| `success` / `warning` / `danger` / `info` | Status indicators and messages | Skin file |
+| `crumbBg` / `crumbFg` | Breadcrumb tag in footer | Skin file |
+| `jsonKey` / `jsonValue` / `jsonNumber` / `jsonBool` | JSON viewer syntax highlighting | Skin file |
+| `btnPrimaryBg/Fg` / `btnSecondaryBg/Fg` | Modal button styles | Skin file |
+
+**Environment identity contract:**
+- `env_name` semantic role: rendered as the environment label in the **fixed top-right header position** (Row 1). This is the **primary** environment identity signal. It must remain visible at 120+ columns and must not be truncated in favour of other header elements.
+- `ui_color` (from `o6n-env.yaml`): overrides the `accent` role only (borders, badges). It is the **secondary** environment identity signal. It NEVER affects `env_name` color or text content colors.
+
+**Rule:** Never use `lipgloss.Color("#RRGGBB")` directly in view code. Always call `col(m.skin, "roleName")`.
+
+Environment `ui_color` always overrides the border accent color (`accent` role) only.
 
 ### Theme Picker
 
@@ -584,6 +633,28 @@ High-contrast friendly skins: `stock`, `black-and-wtf`, `solarized-16`.
 - **Row 1 (status line):** App version, environment name with status indicator, auto-refresh badge (`circular arrow` in accent color when enabled)
 - **Row 2 (key hints):** Priority-based list of key+description pairs, space-separated
 - Full terminal width, 1-character horizontal padding, bold font, no forced background color
+
+### Hint Push Model
+
+The footer hint system uses a **push model**: each view pushes its own hints, and the footer renders whatever the current view provides. This eliminates a centralized hint registry.
+
+```go
+// Hint represents a keyboard shortcut hint for display in the footer or a modal hint line.
+type Hint struct {
+    Key      string // key label as displayed (e.g. "Ctrl+C", "?", "↑↓")
+    Label    string // short description (e.g. "quit", "help", "nav")
+    MinWidth int    // minimum terminal columns required; 0 = always show
+    Priority int    // 1 = highest priority (shown first when space is tight)
+}
+
+// filterHints filters and sorts hints by MinWidth and Priority for a given terminal width.
+func filterHints(hints []Hint, width int) []Hint
+```
+
+**Semantics:**
+- `MinWidth: 0` — hint is always shown regardless of terminal width
+- `Priority 1` — highest priority, never dropped when space is tight
+- `filterHints` sorts by ascending Priority, then removes hints where `MinWidth > width`
 
 ### Key Hint Priority System
 

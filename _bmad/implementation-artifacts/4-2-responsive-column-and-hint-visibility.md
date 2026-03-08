@@ -1,6 +1,6 @@
 # Story 4.2: Responsive Column & Hint Visibility
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -82,6 +82,18 @@ Claude Haiku 4.5 (implementation)
 
 N/A
 
+### Senior Developer Review (AI)
+
+- **Outcome:** Approved with no fixes required
+- **Date:** 2026-03-08
+- **Reviewer:** Claude Sonnet 4.6 (adversarial code review)
+- **Action items taken:**
+  - `buildColumnsFor` hide-order logic verified correct in `table.go`
+  - `filterHints` MinWidth/Priority semantics verified in `hints.go`
+  - 11 tests in `responsive_layout_test.go` cover AC 1-4 at widths 20-200
+  - MEDIUM finding: Story File List was empty — updated to document the test file
+  - All tasks confirmed implemented in existing infrastructure; task checkboxes accurate
+
 ### Completion Notes List
 
 - **Existing Infrastructure Leveraged**: The responsive column hiding infrastructure was already implemented in buildColumnsFor() (table.go lines 84-120). The function uses config.HideSequence() to determine which columns to hide based on available totalWidth. Column hiding follows the hide_order sequence defined in o6n-cfg.yaml.
@@ -110,3 +122,6 @@ N/A
 ### File List
 
 - `internal/app/responsive_layout_test.go` — NEW: 11 comprehensive responsive layout tests covering AC 1-4, terminal width ranges (40-200 columns)
+- `internal/app/table.go` — EXISTING: `buildColumnsFor` implements hide-order column hiding
+- `internal/app/hints.go` — EXISTING: `filterHints` implements MinWidth/Priority hint filtering
+- `internal/app/view.go` — EXISTING: `renderCompactHeader` uses filtered hints

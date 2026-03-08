@@ -924,6 +924,22 @@ func (m model) Update(msg tea.Msg) (retModel tea.Model, retCmd tea.Cmd) {
 				m.table.SetHeight(m.paneHeight - 1)
 			}
 			return m, nil
+		case "ctrl+shift+v":
+			// Toggle vim-style key bindings (Ctrl+Shift+V per story 4.5)
+			if m.popup.mode == popupModeNone && m.activeModal == ModalNone && !m.searchMode {
+				m.vimMode = !m.vimMode
+				if m.vimMode {
+					msg2, kind, cmd := setFooterStatus(footerStatusInfo, "VIM mode ON — j/k/gg/G active", 3*time.Second)
+					m.footerError = msg2
+					m.footerStatusKind = kind
+					return m, cmd
+				}
+				msg2, kind, cmd := setFooterStatus(footerStatusInfo, "VIM mode OFF", 3*time.Second)
+				m.footerError = msg2
+				m.footerStatusKind = kind
+				return m, cmd
+			}
+			return m, nil
 		case "ctrl+shift+r", "r":
 			// Toggle auto-refresh (Ctrl+Shift+R per story 3.7, or just R as shortcut)
 			m.autoRefresh = !m.autoRefresh

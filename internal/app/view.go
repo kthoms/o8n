@@ -45,7 +45,14 @@ func (m *model) renderCompactHeader(width int) string {
 	}
 
 	statusStyle := lipgloss.NewStyle().Foreground(statusColor)
-	envInfo := fmt.Sprintf("%s %s", m.currentEnv, statusStyle.Render(statusSymbol))
+	// Use the env_name semantic role as primary identity signal (Story 4.4 AC 2).
+	// Falls back to accent color if env_name is not set in the skin.
+	envNameColor := col(m.skin, "envName")
+	if envNameColor == "" {
+		envNameColor = col(m.skin, "accent")
+	}
+	envNameStyle := lipgloss.NewStyle().Foreground(envNameColor)
+	envInfo := fmt.Sprintf("%s %s", envNameStyle.Render(m.currentEnv), statusStyle.Render(statusSymbol))
 
 	row1 := fmt.Sprintf("o6n %s │ %s", m.version, envInfo)
 	if m.autoRefresh {
@@ -92,7 +99,7 @@ func (m *model) renderCompactHeader(width int) string {
 }
 
 // renderConfirmDeleteModal renders a modal for confirming delete action
-func (m *model) renderConfirmDeleteModal(width, height int) string {
+func (m *model) renderConfirmDeleteModal(_, _ int) string {
 	if m.pendingDeleteID == "" && m.pendingAction == nil {
 		return ""
 	}
@@ -451,7 +458,7 @@ func (m *model) modalDetailViewBody() string {
 	return title + "\n" + b.String()
 }
 
-func (m *model) renderEditModal(width, height int) string {
+func (m *model) renderEditModal(_, _ int) string {
 	row := m.currentEditRow()
 	editCol := m.currentEditColumn()
 	if row == nil || editCol == nil {
@@ -877,10 +884,17 @@ func (m model) View() string {
 		pageIndicator = m.styles.PageCounter.Render(paginationStr) + " "
 	}
 
-	// Compose right part: pagination | loading | auto-refresh | api-status | remote
+	// VIM mode indicator
+	vimStr := ""
+	if m.vimMode {
+		vimStr = m.styles.Accent.Render("VIM") + " "
+	}
+
+	// Compose right part: pagination | loading | auto-refresh | vim | api-status | remote
 	rightPart := pageIndicator +
 		m.styles.LoadingFooter.Render(loadingStr) +
 		refreshStr +
+		vimStr +
 		apiStatusStyle.Render(apiStatusSymbol) + " " +
 		rpStyle.Render(remoteSymbol+latencyStr)
 
@@ -1075,7 +1089,7 @@ func renderBoxWithTitle(content string, totalWidth, totalHeight int, title strin
 }
 
 // renderSortPopup renders the column sort selection popup.
-func (m *model) renderSortPopup(width, height int) string {
+func (m *model) renderSortPopup(_, _ int) string {
 	cols := m.table.Columns()
 
 	var b strings.Builder
@@ -1119,57 +1133,6 @@ func (m *model) renderSortPopup(width, height int) string {
 		sortWidth = m.lastWidth - 10
 	}
 	return lipgloss.NewStyle().Width(sortWidth).Render(title + "\n" + content + "\nEnter: Select  Esc: Close")
-}
-
-// renderDetailView renders the YAML/JSON detail viewer overlay.
-func (m *model) renderDetailView(width, height int) string {
-
-	// Calculate visible area
-	viewHeight := height - 6
-	if viewHeight < 3 {
-		viewHeight = 3
-	}
-
-	lines := strings.Split(m.detailContent, "\n")
-	maxScroll := len(lines) - viewHeight
-	if maxScroll < 0 {
-		maxScroll = 0
-	}
-	if m.detailScroll > maxScroll {
-		m.detailScroll = maxScroll
-	}
-	if m.detailScroll < 0 {
-		m.detailScroll = 0
-	}
-
-	// Extract visible lines
-	end := m.detailScroll + viewHeight
-	if end > len(lines) {
-		end = len(lines)
-	}
-	visibleLines := lines[m.detailScroll:end]
-
-	// Add line numbers and syntax highlighting
-	var b strings.Builder
-	for i, line := range visibleLines {
-		lineNum := m.detailScroll + i + 1
-		b.WriteString(fmt.Sprintf("%4d │ %s\n", lineNum, m.syntaxHighlightJSON(line)))
-	}
-
-	scrollInfo := fmt.Sprintf("[%d/%d]", m.detailScroll+1, len(lines))
-
-	modalStyle := lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
-		BorderForeground(col(m.skin, "borderFocus")).
-		Padding(1, 2).
-		Width(width - 4).
-		Height(viewHeight + 2)
-
-	content := b.String()
-	title := "Detail View  " + scrollInfo + "  (scroll ↑↓, q/Esc close)"
-	modal := modalStyle.Render(title + "\n" + content)
-
-	return modal
 }
 
 // syntaxHighlightJSON applies basic syntax highlighting to a JSON line.
@@ -1241,7 +1204,7 @@ func (m *model) renderFilterBar() string {
 }
 
 // renderEnvPopup renders the environment selection popup.
-func (m *model) renderEnvPopup(width, height int) string {
+func (m *model) renderEnvPopup(_, _ int) string {
 
 	var b strings.Builder
 	for i, name := range m.envNames {

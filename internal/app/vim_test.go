@@ -265,3 +265,47 @@ func TestVimModeDefaultFalse(t *testing.T) {
 		t.Error("expected vimMode=false by default")
 	}
 }
+
+// ── Ctrl+Shift+V toggle (AC 1) ────────────────────────────────────────────────
+
+func TestCtrlShiftV_TogglesVimMode(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.vimMode = false
+
+	// First Ctrl+Shift+V enables vim mode
+	m2, _ := sendKeyString(m, "ctrl+shift+v")
+	if !m2.vimMode {
+		t.Error("expected vimMode=true after first Ctrl+Shift+V")
+	}
+
+	// Second Ctrl+Shift+V disables vim mode
+	m3, _ := sendKeyString(m2, "ctrl+shift+v")
+	if m3.vimMode {
+		t.Error("expected vimMode=false after second Ctrl+Shift+V")
+	}
+}
+
+func TestCtrlShiftV_IgnoredInSearchMode(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.vimMode = false
+	m.searchMode = true
+
+	m2, _ := sendKeyString(m, "ctrl+shift+v")
+	if m2.vimMode {
+		t.Error("expected Ctrl+Shift+V to be ignored in search mode")
+	}
+}
+
+func TestCtrlShiftV_IgnoredInModal(t *testing.T) {
+	m := newTestModel(t)
+	m.splashActive = false
+	m.vimMode = false
+	m.activeModal = ModalHelp
+
+	m2, _ := sendKeyString(m, "ctrl+shift+v")
+	if m2.vimMode {
+		t.Error("expected Ctrl+Shift+V to be ignored when modal is open")
+	}
+}

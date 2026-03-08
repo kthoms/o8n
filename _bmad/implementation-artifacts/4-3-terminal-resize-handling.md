@@ -1,6 +1,6 @@
 # Story 4.3: Terminal Resize Handling
 
-Status: review
+Status: done
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -81,6 +81,18 @@ so that **layout corruption doesn't interrupt my workflow**.
 
 Claude Haiku 4.5
 
+### Senior Developer Review (AI)
+
+- **Outcome:** Approved with no fixes required
+- **Date:** 2026-03-08
+- **Reviewer:** Claude Sonnet 4.6 (adversarial code review)
+- **Action items taken:**
+  - `tea.WindowSizeMsg` handler at `update.go:1529` verified — updates `m.lastWidth`, `m.lastHeight`, recalculates `paneHeight`, calls `SetWidth`/`SetHeight`, calls `applyStyle()`
+  - Modal state preservation during resize verified (modal stays open)
+  - Minimum dimensions (paneHeight ≥ 3, paneWidth ≥ 10) enforced correctly
+  - 13 tests in `resize_test.go` cover all AC 1-4 scenarios
+  - Story File List updated to include existing files
+
 ### Completion Notes List
 
 - **WindowSizeMsg Already Implemented**: Tea.WindowSizeMsg handling exists at update.go:1529-1562. Updates m.lastWidth, m.lastHeight, recalculates paneHeight accounting for header/footer, updates table dimensions via SetWidth/SetHeight, and calls applyStyle(). AC 1 & 2 fully met.
@@ -92,3 +104,5 @@ Claude Haiku 4.5
 ### File List
 
 - `internal/app/resize_test.go` — NEW: 13 comprehensive resize handling tests covering AC 1-4
+- `internal/app/update.go` — EXISTING: `tea.WindowSizeMsg` handler (lines 1529-1562)
+- `internal/app/view.go` — EXISTING: layout assembly using `m.paneWidth`/`m.paneHeight`

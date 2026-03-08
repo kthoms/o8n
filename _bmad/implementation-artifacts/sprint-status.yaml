@@ -55,7 +55,7 @@ development_status:
   2-4-full-key-binding-reference: done
   epic-2-retrospective: optional
 
-  epic-3: in-progress
+  epic-3: done
   3-1-resource-navigation-and-context-switcher: done
   3-2-drill-down-navigation-and-breadcrumb: done
   3-3-action-execution-with-feedback: done
@@ -65,7 +65,7 @@ development_status:
   3-7-search-filter-and-auto-refresh: done
   epic-3-retrospective: optional
 
-  epic-4: in-progress
+  epic-4: done
   4-1-120x20-rendering-validation: done
   4-2-responsive-column-and-hint-visibility: done
   4-3-terminal-resize-handling: done
@@ -73,7 +73,7 @@ development_status:
   4-5-vim-style-key-bindings-toggle: done
   epic-4-retrospective: optional
 
-  epic-5: in-progress
+  epic-5: done
   5-1-multi-environment-configuration: done
   5-2-credential-security: done
   5-3-config-driven-resource-extensibility: done

@@ -86,6 +86,12 @@ func Run() {
 	m := newModelEnvApp(envCfg, appCfg, skinName)
 	m.debugEnabled = *debug
 	m.vimMode = *vimFlag || appCfg.VimMode
+
+	// Surface any credential file permission warning as a startup footer message.
+	if config.PermissionWarning != "" {
+		log.Printf("SECURITY: %s", config.PermissionWarning)
+		m.footerError = config.PermissionWarning
+	}
 	m.statePath = statePath
 	m.showLatency = appState.ShowLatency
 

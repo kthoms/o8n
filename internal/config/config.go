@@ -274,7 +274,27 @@ func SaveAppState(path string, s *AppState) error {
 	return nil
 }
 
+// PermissionWarning is non-nil when the env config file has permissions wider than 0600.
+// Callers may display this to the user as a security warning.
+var PermissionWarning string
+
+// LoadEnvConfig reads and parses the env config file.
+// On Unix systems it also checks that the file permissions are not wider than 0600
+// and sets PermissionWarning if they are (AC: 5.2 NFR9).
 func LoadEnvConfig(path string) (*EnvConfig, error) {
+	// Check file permissions (Unix only — on Windows os.Stat mode bits are unreliable)
+	if info, err := os.Stat(path); err == nil {
+		perm := info.Mode().Perm()
+		if perm&0o077 != 0 {
+			PermissionWarning = fmt.Sprintf(
+				"WARNING: %s has permissions %04o — consider restricting to 0600 (chmod 600 %s)",
+				path, perm, path,
+			)
+		} else {
+			PermissionWarning = ""
+		}
+	}
+
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read env config file %s: %w", path, err)

@@ -8,7 +8,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Colors holds the 25 semantic color roles that drive all UI styling.
+// Colors holds the 26 semantic color roles that drive all UI styling.
 // Empty string means "terminal default" for that role.
 type Colors struct {
 	Bg             string `yaml:"bg"`
@@ -16,6 +16,10 @@ type Colors struct {
 	FgMuted        string `yaml:"fgMuted"`
 	Accent         string `yaml:"accent"`
 	AccentAlt      string `yaml:"accentAlt"`
+	// EnvName is the primary identity signal for the environment label in the
+	// fixed top-right header position.  It is set per skin and is NEVER
+	// overridden by the per-environment ui_color (which only affects Accent).
+	EnvName        string `yaml:"envName"`
 	Surface        string `yaml:"surface"`
 	SurfaceAlt     string `yaml:"surfaceAlt"`
 	Success        string `yaml:"success"`
@@ -116,6 +120,8 @@ func (s *Skin) Color(role string) string {
 		return c.Accent
 	case "accentAlt":
 		return c.AccentAlt
+	case "envName":
+		return c.EnvName
 	case "surface":
 		return c.Surface
 	case "surfaceAlt":
